@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.andy.recruitment</groupId>
+    <artifactId>recruitment-web</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>recruitment-web</name>
+
+    <parent>
+        <groupId>com.xgimi.ird</groupId>
+        <artifactId>xgimi-base</artifactId>
+        <version>0.0.1-RELEASE</version>
+    </parent>
+
+    <properties>
+        <recruitment-center.version>0.0.0-SNAPSHOT</recruitment-center.version>
+        <xgimi-base-boot.version>0.0.16-RELEASE</xgimi-base-boot.version>
+        <xgimi-common.version>0.0.17-RELEASE</xgimi-common.version>
+    </properties>
+
+    <modules>
+        <module>recruitment-boot</module>
+        <module>recruitment-business</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.xgimi.ird</groupId>
+                <artifactId>xgimi-common</artifactId>
+                <version>${xgimi-common.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.xgimi.ird</groupId>
+                <artifactId>xgimi-base-boot</artifactId>
+                <version>${xgimi-base-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.andy.recruitment</groupId>
+                <artifactId>recruitment-center-client</artifactId>
+                <version>${recruitment-center.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.andy.recruitment</groupId>
+                <artifactId>recruitment-center-server</artifactId>
+                <version>${recruitment-center.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
