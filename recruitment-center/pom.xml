@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.andy.recruitment</groupId>
+    <artifactId>recruitment-center</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>recruitment</name>
+
+    <parent>
+        <groupId>com.xgimi.ird</groupId>
+        <artifactId>xgimi-base</artifactId>
+        <version>0.0.1-RELEASE</version>
+    </parent>
+
+    <properties>
+        <recruitment-client.version>0.0.0-SNAPSHOT</recruitment-client.version>
+        <xgimi-common.version>0.0.18-RELEASE</xgimi-common.version>
+        <xgimi-base-center.version>0.0.12-RELEASE</xgimi-base-center.version>
+    </properties>
+
+    <modules>
+        <module>recruitment-center-client</module>
+        <module>recruitment-center-server</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.andy.recruitment</groupId>
+                <artifactId>recruitment-center-client</artifactId>
+                <version>${recruitment-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xgimi.ird</groupId>
+                <artifactId>xgimi-common</artifactId>
+                <version>${xgimi-common.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.xgimi.ird</groupId>
+                <artifactId>xgimi-base-center</artifactId>
+                <version>${xgimi-base-center.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
