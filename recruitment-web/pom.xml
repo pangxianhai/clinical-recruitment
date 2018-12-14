@@ -17,7 +17,7 @@
 
     <properties>
         <recruitment-center.version>0.0.0-SNAPSHOT</recruitment-center.version>
-        <xgimi-base-boot.version>0.0.16-RELEASE</xgimi-base-boot.version>
+        <xgimi-base-boot.version>0.1.16-RELEASE</xgimi-base-boot.version>
         <xgimi-common.version>0.0.17-RELEASE</xgimi-common.version>
     </properties>
 
@@ -53,6 +53,24 @@
                 <groupId>com.andy.recruitment</groupId>
                 <artifactId>recruitment-center-server</artifactId>
                 <version>${recruitment-center.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>de.javakaffee</groupId>
+                        <artifactId>kryo-serializers</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.alibaba</groupId>
+                        <artifactId>dubbo</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.101tec</groupId>
+                        <artifactId>zkclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.xgimi.ird</groupId>
+                        <artifactId>xgimi-common-redis</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>

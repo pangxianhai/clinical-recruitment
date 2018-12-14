@@ -64,7 +64,7 @@ else
 fi
 
 echo -e "Starting the $SERVER_NAME ...\c"
-nohup java $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS com.andy.recruitment.App > $STDOUT_FILE 2>&1 &
+nohup java $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS com.andy.recruitment.web.App > $STDOUT_FILE 2>&1 &
 
 COUNT=0
 I=0

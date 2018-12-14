@@ -13,6 +13,21 @@
     <packaging>jar</packaging>
     <name>recruitment-boot</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.xgimi.ird</groupId>
+            <artifactId>xgimi-base-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.andy.recruitment</groupId>
+            <artifactId>recruitment-center-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.andy.recruitment</groupId>
+            <artifactId>recruitment-center-server</artifactId>
+        </dependency>
+    </dependencies>
+
     <profiles>
         <profile>
             <id>dev</id>
@@ -40,7 +55,8 @@
                 <directory>../recruitment-boot/src/main/resources</directory>
             </resource>
             <resource>
-                <directory>../recruitment-boot/src/main/resources/filter/${packaging.environment}</directory>
+                <directory>../recruitment-boot/src/main/resources/filter/${packaging.environment}
+                </directory>
                 <filtering>true</filtering>
                 <targetPath>${project.build.directory}/conf</targetPath>
             </resource>
@@ -63,7 +79,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.andy.recruitment.App</mainClass>
+                            <mainClass>com.andy.recruitment.web.App</mainClass>
                         </manifest>
                     </archive>
                     <excludes>
