@@ -15,16 +15,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.andy.recruitment</groupId>
+            <artifactId>recruitment-business</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.xgimi.ird</groupId>
-            <artifactId>xgimi-base-boot</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.andy.recruitment</groupId>
-            <artifactId>recruitment-center-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.andy.recruitment</groupId>
-            <artifactId>recruitment-center-server</artifactId>
+            <artifactId>xgimi-common</artifactId>
         </dependency>
     </dependencies>
 

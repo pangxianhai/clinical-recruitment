@@ -17,8 +17,8 @@
 
     <properties>
         <recruitment-center.version>0.0.0-SNAPSHOT</recruitment-center.version>
-        <xgimi-base-boot.version>0.1.16-RELEASE</xgimi-base-boot.version>
         <xgimi-common.version>0.0.17-RELEASE</xgimi-common.version>
+        <xgimi-spring.version>0.1.0-RELEASE</xgimi-spring.version>
     </properties>
 
     <modules>
@@ -32,17 +32,11 @@
                 <groupId>com.xgimi.ird</groupId>
                 <artifactId>xgimi-common</artifactId>
                 <version>${xgimi-common.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-codec</groupId>
-                        <artifactId>commons-codec</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.xgimi.ird</groupId>
-                <artifactId>xgimi-base-boot</artifactId>
-                <version>${xgimi-base-boot.version}</version>
+                <artifactId>xgimi-spring</artifactId>
+                <version>${xgimi-spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.andy.recruitment</groupId>
@@ -53,24 +47,11 @@
                 <groupId>com.andy.recruitment</groupId>
                 <artifactId>recruitment-center-server</artifactId>
                 <version>${recruitment-center.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>de.javakaffee</groupId>
-                        <artifactId>kryo-serializers</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.alibaba</groupId>
-                        <artifactId>dubbo</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.101tec</groupId>
-                        <artifactId>zkclient</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.xgimi.ird</groupId>
-                        <artifactId>xgimi-common-redis</artifactId>
-                    </exclusion>
-                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.andy.recruitment</groupId>
+                <artifactId>recruitment-business</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

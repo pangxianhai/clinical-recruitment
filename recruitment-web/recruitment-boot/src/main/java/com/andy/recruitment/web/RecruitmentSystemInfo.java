@@ -1,7 +1,5 @@
 package com.andy.recruitment.web;
 
-import com.xgimi.boot.base.logger.log4j.BootLogger;
-import com.xgimi.boot.base.logger.log4j.Logger;
 import com.xgimi.commons.message.MessageHandler;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.encrypt.AESCBCUtil;
@@ -9,6 +7,8 @@ import com.xgimi.commons.util.encrypt.AESUtil;
 import com.xgimi.commons.util.encrypt.EncodeUtil;
 import com.xgimi.commons.util.encrypt.HashUtil;
 import com.xgimi.commons.util.encrypt.RSAUtil;
+import com.xgimi.logger.log4j.Logger;
+import com.xgimi.logger.log4j.MyLogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 
@@ -41,7 +41,7 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
     private String serverName;
 
     @Logger
-    private BootLogger logger;
+    private MyLogger logger;
 
     @Override
     public void run(String... strings) throws Exception {

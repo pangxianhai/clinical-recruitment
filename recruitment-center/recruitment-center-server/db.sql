@@ -1,20 +1,7 @@
 -- 启动mysql sudo mysqld_safe
--- 创建数据库 CREATE DATABASE internship DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
--- 创建用户 CREATE USER 'internship-user'@'%' IDENTIFIED BY 'internship';
--- 给用户分配权限 GRANT ALL ON internship.* TO 'internship-user'@'%';
-
-CREATE TABLE region_dict (
- id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
- region_name varchar(256) COLLATE utf8_bin NOT NULL COMMENT '名称',
- parent_id bigint(20) NOT NULL COMMENT '父ID',
- region_type tinyint(1) NOT NULL COMMENT '地区类型 0-国家 1-省份 2-城市 3-区',
- status tinyint(1) NOT NULL COMMENT '地区状态 0-无效，1-有效',
- created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
- created_time datetime NOT NULL COMMENT '创建时间',
- updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
- updated_time datetime DEFAULT NULL COMMENT '更新时间',
- PRIMARY KEY (id)
-) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='地区字典表'
+-- 创建数据库 CREATE DATABASE medical_recruitment DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
+-- 创建用户 CREATE USER 'medical_recruitment-user'@'%' IDENTIFIED BY 'mmmm8888';
+-- 给用户分配权限 GRANT ALL ON medical_recruitment.* TO 'medical_recruitment-user'@'%';
 
 drop table  if exists user_info;
 create table user_info(

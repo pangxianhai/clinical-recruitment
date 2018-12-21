@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.xgimi.ird</groupId>
-            <artifactId>xgimi-base-center</artifactId>
+            <artifactId>xgimi-spring</artifactId>
         </dependency>
     </dependencies>
 </project>

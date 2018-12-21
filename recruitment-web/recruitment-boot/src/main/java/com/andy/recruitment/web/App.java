@@ -1,10 +1,11 @@
 package com.andy.recruitment.web;
 
-import com.xgimi.boot.base.converter.MyHandlerMethodArgumentResolver;
-import com.xgimi.boot.base.converter.MyHttpMessageConverter;
+import com.xgimi.converter.MyHandlerMethodArgumentResolver;
+import com.xgimi.converter.MyHttpMessageConverter;
+import com.xgimi.datasource.EnableDataSource;
+import com.xgimi.executor.EnableExecutor;
+import com.xgimi.logger.EnableLog;
 import java.util.List;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
@@ -26,6 +27,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableScheduling
 @Configuration
 @ComponentScan(basePackages = {"com.andy.recruitment"})
+@EnableLog
+@EnableExecutor
+@EnableDataSource(mapperBasePackage = "com.xgimi.message.business.service.*.mapper")
 public class App extends WebMvcConfigurerAdapter {
 
     @Bean
@@ -41,22 +45,6 @@ public class App extends WebMvcConfigurerAdapter {
     @Bean
     public HttpMessageConverters messageWebMessageConverters(MyHttpMessageConverter httpMessageConverter) {
         return new HttpMessageConverters(httpMessageConverter);
-    }
-
-    @Bean
-    public MapperScannerConfigurer mapperScannerConfigurer() {
-        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setBasePackage("com.xgimi.message.business.service.*.mapper");
-        return mapperScannerConfigurer;
-    }
-
-    @Bean
-    public BeanNameAutoProxyCreator txProxy() {
-        BeanNameAutoProxyCreator creator = new BeanNameAutoProxyCreator();
-        creator.setInterceptorNames("txAdvice");
-        creator.setBeanNames("*Service", "*ServiceImpl");
-        creator.setProxyTargetClass(true);
-        return creator;
     }
 
     @Bean
