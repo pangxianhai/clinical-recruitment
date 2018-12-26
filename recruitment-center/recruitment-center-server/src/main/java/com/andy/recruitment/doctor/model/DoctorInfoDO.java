@@ -2,6 +2,7 @@ package com.andy.recruitment.doctor.model;
 
 import com.andy.recruitment.doctor.constant.DoctorStatus;
 import com.xgimi.base.BaseDO;
+import com.xgimi.commons.util.JsonUtil;
 
 /**
  * 医生信息
@@ -93,5 +94,10 @@ public class DoctorInfoDO extends BaseDO {
 
     public void setStatus(DoctorStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtil.toJson(this);
     }
 }
