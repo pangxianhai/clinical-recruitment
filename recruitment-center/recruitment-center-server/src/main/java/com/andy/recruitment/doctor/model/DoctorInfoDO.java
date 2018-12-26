@@ -1,23 +1,19 @@
 package com.andy.recruitment.doctor.model;
 
 import com.andy.recruitment.doctor.constant.DoctorStatus;
-import java.io.Serializable;
+import com.xgimi.base.BaseDO;
 
 /**
  * 医生信息
  *
- * @author 庞先海 2018-12-25
+ * @author 庞先海 2018-12-26
  */
-public class DoctorInfo implements Serializable {
+public class DoctorInfoDO extends BaseDO {
 
     /**
      * 用户ID
      */
     private Long userId;
-    /**
-     * 医生ID
-     */
-    private Long doctorId;
     /**
      * 省ID
      */
@@ -43,12 +39,12 @@ public class DoctorInfo implements Serializable {
      */
     private DoctorStatus status;
 
-    public Long getDoctorId() {
-        return doctorId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getProvinceId() {

@@ -25,6 +25,7 @@ create table user_info(
 drop table  if exists doctor_info;
 create table doctor_info(
  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+ user_id bigint(20) NOT NULL COMMENT '用户ID',
  province_id bigint(20) NOT NULL COMMENT '省ID',
  city_id bigint(20) NOT NULL COMMENT '市ID',
  district_id bigint(20) COMMENT '区ID',
