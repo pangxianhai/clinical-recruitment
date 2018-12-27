@@ -98,4 +98,12 @@ public class DoctorInfo implements Serializable {
     public void setStatus(DoctorStatus status) {
         this.status = status;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }
