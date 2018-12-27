@@ -29,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = {"com.andy.recruitment"})
 @EnableLog
 @EnableExecutor
-@EnableDataSource(mapperBasePackage = "com.xgimi.message.business.service.*.mapper")
+@EnableDataSource(mapperBasePackage = "com.andy.recruitment.*.mapper")
 public class App extends WebMvcConfigurerAdapter {
 
     @Bean

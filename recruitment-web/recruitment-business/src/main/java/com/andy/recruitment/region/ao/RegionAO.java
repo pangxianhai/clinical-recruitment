@@ -1,19 +1,14 @@
-package com.andy.recruitment.region.service;
+package com.andy.recruitment.region.ao;
 
 import com.andy.recruitment.region.model.Region;
 import java.util.List;
 
 /**
- * 地区字典服务
+ * 地区字典业务
  *
- * @author 庞先海 2018-12-26
+ * @author 庞先海 2018-12-27
  */
-public interface RegionService {
-
-    /**
-     * 中国的默认ID
-     */
-    Long CHINA_REGION_ID = 1L;
+public interface RegionAO {
 
     /**
      * 通过id获取地区信息
