@@ -1,6 +1,5 @@
 package com.andy.recruitment.doctor.model;
 
-import com.andy.recruitment.doctor.constant.DoctorStatus;
 import com.xgimi.base.BaseDO;
 import com.xgimi.commons.util.JsonUtil;
 
@@ -35,10 +34,6 @@ public class DoctorInfoDO extends BaseDO {
      * 执业类别
      */
     private String medicalCategory;
-    /**
-     * 医生状态
-     */
-    private DoctorStatus status;
 
     public Long getUserId() {
         return userId;
@@ -86,14 +81,6 @@ public class DoctorInfoDO extends BaseDO {
 
     public void setMedicalCategory(String medicalCategory) {
         this.medicalCategory = medicalCategory;
-    }
-
-    public DoctorStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(DoctorStatus status) {
-        this.status = status;
     }
 
     @Override

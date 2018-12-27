@@ -1,13 +1,13 @@
-package com.andy.recruitment.doctor.model;
+package com.andy.recruitment.patient.model;
 
-import java.io.Serializable;
+import com.xgimi.base.BaseDO;
 
 /**
- * 医生信息
+ * 患者信息DO
  *
- * @author 庞先海 2018-12-25
+ * @author 庞先海 2018-12-27
  */
-public class DoctorInfo implements Serializable {
+public class PatientInfoDO extends BaseDO {
 
     /**
      * 用户ID
@@ -30,13 +30,17 @@ public class DoctorInfo implements Serializable {
      */
     private Long districtId;
     /**
-     * 执业机构
+     * 年龄
      */
-    private String medicalInstitution;
-    /**
-     * 执业类别
-     */
-    private String medicalCategory;
+    private Integer age;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Long getDoctorId() {
         return doctorId;
@@ -70,27 +74,11 @@ public class DoctorInfo implements Serializable {
         this.districtId = districtId;
     }
 
-    public String getMedicalInstitution() {
-        return medicalInstitution;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setMedicalInstitution(String medicalInstitution) {
-        this.medicalInstitution = medicalInstitution;
-    }
-
-    public String getMedicalCategory() {
-        return medicalCategory;
-    }
-
-    public void setMedicalCategory(String medicalCategory) {
-        this.medicalCategory = medicalCategory;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 }

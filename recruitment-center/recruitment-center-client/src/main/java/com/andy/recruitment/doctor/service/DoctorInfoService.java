@@ -37,6 +37,14 @@ public interface DoctorInfoService {
     DoctorInfo getDoctorInfoById(Long doctorId);
 
     /**
+     * 通过用户ID获取医生信息
+     *
+     * @param userId 用户ID
+     * @return 医生信息
+     */
+    DoctorInfo getDoctorInfoByUserId(Long userId);
+
+    /**
      * 医生信息分页查询
      *
      * @param queryParam 查询参数

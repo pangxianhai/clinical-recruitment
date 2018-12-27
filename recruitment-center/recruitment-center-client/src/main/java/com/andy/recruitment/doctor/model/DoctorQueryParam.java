@@ -1,6 +1,5 @@
 package com.andy.recruitment.doctor.model;
 
-import com.andy.recruitment.doctor.constant.DoctorStatus;
 import java.io.Serializable;
 
 /**
@@ -26,10 +25,6 @@ public class DoctorQueryParam implements Serializable {
      * 城市ID
      */
     private Long cityId;
-    /**
-     * 医生状态
-     */
-    private DoctorStatus status;
 
     public Long getUserId() {
         return userId;
@@ -61,13 +56,5 @@ public class DoctorQueryParam implements Serializable {
 
     public void setCityId(Long cityId) {
         this.cityId = cityId;
-    }
-
-    public DoctorStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(DoctorStatus status) {
-        this.status = status;
     }
 }

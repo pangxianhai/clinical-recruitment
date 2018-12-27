@@ -2,9 +2,20 @@ package com.andy.recruitment.doctor.service;
 
 import com.andy.recruitment.doctor.mapper.DoctorInfoMapper;
 import com.andy.recruitment.doctor.model.DoctorInfo;
+import com.andy.recruitment.doctor.model.DoctorInfoDO;
 import com.andy.recruitment.doctor.model.DoctorQueryParam;
+import com.andy.recruitment.doctor.util.DoctorInfoUtil;
+import com.andy.recruitment.exception.RecruitmentErrorCode;
+import com.andy.recruitment.exception.RecruitmentException;
+import com.xgimi.center.util.PageUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
+import com.xgimi.commons.util.CollectionUtil;
+import com.xgimi.commons.util.DateUtil;
+import com.xgimi.commons.util.asserts.AssertUtil;
+import com.xgimi.mybatis.paginator.Page;
+import java.sql.Timestamp;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,21 +36,68 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
 
     @Override
     public void addDoctorInfo(DoctorInfo doctorInfo, String operator) {
-
+        DoctorInfoDO doctorInfoDO = DoctorInfoUtil.transformDoctorInfoDO(doctorInfo);
+        doctorInfoDO.setCreatedBy(operator);
+        doctorInfoDO.setCreatedTime(new Timestamp(DateUtil.currentMilliseconds()));
+        int count = this.doctorInfoMapper.insert(doctorInfoDO);
+        AssertUtil.assertBoolean(count > 0, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.DOCTOR_ADD_FAILED);
+        });
     }
 
     @Override
     public void updateDoctorInfo(DoctorInfo doctorInfo, String operator) {
-
+        AssertUtil.assertNull(doctorInfo.getDoctorId(), () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.DOCTOR_ID_EMPTY);
+        });
+        DoctorInfoDO doctorInfoDO = DoctorInfoUtil.transformDoctorInfoDO(doctorInfo);
+        doctorInfoDO.setUpdatedBy(operator);
+        doctorInfoDO.setUpdatedTime(new Timestamp(DateUtil.currentMilliseconds()));
+        int count = this.doctorInfoMapper.update(doctorInfoDO);
+        AssertUtil.assertBoolean(count > 0, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.DOCTOR_UPDATE_FAILED);
+        });
     }
 
     @Override
     public DoctorInfo getDoctorInfoById(Long doctorId) {
-        return null;
+        if (null == doctorId) {
+            return null;
+        }
+        DoctorQueryParam queryParam = new DoctorQueryParam();
+        queryParam.setDoctorId(doctorId);
+        List<DoctorInfoDO> doctorInfoDOList = this.doctorInfoMapper.select(queryParam);
+        if (CollectionUtil.isEmpty(doctorInfoDOList)) {
+            return null;
+        }
+        AssertUtil.assertBoolean(doctorInfoDOList.size() != 1, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
+        });
+        return DoctorInfoUtil.transformDoctorInfo(doctorInfoDOList.get(0));
     }
 
     @Override
     public PageResult<DoctorInfo> getDoctorInfo(DoctorQueryParam queryParam, Paginator paginator) {
-        return null;
+        Page page = PageUtil.transformToPage(paginator);
+        List<DoctorInfoDO> doctorInfoDOList = this.doctorInfoMapper.select(queryParam, page);
+        List<DoctorInfo> doctorInfoList = DoctorInfoUtil.transformDoctorInfo(doctorInfoDOList);
+        return new PageResult<>(doctorInfoList, PageUtil.transformToPaginator(page));
+    }
+
+    @Override
+    public DoctorInfo getDoctorInfoByUserId(Long userId) {
+        if (null == userId) {
+            return null;
+        }
+        DoctorQueryParam queryParam = new DoctorQueryParam();
+        queryParam.setUserId(userId);
+        List<DoctorInfoDO> doctorInfoDOList = this.doctorInfoMapper.select(queryParam);
+        if (CollectionUtil.isEmpty(doctorInfoDOList)) {
+            return null;
+        }
+        AssertUtil.assertBoolean(doctorInfoDOList.size() != 1, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
+        });
+        return DoctorInfoUtil.transformDoctorInfo(doctorInfoDOList.get(0));
     }
 }
