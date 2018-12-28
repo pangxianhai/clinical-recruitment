@@ -23,5 +23,9 @@
             <groupId>com.xgimi.ird</groupId>
             <artifactId>xgimi-spring</artifactId>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
     </dependencies>
 </project>
