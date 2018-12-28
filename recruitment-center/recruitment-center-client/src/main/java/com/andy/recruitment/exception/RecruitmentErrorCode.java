@@ -5,11 +5,10 @@ package com.andy.recruitment.exception;
  *
  * @author 庞先海 2018-12-27
  */
-public enum RecruitmentErrorCode {
-    /**
-     * 过多查询结果
-     */
-    TOO_MANY_RESULT(101000),
+public enum RecruitmentErrorCode {/**
+ * 过多查询结果
+ */
+TOO_MANY_RESULT(101000),
 
     /**
      * 添加医生失败
@@ -37,6 +36,19 @@ public enum RecruitmentErrorCode {
      */
     PATIENT_UPDATE_FAILED(101202),
 
+    /**
+     * 添加用户失败
+     */
+    USER_ADD_FAILED(101300),
+    /**
+     * 用户ID为空
+     */
+    USER_ID_EMPTY(101301),
+    /**
+     * 更新用户失败
+     */
+    USER_UPDATE_FAILED(101302),
+
     ;
 
     private int code;
@@ -47,5 +59,4 @@ public enum RecruitmentErrorCode {
 
     public int getCode() {
         return this.code;
-    }
-}
+    }}
