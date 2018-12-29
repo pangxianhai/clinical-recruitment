@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/region")
-public class RegionController {
+public class RegionWebservice {
 
     private final RegionAO regionAO;
 
     @Autowired
-    public RegionController(RegionAO regionAO) {
+    public RegionWebservice(RegionAO regionAO) {
         this.regionAO = regionAO;
     }
 
