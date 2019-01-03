@@ -22,7 +22,7 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
     /**
      * 系统编码
      */
-    public static String CHARSET_NAME;
+    public static String CHARSET_NAME = "UTF-8";
 
     /**
      * 服务名称

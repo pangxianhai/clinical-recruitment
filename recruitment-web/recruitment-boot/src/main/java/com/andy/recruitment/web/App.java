@@ -7,10 +7,8 @@ import com.xgimi.executor.EnableExecutor;
 import com.xgimi.logger.EnableLog;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,13 +21,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  *
  * @author 庞先海 2018-12-14
  */
-@EnableAutoConfiguration
 @EnableScheduling
 @Configuration
 @ComponentScan(basePackages = {"com.andy.recruitment"})
 @EnableLog
 @EnableExecutor
 @EnableDataSource(mapperBasePackage = "com.andy.recruitment.*.mapper")
+@SpringBootApplication
 public class App extends WebMvcConfigurerAdapter {
 
     @Bean
@@ -47,18 +45,17 @@ public class App extends WebMvcConfigurerAdapter {
         return new HttpMessageConverters(httpMessageConverter);
     }
 
-    @Bean
-    public EmbeddedServletContainerFactory servletContainer() {
-        return new JettyEmbeddedServletContainerFactory();
-    }
-
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         super.addArgumentResolvers(argumentResolvers);
         MyHandlerMethodArgumentResolver argumentResolver = new MyHandlerMethodArgumentResolver();
         argumentResolvers.add(argumentResolver);
     }
+
+    //    @Override
+    //    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    //        return application.sources(App.class);
+    //    }
 
     public static void main(String... args) {
         SpringApplication.run(App.class, args);
