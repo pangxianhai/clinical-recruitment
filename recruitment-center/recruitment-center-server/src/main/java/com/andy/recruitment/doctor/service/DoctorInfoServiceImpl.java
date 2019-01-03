@@ -7,7 +7,7 @@ import com.andy.recruitment.doctor.model.DoctorQueryParam;
 import com.andy.recruitment.doctor.util.DoctorInfoUtil;
 import com.andy.recruitment.exception.RecruitmentErrorCode;
 import com.andy.recruitment.exception.RecruitmentException;
-import com.xgimi.center.util.PageUtil;
+import com.xgimi.util.PageUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;

@@ -7,7 +7,7 @@ import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientInfoDO;
 import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.andy.recruitment.patient.util.PatientUtil;
-import com.xgimi.center.util.PageUtil;
+import com.xgimi.util.PageUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;

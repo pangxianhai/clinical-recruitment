@@ -8,7 +8,7 @@ import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentInfoDO;
 import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
 import com.andy.recruitment.recruitment.util.RecruitmentUtil;
-import com.xgimi.center.util.PageUtil;
+import com.xgimi.util.PageUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;
