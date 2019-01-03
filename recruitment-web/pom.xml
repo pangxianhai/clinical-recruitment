@@ -17,7 +17,7 @@
 
     <properties>
         <recruitment-center.version>0.0.0-SNAPSHOT</recruitment-center.version>
-        <xgimi-common.version>0.0.18-RELEASE</xgimi-common.version>
+        <xgimi-common.version>0.0.19-RELEASE</xgimi-common.version>
         <xgimi-spring.version>0.1.0-RELEASE</xgimi-spring.version>
     </properties>
 
@@ -58,6 +58,16 @@
                 <groupId>com.andy.recruitment</groupId>
                 <artifactId>recruitment-business</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-tomcat</artifactId>
+                <version>1.5.4.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

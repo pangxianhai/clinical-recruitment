@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IndexController {
 
-    @ResponseBody
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     public String index() {
         return "swagger/swagger.html";

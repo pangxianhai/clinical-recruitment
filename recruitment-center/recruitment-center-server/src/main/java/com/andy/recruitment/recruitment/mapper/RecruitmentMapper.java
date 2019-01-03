@@ -2,8 +2,8 @@ package com.andy.recruitment.recruitment.mapper;
 
 import com.andy.recruitment.recruitment.model.RecruitmentInfoDO;
 import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
+import com.xgimi.mybatis.paginator.Page;
 import java.util.List;
-import sun.jvm.hotspot.debugger.Page;
 
 /**
  * 招募信息Mapper

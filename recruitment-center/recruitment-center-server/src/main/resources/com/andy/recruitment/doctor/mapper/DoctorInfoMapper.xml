@@ -23,7 +23,7 @@
     </sql>
     <select id="select" resultMap="baseResultMap"
       parameterType="com.andy.recruitment.doctor.model.DoctorQueryParam">
-        select id ,
+        select
         <include refid="baseColumnList"/>
         from doctor_info
         <where>
@@ -48,6 +48,7 @@
       parameterType="com.andy.recruitment.doctor.model.DoctorInfoDO">
         insert into doctor_info (<include refid="baseColumnList"/>)
         values(
+        #{id,jdbcType=BIGINT},
         #{userId, jdbcType=BIGINT},
         #{provinceId, jdbcType=BIGINT},
         #{cityId, jdbcType=BIGINT},

@@ -49,6 +49,19 @@ TOO_MANY_RESULT(101000),
      */
     USER_UPDATE_FAILED(101302),
 
+    /**
+     * 招募信息添加失败
+     */
+    RECRUITMENT_ADD_FAILE(101400),
+    /**
+     * 招募信息更新失败
+     */
+    RECRUITMENT_UPDATE_FAILE(101401),
+    /**
+     * 招募信息ID为空
+     */
+    RECRUITMENT_ID_EMPTY(101402),
+
     ;
 
     private int code;

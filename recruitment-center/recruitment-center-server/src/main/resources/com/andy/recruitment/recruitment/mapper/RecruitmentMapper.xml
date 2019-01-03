@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.andy.recruitment.recruitment.mapper.RecruitmentMapper">
+    <resultMap id="baseResultMap" type="com.andy.recruitment.recruitment.model.RecruitmentInfoDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="register_code" property="registerCode" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="practice_stages" property="practiceStages" jdbcType="VARCHAR"/>
+        <result column="indication" property="indication" jdbcType="VARCHAR"/>
+        <result column="drug_name" property="drugName" jdbcType="VARCHAR"/>
+        <result column="drug_type" property="drugType" jdbcType="VARCHAR"/>
+        <result column="recruitment_number" property="recruitmentNumber" jdbcType="INTEGER"/>
+        <result column="introduction" property="introduction" jdbcType="VARCHAR"/>
+        <result column="treatment_plan" property="treatmentPlan" jdbcType="VARCHAR"/>
+        <result column="screening_standard" property="screeningStandard" jdbcType="VARCHAR"/>
+        <result column="entry_criteria" property="entryCriteria" jdbcType="VARCHAR"/>
+        <result column="research_center" property="researchCenter" jdbcType="VARCHAR"/>
+        <result column="patient_rights" property="patientRights" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="stop_time" property="stopTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status"
+          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="baseColumnList">
+        id,register_code,title,practice_stages,indication,drug_name,drug_type,recruitment_number,
+        introduction,treatment_plan,screening_standard,entry_criteria,research_center,patient_rights,
+        start_time,stop_time,
+        status,created_by,created_time,updated_by,updated_time
+    </sql>
+    <select id="select" resultMap="baseResultMap"
+      parameterType="com.andy.recruitment.recruitment.model.RecruitmentQueryParam">
+        select
+        <include refid="baseColumnList"/>
+        from medical_clinical_recruitment_info
+        <where>
+            <if test="recruitmentId != null">
+                and id = #{recruitmentId, jdbcType=BIGINT}
+            </if>
+            <if test="registerCode != null and registerCode != ''">
+                and register_code = #{registerCode, jdbcType=VARCHAR}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title, jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+            </if>
+            <if test="startTimeBegin != null">
+                <![CDATA[
+                and start_time >= #{startTimeBegin,jdbcType=TIMESTAMP}
+                ]]>
+            </if>
+            <if test="startTimeEnd != null">
+                <![CDATA[
+                and start_time <= #{startTimeEnd,jdbcType=TIMESTAMP}
+                ]]>
+            </if>
+            <if test="stopTimeBegin != null">
+                <![CDATA[
+                and stop_time >= #{stopTimeBegin,jdbcType=TIMESTAMP}
+                ]]>
+            </if>
+            <if test="stopTimeEnd != null">
+                <![CDATA[
+                and stop_time <= #{stopTimeEnd,jdbcType=TIMESTAMP}
+                ]]>
+            </if>
+        </where>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+      parameterType="com.andy.recruitment.recruitment.model.RecruitmentInfoDO">
+        insert into medical_clinical_recruitment_info (<include refid="baseColumnList"/>)
+        values(
+        #{id,jdbcType=BIGINT},
+        #{registerCode, jdbcType=VARCHAR},
+        #{title, jdbcType=VARCHAR},
+        #{practiceStages, jdbcType=VARCHAR},
+        #{indication, jdbcType=VARCHAR},
+        #{drugName, jdbcType=VARCHAR},
+        #{drugType, jdbcType=VARCHAR},
+        #{recruitmentNumber, jdbcType=INTEGER},
+        #{introduction, jdbcType=VARCHAR},
+        #{treatmentPlan, jdbcType=VARCHAR},
+        #{screeningStandard, jdbcType=VARCHAR},
+        #{entryCriteria, jdbcType=VARCHAR},
+        #{researchCenter, jdbcType=VARCHAR},
+        #{patientRights, jdbcType=VARCHAR},
+        #{startTime, jdbcType=TIMESTAMP},
+        #{stopTime, jdbcType=TIMESTAMP},
+        #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+        #{createdBy, jdbcType=VARCHAR},
+        #{createdTime, jdbcType=TIMESTAMP},
+        #{updatedBy, jdbcType=VARCHAR},
+        #{updatedTime, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="update" parameterType="com.andy.recruitment.recruitment.model.RecruitmentInfoDO">
+        update medical_clinical_recruitment_info
+        <set>
+            <if test="registerCode != null and registerCode != ''">
+                register_code = #{registerCode, jdbcType=VARCHAR},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title, jdbcType=VARCHAR},
+            </if>
+            <if test="practiceStages != null and practiceStages != ''">
+                practice_stages = #{practiceStages, jdbcType=VARCHAR},
+            </if>
+            <if test="indication != null and indication != ''">
+                indication = #{indication, jdbcType=VARCHAR},
+            </if>
+            <if test="treatmentPlan != null and treatmentPlan != ''">
+                treatment_plan = #{treatmentPlan, jdbcType=VARCHAR},
+            </if>
+            <if test="screeningStandard != null and screeningStandard != ''">
+                screening_standard = #{screeningStandard, jdbcType=VARCHAR},
+            </if>
+            <if test="entryCriteria != null and entryCriteria != ''">
+                entry_criteria = #{entryCriteria, jdbcType=VARCHAR},
+            </if>
+            <if test="patientRights != null and patientRights != ''">
+                patient_rights = #{patientRights, jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null ">
+              start_time = #{startTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null ">
+                stop_time = #{stopTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null ">
+                status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+            </if>
+            <if test="updatedBy != null and updatedBy != ''">
+                updated_by = #{updatedBy, jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null ">
+                updated_time = #{updatedTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+        </where>
+    </update>
+</mapper>

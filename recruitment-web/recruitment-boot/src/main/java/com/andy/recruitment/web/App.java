@@ -9,8 +9,11 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +33,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableLog
 @EnableExecutor
 @EnableDataSource(mapperBasePackage = "com.andy.recruitment.*.mapper")
-public class App extends WebMvcConfigurerAdapter {
+public class App extends SpringBootServletInitializer {
+
 
     @Bean
     public RecruitmentSystemInfo recruitmentSystemInfo() {
@@ -49,15 +53,20 @@ public class App extends WebMvcConfigurerAdapter {
 
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
-        return new JettyEmbeddedServletContainerFactory();
+        return new TomcatEmbeddedServletContainerFactory();
     }
 
 
+//    @Override
+//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+//        super.addArgumentResolvers(argumentResolvers);
+//        MyHandlerMethodArgumentResolver argumentResolver = new MyHandlerMethodArgumentResolver();
+//        argumentResolvers.add(argumentResolver);
+//    }
+
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        super.addArgumentResolvers(argumentResolvers);
-        MyHandlerMethodArgumentResolver argumentResolver = new MyHandlerMethodArgumentResolver();
-        argumentResolvers.add(argumentResolver);
+    public SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(App.class);
     }
 
     public static void main(String... args) {
