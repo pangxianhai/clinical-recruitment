@@ -6,80 +6,126 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
-    <title>添加招募信息-临床实验招募平台</title>
+    <title>添加招募信息</title>
     <link rel="stylesheet" href="/static/css/element.css">
     <style>
-        .recruitment-add-panel .add-item {
-            height: 3em;
+        body {
+            margin: 0;
         }
 
-        .recruitment-add-panel .add-item .title {
-            text-align: right;
-            width: 5em;
-            display: block;
+        .el-header {
+            padding: 0;
+            background: #3FB83C;
+            color: #FFF;
+            height: 4em !important;
+            line-height: 4em;
+            font-size: 15px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .el-header .title {
+            width: 100%;
+            text-align: center;
             float: left;
-            margin-right: 1em;
         }
 
-        .recruitment-add-panel .add-item input {
-            height: 1.8em;
-            width: 17em;
-            border: 1px solid #ccc;
-            padding-left: 0.2em;
+        .el-main {
+            padding: 5em 5px 0 5px;
+        }
+
+        .submit-item {
+            text-align: center;
+        }
+
+        .header-left {
+            float: left;
+            line-height: 4em;
+            position: fixed;
+            padding-left: 8px;
         }
     </style>
 </head>
 <body>
-<div id="recruitment_add" class="recruitment-add-panel">
-    <div class="add-item">
-        <span class="title">标题:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">登记编号:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">实验分期:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">适应症状:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">药物名称:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">药物类型:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">招募人数:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">简介:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">初筛要点:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">入排标准:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">研究中心:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">患者权益:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">截至时间:</span><input type="text"/>
-    </div>
-    <div class="add-item">
-        <span class="title">截至时间:</span><input type="text"/>
-    </div>
+<div id="recruitment_add">
+    <el-container>
+        <el-header>
+            <i class="el-icon-arrow-left header-left"></i>
+            <span class="title">添加招募信息</span>
+        </el-header>
+        <el-main>
+            <el-form>
+                <el-form-item>
+                    <el-input placeholder="标题"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="登记编号"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="实验分期"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="适应症状"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="药物名称"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="药物类型"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="招募人数"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="简介"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="初筛要点"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="入排标准"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="研究中心"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="患者权益"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-date-picker style="width: 100%" :editable="false"
+                                    v-model="value1"
+                                    type="date"
+                                    placeholder="启始时间">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-date-picker style="width: 100%" :editable="false"
+                                    v-model="value1"
+                                    type="date"
+                                    placeholder="截至时间">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item class="submit-item">
+                    <el-button type="primary">提交</el-button>
+                    <el-button>取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-main>
+    </el-container>
 </div>
 </body>
 <script src="/static/js/vue.js"></script>
 <script src="/static/js/element.js"></script>
 <script>
   new Vue({
-    el: '#recruitment_add'
+    el: '#recruitment_add',
+    data: function () {
+      return {
+        "value1": ''
+      }
+    }
   })
 </script>
 </html>
