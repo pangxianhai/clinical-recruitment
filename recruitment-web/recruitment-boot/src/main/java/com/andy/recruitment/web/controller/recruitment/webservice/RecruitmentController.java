@@ -1,10 +1,10 @@
-package com.andy.recruitment.web.controller.recruitment;
+package com.andy.recruitment.web.controller.recruitment.webservice;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 招募信息
+ * 招募信息controller
  *
  * @author 庞先海 2019-01-02
  */
