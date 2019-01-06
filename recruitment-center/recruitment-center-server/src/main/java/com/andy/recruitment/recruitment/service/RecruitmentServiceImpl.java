@@ -8,13 +8,13 @@ import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentInfoDO;
 import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
 import com.andy.recruitment.recruitment.util.RecruitmentUtil;
-import com.xgimi.util.PageUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.mybatis.paginator.Page;
+import com.xgimi.util.PageUtil;
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     public void addRecruitmentInfo(RecruitmentInfo recruitmentInfo, String operator) {
         RecruitmentInfoDO recruitmentInfoDO = RecruitmentUtil.transformRecruitmentInfoDO(recruitmentInfo);
-        recruitmentInfoDO.setStatus(RecruitmentStatus.IN_PROCESS);
+        recruitmentInfoDO.setStatus(RecruitmentStatus.NOT_BEGIN);
         recruitmentInfoDO.setCreatedBy(operator);
         recruitmentInfoDO.setCreatedTime(new Timestamp(DateUtil.currentMilliseconds()));
         int count = this.recruitmentMapper.insert(recruitmentInfoDO);
