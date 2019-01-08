@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.andy.recruitment.researchcenter.mapper.ResearchCenterMapper">
+    <resultMap id="baseResultMap" type="com.andy.recruitment.researchcenter.model.ResearchCenterDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="recruitment_id" property="recruitmentId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="province_id" property="provinceId" jdbcType="BIGINT"/>
+        <result column="city_id" property="cityId" jdbcType="BIGINT"/>
+        <result column="district_id" property="districtId" jdbcType="BIGINT"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="baseColumnList">
+        id,recruitment_id,name,province_id,city_id,district_id,
+        created_by,created_time,updated_by,updated_time
+    </sql>
+
+    <select id="select" resultMap="baseResultMap"
+      parameterType="com.andy.recruitment.researchcenter.model.ResearchCenterQueryParam">
+        select
+        <include refid="baseColumnList"/>
+        from research_center_info
+        <where>
+            <if test="recruitmentId != null">
+                and recruitment_id = #{recruitmentId, jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+      parameterType="com.andy.recruitment.researchcenter.model.ResearchCenterDO">
+        insert into research_center_info (<include refid="baseColumnList"/>)
+        values(
+        #{id,jdbcType=BIGINT},
+        #{recruitmentId, jdbcType=BIGINT},
+        #{name, jdbcType=BIGINT},
+        #{provinceId, jdbcType=BIGINT},
+        #{cityId, jdbcType=BIGINT},
+        #{districtId, jdbcType=BIGINT},
+        #{createdBy, jdbcType=VARCHAR},
+        #{createdTime, jdbcType=TIMESTAMP},
+        #{updatedBy, jdbcType=VARCHAR},
+        #{updatedTime, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.andy.recruitment.researchcenter.model.ResearchCenterDO">
+        update research_center_info
+        <set>
+            <if test="recruitmentId != null">
+                recruitment_id = #{recruitmentId, jdbcType=BIGINT},
+            </if>
+          <if test="provinceId != null">
+                province_id = #{provinceId, jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId, jdbcType=BIGINT},
+            </if>
+            <if test="districtId != null">
+                district_id = #{districtId, jdbcType=BIGINT},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="updatedBy != null and updatedBy != ''">
+                updated_by = #{updatedBy, jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null ">
+                updated_time = #{updatedTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from research_center_info where id = #{centerId,jdbcType=BIGINT}
+    </delete>
+</mapper>

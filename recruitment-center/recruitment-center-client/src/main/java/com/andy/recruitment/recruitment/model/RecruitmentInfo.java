@@ -1,9 +1,11 @@
 package com.andy.recruitment.recruitment.model;
 
 import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.xgimi.commons.util.JsonUtil;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 招募信息
@@ -61,10 +63,6 @@ public class RecruitmentInfo implements Serializable {
      */
     private String entryCriteria;
     /**
-     * 研究中心
-     */
-    private String researchCenter;
-    /**
      * 患者权益
      */
     private String patientRights;
@@ -80,6 +78,10 @@ public class RecruitmentInfo implements Serializable {
      * 招募状态
      */
     private RecruitmentStatus status;
+    /**
+     * 研究中心列表
+     */
+    List<ResearchCenterInfo> researchCenterInfoList;
 
     public Long getRecruitmentId() {
         return recruitmentId;
@@ -177,14 +179,6 @@ public class RecruitmentInfo implements Serializable {
         this.entryCriteria = entryCriteria;
     }
 
-    public String getResearchCenter() {
-        return researchCenter;
-    }
-
-    public void setResearchCenter(String researchCenter) {
-        this.researchCenter = researchCenter;
-    }
-
     public String getPatientRights() {
         return patientRights;
     }
@@ -215,6 +209,14 @@ public class RecruitmentInfo implements Serializable {
 
     public void setStatus(RecruitmentStatus status) {
         this.status = status;
+    }
+
+    public List<ResearchCenterInfo> getResearchCenterInfoList() {
+        return researchCenterInfoList;
+    }
+
+    public void setResearchCenterInfoList(List<ResearchCenterInfo> researchCenterInfoList) {
+        this.researchCenterInfoList = researchCenterInfoList;
     }
 
     @Override

@@ -15,7 +15,6 @@
         <result column="treatment_plan" property="treatmentPlan" jdbcType="VARCHAR"/>
         <result column="screening_standard" property="screeningStandard" jdbcType="VARCHAR"/>
         <result column="entry_criteria" property="entryCriteria" jdbcType="VARCHAR"/>
-        <result column="research_center" property="researchCenter" jdbcType="VARCHAR"/>
         <result column="patient_rights" property="patientRights" jdbcType="VARCHAR"/>
         <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
         <result column="stop_time" property="stopTime" jdbcType="TIMESTAMP"/>
@@ -28,7 +27,7 @@
     </resultMap>
     <sql id="baseColumnList">
         id,register_code,title,practice_stages,indication,drug_name,drug_type,recruitment_number,
-        introduction,treatment_plan,screening_standard,entry_criteria,research_center,patient_rights,
+        introduction,treatment_plan,screening_standard,entry_criteria,patient_rights,
         start_time,stop_time,
         status,created_by,created_time,updated_by,updated_time
     </sql>
@@ -88,7 +87,6 @@
         #{treatmentPlan, jdbcType=VARCHAR},
         #{screeningStandard, jdbcType=VARCHAR},
         #{entryCriteria, jdbcType=VARCHAR},
-        #{researchCenter, jdbcType=VARCHAR},
         #{patientRights, jdbcType=VARCHAR},
         #{startTime, jdbcType=TIMESTAMP},
         #{stopTime, jdbcType=TIMESTAMP},

@@ -67,7 +67,6 @@ create table medical_clinical_recruitment_info(
   treatment_plan TEXT COMMENT '治疗方案',
   screening_standard TEXT COMMENT '初筛要点',
   entry_criteria TEXT COMMENT '入排标准',
-  research_center TEXT COMMENT '研究中心',
   patient_rights TEXT COMMENT '患者权益',
   start_time datetime NOT NULL COMMENT '启始时间',
   stop_time datetime NOT NULL COMMENT '截至时间',
@@ -78,6 +77,21 @@ create table medical_clinical_recruitment_info(
   updated_time datetime COMMENT '更新时间',
   PRIMARY KEY (id)
 )ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='临床医学招募消息';
+
+drop table if exists research_center_info;
+create table research_center_info(
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  recruitment_id bigint(20) NOT NULL COMMENT '招募ID',
+  name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '研究中心名字',
+  province_id bigint(20) NOT NULL COMMENT '省ID',
+  city_id bigint(20) NOT NULL COMMENT '市ID',
+  district_id bigint(20) COMMENT '区ID',
+  created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
+  created_time datetime NOT NULL COMMENT '创建时间',
+  updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
+  updated_time datetime COMMENT '更新时间',
+  PRIMARY KEY (id)
+)ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='研究中心信息';
 
 drop table if exists medical_clinical_recruitment_application;
 create table medical_clinical_recruitment_info(

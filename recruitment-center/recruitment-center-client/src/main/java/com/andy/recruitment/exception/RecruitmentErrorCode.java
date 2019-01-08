@@ -5,10 +5,12 @@ package com.andy.recruitment.exception;
  *
  * @author 庞先海 2018-12-27
  */
-public enum RecruitmentErrorCode {/**
- * 过多查询结果
- */
-TOO_MANY_RESULT(101000),
+public enum RecruitmentErrorCode {
+
+    /**
+     * 过多查询结果
+     */
+    TOO_MANY_RESULT(101000),
 
     /**
      * 添加医生失败
@@ -61,6 +63,23 @@ TOO_MANY_RESULT(101000),
      * 招募信息ID为空
      */
     RECRUITMENT_ID_EMPTY(101402),
+
+    /**
+     * 研究中心添加失败
+     */
+    RESEARCH_CENTER_ADD_FAILED(101500),
+    /**
+     * 研究中心更新失败
+     */
+    RESEARCH_CENTER_UPDATE_FAILED(101501),
+    /**
+     * 研究中心ID为空
+     */
+    RESEARCH_CENTER_ID_EMPTY(101502),
+    /**
+     * 研究中心删除失败
+     */
+    RESEARCH_CENTER_DELETE_FAILED(101503),
 
     ;
 
