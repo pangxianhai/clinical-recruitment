@@ -94,7 +94,7 @@ create table research_center_info(
 )ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='研究中心信息';
 
 drop table if exists medical_clinical_recruitment_application;
-create table medical_clinical_recruitment_info(
+create table medical_clinical_recruitment_application(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   recruitment_id bigint(20) NOT NULL COMMENT '招募ID',
   recruitment_register_code varchar(32) NOT NULL COLLATE utf8_bin COMMENT '登记编号',
