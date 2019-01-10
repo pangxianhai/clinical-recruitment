@@ -11,7 +11,7 @@ public class RecruitmentStatus extends BaseType {
 
     public static final RecruitmentStatus NOT_BEGIN = new RecruitmentStatus(0, "未招募");
 
-    public static final RecruitmentStatus IN_PROCESS = new RecruitmentStatus(1, "经行中");
+    public static final RecruitmentStatus IN_PROCESS = new RecruitmentStatus(1, "进行中");
 
     public static final RecruitmentStatus FINISHED = new RecruitmentStatus(2, "已完成");
 

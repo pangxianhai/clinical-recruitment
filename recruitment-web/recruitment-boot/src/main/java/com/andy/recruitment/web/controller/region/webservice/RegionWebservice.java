@@ -1,4 +1,4 @@
-package com.andy.recruitment.web.controller.region;
+package com.andy.recruitment.web.controller.region.webservice;
 
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.region.model.Region;
