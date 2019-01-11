@@ -42,17 +42,40 @@
                 <groupId>com.xgimi.ird</groupId>
                 <artifactId>xgimi-spring</artifactId>
                 <version>${xgimi-spring.version}</version>
-                 <exclusions>
+                <exclusions>
                     <exclusion>
-                       <groupId>mysql</groupId>
-                       <artifactId>mysql-connector-java</artifactId>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
                     </exclusion>
-                 </exclusions>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yunpian.sdk</groupId>
+                <artifactId>yunpian-java-sdk</artifactId>
+                <version>1.2.7</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.google.code.gson</groupId>
+                        <artifactId>gson</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpcore</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>
