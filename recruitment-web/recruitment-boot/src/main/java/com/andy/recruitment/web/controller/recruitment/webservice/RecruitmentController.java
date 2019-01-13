@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 招募信息controller
@@ -49,7 +50,7 @@ public class RecruitmentController {
         return "recruitment/add";
     }
 
-    @RequestMapping("/detail/{recruitmentId:\\d+}")
+    @RequestMapping(value = "/detail/{recruitmentId:\\d+}", method = RequestMethod.GET)
     public String recruitmentDetail(@PathVariable Long recruitmentId, Map<String, Object> model) {
         RecruitmentInfo recruitmentInfo = recruitmentAO.getRecruitmentInfoById(recruitmentId);
         RecruitmentVO recruitmentVO = RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
@@ -57,7 +58,7 @@ public class RecruitmentController {
         return "recruitment/detail";
     }
 
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String recruitmentList(Map<String, Object> model) {
         RecruitmentQueryParam queryParam = new RecruitmentQueryParam();
         PageResult<RecruitmentInfo> pageResult = recruitmentAO.getRecruitmentInfo(queryParam, new Paginator(1, 5));

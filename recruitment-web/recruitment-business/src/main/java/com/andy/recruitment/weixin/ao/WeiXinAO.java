@@ -30,4 +30,11 @@ public interface WeiXinAO {
      * @return 签名结果
      */
     WeiXinSign buildSignature(String url);
+
+    /**
+     * 获取微信登陆url
+     * @param redirectUri 回掉地址
+     * @return 微信登陆url
+     */
+    String getWeiXinLoginUrl(String redirectUri);
 }

@@ -1,11 +1,15 @@
 package com.andy.recruitment.weixin.service;
 
 import com.andy.recruitment.weixin.model.AccessToken;
+import com.andy.recruitment.weixin.model.OauthToken;
+import com.andy.recruitment.weixin.model.WxUserInfo;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.HttpClientUtil;
 import com.xgimi.commons.util.JsonUtil;
+import com.xgimi.commons.util.encrypt.EncodeUtil;
 import com.xgimi.logger.log4j.Logger;
 import com.xgimi.logger.log4j.MyLogger;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
@@ -37,11 +41,20 @@ public class WeiXinServiceImpl implements WeiXinService {
     @Value("${weixin.api.address}")
     private String wxApiAddress;
 
+    @Value("${weixin.open.address}")
+    private String wxOpenAddress;
+
     private final static ConcurrentMap<String, Future<AccessToken>> accessTokenCache = new ConcurrentHashMap<>();
 
     @Override
     public String getWeiXinAppId() {
         return this.wxAppId;
+    }
+
+    @Override
+    public String getWeiXinLoginUrl(String redirectUri) {
+        String formatStr = "/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        return wxApiAddress + MessageFormat.format(formatStr, wxAppId, EncodeUtil.urlEncode(redirectUri));
     }
 
     @Override
@@ -124,4 +137,27 @@ public class WeiXinServiceImpl implements WeiXinService {
             }
         }
     }
+
+    @Override
+    public OauthToken getOauthAccessToken(String code) {
+        String url = this.wxApiAddress + "/sns/oauth2/access_token";
+        Map<String, Object> params = new HashMap<>();
+        params.put("appid", wxAppId);
+        params.put("secret", wxAppSecret);
+        params.put("code", code);
+        params.put("grant_type", "authorization_code");
+        String oauthResultStr = HttpClientUtil.sendGet(url, params);
+        return JsonUtil.fromJson(oauthResultStr, OauthToken.class);
+    }
+
+    public WxUserInfo getWxUserInfo(String accessToken, String openId) {
+        String url = this.wxApiAddress + "/sns/userinfo";
+        Map<String, Object> params = new HashMap<>();
+        params.put("access_token", accessToken);
+        params.put("openid", openId);
+        params.put("lang", "zh_CN");
+        String wxUserInfoStr = HttpClientUtil.sendGet(url, params);
+        return JsonUtil.fromJson(wxUserInfoStr, WxUserInfo.class);
+    }
+
 }

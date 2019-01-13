@@ -63,4 +63,9 @@ public class WeiXinAOImpl implements WeiXinAO {
 
         return weiXinSign;
     }
+
+    @Override
+    public String getWeiXinLoginUrl(String redirectUri) {
+        return this.weiXinService.getWeiXinLoginUrl(redirectUri);
+    }
 }
