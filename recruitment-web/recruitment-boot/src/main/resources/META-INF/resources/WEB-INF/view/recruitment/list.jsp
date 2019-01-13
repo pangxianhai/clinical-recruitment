@@ -39,7 +39,7 @@
             min-width: auto !important;
         }
 
-        .search-input .el-input__inner{
+        .search-input .el-input__inner {
             background: rgba(223, 245, 226, 0.97);
         }
 
@@ -154,7 +154,12 @@
         </el-main>
     </el-container>
 </div>
+<div id="allmap"></div>
 </body>
+<script src="https://api.map.baidu.com/api?ak=IQWxjhbBiio0yltrj9juI5kcg34jW9jG&v=2.0"></script>
+<script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<%--<script type="text/javascript"--%>
+<%--src="https://webapi.amap.com/maps?v=1.4.12&key=cfeead9d2944d166e06f5da540b70e22"></script>--%>
 <script src="/static/js/lib/vue.js"></script>
 <script src="/static/js/lib/element.js"></script>
 <script src="/static/js/lib/axios.min.js"></script>
@@ -168,14 +173,52 @@
         indicationOptions: ${indicationOptions},
         recruitmentList:${recruitmentInfoList},
         searchForm: {
-          regionOptions: ['', '青羊区'],
+          regionOptions: ["26", "334"],
           indication: ''
         }
       }
     },
+    created: function () {
+      this.wexinInit();
+      this.initAfterWeixin();
+    },
     methods: {
       searchAction: function () {
         console.log(this.searchForm);
+      },
+      wexinInit: function () {
+        this.ajax.get('/weixin/sign', {
+          params: {
+            address: window.location.href.split("#")[0]
+          }
+        }).then((data) => {
+          wx.config({
+            debug: false,
+            appId: data.appId,
+            timestamp: data.timestamp,
+            nonceStr: data.noncestr,
+            signature: data.signature,
+            jsApiList: ['getLocation']
+          });
+        });
+      },
+      initAfterWeixin: function () {
+        wx.ready(() => {
+          wx.getLocation({
+            type: 'wgs84',
+            success: (res) => {
+              this.ajax("/region/lanlat", {
+                params: {
+                  lan: res.latitude,
+                  lat: res.longitude
+                }
+              }).then((region) => {
+                this.searchForm.regionOptions = [region.parentId + "", region.regionId + ""];
+                console.log(region);
+              });
+            }
+          });
+        });
       }
     }
   })

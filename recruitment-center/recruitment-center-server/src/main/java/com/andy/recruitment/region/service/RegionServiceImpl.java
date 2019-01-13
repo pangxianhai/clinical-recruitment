@@ -1,15 +1,18 @@
 package com.andy.recruitment.region.service;
 
-import com.andy.recruitment.exception.RecruitmentErrorCode;
-import com.andy.recruitment.exception.RecruitmentException;
 import com.andy.recruitment.region.mapper.RegionMapper;
 import com.andy.recruitment.region.model.Region;
 import com.andy.recruitment.region.model.RegionDO;
 import com.andy.recruitment.region.util.RegionUtil;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.StringUtil;
-import com.xgimi.commons.util.asserts.AssertUtil;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +24,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegionServiceImpl implements RegionService {
 
+    private final static ConcurrentMap<Long, Future<Region>> regionCacheId = new ConcurrentHashMap<>();
+
+    private final static ConcurrentMap<Long, Future<List<Region>>> parentCache = new ConcurrentHashMap<>();
+
     private final RegionMapper regionMapper;
+
 
     @Autowired
     public RegionServiceImpl(RegionMapper regionMapper) {
@@ -33,31 +41,61 @@ public class RegionServiceImpl implements RegionService {
         if (null == regionId) {
             return null;
         }
-        RegionDO regionDO = new RegionDO();
-        regionDO.setId(regionId);
-        List<RegionDO> regionDOList = this.regionMapper.select(regionDO);
-        if (CollectionUtil.isEmpty(regionDOList)) {
-            return null;
+        while (true) {
+            Future<Region> cacheRegionFuture = regionCacheId.get(regionId);
+            if (null == cacheRegionFuture) {
+                FutureTask<Region> ft = new FutureTask<>(() -> {
+                    RegionDO regionDO = new RegionDO();
+                    regionDO.setId(regionId);
+                    List<RegionDO> regionDOList = this.regionMapper.select(regionDO);
+                    return CollectionUtil.parseOne(regionDOList, RegionUtil::transformRegion);
+                });
+                cacheRegionFuture = regionCacheId.putIfAbsent(regionId, ft);
+                if (null == cacheRegionFuture) {
+                    cacheRegionFuture = ft;
+                    ft.run();
+                }
+            }
+            try {
+                return cacheRegionFuture.get();
+            } catch (CancellationException e) {
+                regionCacheId.remove(regionId, cacheRegionFuture);
+            } catch (ExecutionException | InterruptedException e) {
+                return null;
+            }
         }
-        AssertUtil.assertBoolean(regionDOList.size() == 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return RegionUtil.transformRegion(regionDOList.get(0));
     }
 
     @Override
     public List<Region> getRegionByParentId(Long parentId) {
-        if (parentId == null) {
-            //默认获取中国下所有的省
-            parentId = CHINA_REGION_ID;
+
+        while (true) {
+            Future<List<Region>> cacheParentFuture = parentCache.get(parentId);
+            if (null == cacheParentFuture) {
+                FutureTask<List<Region>> ft = new FutureTask<>(() -> {
+                    RegionDO regionDO = new RegionDO();
+                    regionDO.setParentId(parentId);
+                    List<RegionDO> regionDOList = this.regionMapper.select(regionDO);
+                    if (CollectionUtil.isEmpty(regionDOList)) {
+                        return null;
+                    }
+                    return RegionUtil.transformRegion(regionDOList);
+
+                });
+                cacheParentFuture = parentCache.putIfAbsent(parentId, ft);
+                if (null == cacheParentFuture) {
+                    cacheParentFuture = ft;
+                    ft.run();
+                }
+            }
+            try {
+                return cacheParentFuture.get();
+            } catch (CancellationException e) {
+                parentCache.remove(parentId, cacheParentFuture);
+            } catch (ExecutionException | InterruptedException e) {
+                return null;
+            }
         }
-        RegionDO regionDO = new RegionDO();
-        regionDO.setParentId(parentId);
-        List<RegionDO> regionDOList = this.regionMapper.select(regionDO);
-        if (CollectionUtil.isEmpty(regionDOList)) {
-            return null;
-        }
-        return RegionUtil.transformRegion(regionDOList);
     }
 
     @Override
@@ -65,16 +103,17 @@ public class RegionServiceImpl implements RegionService {
         if (null == parentId || StringUtil.isEmpty(regionName)) {
             return null;
         }
-        RegionDO regionDO = new RegionDO();
-        regionDO.setParentId(parentId);
-        regionDO.setRegionName(regionName);
-        List<RegionDO> regionDOList = this.regionMapper.select(regionDO);
-        if (CollectionUtil.isEmpty(regionDOList)) {
+        regionName = regionName.replace("省", "").replace("市", "");
+        List<Region> regionList = this.getRegionByParentId(parentId);
+        if (CollectionUtil.isEmpty(regionList)) {
             return null;
         }
-        AssertUtil.assertBoolean(regionDOList.size() == 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return RegionUtil.transformRegion(regionDOList.get(0));
+        for (Region region : regionList) {
+            if (regionName.equals(region.getRegionName())) {
+                return region;
+            }
+        }
+        return null;
     }
+
 }

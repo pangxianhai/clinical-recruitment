@@ -34,4 +34,13 @@ public interface RegionAO {
      * @return 地区信息
      */
     Region getRegionByParent(Long parentId, String regionName);
+
+    /**
+     * 通过经纬度查询地区信息
+     *
+     * @param lng 经度
+     * @param lat 纬度
+     * @return 地区信息
+     */
+    Region getRegionByLngLat(String lng, String lat);
 }

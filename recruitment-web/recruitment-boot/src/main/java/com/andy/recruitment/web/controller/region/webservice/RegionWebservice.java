@@ -35,4 +35,10 @@ public class RegionWebservice {
         return this.regionAO.getRegionByParentId(null);
     }
 
+    @RequestMapping(value = "/lanlat", method = {RequestMethod.GET})
+    public Region getRegionByLngLat(String lan, String lat) {
+        return regionAO.getRegionByLngLat(lan, lat);
+    }
+
+
 }
