@@ -10,7 +10,7 @@ create table user_info(
   union_id varchar(64)  COLLATE utf8_bin COMMENT '微信唯一ID',
   real_name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '姓名',
   gender TINYINT  NOT NULL COMMENT '性别: 1-男 2-女',
-  user_type TINYINT NOT NULL COMMENT '用户类型 1:管理员，2:医生，3病人',
+  user_type TINYINT COMMENT '用户类型 1:管理员，2:医生，3病人',
   phone varchar(64)  COLLATE utf8_bin COMMENT '联系方式',
   status TINYINT  NOT NULL COMMENT '用户状态 1-正常,2-冻结',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',

@@ -10,14 +10,6 @@ import com.andy.recruitment.user.model.UserInfo;
 public interface UserAO {
 
     /**
-     * 添加用户信息
-     *
-     * @param userInfo 用户信息
-     * @param operator 操作人
-     */
-    void addUserInfo(UserInfo userInfo, String operator);
-
-    /**
      * 更新用户信息
      *
      * @param userInfo 用户信息
@@ -40,4 +32,12 @@ public interface UserAO {
      * @return 用户信息
      */
     UserInfo getUserInfoByOpenId(String openId);
+
+    /**
+     * 微信登陆
+     *
+     * @param code 微信授权code
+     * @return 用户信息
+     */
+    UserInfo loginByWeixin(String code);
 }

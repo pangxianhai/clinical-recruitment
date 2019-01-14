@@ -54,7 +54,7 @@ public class WeiXinServiceImpl implements WeiXinService {
     @Override
     public String getWeiXinLoginUrl(String redirectUri) {
         String formatStr = "/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-        return wxApiAddress + MessageFormat.format(formatStr, wxAppId, EncodeUtil.urlEncode(redirectUri));
+        return wxOpenAddress + MessageFormat.format(formatStr, wxAppId, EncodeUtil.urlEncode(redirectUri));
     }
 
     @Override
@@ -150,6 +150,7 @@ public class WeiXinServiceImpl implements WeiXinService {
         return JsonUtil.fromJson(oauthResultStr, OauthToken.class);
     }
 
+    @Override
     public WxUserInfo getWxUserInfo(String accessToken, String openId) {
         String url = this.wxApiAddress + "/sns/userinfo";
         Map<String, Object> params = new HashMap<>();

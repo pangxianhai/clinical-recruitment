@@ -14,8 +14,9 @@ public interface UserInfoService {
      *
      * @param userInfo 用户信息
      * @param operator 操作人
+     * @return 用户ID
      */
-    void addUserInfo(UserInfo userInfo, String operator);
+    Long addUserInfo(UserInfo userInfo, String operator);
 
     /**
      * 更新用户信息

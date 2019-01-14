@@ -32,7 +32,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void addUserInfo(UserInfo userInfo, String operator) {
+    public Long addUserInfo(UserInfo userInfo, String operator) {
         UserInfoDO userInfoDO = UserUtil.transformUserInfoDO(userInfo);
         userInfoDO.setStatus(UserStatus.NORMAL);
         userInfoDO.setCreatedBy(operator);
@@ -41,6 +41,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         AssertUtil.assertBoolean(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.USER_ADD_FAILED);
         });
+        return userInfoDO.getId();
     }
 
     @Override
