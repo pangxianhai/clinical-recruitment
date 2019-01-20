@@ -1,29 +1,69 @@
-let ajax = axios.create({
-  timeout: 180000,
-  withCredentials: true
-});
+const Cookie = function () {
+};
 
-ajax.interceptors.request.use((config) => {
-  Object.assign(config.headers, {
-    token: 'aaaaaaaa'
-  });
-  return config;
-});
-
-ajax.interceptors.response.use(({data}) => {
-  if (!data.ret && data.code === 302004) {
-    console.log("未登陆");
+Cookie.prototype = {
+  constructor: Cookie,
+  getCookie: function (name) {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = document.cookie.match(reg)) {
+      return (arr[2]);
+    } else {
+      return null;
+    }
   }
-  if (data.ret) {
-    return data.data;
-  } else if (typeof data.message === 'string' && data.message.length > 0) {
-    let vue = new Vue({});
-    vue.$message({
-      showClose: true,
-      message: data.message,
-      type: 'error'
+};
+const CookieUtil = new Cookie();
+
+const Ajax = {
+  post: function (url, params, success) {
+    $.ajax({
+      url: url,
+      type: 'post',
+      dataType: "json",
+      contentType: "application/json;charset=utf-8",
+      data: JSON.stringify(params),
+      headers: {
+        token: CookieUtil.getCookie("userId")
+      },
+      success: function (result) {
+        if (result.ret) {
+          success(result.data);
+        } else {
+          $.alert(result.message);
+        }
+      }
     });
   }
-});
+}
 
-Vue.prototype.ajax = ajax;
+// let ajax = axios.create({
+//   timeout: 180000,
+//   withCredentials: true
+// });
+//
+// ajax.interceptors.request.use((config) => {
+//   Object.assign(config.headers, {
+//     token: CookieUtil.getCookie("userId")
+//   });
+//   return config;
+// });
+//
+// ajax.interceptors.response.use(({data}) => {
+//   if (!data.ret && data.code === 102002) {
+//     console.log("未登陆");
+//     window.location.href = '/user/login?redirectURL=' + encodeURIComponent(
+//         window.location.href);
+//   }
+//   if (data.ret) {
+//     return data.data;
+//   } else if (typeof data.message === 'string' && data.message.length > 0) {
+//     let vue = new Vue({});
+//     vue.$message({
+//       showClose: true,
+//       message: data.message,
+//       type: 'error'
+//     });
+//   }
+// });
+//
+// Vue.prototype.ajax = ajax;

@@ -1,6 +1,7 @@
 package com.andy.recruitment.user.constant;
 
 import com.xgimi.commons.base.BaseType;
+import java.util.List;
 
 /**
  * 用户类型
@@ -17,5 +18,13 @@ public class UserType extends BaseType {
 
     public UserType(int code, String desc) {
         super(code, desc);
+    }
+
+    public static List<UserType> getValues() {
+        return BaseType.getValues(UserType.class);
+    }
+
+    public static UserType parse(Integer code) {
+        return BaseType.parse(UserType.getValues(), code);
     }
 }

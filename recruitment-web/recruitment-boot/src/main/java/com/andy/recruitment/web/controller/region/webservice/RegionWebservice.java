@@ -25,17 +25,17 @@ public class RegionWebservice {
         this.regionAO = regionAO;
     }
 
-    @RequestMapping(value = "/parent/{regionId:\\d+}", method = {RequestMethod.GET})
+    @RequestMapping(value = "/parent/{regionId:\\d+}.json", method = {RequestMethod.GET})
     public List<Region> getRegionByParentId(@PathVariable Long regionId) {
         return this.regionAO.getRegionByParentId(regionId);
     }
 
-    @RequestMapping(value = "/parent", method = {RequestMethod.GET})
+    @RequestMapping(value = "/parent.json", method = {RequestMethod.GET})
     public List<Region> getRegionByParentId() {
         return this.regionAO.getRegionByParentId(null);
     }
 
-    @RequestMapping(value = "/lanlat", method = {RequestMethod.GET})
+    @RequestMapping(value = "/lanlat.json", method = {RequestMethod.GET})
     public Region getRegionByLngLat(String lan, String lat) {
         return regionAO.getRegionByLngLat(lan, lat);
     }

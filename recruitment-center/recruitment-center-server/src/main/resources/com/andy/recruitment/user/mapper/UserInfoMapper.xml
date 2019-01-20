@@ -10,6 +10,8 @@
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="gender" property="gender"
           typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
+        <result column="user_type" property="userType"
+          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
         <result column="status" property="status"
           typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
@@ -18,7 +20,7 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="baseColumnList">
-        id,open_id,union_id,real_name,phone,gender,status,
+        id,open_id,union_id,real_name,phone,gender,user_type,status,
         created_by,created_time,updated_by,updated_time
     </sql>
 
@@ -43,7 +45,10 @@
             <if test="phone != null and phone != ''">
                 and phone like CONCAT('%', #{phone,jdbcType=VARCHAR},'%')
             </if>
-            <if test="gender != null">
+            <if test="userType != null">
+                and user_type = #{userType,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+            </if>
+             <if test="gender != null">
                 and gender = #{gender,typeHandler=com.xgimi.base.MyBaseTypeHandler}
             </if>
             <if test="status != null">
@@ -62,6 +67,7 @@
         #{realName, jdbcType=VARCHAR},
         #{phone, jdbcType=VARCHAR},
         #{gender,typeHandler=com.xgimi.base.MyBaseTypeHandler},
+        #{userType,typeHandler=com.xgimi.base.MyBaseTypeHandler},
         #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
@@ -90,6 +96,9 @@
             </if>
             <if test="status != null ">
                 status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+            </if>
+          <if test="userType != null ">
+              user_type = #{userType, typeHandler=com.xgimi.base.MyBaseTypeHandler},
             </if>
         </set>
         <where>

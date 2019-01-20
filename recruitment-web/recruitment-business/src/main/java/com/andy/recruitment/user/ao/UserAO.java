@@ -1,5 +1,6 @@
 package com.andy.recruitment.user.ao;
 
+import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
 
 /**
@@ -8,14 +9,6 @@ import com.andy.recruitment.user.model.UserInfo;
  * @author 庞先海 2018-12-28
  */
 public interface UserAO {
-
-    /**
-     * 更新用户信息
-     *
-     * @param userInfo 用户信息
-     * @param operator 操作人
-     */
-    void updateUserInfo(UserInfo userInfo, String operator);
 
     /**
      * 通过用户ID查询用户信息
@@ -40,4 +33,21 @@ public interface UserAO {
      * @return 用户信息
      */
     UserInfo loginByWeixin(String code);
+
+    /**
+     * 发送验证码短信
+     *
+     * @param phone 手机号
+     */
+    void sendLoginVerCode(String phone);
+
+    /**
+     * 用户绑定手机号
+     *
+     * @param phone    手机号
+     * @param userId   用户ID
+     * @param userType 用户类型
+     * @param verCode  验证码
+     */
+    void bandPhone(Long userId, String phone, String verCode, UserType userType);
 }

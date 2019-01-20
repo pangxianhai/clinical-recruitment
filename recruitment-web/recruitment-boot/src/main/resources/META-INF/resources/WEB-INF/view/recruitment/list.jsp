@@ -1,226 +1,142 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
-    <title>任务列表</title>
-    <link rel="stylesheet" href="/static/css/element.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/static/css/lib/sm.min.css">
     <style>
-        body {
-            margin: 0;
-            background-color: #FFF;
+        .recruitmentInfo-card {
+            padding-bottom: 0.5em;
         }
 
-        ul, li {
-            padding: 0;
-            margin: 0;
-            list-style: none
-        }
-
-        a {
-            text-decoration: none;
-            color: #333;
-        }
-
-        .el-container {
-            background: rgba(223, 245, 226, 0.97);
-        }
-
-        .el-main {
-            padding: 1em 1em 0 1em;
-            background: #FFF;
-        }
-
-        .el-message {
-            width: 98%;
-            min-width: auto !important;
-        }
-
-        .search-input .el-input__inner {
-            background: rgba(223, 245, 226, 0.97);
-        }
-
-        .search {
-            padding-top: 1em;
-            border-bottom: solid 1px #ccc;
-        }
-
-        .search .el-input {
-            width: 7em;
-        }
-
-        .el-form-item {
-            margin-bottom: 1em;
-        }
-
-        .recruitment-panel {
-            padding: 0.5em 0 0.5em 0;
-            border-bottom: solid 1px #ccc;
-            line-height: 1.4em;
-        }
-
-        .recruitment-panel .title {
-            font-weight: bold;
-            margin-bottom: 1em;
+        .recruitmentInfo-card .card-header {
             font-size: 14px;
+            font-weight: bold;
         }
 
-        .recruitment-panel .label {
-            color: #888;
+        .recruitmentInfo-card .card-content {
             font-size: 12px;
-            display: inline-block;
-            height: 1.2em;
-            overflow: hidden;
         }
 
-        .recruitment-panel .value {
-            color: #333;
-            padding-right: 1em;
-            font-size: 13px;
-            display: inline-block;
-            height: 1.2em;
-            overflow: hidden;
+        .recruitmentInfo-card .card-content .content-padded {
+            margin: 0.5em 0 0.5em 0.5em;
         }
 
-        .recruitment-panel .label-right {
-            float: right;
-            padding-right: 0.5em;
+        .recruitmentInfo-card .card-content .row {
+            margin-left: 0;
         }
 
-        .recruitment-panel .value-right {
-            float: right;
-            padding-right: 0 !important;
+        .recruitmentInfo-card .card-content .col-50 {
+            margin-left: 0;
+        }
+
+        .recruitmentInfo-card .card-content .col-label {
+            color: #aaa;
+            width: 60px;
+        }
+
+        .recruitmentInfo-card .card-content .col-content {
+            margin-left: 0;
+            width: auto;
         }
     </style>
 </head>
 <body>
-<div id="recruitment_list">
-    <el-container>
-        <el-main>
-            <el-input class="search-input"
-                      placeholder="输入招募项目、登记编号、适应症状进行搜索">
-                <i slot="suffix" class="el-input__icon el-icon-search" @click="searchAction"></i>
-            </el-input>
-            <el-form class="search" :inline="true" :model="searchForm">
-                <el-form-item>
-                    <span>智能推荐</span>
-                </el-form-item>
-                <el-form-item>
-                    <el-select v-model="searchForm.indication" @change="searchAction">
-                        <el-option v-for="item in indicationOptions"
-                                   :key="item.value"
-                                   :label="item.label"
-                                   :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-cascader
-                            :options="regionOptions"
-                            :show-all-levels="false"
-                            v-model="searchForm.regionOptions"
-                            @change="searchAction"
-                    ></el-cascader>
-                </el-form-item>
-            </el-form>
-            <div class="recruitment-panel" v-for="recruitment in recruitmentList">
-                <a :href="'/recruitment/detail/'+recruitment.recruitmentId">
-                    <div class="title">{{recruitment.title}}</div>
-                    <div>
-                        <span class="label">登记编号：</span>
-                        <span class="value">{{recruitment.registerCode}}</span>
-                        <span class="value value-right">{{recruitment.practiceStages}}</span>
-                        <span class="label label-right">实验分期：</span>
-
-                    </div>
-                    <div>
-                        <span class="label">药物名称：</span>
-                        <span class="value">{{recruitment.drugName}}</span>
-                    </div>
-                    <div>
-                        <span class="label">招募人数：</span>
-                        <span class="value">{{recruitment.recruitmentNumber}}人</span>
-                        <span class="value value-right">{{recruitment.status.desc}}</span>
-                        <span class="label label-right">招募状态：</span>
-                    </div>
-                    <div>
-                        <span class="label">适应症状：</span>
-                        <span class="value">{{recruitment.indication}}</span>
-                    </div>
+<div class="page-group">
+    <div class="page page-current">
+        <header class="bar bar-nav">
+            <h1 class="title">任务大厅</h1>
+        </header>
+        <div class="content">
+            <div class="searchbar row">
+                <div class="search-input col-85">
+                    <input type="search" id='search' placeholder='输入招募项目、登记编号、适应症状进行搜索'/>
+                </div>
+                <a class="button button-fill button-primary col-15">
+                    <span class="icon icon-search"></span>
                 </a>
             </div>
-        </el-main>
-    </el-container>
+            <div class="content-padded">
+                <div class="row">
+                    <div class="col-33">
+                        <p style="margin: 0">智能推荐</p>
+                    </div>
+                    <div class="col-33">
+                        <input style="width: 100%;font-size: 14px;"
+                               type="text"
+                               value="所有疾病类型"
+                               id='indicationPicker'/>
+                    </div>
+                    <div class="col-33">
+                        <input style="width: 100%;font-size: 14px;"
+                               type="text"
+                               value="所有类型"
+                               id='addressPicker'/>
+                    </div>
+                </div>
+            </div>
+            <c:forEach items="${recruitmentInfoList}" var="recruitmentInfo">
+                <div class="card recruitmentInfo-card">
+                    <div class="card-header">${recruitmentInfo.title}</div>
+                    <div class="card-content">
+                        <div class="content-padded ">
+                            <div class="row">
+                                <div class="col-50">
+                                    <div class="row">
+                                        <div class="col-label">登记编号</div>
+                                        <div class="col-content">${recruitmentInfo.registerCode}</div>
+                                    </div>
+                                </div>
+                                <div class="col-50">
+                                    <div class="row">
+                                        <div class="col-label">实验分期</div>
+                                        <div class="col-content">${recruitmentInfo.practiceStages}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-50">
+                                    <div class="row">
+                                        <div class="col-label">药物名称</div>
+                                        <div class="col-content">${recruitmentInfo.drugName}</div>
+                                    </div>
+                                </div>
+                                <div class="col-50">
+                                    <div class="row">
+                                        <div class="col-label">招募人数</div>
+                                        <div class="col-content">${recruitmentInfo.recruitmentNumber}人</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-50">
+                                    <div class="row">
+                                        <div class="col-label">招募状态</div>
+                                        <div class="col-content">${recruitmentInfo.status.desc}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-label">适应症状</div>
+                                <div class="col-content">${recruitmentInfo.indication}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+        <%@ include file="../components/footer.jsp" %>
+    </div>
 </div>
-<div id="allmap"></div>
+
+<script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/recruitment/list.js' charset="utf-8"></script>
 </body>
-<script src="https://api.map.baidu.com/api?ak=IQWxjhbBiio0yltrj9juI5kcg34jW9jG&v=2.0"></script>
-<script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-<%--<script type="text/javascript"--%>
-<%--src="https://webapi.amap.com/maps?v=1.4.12&key=cfeead9d2944d166e06f5da540b70e22"></script>--%>
-<script src="/static/js/lib/vue.js"></script>
-<script src="/static/js/lib/element.js"></script>
-<script src="/static/js/lib/axios.min.js"></script>
-<script src="/static/js/util/ajax.js"></script>
-<script type="text/javascript">
-  new Vue({
-    el: '#recruitment_list',
-    data: function () {
-      return {
-        regionOptions: ${regionVOList},
-        indicationOptions: ${indicationOptions},
-        recruitmentList:${recruitmentInfoList},
-        searchForm: {
-          regionOptions: ["26", "334"],
-          indication: ''
-        }
-      }
-    },
-    created: function () {
-      this.wexinInit();
-      this.initAfterWeixin();
-    },
-    methods: {
-      searchAction: function () {
-        console.log(this.searchForm);
-      },
-      wexinInit: function () {
-        this.ajax.get('/weixin/sign', {
-          params: {
-            address: window.location.href.split("#")[0]
-          }
-        }).then((data) => {
-          wx.config({
-            debug: false,
-            appId: data.appId,
-            timestamp: data.timestamp,
-            nonceStr: data.noncestr,
-            signature: data.signature,
-            jsApiList: ['getLocation']
-          });
-        });
-      },
-      initAfterWeixin: function () {
-        wx.ready(() => {
-          wx.getLocation({
-            type: 'wgs84',
-            success: (res) => {
-              this.ajax("/region/lanlat", {
-                params: {
-                  lan: res.latitude,
-                  lat: res.longitude
-                }
-              }).then((region) => {
-                this.searchForm.regionOptions = [region.parentId + "", region.regionId + ""];
-                console.log(region);
-              });
-            }
-          });
-        });
-      }
-    }
-  })
-</script>
 </html>

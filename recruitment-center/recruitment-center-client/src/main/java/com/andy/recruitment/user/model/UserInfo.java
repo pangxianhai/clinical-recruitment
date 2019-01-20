@@ -2,6 +2,7 @@ package com.andy.recruitment.user.model;
 
 import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.constant.UserStatus;
+import com.andy.recruitment.user.constant.UserType;
 import java.io.Serializable;
 
 /**
@@ -35,6 +36,10 @@ public class UserInfo implements Serializable {
      * 性别
      */
     private Gender gender;
+    /**
+     * 用户类型
+     */
+    private UserType userType;
     /**
      * 用户状态
      */
@@ -94,5 +99,13 @@ public class UserInfo implements Serializable {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }
