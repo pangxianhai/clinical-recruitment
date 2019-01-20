@@ -137,6 +137,6 @@
 
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/recruitment/list.js' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/recruitment/list.js?_v=${version}' charset="utf-8"></script>
 </body>
 </html>

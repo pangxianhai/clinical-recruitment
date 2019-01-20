@@ -1,6 +1,8 @@
 package com.andy.recruitment.web.interceptor;
 
+import com.andy.recruitment.web.RecruitmentSystemInfo;
 import com.xgimi.auth.PermissionService;
+import com.xgimi.context.ServletContext;
 import com.xgimi.interceptor.MyPermissionInterceptor;
 import java.lang.reflect.Method;
 import javax.annotation.PostConstruct;
@@ -43,6 +45,7 @@ public class PermissionInterceptor extends MyPermissionInterceptor {
     public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
         MethodSignature signature = (MethodSignature)pjp.getSignature();
         Method method = signature.getMethod();
+        ServletContext.getRequest().setAttribute("version", RecruitmentSystemInfo.VERSION);
         super.auth(method);
         return pjp.proceed();
     }

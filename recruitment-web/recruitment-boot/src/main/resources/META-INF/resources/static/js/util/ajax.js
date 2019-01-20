@@ -33,6 +33,25 @@ const Ajax = {
         }
       }
     });
+  },
+  get: function (url, params, success) {
+    $.ajax({
+      url: url,
+      type: 'get',
+      dataType: "json",
+      contentType: "application/json;charset=utf-8",
+      data: params,
+      headers: {
+        token: CookieUtil.getCookie("userId")
+      },
+      success: function (result) {
+        if (result.ret) {
+          success(result.data);
+        } else {
+          $.alert(result.message);
+        }
+      }
+    });
   }
 }
 

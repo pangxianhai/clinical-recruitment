@@ -9,7 +9,10 @@ import com.xgimi.auth.LoginInfo;
 import com.xgimi.auth.Permission;
 import com.xgimi.auth.PermissionService;
 import com.xgimi.commons.util.NumberUtil;
+import com.xgimi.commons.util.StringUtil;
 import com.xgimi.context.ServletContext;
+import com.xgimi.util.CookieUtil;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +33,15 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public LoginInfo getLoginInfo(String appId, String token) {
+        if (StringUtil.isEmpty(token)) {
+            token = CookieUtil.getCookieValue("userId");
+        }
         Long userId = NumberUtil.parseLong(token);
         UserInfo userInfo = this.userInfoService.getUserInfoByUserId(userId);
+        HttpServletRequest request = ServletContext.getRequest();
+        if (null != request) {
+            request.setAttribute("userInfo", userInfo);
+        }
         return PermissionUtil.transformLoginInfo(userInfo);
     }
 

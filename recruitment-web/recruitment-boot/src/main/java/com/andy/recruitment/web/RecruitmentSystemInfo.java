@@ -2,6 +2,7 @@ package com.andy.recruitment.web;
 
 import com.xgimi.commons.message.MessageHandler;
 import com.xgimi.commons.util.DateUtil;
+import com.xgimi.commons.util.RandomUtil;
 import com.xgimi.commons.util.encrypt.AESCBCUtil;
 import com.xgimi.commons.util.encrypt.AESUtil;
 import com.xgimi.commons.util.encrypt.EncodeUtil;
@@ -34,6 +35,11 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
      */
     public final static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+    /**
+     * 版本号
+     */
+    public static String VERSION = "version";
+
     @Value("${server.charset.name}")
     private String charsetName;
 
@@ -53,6 +59,8 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
 
         //初始化国际化
         initIntern();
+
+        VERSION = RandomUtil.getRandCode(16, false);
     }
 
     private void initConfig() {
