@@ -10,15 +10,13 @@
         <result column="district_id" property="districtId" jdbcType="BIGINT"/>
         <result column="medical_institution" property="medicalInstitution" jdbcType="VARCHAR"/>
         <result column="medical_category" property="medicalCategory" jdbcType="VARCHAR"/>
-        <result column="status" property="regionStatus"
-          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="baseColumnList">
-        id,user_id,province_id,city_id,district_id,medical_institution,medical_category,status,
+        id,user_id,province_id,city_id,district_id,medical_institution,medical_category,
         created_by,created_time,updated_by,updated_time
     </sql>
     <select id="select" resultMap="baseResultMap"
@@ -39,9 +37,6 @@
             <if test="cityId != null">
                 and city_id = #{cityId, jdbcType=BIGINT}
             </if>
-            <if test="status != null">
-                and status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
-            </if>
         </where>
     </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
@@ -55,7 +50,6 @@
         #{districtId, jdbcType=BIGINT},
         #{medicalInstitution, jdbcType=VARCHAR},
         #{medicalCategory, jdbcType=VARCHAR},
-        #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -79,9 +73,6 @@
             </if>
             <if test="medicalCategory != null and medicalCategory != ''">
                 medical_category = #{medicalCategory, jdbcType=VARCHAR},
-            </if>
-            <if test="status != null ">
-                status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

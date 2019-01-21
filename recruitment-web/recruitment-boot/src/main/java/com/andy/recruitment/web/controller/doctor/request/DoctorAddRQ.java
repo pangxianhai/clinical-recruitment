@@ -10,13 +10,13 @@ import java.io.Serializable;
 public class DoctorAddRQ implements Serializable {
 
     /**
-     * 省ID
+     * 地址
      */
-    private Long provinceId;
+    private String address;
     /**
-     * 城市ID
+     * 手机号
      */
-    private Long cityId;
+    private String phone;
 
     /**
      * 执业机构
@@ -27,20 +27,20 @@ public class DoctorAddRQ implements Serializable {
      */
     private String medicalCategory;
 
-    public Long getProvinceId() {
-        return provinceId;
+    public String getAddress() {
+        return address;
     }
 
-    public void setProvinceId(Long provinceId) {
-        this.provinceId = provinceId;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public Long getCityId() {
-        return cityId;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setCityId(Long cityId) {
-        this.cityId = cityId;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getMedicalInstitution() {

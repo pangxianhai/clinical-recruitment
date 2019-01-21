@@ -19,6 +19,10 @@ public enum BusinessErrorCode {
      * 未登陆
      */
     LOGIN_NOT_LOGIN(102002),
+    /**
+     * 地址参数错误
+     */
+    REGION_ADDRESS_ERROR(102003),
 
     ;
 

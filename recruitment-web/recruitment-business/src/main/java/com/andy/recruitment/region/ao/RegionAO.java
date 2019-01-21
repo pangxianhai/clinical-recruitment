@@ -1,5 +1,6 @@
 package com.andy.recruitment.region.ao;
 
+import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.region.model.Region;
 import java.util.List;
 
@@ -43,4 +44,12 @@ public interface RegionAO {
      * @return 地区信息
      */
     Region getRegionByLngLat(String lng, String lat);
+
+    /**
+     * 将 '四川 成都 武侯区'这种字符串解析成地址对象
+     *
+     * @param text 地区文本
+     * @return 地址对象
+     */
+    AddressInfo parseAddressInfo(String text);
 }

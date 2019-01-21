@@ -1,5 +1,6 @@
 package com.andy.recruitment.region.ao;
 
+import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.region.model.BMapResult;
 import com.andy.recruitment.region.model.Region;
 import com.andy.recruitment.region.service.RegionService;
@@ -75,5 +76,30 @@ public class RegionAOImpl implements RegionAO {
             return this.regionService.getRegionByParent(province.getRegionId(), cityStr);
         }
         return this.regionService.getRegionById(DEFAULT_REGION_ID);
+    }
+
+    @Override
+    public AddressInfo parseAddressInfo(String text) {
+        if (null == text) {
+            return null;
+        }
+        String[] addressArr = text.split(" ");
+        if (addressArr.length != 3) {
+            return null;
+        }
+        AddressInfo addressInfo = new AddressInfo();
+        Region province = this.regionService.getRegionByParent(RegionService.CHINA_REGION_ID, addressArr[0]);
+        addressInfo.setProvince(province);
+        if (null == province) {
+            return addressInfo;
+        }
+        Region city = this.regionService.getRegionByParent(province.getRegionId(), addressArr[1]);
+        addressInfo.setCity(city);
+        if (null == city) {
+            return addressInfo;
+        }
+        Region district = this.regionService.getRegionByParent(city.getRegionId(), addressArr[1]);
+        addressInfo.setDistrict(district);
+        return addressInfo;
     }
 }

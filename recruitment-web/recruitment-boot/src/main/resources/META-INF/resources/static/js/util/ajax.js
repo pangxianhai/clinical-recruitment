@@ -55,6 +55,16 @@ const Ajax = {
   }
 }
 
+const StringUtil = {
+  isEmpty: function (text) {
+    return typeof text === 'undefined' || null == text || text.length === 0;
+  },
+  isNotEmpty: function (text) {
+    return !StringUtil.isEmpty(text);
+  }
+
+}
+
 // let ajax = axios.create({
 //   timeout: 180000,
 //   withCredentials: true

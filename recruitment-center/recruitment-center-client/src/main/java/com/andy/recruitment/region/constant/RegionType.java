@@ -16,7 +16,7 @@ public class RegionType extends BaseType {
 
     public final static RegionType CITY = new RegionType(2, "城市");
 
-    public final static RegionType CANTONAL = new RegionType(3, "地区");
+    public final static RegionType DISTRICT = new RegionType(3, "地区");
 
     protected RegionType(int code, String desc) {
         super(code, desc);

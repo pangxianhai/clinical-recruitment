@@ -7,7 +7,40 @@ $(function () {
     },
     registerAction: function () {
       $('#registerButton').on('click', function () {
-        alert($('#addressInput').val());
+        const phone = $('#phoneInput').val();
+        if (StringUtil.isEmpty(phone)) {
+          $.toast("手机号不能为空");
+          return;
+        }
+        const address = $('#addressInput').val();
+        if (StringUtil.isEmpty(address)) {
+          $.toast("地址不能为空");
+          return;
+        }
+        const medicalInstitution = $('#medicalInstitutionInput').val();
+        if (StringUtil.isEmpty(medicalInstitution)) {
+          $.toast("执业机构不能为空");
+          return;
+        }
+        const medicalCategory = $('#medicalCategoryInput').val();
+        if (StringUtil.isEmpty(medicalCategory)) {
+          $.toast("执业类型不能为空");
+          return;
+        }
+        Ajax.post('/doctor/register.json', {
+          phone: phone,
+          address: address,
+          medicalInstitution: medicalInstitution,
+          medicalCategory: medicalCategory
+        }, function (data) {
+          if (data) {
+            $.alert('注册成功', function () {
+              window.location.href = $('#redirectURL').val();
+            });
+          } else {
+            $.alert('注册失败');
+          }
+        })
       });
     },
     main: function () {
