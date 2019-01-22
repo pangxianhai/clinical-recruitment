@@ -1,6 +1,5 @@
 package com.andy.recruitment.user.ao;
 
-import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
 
 /**
@@ -44,10 +43,17 @@ public interface UserAO {
     /**
      * 用户绑定手机号
      *
-     * @param phone    手机号
-     * @param userId   用户ID
-     * @param userType 用户类型
-     * @param verCode  验证码
+     * @param phone   手机号
+     * @param userId  用户ID
+     * @param verCode 验证码
      */
-    void bandPhone(Long userId, String phone, String verCode, UserType userType);
+    void bandPhone(Long userId, String phone, String verCode);
+
+    /**
+     * 更新用户信息
+     *
+     * @param userInfo 用户信息
+     * @param operator 操作人
+     */
+    void updateUserInfo(UserInfo userInfo, String operator);
 }

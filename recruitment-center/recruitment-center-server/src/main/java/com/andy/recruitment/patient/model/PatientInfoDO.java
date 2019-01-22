@@ -14,10 +14,6 @@ public class PatientInfoDO extends BaseDO {
      */
     private Long userId;
     /**
-     * 医生ID
-     */
-    private Long doctorId;
-    /**
      * 省ID
      */
     private Long provinceId;
@@ -40,14 +36,6 @@ public class PatientInfoDO extends BaseDO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Long getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
     }
 
     public Long getProvinceId() {

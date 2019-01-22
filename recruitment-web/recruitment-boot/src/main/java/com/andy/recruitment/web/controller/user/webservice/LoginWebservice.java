@@ -1,7 +1,6 @@
 package com.andy.recruitment.web.controller.user.webservice;
 
 import com.andy.recruitment.user.ao.UserAO;
-import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.web.controller.user.request.BandPhoneRQ;
 import com.andy.recruitment.web.controller.user.request.VerCodeSendRQ;
 import com.xgimi.context.ServletContext;
@@ -36,8 +35,7 @@ public class LoginWebservice {
     @RequestMapping(value = "/bandPhone.json", method = RequestMethod.POST)
     public boolean bandPhone(@RequestBody BandPhoneRQ bandPhoneRQ) {
         Long userId = ServletContext.getLoginInfo().getUserId();
-        UserType userType = UserType.parse(bandPhoneRQ.getUserType());
-        this.userAO.bandPhone(userId, bandPhoneRQ.getPhone(), bandPhoneRQ.getVerCode(), userType);
+        this.userAO.bandPhone(userId, bandPhoneRQ.getPhone(), bandPhoneRQ.getVerCode());
         return true;
     }
 }

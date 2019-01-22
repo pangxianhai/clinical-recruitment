@@ -7,11 +7,6 @@ $(function () {
     },
     registerAction: function () {
       $('#registerButton').on('click', function () {
-        const name = $('#nameInput').val();
-        if (StringUtil.isEmpty(name)) {
-          $.toast("年龄不能为空");
-          return;
-        }
         const phone = $('#phoneInput').val();
         if (StringUtil.isEmpty(phone)) {
           $.toast("手机号不能为空");
@@ -22,22 +17,25 @@ $(function () {
           $.toast("地址不能为空");
           return;
         }
-        const medicalInstitution = $('#medicalInstitutionInput').val();
-        if (StringUtil.isEmpty(medicalInstitution)) {
-          $.toast("执业机构不能为空");
+        const age = $('#ageInput').val();
+        if (StringUtil.isEmpty(age)) {
+          $.toast("年龄不能为空");
           return;
         }
-        const medicalCategory = $('#medicalCategoryInput').val();
-        if (StringUtil.isEmpty(medicalCategory)) {
-          $.toast("执业类型不能为空");
+        if (isNaN(age)) {
+          $.toast("年龄只能是数字");
           return;
         }
-        Ajax.post('/doctor/register.json', {
-          name: name,
+        const name = $('#nameInput').val();
+        if (StringUtil.isEmpty(name)) {
+          $.toast("年龄不能为空");
+          return;
+        }
+        Ajax.post('/patient/register.json', {
           phone: phone,
           address: address,
-          medicalInstitution: medicalInstitution,
-          medicalCategory: medicalCategory
+          age: age,
+          name: name
         }, function (data) {
           if (data) {
             $.alert('注册成功', function () {
@@ -46,7 +44,7 @@ $(function () {
           } else {
             $.alert('注册失败');
           }
-        })
+        });
       });
     },
     main: function () {

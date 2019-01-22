@@ -1,14 +1,14 @@
-package com.andy.recruitment.web.controller.doctor.webservice;
+package com.andy.recruitment.web.controller.patient.webservice;
 
-import com.andy.recruitment.doctor.ao.DoctorAO;
-import com.andy.recruitment.doctor.model.DoctorInfo;
+import com.andy.recruitment.patient.PatientAO;
+import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
-import com.andy.recruitment.web.controller.doctor.request.DoctorAddRQ;
-import com.andy.recruitment.web.controller.doctor.util.DoctorUtil;
+import com.andy.recruitment.web.controller.patient.request.PatientAddRQ;
+import com.andy.recruitment.web.controller.patient.util.PatientUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.context.ServletContext;
@@ -19,51 +19,50 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 医生webservice接口
+ * 患者webservice
  *
- * @author 庞先海 2019-01-20
+ * @author 庞先海 2019-01-22
  */
 @RestController
-@RequestMapping("/doctor")
-public class DoctorWebservice {
+@RequestMapping("/patient")
+public class PatientWebservice {
 
-    private final DoctorAO doctorAO;
+    private final PatientAO patientAO;
 
     private final RegionAO regionAO;
 
     private final UserAO userAO;
 
     @Autowired
-    public DoctorWebservice(DoctorAO doctorAO, RegionAO regionAO, UserAO userAO) {
-        this.doctorAO = doctorAO;
+    public PatientWebservice(PatientAO patientAO, RegionAO regionAO, UserAO userAO) {
+        this.patientAO = patientAO;
         this.regionAO = regionAO;
         this.userAO = userAO;
     }
 
     @Login
     @RequestMapping(value = "/register.json", method = RequestMethod.POST)
-    public boolean register(@RequestBody DoctorAddRQ doctorAddRQ) {
+    public boolean register(@RequestBody PatientAddRQ patientAddRQ) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
-        DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ);
-        doctorInfo.setUserId(loginInfo.getUserId());
-        AddressInfo addressInfo = regionAO.parseAddressInfo(doctorAddRQ.getAddress());
+        PatientInfo patientInfo = PatientUtil.transformPatientInfo(patientAddRQ);
+        patientInfo.setUserId(loginInfo.getUserId());
+        AddressInfo addressInfo = regionAO.parseAddressInfo(patientAddRQ.getAddress());
         if (null != addressInfo.getProvince()) {
-            doctorInfo.setProvinceId(addressInfo.getProvince().getRegionId());
+            patientInfo.setProvinceId(addressInfo.getProvince().getRegionId());
         }
         if (null != addressInfo.getCity()) {
-            doctorInfo.setCityId(addressInfo.getCity().getRegionId());
+            patientInfo.setCityId(addressInfo.getCity().getRegionId());
         }
         if (null != addressInfo.getDistrict()) {
-            doctorInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
+            patientInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
         }
-        this.doctorAO.addDoctorInfo(doctorInfo, ServletContext.getLoginUname());
+        this.patientAO.addPatientInfo(patientInfo, ServletContext.getLoginUname());
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(loginInfo.getUserId());
         userInfo.setUserType(UserType.PATIENT);
-        userInfo.setRealName(doctorAddRQ.getName());
+        userInfo.setRealName(patientAddRQ.getName());
         this.userAO.updateUserInfo(userInfo, ServletContext.getLoginUname());
-        this.userAO.bandPhone(loginInfo.getUserId(), doctorAddRQ.getPhone(), null);
+        this.userAO.bandPhone(loginInfo.getUserId(), patientAddRQ.getPhone(), null);
         return true;
     }
-
 }

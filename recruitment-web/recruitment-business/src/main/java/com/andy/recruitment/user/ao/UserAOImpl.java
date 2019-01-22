@@ -89,19 +89,24 @@ public class UserAOImpl implements UserAO {
     }
 
     @Override
-    public void bandPhone(Long userId, String phone, String verCode, UserType userType) {
+    public void bandPhone(Long userId, String phone, String verCode) {
         UserInfo userInfo = this.userInfoService.getUserInfoByUserId(userId);
         AssertUtil.assertNull(userInfo, () -> {
             throw new BusinessException(BusinessErrorCode.USER_NOT_EMPTY);
         });
-        if (managerPhone.equals(phone)) {
-            userType = UserType.ADMIN;
-        }
         UserInfo updateUserInfo = new UserInfo();
+        if (managerPhone.equals(phone)) {
+            updateUserInfo.setUserType(UserType.ADMIN);
+        }
         updateUserInfo.setUserId(userId);
         updateUserInfo.setPhone(phone);
-        updateUserInfo.setUserType(userType);
+
         this.userInfoService.updateUserInfo(updateUserInfo, userInfo.getRealName());
+    }
+
+    @Override
+    public void updateUserInfo(UserInfo userInfo, String operator) {
+        this.userInfoService.updateUserInfo(userInfo, operator);
     }
 
     private String getLoginVerCode(String phone) {

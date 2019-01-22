@@ -19,7 +19,7 @@
 <div class="page-group">
     <div class="page page-current">
         <header class="bar bar-nav">
-            <h1 class="title">医生信息注册</h1>
+            <h1 class="title">患者信息注册</h1>
         </header>
         <div class="content">
             <div class="list-block">
@@ -61,22 +61,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label">执业机构</div>
+                                <div class="item-title label">年龄</div>
                                 <div class="item-input">
-                                    <input id="medicalInstitutionInput" type="text"
-                                           placeholder="请填写执业机构"/>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="icon icon-form-name"></i></div>
-                            <div class="item-inner">
-                                <div class="item-title label">执业类别</div>
-                                <div class="item-input">
-                                    <input id="medicalCategoryInput" type="text"
-                                           placeholder="请填写执业类型">
+                                    <input id="ageInput" type="text" placeholder="请填年龄"/>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +85,8 @@
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-city-picker.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/doctor/register.js?_v=${version}' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/patient/register.js?_v=${version}'
+        charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
 </body>
 </html>

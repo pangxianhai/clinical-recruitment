@@ -26,6 +26,10 @@ public class DoctorAddRQ implements Serializable {
      * 执业类别
      */
     private String medicalCategory;
+    /**
+     * 姓名
+     */
+    private String name;
 
     public String getAddress() {
         return address;
@@ -57,5 +61,13 @@ public class DoctorAddRQ implements Serializable {
 
     public void setMedicalCategory(String medicalCategory) {
         this.medicalCategory = medicalCategory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -38,6 +38,8 @@ public class LoginController {
     }
 
     //医生登陆页面 http://192.168.2.100:7099/user/login?userType=2
+    //患者登陆页面 http://192.168.2.100:7099/user/login?userType=3
+    //管理员登陆页面 http://192.168.2.100:7099/user/login?userType=1
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String login(String redirectURL, Integer userType) {
         if (StringUtil.isEmpty(redirectURL) || redirectURL.contains("/user/login")) {
@@ -65,6 +67,8 @@ public class LoginController {
             String url = "/user/login/bandPhone";
             if (UserType.DOCTOR.equals(uType)) {
                 url = "/doctor/register";
+            } else if (UserType.PATIENT.equals(uType)) {
+                url = "/patient/register";
             }
             return "redirect:" + url + "?redirectURL=" + redirectURL + "&userType=" + userType;
         }

@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @author 庞先海 2018-12-27
  */
 public class PatientQueryParam implements Serializable {
+
     /**
      * 患者ID
      */
@@ -16,10 +17,6 @@ public class PatientQueryParam implements Serializable {
      * 用户ID
      */
     private Long userId;
-    /**
-     * 医生ID
-     */
-    private Long doctorId;
     /**
      * 省ID
      */
@@ -47,14 +44,6 @@ public class PatientQueryParam implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Long getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
     }
 
     public Long getProvinceId() {

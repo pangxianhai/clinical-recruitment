@@ -84,22 +84,42 @@ public class RegionAOImpl implements RegionAO {
             return null;
         }
         String[] addressArr = text.split(" ");
-        if (addressArr.length != 3) {
-            return null;
-        }
         AddressInfo addressInfo = new AddressInfo();
+        if (addressArr.length == 2) {
+            this.parseProvinceLevel(addressInfo, addressArr);
+        } else if (addressArr.length == 3) {
+            this.parseProvince(addressInfo, addressArr);
+        }
+        return addressInfo;
+    }
+
+    private void parseProvince(AddressInfo addressInfo, String[] addressArr) {
         Region province = this.regionService.getRegionByParent(RegionService.CHINA_REGION_ID, addressArr[0]);
         addressInfo.setProvince(province);
         if (null == province) {
-            return addressInfo;
+            return;
         }
         Region city = this.regionService.getRegionByParent(province.getRegionId(), addressArr[1]);
         addressInfo.setCity(city);
         if (null == city) {
-            return addressInfo;
+            return;
+        }
+        Region district = this.regionService.getRegionByParent(city.getRegionId(), addressArr[2]);
+        addressInfo.setDistrict(district);
+    }
+
+    private void parseProvinceLevel(AddressInfo addressInfo, String[] addressArr) {
+        Region province = this.regionService.getRegionByParent(RegionService.CHINA_REGION_ID, addressArr[0]);
+        addressInfo.setProvince(province);
+        if (null == province) {
+            return;
+        }
+        Region city = this.regionService.getRegionByParent(province.getRegionId(), addressArr[0]);
+        addressInfo.setCity(city);
+        if (null == city) {
+            return;
         }
         Region district = this.regionService.getRegionByParent(city.getRegionId(), addressArr[1]);
         addressInfo.setDistrict(district);
-        return addressInfo;
     }
 }
