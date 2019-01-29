@@ -7,13 +7,13 @@ import com.andy.recruitment.doctor.model.DoctorQueryParam;
 import com.andy.recruitment.doctor.util.DoctorInfoUtil;
 import com.andy.recruitment.exception.RecruitmentErrorCode;
 import com.andy.recruitment.exception.RecruitmentException;
-import com.xgimi.util.PageUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.mybatis.paginator.Page;
+import com.xgimi.util.PageUtil;
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +67,7 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         DoctorQueryParam queryParam = new DoctorQueryParam();
         queryParam.setDoctorId(doctorId);
         List<DoctorInfoDO> doctorInfoDOList = this.doctorInfoMapper.select(queryParam);
-        if (CollectionUtil.isEmpty(doctorInfoDOList)) {
-            return null;
-        }
-        AssertUtil.assertBoolean(doctorInfoDOList.size() != 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return DoctorInfoUtil.transformDoctorInfo(doctorInfoDOList.get(0));
+        return CollectionUtil.parseOne(doctorInfoDOList, DoctorInfoUtil::transformDoctorInfo);
     }
 
     @Override
@@ -92,12 +86,6 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         DoctorQueryParam queryParam = new DoctorQueryParam();
         queryParam.setUserId(userId);
         List<DoctorInfoDO> doctorInfoDOList = this.doctorInfoMapper.select(queryParam);
-        if (CollectionUtil.isEmpty(doctorInfoDOList)) {
-            return null;
-        }
-        AssertUtil.assertBoolean(doctorInfoDOList.size() != 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return DoctorInfoUtil.transformDoctorInfo(doctorInfoDOList.get(0));
+        return CollectionUtil.parseOne(doctorInfoDOList, DoctorInfoUtil::transformDoctorInfo);
     }
 }

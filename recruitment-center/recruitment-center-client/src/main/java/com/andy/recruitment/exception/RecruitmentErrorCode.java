@@ -6,12 +6,6 @@ package com.andy.recruitment.exception;
  * @author 庞先海 2018-12-27
  */
 public enum RecruitmentErrorCode {
-
-    /**
-     * 过多查询结果
-     */
-    TOO_MANY_RESULT(101000),
-
     /**
      * 添加医生失败
      */
@@ -80,6 +74,23 @@ public enum RecruitmentErrorCode {
      * 研究中心删除失败
      */
     RESEARCH_CENTER_DELETE_FAILED(101503),
+
+    /**
+     * 招募信息申请失败
+     */
+    RECRUITMENT_APPLICATION_ADD_FAILED(101600),
+    /**
+     * 招募申请信息更新失败
+     */
+    RECRUITMENT_APPLICATION_UPDATE_FAILED(101601),
+    /**
+     * 招募申请信息ID为空
+     */
+    RECRUITMENT_APPLICATION_ID_EMPTY(101602),
+    /**
+     * 您已经申请该招募信息无需重复申请
+     */
+    RECRUITMENT_APPLICATION_HAS_APPLICATION(101603),
 
     ;
 

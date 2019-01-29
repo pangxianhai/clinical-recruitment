@@ -81,7 +81,7 @@ public class RecruitmentInfo implements Serializable {
     /**
      * 研究中心列表
      */
-    List<ResearchCenterInfo> researchCenterInfoList;
+    private List<ResearchCenterInfo> researchCenterInfoList;
 
     public Long getRecruitmentId() {
         return recruitmentId;

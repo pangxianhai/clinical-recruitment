@@ -2,156 +2,134 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
-    <title>任务详情</title>
-    <link rel="stylesheet" href="/static/css/element.css">
-    <style>
-        body {
-            margin: 0;
-            background-color: #FFF;
-        }
-
-        ul, li {
-            padding: 0;
-            margin: 0;
-            list-style: none
-        }
-
-        .el-container {
-            background: rgba(223, 245, 226, 0.97);
-        }
-
-        .el-header {
-            padding: 0;
-            background: #FFF;
-            color: #000;
-            height: 4em !important;
-            line-height: 4em;
-            font-size: 15px;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1;
-            font-weight: bold;
-        }
-
-        .el-header .title {
-            width: 100%;
-            text-align: center;
-            float: left;
-        }
-
-        .el-main {
-            padding: 5em 0.2em 0 1em;
-            background: #FFF;
-        }
-
-        .header-left {
-            float: left;
-            line-height: 4em;
-            position: fixed;
-            padding-left: 8px;
-        }
-
-        .el-message {
-            width: 98%;
-            min-width: auto !important;
-        }
-
-        .recruitment_title {
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .recruitment_ul {
-            color: #888;
-            font-size: 14px;
-            margin-top: 0.3em;
-            line-height: 2em;
-            background-color: #FFF;
-        }
-
-        .recruitment_introduction {
-            border-top: solid 1px #bbb;
-            padding: 0.5em 0 0.5em 0;
-            margin-top: 0.3em;
-        }
-
-        .recruitment_tabs_main {
-            margin-top: 0.3em;
-            padding: 0;
-        }
-
-        .el-tabs__item {
-            font-weight: normal;
-            font-size: 12px;
-            padding: 0 0.5em;
-        }
-
-        .el-tabs--border-card {
-            border: 0;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/static/css/lib/sm.min.css">
+    <link rel="stylesheet" href="/static/css/recruitment/detail.css?_v=${version}">
 </head>
 <body>
-<div id="recruitment_detail">
-    <el-container>
-        <el-header>
-            <i class="el-icon-arrow-left header-left"></i>
-            <span class="title">任务详情</span>
-        </el-header>
-        <el-main>
-            <div class="recruitment_title">${recruitmentInfo.title}</div>
-            <ul class="recruitment_ul">
-                <li>登记编号：${recruitmentInfo.registerCode}</li>
-                <li>实验分期：${recruitmentInfo.practiceStages}</li>
-                <li>适应症状：${recruitmentInfo.indication}</li>
-                <li>药物名称：${recruitmentInfo.drugName}</li>
-                <li>药物类型：${recruitmentInfo.drugType}</li>
-                <li>招募人数：${recruitmentInfo.recruitmentNumber}人</li>
-            </ul>
-            <div class="recruitment_introduction">
-                ${recruitmentInfo.introduction}
+<div class="page-group">
+    <div class="page page-current">
+        <header class="bar bar-nav">
+            <h1 class="title">任务详情</h1>
+        </header>
+        <div class="content">
+            <h3>${recruitmentInfo.title}</h3>
+            <div class="list-block">
+                <ul>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">登记编号</div>
+                            <div class="item-after">${recruitmentInfo.registerCode}</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">实验分期</div>
+                            <div class="item-after">${recruitmentInfo.practiceStages}</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">适应症状</div>
+                            <div class="item-after">${recruitmentInfo.practiceStages}</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">药物名称</div>
+                            <div class="item-after">${recruitmentInfo.practiceStages}</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">药物类型</div>
+                            <div class="item-after">${recruitmentInfo.practiceStages}</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">招募人数</div>
+                            <div class="item-after">${recruitmentInfo.recruitmentNumber}人</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </el-main>
-        <el-main class="recruitment_tabs_main">
-            <el-tabs class="recruitment_tabs" type="border-card" v-model="recruitmentInfoTabs">
-                <el-tab-pane label="治疗方案" name="treatmentPlan">
-                    ${recruitmentInfo.treatmentPlan}
-                </el-tab-pane>
-                <el-tab-pane label="初筛要点" name="screeningStandard">
-                    ${recruitmentInfo.screeningStandard}
-                </el-tab-pane>
-                <el-tab-pane label="入排标准" name="entryCriteria">
-                    ${recruitmentInfo.entryCriteria}
-                </el-tab-pane>
-                <el-tab-pane label="研究中心" name="researchCenter">
-                    ${recruitmentInfo.researchCenter}
-                </el-tab-pane>
-                <el-tab-pane label="患者权益" name="patientRights">
-                    ${recruitmentInfo.patientRights}
-                </el-tab-pane>
-            </el-tabs>
-        </el-main>
-    </el-container>
+            <p>${recruitmentInfo.introduction}</p>
+            <div class="buttons-tab">
+                <a href="#treatmentPlan" class="tab-link active button">治疗方案</a>
+                <a href="#screeningStandard" class="tab-link button">初筛要点</a>
+                <a href="#entryCriteria" class="tab-link button">入拍标准</a>
+                <a href="#researchCenterInfo" class="tab-link button">研究中心</a>
+                <a href="#patientRights" class="tab-link button">患者权益</a>
+            </div>
+            <div class="content-block">
+                <div class="tabs">
+                    <div id="treatmentPlan" class="tab active">
+                        <div class="content-block">
+                            <p>${recruitmentInfo.treatmentPlan}</p>
+                        </div>
+                    </div>
+                    <div id="screeningStandard" class="tab">
+                        <div class="content-block">
+                            <p>${recruitmentInfo.screeningStandard}</p>
+                        </div>
+                    </div>
+                    <div id="entryCriteria" class="tab">
+                        <div class="content-block">
+                            <p>${recruitmentInfo.entryCriteria}</p>
+                        </div>
+                    </div>
+                    <div id="researchCenterInfo" class="tab">
+                        <div class="content-block">
+                            <p>${recruitmentInfo.researchCenterInfoList}</p>
+                        </div>
+                    </div>
+                    <div id="patientRights" class="tab">
+                        <div class="content-block">
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                            <p>${recruitmentInfo.patientRights}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="bar bar-tab">
+            <a href="javascript:void(0)" id="sign_up_button" class="button button-fill button-warning">报名</a>
+        </nav>
+    </div>
 </div>
 </body>
-<script src="/static/js/lib/vue.js"></script>
-<script src="/static/js/lib/element.js"></script>
-<script src="/static/js/lib/axios.min.js"></script>
-<script src="/static/js/util/ajax.js"></script>
-<script type="text/javascript">
-  new Vue({
-    el: '#recruitment_detail',
-    data: function () {
-      return {
-        recruitmentInfoTabs: 'treatmentPlan'
-      }
-    },
-    methods: {}
-  })
-</script>
+<input type="hidden" id="recruitmentId" value="${recruitmentInfo.recruitmentId}">
+<script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/recruitment/detail.js?_v=${version}'
+        charset="utf-8"></script>
 </html>

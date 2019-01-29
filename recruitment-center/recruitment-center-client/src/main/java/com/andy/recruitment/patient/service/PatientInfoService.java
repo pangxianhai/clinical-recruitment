@@ -49,6 +49,7 @@ public interface PatientInfoService {
      *
      * @param queryParam 查询参数
      * @param paginator  分页信息
+     * @return 患者信息列表
      */
     PageResult<PatientInfo> getPatientInfo(PatientQueryParam queryParam, Paginator paginator);
 }

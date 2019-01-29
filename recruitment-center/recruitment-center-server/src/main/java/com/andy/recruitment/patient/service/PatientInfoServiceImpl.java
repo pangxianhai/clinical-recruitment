@@ -7,13 +7,13 @@ import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientInfoDO;
 import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.andy.recruitment.patient.util.PatientUtil;
-import com.xgimi.util.PageUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.mybatis.paginator.Page;
+import com.xgimi.util.PageUtil;
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +67,7 @@ public class PatientInfoServiceImpl implements PatientInfoService {
         PatientQueryParam queryParam = new PatientQueryParam();
         queryParam.setPatientId(patientId);
         List<PatientInfoDO> patientInfoDOList = this.patientInfoMapper.select(queryParam);
-        if (CollectionUtil.isEmpty(patientInfoDOList)) {
-            return null;
-        }
-        AssertUtil.assertBoolean(patientInfoDOList.size() != 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return PatientUtil.transformPatientInfo(patientInfoDOList.get(0));
+        return CollectionUtil.parseOne(patientInfoDOList, PatientUtil::transformPatientInfo);
     }
 
     @Override
@@ -84,13 +78,7 @@ public class PatientInfoServiceImpl implements PatientInfoService {
         PatientQueryParam queryParam = new PatientQueryParam();
         queryParam.setUserId(userId);
         List<PatientInfoDO> patientInfoDOList = this.patientInfoMapper.select(queryParam);
-        if (CollectionUtil.isEmpty(patientInfoDOList)) {
-            return null;
-        }
-        AssertUtil.assertBoolean(patientInfoDOList.size() != 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return PatientUtil.transformPatientInfo(patientInfoDOList.get(0));
+        return CollectionUtil.parseOne(patientInfoDOList, PatientUtil::transformPatientInfo);
     }
 
     @Override

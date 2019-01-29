@@ -66,13 +66,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserQueryParam queryParam = new UserQueryParam();
         queryParam.setUserId(userId);
         List<UserInfoDO> userInfoDOList = this.userInfoMapper.select(queryParam);
-        if (CollectionUtil.isEmpty(userInfoDOList)) {
-            return null;
-        }
-        AssertUtil.assertBoolean(userInfoDOList.size() == 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return UserUtil.transformUserInfo(userInfoDOList.get(0));
+        return CollectionUtil.parseOne(userInfoDOList, UserUtil::transformUserInfo);
     }
 
     @Override
@@ -83,12 +77,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserQueryParam queryParam = new UserQueryParam();
         queryParam.setOpenId(openId);
         List<UserInfoDO> userInfoDOList = this.userInfoMapper.select(queryParam);
-        if (CollectionUtil.isEmpty(userInfoDOList)) {
-            return null;
-        }
-        AssertUtil.assertBoolean(userInfoDOList.size() == 1, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.TOO_MANY_RESULT);
-        });
-        return UserUtil.transformUserInfo(userInfoDOList.get(0));
+        return CollectionUtil.parseOne(userInfoDOList, UserUtil::transformUserInfo);
     }
 }

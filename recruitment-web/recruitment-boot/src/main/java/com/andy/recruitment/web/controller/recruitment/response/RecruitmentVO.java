@@ -1,7 +1,9 @@
 package com.andy.recruitment.web.controller.recruitment.response;
 
 import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 招募信息
@@ -78,6 +80,11 @@ public class RecruitmentVO implements Serializable {
      * 招募状态
      */
     private RecruitmentStatus status;
+
+    /**
+     * 研究中心
+     */
+    private List<ResearchCenterInfo> researchCenterInfoList;
 
     public Long getRecruitmentId() {
         return recruitmentId;
@@ -213,5 +220,13 @@ public class RecruitmentVO implements Serializable {
 
     public void setStatus(RecruitmentStatus status) {
         this.status = status;
+    }
+
+    public List<ResearchCenterInfo> getResearchCenterInfoList() {
+        return researchCenterInfoList;
+    }
+
+    public void setResearchCenterInfoList(List<ResearchCenterInfo> researchCenterInfoList) {
+        this.researchCenterInfoList = researchCenterInfoList;
     }
 }

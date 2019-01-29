@@ -37,9 +37,9 @@ public class LoginController {
         this.userAO = userAO;
     }
 
-    //医生登陆页面 http://192.168.2.100:7099/user/login?userType=2
-    //患者登陆页面 http://192.168.2.100:7099/user/login?userType=3
-    //管理员登陆页面 http://192.168.2.100:7099/user/login?userType=1
+    //医生登陆页面 http://www.andy.com/user/login?userType=2
+    //患者登陆页面 http://www.andy.com/user/login?userType=3
+    //管理员登陆页面 http://www.andy.com/user/login?userType=1
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String login(String redirectURL, Integer userType) {
         if (StringUtil.isEmpty(redirectURL) || redirectURL.contains("/user/login")) {

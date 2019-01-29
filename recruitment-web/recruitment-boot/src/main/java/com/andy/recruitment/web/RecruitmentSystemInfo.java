@@ -82,7 +82,9 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
      * 初始化国际化消息
      */
     private void initIntern() {
-        MessageHandler.setBeanNames("i18/message/message-error");
+        MessageHandler.setBeanNames("i18/recruitment/recruitment-error");
+        MessageHandler.setBeanNames("i18/recruitment/recruitment-center-error");
+        MessageHandler.setBeanNames("i18/common/commons-error");
     }
 
     public String getCharsetName() {

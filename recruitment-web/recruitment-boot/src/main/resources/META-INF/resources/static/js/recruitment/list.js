@@ -25,10 +25,25 @@ $(function () {
         ]
       });
     },
+    signUpAction: function () {
+      $('[item="sign_up_button"]').on('click', function () {
+        const recruitmentId = $(this).attr("recruitmentId");
+        Ajax.post('/recruitmentapplication', {
+          recruitmentId: recruitmentId
+        }, function (data) {
+          if (data) {
+            $.alert('报名成功');
+          } else {
+            $.alert('报名失败');
+          }
+        });
+      });
+    },
     main: function () {
       $.init();
       this.initIndicationPicker();
       this.initAddressPicker();
+      this.signUpAction();
     }
   };
   recruitment.main();

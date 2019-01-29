@@ -10,42 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="/static/css/lib/sm.min.css">
-    <style>
-        .recruitmentInfo-card {
-            padding-bottom: 0.5em;
-        }
-
-        .recruitmentInfo-card .card-header {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .recruitmentInfo-card .card-content {
-            font-size: 12px;
-        }
-
-        .recruitmentInfo-card .card-content .content-padded {
-            margin: 0.5em 0 0.5em 0.5em;
-        }
-
-        .recruitmentInfo-card .card-content .row {
-            margin-left: 0;
-        }
-
-        .recruitmentInfo-card .card-content .col-50 {
-            margin-left: 0;
-        }
-
-        .recruitmentInfo-card .card-content .col-label {
-            color: #aaa;
-            width: 60px;
-        }
-
-        .recruitmentInfo-card .card-content .col-content {
-            margin-left: 0;
-            width: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/recruitment/list.css?_v=${version}">
 </head>
 <body>
 <div class="page-group">
@@ -81,62 +46,77 @@
                     </div>
                 </div>
             </div>
-            <c:forEach items="${recruitmentInfoList}" var="recruitmentInfo">
-                <div class="card recruitmentInfo-card">
-                    <div class="card-header">${recruitmentInfo.title}</div>
-                    <div class="card-content">
-                        <div class="content-padded ">
-                            <div class="row">
-                                <div class="col-50">
+            <div class="recruitment-list">
+                <c:forEach items="${recruitmentInfoList}" var="recruitmentInfo">
+                    <a href="/recruitment/detail/${recruitmentInfo.recruitmentId}" external>
+                        <div class="card recruitmentInfo-card">
+                            <div class="card-header">${recruitmentInfo.title}</div>
+                            <div class="card-content">
+                                <div class="content-padded ">
                                     <div class="row">
-                                        <div class="col-label">登记编号</div>
-                                        <div class="col-content">${recruitmentInfo.registerCode}</div>
+                                        <div class="col-50">
+                                            <div class="row">
+                                                <div class="col-label">登记编号</div>
+                                                <div class="col-content">${recruitmentInfo.registerCode}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-50">
+                                            <div class="row">
+                                                <div class="col-label">实验分期</div>
+                                                <div class="col-content">${recruitmentInfo.practiceStages}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-50">
+                                            <div class="row">
+                                                <div class="col-label">药物名称</div>
+                                                <div class="col-content">${recruitmentInfo.drugName}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-50">
+                                            <div class="row">
+                                                <div class="col-label">招募人数</div>
+                                                <div class="col-content">${recruitmentInfo.recruitmentNumber}人</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-50">
+                                            <div class="row">
+                                                <div class="col-label">招募状态</div>
+                                                <div class="col-content">${recruitmentInfo.status.desc}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-label">适应症状</div>
+                                        <div class="col-content">${recruitmentInfo.indication}</div>
                                     </div>
                                 </div>
-                                <div class="col-50">
-                                    <div class="row">
-                                        <div class="col-label">实验分期</div>
-                                        <div class="col-content">${recruitmentInfo.practiceStages}</div>
-                                    </div>
+                                <div class="sign-up-panel">
+                                    <a href="javascript:void(0)"
+                                       item="sign_up_button"
+                                       class="button button-fill button-warning"
+                                       recruitmentId="${recruitmentInfo.recruitmentId}"
+                                    >报名</a>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-50">
-                                    <div class="row">
-                                        <div class="col-label">药物名称</div>
-                                        <div class="col-content">${recruitmentInfo.drugName}</div>
-                                    </div>
-                                </div>
-                                <div class="col-50">
-                                    <div class="row">
-                                        <div class="col-label">招募人数</div>
-                                        <div class="col-content">${recruitmentInfo.recruitmentNumber}人</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-50">
-                                    <div class="row">
-                                        <div class="col-label">招募状态</div>
-                                        <div class="col-content">${recruitmentInfo.status.desc}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-label">适应症状</div>
-                                <div class="col-content">${recruitmentInfo.indication}</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </c:forEach>
+                    </a>
+                </c:forEach>
+            </div>
         </div>
-        <%@ include file="../components/footer.jsp" %>
+        <jsp:include page="../components/footer.jsp">
+            <jsp:param value="recruitmentList" name="menuItem"/>
+        </jsp:include>
     </div>
 </div>
 
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/recruitment/list.js?_v=${version}' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/recruitment/list.js?_v=${version}'
+        charset="utf-8"></script>
 </body>
 </html>

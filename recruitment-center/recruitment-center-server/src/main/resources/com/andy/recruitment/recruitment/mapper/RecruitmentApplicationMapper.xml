@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.andy.recruitment.recruitment.mapper.RecruitmentApplicationMapper">
+    <resultMap id="baseResultMap"
+      type="com.andy.recruitment.recruitment.model.RecruitmentApplicationDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="recruitment_id" property="recruitmentId" jdbcType="BIGINT"/>
+        <result column="recruitment_register_code" property="recruitmentRegisterCode"
+          jdbcType="VARCHAR"/>
+        <result column="patient_id" property="patientId" jdbcType="BIGINT"/>
+        <result column="doctor_id" property="doctorId" jdbcType="BIGINT"/>
+        <result column="status" property="status"
+          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="baseColumnList">
+        id,
+        recruitment_id,
+        recruitment_register_code,
+        patient_id,
+        doctor_id,
+        status,
+        created_by,
+        created_time,
+        updated_by,
+        updated_time
+    </sql>
+
+    <select id="select" resultMap="baseResultMap"
+      parameterType="com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam">
+        select
+        <include refid="baseColumnList"/>
+        from medical_clinical_recruitment_application
+        <where>
+            <if test="applicationId != null">
+                and application_id = #{applicationId, jdbcType=BIGINT}
+            </if>
+            <if test="recruitmentId != null">
+                and recruitment_id = #{recruitmentId, jdbcType=BIGINT}
+            </if>
+            <if test="patientId != null">
+                and patient_id = #{patientId, jdbcType=BIGINT}
+            </if>
+            <if test="doctorId != null">
+                and doctor_id = #{doctorId, jdbcType=BIGINT}
+            </if>
+            <if test="status != null">
+                and status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+            </if>
+            <if test="recruitmentRegisterCode != null and recruitmentRegisterCode != ''">
+                and recruitment_register_code = #{recruitmentRegisterCode, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+      parameterType="com.andy.recruitment.recruitment.model.RecruitmentApplicationDO">
+        insert into medical_clinical_recruitment_application (<include refid="baseColumnList"/>)
+        values(
+        #{id,jdbcType=BIGINT},
+        #{recruitmentId, jdbcType=BIGINT},
+        #{recruitmentRegisterCode, jdbcType=VARCHAR},
+        #{patientId, jdbcType=BIGINT},
+        #{doctorId, jdbcType=BIGINT},
+        #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+        #{createdBy, jdbcType=VARCHAR},
+        #{createdTime, jdbcType=TIMESTAMP},
+        #{updatedBy, jdbcType=VARCHAR},
+        #{updatedTime, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.andy.recruitment.recruitment.model.RecruitmentApplicationDO">
+        update medical_clinical_recruitment_application
+        <set>
+            <if test="status != null ">
+                status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+            </if>
+        </set>
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+        </where>
+    </update>
+
+</mapper>

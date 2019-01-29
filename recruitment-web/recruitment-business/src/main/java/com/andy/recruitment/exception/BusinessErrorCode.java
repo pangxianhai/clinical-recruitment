@@ -24,6 +24,11 @@ public enum BusinessErrorCode {
      */
     REGION_ADDRESS_ERROR(102003),
 
+    /**
+     * 招募信息不能为空
+     */
+    RECRUITMENT_ADD_FAILE(102100),
+
     ;
 
     private int code;
