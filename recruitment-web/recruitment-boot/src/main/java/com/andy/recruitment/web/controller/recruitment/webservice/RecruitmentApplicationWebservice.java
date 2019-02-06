@@ -1,10 +1,10 @@
 package com.andy.recruitment.web.controller.recruitment.webservice;
 
 import com.andy.recruitment.patient.PatientAO;
-import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.recruitment.ao.RecruitmentApplicationAO;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
+import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryParamRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
@@ -36,10 +36,14 @@ public class RecruitmentApplicationWebservice {
 
     private final PatientAO patientAO;
 
+    private final UserAO userAO;
+
     @Autowired
-    public RecruitmentApplicationWebservice(RecruitmentApplicationAO recruitmentApplicationAO, PatientAO patientAO) {
+    public RecruitmentApplicationWebservice(RecruitmentApplicationAO recruitmentApplicationAO, PatientAO patientAO,
+                                            UserAO userAO) {
         this.recruitmentApplicationAO = recruitmentApplicationAO;
         this.patientAO = patientAO;
+        this.userAO = userAO;
     }
 
     @Login
@@ -47,9 +51,8 @@ public class RecruitmentApplicationWebservice {
     public boolean applicationRecruitment(@RequestBody RecruitmentApplicationRQ applicationRQ) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
-        PatientInfo patientInfo = this.patientAO.getPatientInfoByUserId(loginInfo.getUserId());
-        applicationInfo.setPatientId(patientInfo.getPatientId());
-        this.recruitmentApplicationAO.addRecruitmentApplication(applicationInfo, ServletContext.getLoginUname());
+        this.recruitmentApplicationAO.addRecruitmentApplication(loginInfo.getUserId(), applicationInfo,
+                                                                ServletContext.getLoginUname());
         return true;
     }
 

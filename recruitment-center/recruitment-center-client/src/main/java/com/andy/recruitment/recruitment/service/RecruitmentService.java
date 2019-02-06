@@ -17,8 +17,9 @@ public interface RecruitmentService {
      *
      * @param recruitmentInfo 招募信息
      * @param operator        添加人
+     * @return 招募ID
      */
-    void addRecruitmentInfo(RecruitmentInfo recruitmentInfo, String operator);
+    Long addRecruitmentInfo(RecruitmentInfo recruitmentInfo, String operator);
 
     /**
      * 更新招募信息

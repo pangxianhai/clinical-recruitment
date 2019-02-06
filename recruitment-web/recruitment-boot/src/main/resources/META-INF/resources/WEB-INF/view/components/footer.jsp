@@ -17,4 +17,26 @@
             <span class="tab-label">我</span>
         </a>
     </c:if>
+    <c:if test="${userInfo.userType.code == 1}">
+        <a class="tab-item external ${recruitmentList}" href="/recruitment/list">
+            <span class="icon icon-menu"></span>
+            <span class="tab-label">任务列表</span>
+        </a>
+        <a class="tab-item external" href="#">
+            <span class="icon icon-message"></span>
+            <span class="tab-label">申请记录</span>
+        </a>
+        <a class="tab-item external" href="#">
+            <span class="icon icon-app"></span>
+            <span class="tab-label">患者列表</span>
+        </a>
+        <a class="tab-item external" href="#">
+            <span class="icon icon-card"></span>
+            <span class="tab-label">医生列表</span>
+        </a>
+        <a class="tab-item external" href="#">
+            <span class="icon icon-me"></span>
+            <span class="tab-label">我</span>
+        </a>
+    </c:if>
 </nav>

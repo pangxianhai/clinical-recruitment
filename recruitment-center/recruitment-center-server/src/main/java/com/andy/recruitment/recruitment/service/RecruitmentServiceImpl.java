@@ -36,7 +36,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     @Override
-    public void addRecruitmentInfo(RecruitmentInfo recruitmentInfo, String operator) {
+    public Long addRecruitmentInfo(RecruitmentInfo recruitmentInfo, String operator) {
         RecruitmentInfoDO recruitmentInfoDO = RecruitmentUtil.transformRecruitmentInfoDO(recruitmentInfo);
         recruitmentInfoDO.setStatus(RecruitmentStatus.NOT_BEGIN);
         recruitmentInfoDO.setCreatedBy(operator);
@@ -45,6 +45,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         AssertUtil.assertBoolean(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_ADD_FAILE);
         });
+        return recruitmentInfoDO.getId();
     }
 
     @Override

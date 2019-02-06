@@ -1,238 +1,307 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
-    <title>添加招募信息</title>
-    <link rel="stylesheet" href="/static/css/element.css">
-    <style>
-        body {
-            margin: 0;
-        }
-
-        .el-header {
-            padding: 0;
-            background: #3FB83C;
-            color: #FFF;
-            height: 4em !important;
-            line-height: 4em;
-            font-size: 15px;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1;
-        }
-
-        .el-header .title {
-            width: 100%;
-            text-align: center;
-            float: left;
-        }
-
-        .el-main {
-            padding: 5em 5px 0 5px;
-        }
-
-        .submit-item {
-            text-align: center;
-        }
-
-        .header-left {
-            float: left;
-            line-height: 4em;
-            position: fixed;
-            padding-left: 8px;
-        }
-
-        .el-message {
-            width: 98%;
-            min-width: auto !important;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/static/css/lib/sm.min.css">
+    <link rel="stylesheet" href="/static/css/recruitment/add.css?_v=${version}">
 </head>
 <body>
-<div id="recruitment_add">
-    <el-container>
-        <el-header>
-            <i class="el-icon-arrow-left header-left"></i>
-            <span class="title">添加招募信息</span>
-        </el-header>
-        <el-main>
-            <el-form :model="recruitmentAddForm"
-                     :rules="recruitmentAddRules"
-                     ref="recruitmentAddForm">
-                <el-form-item prop="title">
-                    <el-input v-model="recruitmentAddForm.title" placeholder="标题"></el-input>
-                </el-form-item>
-                <el-form-item prop="registerCode">
-                    <el-input v-model="recruitmentAddForm.registerCode"
-                              placeholder="登记编号"></el-input>
-                </el-form-item>
-                <el-form-item prop="practiceStages">
-                    <el-input v-model="recruitmentAddForm.practiceStages"
-                              placeholder="实验分期"></el-input>
-                </el-form-item>
-                <el-form-item prop="indication">
-                    <el-input v-model="recruitmentAddForm.indication" placeholder="适应症状"></el-input>
-                </el-form-item>
-                <el-form-item prop="drugName">
-                    <el-input v-model="recruitmentAddForm.drugName" placeholder="药物名称"></el-input>
-                </el-form-item>
-                <el-form-item prop="drugType">
-                    <el-input v-model="recruitmentAddForm.drugType" placeholder="药物类型"></el-input>
-                </el-form-item>
-                <el-form-item prop="recruitmentNumber">
-                    <el-input v-model.number="recruitmentAddForm.recruitmentNumber"
-                              placeholder="招募人数"></el-input>
-                </el-form-item>
-                <el-form-item prop="introduction">
-                    <el-input v-model="recruitmentAddForm.introduction" placeholder="简介"></el-input>
-                </el-form-item>
-                <el-form-item prop="treatmentPlan">
-                    <el-input v-model="recruitmentAddForm.treatmentPlan"
-                              placeholder="治疗方案"></el-input>
-                </el-form-item>
-                <el-form-item prop="screeningStandard">
-                    <el-input v-model="recruitmentAddForm.screeningStandard"
-                              placeholder="初筛要点"></el-input>
-                </el-form-item>
-                <el-form-item prop="entryCriteria">
-                    <el-input v-model="recruitmentAddForm.entryCriteria"
-                              placeholder="入排标准"></el-input>
-                </el-form-item>
-                <el-form-item prop="researchCenter">
-                    <el-input v-model="recruitmentAddForm.researchCenter"
-                              placeholder="研究中心"></el-input>
-                </el-form-item>
-                <el-form-item prop="patientRights">
-                    <el-input v-model="recruitmentAddForm.patientRights"
-                              placeholder="患者权益"></el-input>
-                </el-form-item>
-                <el-form-item prop="startTime">
-                    <el-date-picker style="width: 100%" :editable="false"
-                                    v-model="recruitmentAddForm.startTime"
-                                    type="datetime"
-                                    placeholder="启始时间"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    format="yyyy年MM月dd HH时mm分ss秒">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item prop="stopTime">
-                    <el-date-picker style="width: 100%" :editable="false"
-                                    v-model="recruitmentAddForm.stopTime"
-                                    type="datetime"
-                                    placeholder="截至时间"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    format="yyyy年MM月dd HH时mm分ss秒">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item class="submit-item">
-                    <el-button
-                            type="primary"
-                            @click="recruitmentAddOnSubmit('recruitmentAddForm')">
-                        提交
-                    </el-button>
-                    <el-button>取消</el-button>
-                </el-form-item>
-            </el-form>
-        </el-main>
-    </el-container>
+<div class="page-group">
+    <form id="recruitmentAddForm">
+        <div class="page page-current">
+            <header class="bar bar-nav">
+                <h1 class="title">发布任务</h1>
+            </header>
+            <div class="content">
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="title" type="text" placeholder="标题">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="registerCode" type="text" placeholder="登记编号">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="practiceStages" type="text" placeholder="实验分期">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="indication" type="text" placeholder="适应症状">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="drugName" type="text" placeholder="药物名称">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="drugType" type="text" placeholder="药物类型">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="recruitmentNumber" type="text"
+                                               placeholder="招募人数">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="startTime" data-toggle='date' type="text"
+                                               placeholder="开始时间">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input name="stopTime" data-toggle='date' type="text"
+                                               placeholder="截至时间">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <div class="content-block">
+                        <p>
+                            <a id="open-introduction"
+                               href="javascript:void(0)"
+                               class="button button-fill ">下一步</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <jsp:include page="../components/footer.jsp">
+                <jsp:param value="recruitmentList" name="menuItem"/>
+            </jsp:include>
+        </div>
+        <div class="popup popup-introduction">
+            <header class="bar bar-nav">
+                <h1 class="title">简介</h1>
+            </header>
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <textarea name="introduction" placeholder="简介"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="content-block">
+                    <p>
+                        <a id="open-treatment-plan"
+                           href="javascript:void(0)"
+                           class="button button-fill">下一步</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-treatment-plan">
+            <header class="bar bar-nav">
+                <h1 class="title">治疗方案</h1>
+            </header>
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <textarea name="treatmentPlan" placeholder="治疗方案"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="content-block">
+                    <p>
+                        <a id="open-screening-standard"
+                           href="javascript:void(0)"
+                           class="button button-fill">下一步</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-screening-standard">
+            <header class="bar bar-nav">
+                <h1 class="title">初筛要点</h1>
+            </header>
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <textarea name="screeningStandard"
+                                              placeholder="初筛要点"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="content-block">
+                    <p>
+                        <a id="open-entry-criteria"
+                           href="javascript:void(0)"
+                           class="button button-fill">下一步</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-entry-criteria">
+            <header class="bar bar-nav">
+                <h1 class="title">入排标准</h1>
+            </header>
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <textarea name="entryCriteria" placeholder="入排标准"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="content-block">
+                    <p>
+                        <a id="open-patient-rights"
+                           href="javascript:void(0)"
+                           class="button button-fill">下一步</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-patient-rights">
+            <header class="bar bar-nav">
+                <h1 class="title">患者权益</h1>
+            </header>
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <textarea name="patientRights" placeholder="患者权益"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="content-block">
+                    <p>
+                        <a id="open-research-center"
+                           href="javascript:void(0)"
+                           class="button button-fill">下一步</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-research-center">
+            <header class="bar bar-nav">
+                <h1 class="title">研究中心</h1>
+            </header>
+            <div class="list-block">
+                <ul class="research-center-list">
+                    <li id="center-node">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input" style="float: left;width: 70%">
+                                    <input name="researchCenterName" placeholder="研究中心名称"/>
+                                    <input item="choice-center-address" name="researchCenterAddress"
+                                           placeholder="选择研究中心地址"/>
+                                </div>
+                                <div style="float: left;width: 30%">
+                                    <p class="buttons-row">
+                                        <a href="javascript:void(0)"
+                                           item="add-center-button"
+                                           class="button button-round active">添加</a>
+                                        <a href="javascript:void(0)"
+                                           item="delete-center-button"
+                                           class="button button-round">删除</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="content-block">
+                    <p><a id="addSubmit" href="javascript:void(0)" class="button button-fill">提交</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 </body>
-<script src="/static/js/lib/vue.js"></script>
-<script src="/static/js/lib/element.js"></script>
-<script src="/static/js/lib/axios.min.js"></script>
-<script src="/static/js/util/ajax.js"></script>
-<script type="text/javascript">
-  new Vue({
-    el: '#recruitment_add',
-    data: function () {
-      return {
-        recruitmentAddForm: {
-          title: '',
-          registerCode: '',
-          practiceStages: '',
-          indication: '',
-          drugName: '',
-          drugType: '',
-          recruitmentNumber: '',
-          introduction: '',
-          treatmentPlan: '',
-          screeningStandard: '',
-          entryCriteria: '',
-          researchCenter: '',
-          patientRights: '',
-          startTime: '',
-          stopTime: ''
-        },
-        recruitmentAddRules: {
-          title: [
-            {required: true, message: '请输入标题', trigger: 'blur'}
-          ],
-          registerCode: [
-            {required: true, message: '请输入登记编号', trigger: 'blur'}
-          ],
-          practiceStages: [
-            {required: true, message: '请输入实验分期', trigger: 'blur'}
-          ],
-          indication: [
-            {required: true, message: '请输入适应症状', trigger: 'blur'}
-          ],
-          drugName: [
-            {required: true, message: '请输入药物名称', trigger: 'blur'}
-          ],
-          drugType: [
-            {required: true, message: '请输入药物类型', trigger: 'blur'}
-          ],
-          recruitmentNumber: [
-            {required: true, message: '请输入招募人数'},
-            {type: 'number', message: '招募人数必须为数字值'}
-          ],
-          introduction: [
-            {required: true, message: '请输入简介', trigger: 'blur'}
-          ],
-          treatmentPlan: [
-            {required: true, message: '请输入治疗方案', trigger: 'blur'}
-          ],
-          screeningStandard: [
-            {required: true, message: '请输入初筛要点', trigger: 'blur'}
-          ],
-          entryCriteria: [
-            {required: true, message: '请输入入排标准', trigger: 'blur'}
-          ],
-          researchCenter: [
-            {required: true, message: '请输入研究中心', trigger: 'blur'}
-          ],
-          patientRights: [
-            {required: true, message: '请输入患者权益', trigger: 'blur'}
-          ],
-          startTime: [
-            {required: true, message: '请输入启始时间', trigger: 'blur'}
-          ],
-          stopTime: [
-            {required: true, message: '请输入截至时间', trigger: 'blur'}
-          ]
-        }
-      }
-    },
-    methods: {
-      recruitmentAddOnSubmit: function (recruitmentAddFormName) {
-        this.$refs[recruitmentAddFormName].validate((valid) => {
-          if (valid) {
-            this.ajax.post('/recruitment/add.json', this.recruitmentAddForm).then((success) => {
-              console.log(success);
-            });
-          } else {
-            console.log(this.recruitmentAddForm);
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      }
-    }
-  })
-</script>
+<script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/sm-city-picker.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/recruitment/add.js?_v=${version}'
+        charset="utf-8"></script>
 </html>

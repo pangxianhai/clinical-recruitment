@@ -4,14 +4,19 @@ import com.andy.recruitment.recruitment.constant.RecruitmentApplicationStatus;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
+import com.andy.recruitment.region.ao.RegionAO;
+import com.andy.recruitment.region.model.AddressInfo;
+import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryParamRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
+import com.andy.recruitment.web.controller.recruitment.request.ResearchCenterAddRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
+import com.xgimi.commons.util.StringUtil;
 import com.xgimi.util.BeanUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +36,14 @@ public class RecruitmentUtil {
         }
         RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
         BeanUtil.copyProperties(recruitmentAddRQ, recruitmentInfo);
-        recruitmentInfo.setStartTime(DateUtil.parse(recruitmentAddRQ.getStartTime()));
-        recruitmentInfo.setStopTime(DateUtil.parse(recruitmentAddRQ.getStopTime()));
+        if (StringUtil.isNotEmpty(recruitmentAddRQ.getStartTime())) {
+            String startTime = recruitmentAddRQ.getStartTime() + " 00:00:00";
+            recruitmentInfo.setStartTime(DateUtil.parse(startTime));
+        }
+        if (StringUtil.isNotEmpty(recruitmentAddRQ.getStopTime())) {
+            String stopTime = recruitmentAddRQ.getStartTime() + " 23:59:59";
+            recruitmentInfo.setStopTime(DateUtil.parse(stopTime));
+        }
         return recruitmentInfo;
     }
 
@@ -94,5 +105,35 @@ public class RecruitmentUtil {
         BeanUtil.copyProperties(updateRQ, applicationInfo);
         applicationInfo.setStatus(RecruitmentApplicationStatus.parse(updateRQ.getStatus()));
         return applicationInfo;
+    }
+
+    public static ResearchCenterInfo transformResearchCenterInfo(RegionAO regionAO, ResearchCenterAddRQ addRQ) {
+        if (null == addRQ) {
+            return null;
+        }
+        ResearchCenterInfo researchCenterInfo = new ResearchCenterInfo();
+        researchCenterInfo.setName(addRQ.getName());
+        AddressInfo addressInfo = regionAO.parseAddressInfo(addRQ.getAddress());
+        if (null != addressInfo) {
+            if (null != addressInfo.getProvince()) {
+                researchCenterInfo.setProvinceId(addressInfo.getProvince().getRegionId());
+            }
+            if (null != addressInfo.getCity()) {
+                researchCenterInfo.setCityId(addressInfo.getCity().getRegionId());
+            }
+            if (null != addressInfo.getDistrict()) {
+                researchCenterInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
+            }
+        }
+        return researchCenterInfo;
+    }
+
+    public static List<ResearchCenterInfo> transformResearchCenterInfo(RegionAO regionAO,
+                                                                       List<ResearchCenterAddRQ> addRQList) {
+        if (CollectionUtil.isEmpty(addRQList)) {
+            return null;
+        }
+        return addRQList.stream().map((addRQ) -> RecruitmentUtil.transformResearchCenterInfo(regionAO, addRQ)).filter(
+            Objects::nonNull).collect(Collectors.toList());
     }
 }

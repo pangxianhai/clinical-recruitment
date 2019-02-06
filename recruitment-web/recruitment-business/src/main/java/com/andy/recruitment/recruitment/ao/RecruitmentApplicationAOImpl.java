@@ -2,11 +2,17 @@ package com.andy.recruitment.recruitment.ao;
 
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
+import com.andy.recruitment.patient.model.PatientInfo;
+import com.andy.recruitment.patient.service.PatientInfoService;
+import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.recruitment.service.RecruitmentApplicationService;
 import com.andy.recruitment.recruitment.service.RecruitmentService;
+import com.andy.recruitment.user.constant.UserType;
+import com.andy.recruitment.user.model.UserInfo;
+import com.andy.recruitment.user.service.UserInfoService;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.asserts.AssertUtil;
@@ -25,21 +31,42 @@ public class RecruitmentApplicationAOImpl implements RecruitmentApplicationAO {
 
     private final RecruitmentService recruitmentService;
 
+    private final UserInfoService userInfoService;
+
+    private final PatientInfoService patientInfoService;
+
     @Autowired
     public RecruitmentApplicationAOImpl(RecruitmentApplicationService recruitmentApplicationService,
-                                        RecruitmentService recruitmentService) {
+                                        RecruitmentService recruitmentService, UserInfoService userInfoService,
+                                        PatientInfoService patientInfoService) {
         this.recruitmentApplicationService = recruitmentApplicationService;
         this.recruitmentService = recruitmentService;
+        this.userInfoService = userInfoService;
+        this.patientInfoService = patientInfoService;
     }
 
     @Override
-    public void addRecruitmentApplication(RecruitmentApplicationInfo applicationInfo, String operator) {
+    public void addRecruitmentApplication(Long userId, RecruitmentApplicationInfo applicationInfo, String operator) {
+        UserInfo userInfo = this.userInfoService.getUserInfoByUserId(userId);
+        AssertUtil.assertNull(userInfo, () -> {
+            throw new BusinessException(BusinessErrorCode.USER_NOT_EMPTY);
+        });
+        AssertUtil.assertBoolean(UserType.PATIENT.equals(userInfo.getUserType()), () -> {
+            throw new BusinessException(BusinessErrorCode.RECRUITMENT_APPLICATION_USER_ERROR);
+        });
         RecruitmentInfo recruitmentInfo = this.recruitmentService.getRecruitmentInfoById(
             applicationInfo.getRecruitmentId());
         AssertUtil.assertNull(recruitmentInfo, () -> {
-            throw new BusinessException(BusinessErrorCode.RECRUITMENT_ADD_FAILE);
+            throw new BusinessException(BusinessErrorCode.RECRUITMENT_ADD_FAILED);
         });
-
+        AssertUtil.assertBoolean(! RecruitmentStatus.NOT_BEGIN.equals(recruitmentInfo.getStatus()), () -> {
+            throw new BusinessException(BusinessErrorCode.RECRUITMENT_NOT_BEGIN);
+        });
+        AssertUtil.assertBoolean(! RecruitmentStatus.FINISHED.equals(recruitmentInfo.getStatus()), () -> {
+            throw new BusinessException(BusinessErrorCode.RECRUITMENT_HAS_FINISHED);
+        });
+        PatientInfo patientInfo = this.patientInfoService.getPatientInfoByUserId(userId);
+        applicationInfo.setPatientId(patientInfo.getPatientId());
         applicationInfo.setRecruitmentRegisterCode(recruitmentInfo.getRegisterCode());
         this.recruitmentApplicationService.addRecruitmentApplication(applicationInfo, operator);
     }

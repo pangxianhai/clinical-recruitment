@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -120,9 +121,12 @@
                 </div>
             </div>
         </div>
-        <nav class="bar bar-tab">
-            <a href="javascript:void(0)" id="sign_up_button" class="button button-fill button-warning">报名</a>
-        </nav>
+        <c:if test="${userInfo.userType.code == 3}">
+            <nav class="bar bar-tab">
+                <a href="javascript:void(0)" id="sign_up_button"
+                   class="button button-fill button-warning">报名</a>
+            </nav>
+        </c:if>
     </div>
 </div>
 </body>

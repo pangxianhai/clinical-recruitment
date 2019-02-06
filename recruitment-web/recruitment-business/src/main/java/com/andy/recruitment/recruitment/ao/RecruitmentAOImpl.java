@@ -31,8 +31,8 @@ public class RecruitmentAOImpl implements RecruitmentAO {
     }
 
     @Override
-    public void addRecruitmentInfo(RecruitmentInfo recruitmentInfo, String operator) {
-        this.recruitmentService.addRecruitmentInfo(recruitmentInfo, operator);
+    public Long addRecruitmentInfo(RecruitmentInfo recruitmentInfo, String operator) {
+        return this.recruitmentService.addRecruitmentInfo(recruitmentInfo, operator);
     }
 
     @Override

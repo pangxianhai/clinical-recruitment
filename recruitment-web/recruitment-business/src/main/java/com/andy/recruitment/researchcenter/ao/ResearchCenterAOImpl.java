@@ -2,6 +2,7 @@ package com.andy.recruitment.researchcenter.ao;
 
 import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.researchcenter.service.ResearchCenterService;
+import com.xgimi.commons.util.CollectionUtil;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,18 +23,20 @@ public class ResearchCenterAOImpl implements ResearchCenterAO {
     }
 
     @Override
-    public void addResearchCenter(ResearchCenterInfo centerInfo, String operator) {
-        this.researchCenterService.addResearchCenter(centerInfo, operator);
-    }
-
-    @Override
-    public void updateResearchCenter(ResearchCenterInfo centerInfo, String operator) {
-        this.researchCenterService.updateResearchCenter(centerInfo, operator);
-    }
-
-    @Override
-    public void deleteResearchCenterInfo(Long centerId) {
-        this.researchCenterService.deleteResearchCenterInfo(centerId);
+    public void addResearchCenter(Long recruitmentId, List<ResearchCenterInfo> centerInfoList, String operator) {
+        List<ResearchCenterInfo> researchCenterInfoList = this.researchCenterService.getResearchCenterByRecruitmentId(
+            recruitmentId);
+        if (CollectionUtil.isNotEmpty(researchCenterInfoList)) {
+            for (ResearchCenterInfo researchCenterInfo : researchCenterInfoList) {
+                this.researchCenterService.deleteResearchCenterInfo(researchCenterInfo.getCenterId());
+            }
+        }
+        if (CollectionUtil.isNotEmpty(centerInfoList)) {
+            for (ResearchCenterInfo researchCenterInfo : centerInfoList) {
+                researchCenterInfo.setRecruitmentId(recruitmentId);
+                this.researchCenterService.addResearchCenter(researchCenterInfo, operator);
+            }
+        }
     }
 
     @Override

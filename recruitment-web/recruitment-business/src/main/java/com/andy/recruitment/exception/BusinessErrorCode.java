@@ -27,7 +27,20 @@ public enum BusinessErrorCode {
     /**
      * 招募信息不能为空
      */
-    RECRUITMENT_ADD_FAILE(102100),
+    RECRUITMENT_ADD_FAILED(102100),
+    /**
+     * 该招募尚未开始
+     */
+    RECRUITMENT_NOT_BEGIN(102101),
+    /**
+     * 该招募信息已经结束
+     */
+    RECRUITMENT_HAS_FINISHED(102102),
+
+    /**
+     * 您不是患者不能报名招募
+     */
+    RECRUITMENT_APPLICATION_USER_ERROR(102200),
 
     ;
 

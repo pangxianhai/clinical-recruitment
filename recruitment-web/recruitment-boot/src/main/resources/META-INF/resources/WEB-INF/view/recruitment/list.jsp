@@ -16,6 +16,12 @@
 <div class="page-group">
     <div class="page page-current">
         <header class="bar bar-nav">
+            <c:if test="${userInfo.userType.code == 1}">
+                <a class="button pull-right" href="/recruitment/add">
+                    发布任务
+                </a>
+            </c:if>
+
             <h1 class="title">任务大厅</h1>
         </header>
         <div class="content">
@@ -94,13 +100,15 @@
                                         <div class="col-content">${recruitmentInfo.indication}</div>
                                     </div>
                                 </div>
-                                <div class="sign-up-panel">
-                                    <a href="javascript:void(0)"
-                                       item="sign_up_button"
-                                       class="button button-fill button-warning"
-                                       recruitmentId="${recruitmentInfo.recruitmentId}"
-                                    >报名</a>
-                                </div>
+                                <c:if test="${userInfo.userType.code == 3}">
+                                    <div class="sign-up-panel">
+                                        <a href="javascript:void(0)"
+                                           item="sign_up_button"
+                                           class="button button-fill button-warning"
+                                           recruitmentId="${recruitmentInfo.recruitmentId}"
+                                        >报名</a>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </a>
@@ -112,7 +120,6 @@
         </jsp:include>
     </div>
 </div>
-
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>

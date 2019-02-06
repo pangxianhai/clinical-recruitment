@@ -1,6 +1,7 @@
 package com.andy.recruitment.web.controller.recruitment.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 招募信息添加参数
@@ -56,7 +57,7 @@ public class RecruitmentAddRQ implements Serializable {
     /**
      * 研究中心
      */
-    private String researchCenter;
+    private List<ResearchCenterAddRQ> researchCenterList;
     /**
      * 患者权益
      */
@@ -158,12 +159,12 @@ public class RecruitmentAddRQ implements Serializable {
         this.entryCriteria = entryCriteria;
     }
 
-    public String getResearchCenter() {
-        return researchCenter;
+    public List<ResearchCenterAddRQ> getResearchCenterList() {
+        return researchCenterList;
     }
 
-    public void setResearchCenter(String researchCenter) {
-        this.researchCenter = researchCenter;
+    public void setResearchCenterList(List<ResearchCenterAddRQ> researchCenterList) {
+        this.researchCenterList = researchCenterList;
     }
 
     public String getPatientRights() {

@@ -11,27 +11,13 @@ import java.util.List;
 public interface ResearchCenterAO {
 
     /**
-     * 添加研究中心
+     * 添加招募信息的研究中心
      *
-     * @param centerInfo 研究中心信息
-     * @param operator   操作人
+     * @param recruitmentId  招募ID
+     * @param centerInfoList 研究中心列表
+     * @param operator       操作人
      */
-    void addResearchCenter(ResearchCenterInfo centerInfo, String operator);
-
-    /**
-     * 更新研究中心信息
-     *
-     * @param centerInfo 研究中心信息
-     * @param operator   操作人
-     */
-    void updateResearchCenter(ResearchCenterInfo centerInfo, String operator);
-
-    /**
-     * 删除研究中心信息
-     *
-     * @param centerId 研究中心ID
-     */
-    void deleteResearchCenterInfo(Long centerId);
+    void addResearchCenter(Long recruitmentId, List<ResearchCenterInfo> centerInfoList, String operator);
 
     /**
      * 根据招募ID查询研究中心
