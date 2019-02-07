@@ -5,7 +5,7 @@ import com.andy.recruitment.recruitment.ao.RecruitmentApplicationAO;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
 import com.andy.recruitment.user.ao.UserAO;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryParamRQ;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
@@ -59,7 +59,7 @@ public class RecruitmentApplicationWebservice {
     @Login
     @RequestMapping(value = "", method = RequestMethod.GET)
     public PageResult<RecruitmentApplicationVO> getApplicationInfo(
-        @MyParameter RecruitmentApplicationQueryParamRQ queryParamRQ) {
+        @MyParameter RecruitmentApplicationQueryRQ queryParamRQ) {
         RecruitmentApplicationQueryParam queryParam = RecruitmentUtil.transformApplicationQueryParam(queryParamRQ);
         PageResult<RecruitmentApplicationInfo> pageResult = this.recruitmentApplicationAO.getRecruitmentApplicationInfo(
             queryParam, queryParamRQ.getPaginator());

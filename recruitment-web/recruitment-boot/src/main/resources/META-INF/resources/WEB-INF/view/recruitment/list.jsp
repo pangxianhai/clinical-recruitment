@@ -21,107 +21,54 @@
                     发布任务
                 </a>
             </c:if>
-
             <h1 class="title">任务大厅</h1>
         </header>
-        <div class="content">
-            <div class="searchbar row">
-                <div class="search-input col-85">
-                    <input type="search" id='search' placeholder='输入招募项目、登记编号、适应症状进行搜索'/>
-                </div>
-                <a class="button button-fill button-primary col-15">
-                    <span class="icon icon-search"></span>
-                </a>
-            </div>
-            <div class="content-padded">
-                <div class="row">
-                    <div class="col-33">
-                        <p style="margin: 0">智能推荐</p>
-                    </div>
-                    <div class="col-33">
-                        <input style="width: 100%;font-size: 14px;"
-                               type="text"
-                               value="所有疾病类型"
-                               id='indicationPicker'/>
-                    </div>
-                    <div class="col-33">
-                        <input style="width: 100%;font-size: 14px;"
-                               type="text"
-                               value="所有类型"
-                               id='addressPicker'/>
-                    </div>
-                </div>
-            </div>
-            <div class="recruitment-list">
-                <c:forEach items="${recruitmentInfoList}" var="recruitmentInfo">
-                    <a href="/recruitment/detail/${recruitmentInfo.recruitmentId}" external>
-                        <div class="card recruitmentInfo-card">
-                            <div class="card-header">${recruitmentInfo.title}</div>
-                            <div class="card-content">
-                                <div class="content-padded ">
-                                    <div class="row">
-                                        <div class="col-50">
-                                            <div class="row">
-                                                <div class="col-label">登记编号</div>
-                                                <div class="col-content">${recruitmentInfo.registerCode}</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-50">
-                                            <div class="row">
-                                                <div class="col-label">实验分期</div>
-                                                <div class="col-content">${recruitmentInfo.practiceStages}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-50">
-                                            <div class="row">
-                                                <div class="col-label">药物名称</div>
-                                                <div class="col-content">${recruitmentInfo.drugName}</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-50">
-                                            <div class="row">
-                                                <div class="col-label">招募人数</div>
-                                                <div class="col-content">${recruitmentInfo.recruitmentNumber}人</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-50">
-                                            <div class="row">
-                                                <div class="col-label">招募状态</div>
-                                                <div class="col-content">${recruitmentInfo.status.desc}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-label">适应症状</div>
-                                        <div class="col-content">${recruitmentInfo.indication}</div>
-                                    </div>
-                                </div>
-                                <c:if test="${userInfo.userType.code == 3}">
-                                    <div class="sign-up-panel">
-                                        <a href="javascript:void(0)"
-                                           item="sign_up_button"
-                                           class="button button-fill button-warning"
-                                           recruitmentId="${recruitmentInfo.recruitmentId}"
-                                        >报名</a>
-                                    </div>
-                                </c:if>
-                            </div>
-                        </div>
-                    </a>
-                </c:forEach>
-            </div>
-        </div>
         <jsp:include page="../components/footer.jsp">
             <jsp:param value="recruitmentList" name="menuItem"/>
         </jsp:include>
+        <div class="content">
+            <form id="searchForm">
+                <div class="searchbar row">
+                    <div class="search-input col-85">
+                        <input type="search" name="queryText" id='search'
+                               placeholder='输入招募项目、登记编号、适应症状进行搜索'/>
+                    </div>
+                    <a href="javascript:void(0)" id="searchButton"
+                       class="button button-fill button-primary col-15">
+                        <span class="icon icon-search"></span>
+                    </a>
+                </div>
+                <div class="content-padded">
+                    <div class="row">
+                        <div class="col-33">
+                            <p style="margin: 0">智能推荐</p>
+                        </div>
+                        <div class="col-33">
+                            <input style="width: 100%;font-size: 14px;"
+                                   type="text"
+                                   placeholder="所有疾病类型"
+                                   name="indication"
+                                   id='indicationPicker'/>
+                        </div>
+                        <div class="col-33">
+                            <input style="width: 100%;font-size: 14px;"
+                                   type="text"
+                                   placeholder="选择地区"
+                                   name="addressText"
+                                   id='addressPicker'/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div id="recruitment-list" class="recruitment-list"></div>
+        </div>
     </div>
 </div>
+<input type="hidden" id="indicationOptions" value="${indicationOptions}">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/sm-city-picker.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/recruitment/list.js?_v=${version}'
         charset="utf-8"></script>

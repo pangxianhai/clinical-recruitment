@@ -26,10 +26,26 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="baseColumnList">
-        id,register_code,title,practice_stages,indication,drug_name,drug_type,recruitment_number,
-        introduction,treatment_plan,screening_standard,entry_criteria,patient_rights,
-        start_time,stop_time,
-        status,created_by,created_time,updated_by,updated_time
+        id,
+        register_code,
+        title,
+        practice_stages,
+        indication,
+        drug_name,
+        drug_type,
+        recruitment_number,
+        introduction,
+        treatment_plan,
+        screening_standard,
+        entry_criteria,
+        patient_rights,
+        start_time,
+        stop_time,
+        status,
+        created_by,
+        created_time,
+        updated_by,
+        updated_time
     </sql>
     <select id="select" resultMap="baseResultMap"
       parameterType="com.andy.recruitment.recruitment.model.RecruitmentQueryParam">
@@ -37,6 +53,27 @@
         <include refid="baseColumnList"/>
         from medical_clinical_recruitment_info
         <where>
+            <if test="queryText != null and queryText != ''">
+                and (register_code like CONCAT('%', #{queryText,jdbcType=VARCHAR},'%') or
+                title like CONCAT('%', #{queryText,jdbcType=VARCHAR},'%') or
+                indication like CONCAT('%', #{queryText,jdbcType=VARCHAR},'%'))
+            </if>
+            <if test="provinceId != null or cityId != null or districtId != null">
+                and id in (
+                select recruitment_id from research_center_info
+                <where>
+                    <if test="provinceId != null">
+                        and province_id = #{provinceId, jdbcType=BIGINT}
+                    </if>
+                    <if test="cityId != null">
+                        and city_id = #{cityId, jdbcType=BIGINT}
+                    </if>
+                    <if test="districtId != null">
+                        and district_id = #{districtId, jdbcType=BIGINT}
+                    </if>
+                </where>
+                )
+            </if>
             <if test="recruitmentId != null">
                 and id = #{recruitmentId, jdbcType=BIGINT}
             </if>
@@ -45,6 +82,9 @@
             </if>
             <if test="title != null and title != ''">
                 and title = #{title, jdbcType=VARCHAR}
+            </if>
+            <if test="indication != null and indication != ''">
+                and indication = #{indication, jdbcType=VARCHAR}
             </if>
             <if test="status != null">
                 and status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
@@ -125,7 +165,7 @@
                 patient_rights = #{patientRights, jdbcType=VARCHAR},
             </if>
             <if test="startTime != null ">
-              start_time = #{startTime, jdbcType=TIMESTAMP},
+                start_time = #{startTime, jdbcType=TIMESTAMP},
             </if>
             <if test="stopTime != null ">
                 stop_time = #{stopTime, jdbcType=TIMESTAMP},

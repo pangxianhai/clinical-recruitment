@@ -1,49 +1,91 @@
 $(function () {
   const recruitment = {
     initIndicationPicker: function () {
+      const $this = this;
       $('#indicationPicker').picker({
+        toolbarTemplate: '<header class="bar bar-nav"><button class="button button-link pull-left">清除</button><button class="button button-link pull-right close-picker">确定</button><h1 class="title">请选择</h1></header>',
         cols: [
           {
             textAlign: 'center',
-            values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S',
-              'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air',
-              'iPad mini', 'iPad mini 2', 'iPad mini 3']
+            values: $('#indicationOptions').val().split(',')
           }
-        ]
+        ],
+        onClose: function () {
+          $('#recruitment-list').html('');
+          $this.loadRecruitmentInfo();
+        },
+        onOpen: function () {
+          $('.picker-modal').on('click', '.pull-left', function () {
+            $('#indicationPicker').val('');
+            $('#indicationPicker').picker("close");
+          })
+        }
       });
     },
     initAddressPicker: function () {
-      $('#addressPicker').picker({
-        cols: [
-          {
-            textAlign: 'center',
-            values: ['上海', '北京']
-          }, {
-            textAlign: 'center',
-            values: ['成都', '南充']
-          }
-        ]
+      const $this = this;
+      $('#addressPicker').cityPicker({
+        toolbarTemplate: '<header class="bar bar-nav"><button class="button button-link pull-left">清除</button><button class="button button-link pull-right close-picker">确定</button><h1 class="title">选择地址</h1></header>',
+        onClose: function () {
+          $('#recruitment-list').html('');
+          $this.loadRecruitmentInfo();
+        },
+        onOpen: function () {
+          $('.city-picker').on('click', '.pull-left', function () {
+            $("#addressPicker").val('');
+            $('#addressPicker').picker("close");
+          })
+        }
       });
     },
-    signUpAction: function () {
-      $('[item="sign_up_button"]').on('click', function () {
-        const recruitmentId = $(this).attr("recruitmentId");
-        Ajax.post('/recruitmentapplication', {
-          recruitmentId: recruitmentId
-        }, function (data) {
-          if (data) {
-            $.alert('报名成功');
-          } else {
-            $.alert('报名失败');
-          }
-        });
+    loadRecruitmentInfo: function () {
+      $.showPreloader('正在加载...');
+      const data = {};
+      $.each($('#searchForm').serializeArray(), function (i, item) {
+        data[item.name] = item.value;
       });
+      $.ajax({
+        url: '/recruitment/listInfo',
+        type: 'get',
+        data: data,
+        headers: {
+          token: CookieUtil.getCookie("userId")
+        },
+        success: function (html) {
+          $('#recruitment-list').append(html);
+          $.hidePreloader();
+        }
+      });
+    },
+    bindSearchAction: function () {
+      const $this = this;
+      $('#searchButton').on('click', function () {
+        $('#recruitment-list').html('');
+        $this.loadRecruitmentInfo();
+      })
+    },
+    bindSignUpAction: function () {
+      $('#recruitment-list').on('click', '[item="sign_up_button"]',
+          function () {
+            const recruitmentId = $(this).attr("recruitmentId");
+            Ajax.post('/recruitmentapplication', {
+              recruitmentId: recruitmentId
+            }, function (data) {
+              if (data) {
+                $.alert('报名成功');
+              } else {
+                $.alert('报名失败');
+              }
+            });
+          });
     },
     main: function () {
       $.init();
+      this.loadRecruitmentInfo();
       this.initIndicationPicker();
       this.initAddressPicker();
-      this.signUpAction();
+      this.bindSignUpAction();
+      this.bindSearchAction();
     }
   };
   recruitment.main();

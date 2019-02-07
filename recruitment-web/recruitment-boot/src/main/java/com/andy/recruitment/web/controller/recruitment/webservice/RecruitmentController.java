@@ -4,15 +4,15 @@ import com.andy.recruitment.recruitment.ao.RecruitmentAO;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
 import com.andy.recruitment.region.ao.RegionAO;
+import com.andy.recruitment.region.model.AddressInfo;
+import com.andy.recruitment.researchcenter.ao.ResearchCenterAO;
+import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
-import com.andy.recruitment.web.controller.region.util.RegionUtil;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
-import com.xgimi.commons.util.JsonUtil;
 import com.xgimi.commons.util.StringUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +35,16 @@ public class RecruitmentController {
 
     private final RegionAO regionAO;
 
+    private final ResearchCenterAO researchCenterAO;
+
     @Value("${indication.list}")
     private String indicationConfig;
 
     @Autowired
-    public RecruitmentController(RecruitmentAO recruitmentAO, RegionAO regionAO) {
+    public RecruitmentController(RecruitmentAO recruitmentAO, RegionAO regionAO, ResearchCenterAO researchCenterAO) {
         this.recruitmentAO = recruitmentAO;
         this.regionAO = regionAO;
+        this.researchCenterAO = researchCenterAO;
     }
 
 
@@ -54,36 +57,40 @@ public class RecruitmentController {
     public String recruitmentDetail(@PathVariable Long recruitmentId, Map<String, Object> model) {
         RecruitmentInfo recruitmentInfo = recruitmentAO.getRecruitmentInfoById(recruitmentId);
         RecruitmentVO recruitmentVO = RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
+        List<ResearchCenterInfo> researchCenterInfoList = this.researchCenterAO.getResearchCenterByRecruitmentId(
+            recruitmentId);
+        model.put("researchCenterListVO", RecruitmentUtil.transformResearchCenterVO(regionAO, researchCenterInfoList));
         model.put("recruitmentInfo", recruitmentVO);
         return "recruitment/detail";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String recruitmentList(Map<String, Object> model) {
-        RecruitmentQueryParam queryParam = new RecruitmentQueryParam();
-        PageResult<RecruitmentInfo> pageResult = recruitmentAO.getRecruitmentInfo(queryParam, new Paginator(1, 5));
-        model.put("recruitmentInfoList", pageResult.getData());
-        model.put("paginator", pageResult.getPaginator());
-        model.put("regionVOList", RegionUtil.buildSelectOptions(regionAO));
-        model.put("indicationOptions", JsonUtil.toJson(this.parseIndicationList()));
+        model.put("indicationOptions", this.indicationConfig);
         return "recruitment/list";
     }
 
-    private List<Map<String, String>> parseIndicationList() {
-        List<Map<String, String>> indicationList = new ArrayList<>();
-        Map<String, String> allIndication = new HashMap<>(2);
-        allIndication.put("label", "所有疾病类型");
-        allIndication.put("value", "");
-        indicationList.add(allIndication);
-        if (StringUtil.isEmpty(indicationConfig)) {
-            return indicationList;
+    @RequestMapping(value = "/listInfo", method = RequestMethod.GET)
+    public String recruitmentListResult(RecruitmentQueryRQ recruitmentQueryRQ, Map<String, Object> model) {
+        RecruitmentQueryParam queryParam = new RecruitmentQueryParam();
+        queryParam.setIndication(recruitmentQueryRQ.getIndication());
+        queryParam.setQueryText(recruitmentQueryRQ.getQueryText());
+        if (StringUtil.isNotEmpty(recruitmentQueryRQ.getAddressText())) {
+            AddressInfo addressInfo = regionAO.parseAddressInfo(recruitmentQueryRQ.getAddressText());
+            if (null != addressInfo) {
+                if (null != addressInfo.getProvince()) {
+                    queryParam.setProvinceId(addressInfo.getProvince().getRegionId());
+                }
+                if (null != addressInfo.getCity()) {
+                    queryParam.setCityId(addressInfo.getCity().getRegionId());
+                }
+                if (null != addressInfo.getDistrict()) {
+                    queryParam.setDistrictId(addressInfo.getDistrict().getRegionId());
+                }
+            }
         }
-        for (String indication : indicationConfig.split(",")) {
-            Map<String, String> indicationMap = new HashMap<>(2);
-            indicationMap.put("label", indication);
-            indicationMap.put("value", indication);
-            indicationList.add(indicationMap);
-        }
-        return indicationList;
+        PageResult<RecruitmentInfo> pageResult = recruitmentAO.getRecruitmentInfo(queryParam, new Paginator(1, 5));
+        model.put("recruitmentInfoList", pageResult.getData());
+        return "recruitment/listInfo";
     }
 }

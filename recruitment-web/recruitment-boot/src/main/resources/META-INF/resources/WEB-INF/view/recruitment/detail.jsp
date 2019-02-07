@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="page-group">
-    <div class="page page-current">
+    <div class="page page-current" style="background-color: #FFF">
         <header class="bar bar-nav">
             <h1 class="title">任务详情</h1>
         </header>
@@ -40,21 +40,21 @@
                         <div class="item-media"><i class="icon icon-f7"></i></div>
                         <div class="item-inner">
                             <div class="item-title">适应症状</div>
-                            <div class="item-after">${recruitmentInfo.practiceStages}</div>
+                            <div class="item-after">${recruitmentInfo.indication}</div>
                         </div>
                     </li>
                     <li class="item-content">
                         <div class="item-media"><i class="icon icon-f7"></i></div>
                         <div class="item-inner">
                             <div class="item-title">药物名称</div>
-                            <div class="item-after">${recruitmentInfo.practiceStages}</div>
+                            <div class="item-after">${recruitmentInfo.drugName}</div>
                         </div>
                     </li>
                     <li class="item-content">
                         <div class="item-media"><i class="icon icon-f7"></i></div>
                         <div class="item-inner">
                             <div class="item-title">药物类型</div>
-                            <div class="item-after">${recruitmentInfo.practiceStages}</div>
+                            <div class="item-after">${recruitmentInfo.drugType}</div>
                         </div>
                     </li>
                     <li class="item-content">
@@ -74,47 +74,43 @@
                 <a href="#researchCenterInfo" class="tab-link button">研究中心</a>
                 <a href="#patientRights" class="tab-link button">患者权益</a>
             </div>
-            <div class="content-block">
+            <div class="content-block" style="padding: 0; margin: 0;">
                 <div class="tabs">
                     <div id="treatmentPlan" class="tab active">
-                        <div class="content-block">
+                        <div class="content-block" style="padding: 0; margin: 0">
                             <p>${recruitmentInfo.treatmentPlan}</p>
                         </div>
                     </div>
                     <div id="screeningStandard" class="tab">
-                        <div class="content-block">
+                        <div class="content-block" style="padding: 0; margin: 0">
                             <p>${recruitmentInfo.screeningStandard}</p>
                         </div>
                     </div>
                     <div id="entryCriteria" class="tab">
-                        <div class="content-block">
+                        <div class="content-block" style="padding: 0; margin: 0">
                             <p>${recruitmentInfo.entryCriteria}</p>
                         </div>
                     </div>
                     <div id="researchCenterInfo" class="tab">
-                        <div class="content-block">
-                            <p>${recruitmentInfo.researchCenterInfoList}</p>
+                        <div class="content-block" style="padding: 0; margin: 0">
+                            <div class="list-block">
+                                <ul>
+                                    <c:forEach items="${researchCenterListVO}" var="item">
+                                        <li class="item-content">
+                                            <div style="padding: 0 ;margin: 0" class="item-inner">
+                                                <ul style="padding: 0">
+                                                    <li style="padding: 0;color: #222">${item.name}</li>
+                                                    <li style="padding: 0;color: #888">${item.address}</li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div id="patientRights" class="tab">
-                        <div class="content-block">
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
-                            <p>${recruitmentInfo.patientRights}</p>
+                        <div class="content-block" style="padding: 0; margin: 0">
                             <p>${recruitmentInfo.patientRights}</p>
                         </div>
                     </div>

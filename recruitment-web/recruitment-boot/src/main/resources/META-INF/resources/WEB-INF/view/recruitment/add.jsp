@@ -19,6 +19,9 @@
             <header class="bar bar-nav">
                 <h1 class="title">发布任务</h1>
             </header>
+            <jsp:include page="../components/footer.jsp">
+                <jsp:param value="recruitmentList" name="menuItem"/>
+            </jsp:include>
             <div class="content">
                 <div class="list-block">
                     <ul>
@@ -118,9 +121,6 @@
                     </div>
                 </div>
             </div>
-            <jsp:include page="../components/footer.jsp">
-                <jsp:param value="recruitmentList" name="menuItem"/>
-            </jsp:include>
         </div>
         <div class="popup popup-introduction">
             <header class="bar bar-nav">

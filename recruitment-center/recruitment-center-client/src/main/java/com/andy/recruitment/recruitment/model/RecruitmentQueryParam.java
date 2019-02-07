@@ -28,6 +28,22 @@ public class RecruitmentQueryParam implements Serializable {
      */
     private String title;
     /**
+     * 适应症状
+     */
+    private String indication;
+    /**
+     * 省Id
+     */
+    private Long provinceId;
+    /**
+     * 市Id
+     */
+    private Long cityId;
+    /**
+     * 区Id
+     */
+    private Long districtId;
+    /**
      * 启始时间开始
      */
     private Date startTimeBegin;
@@ -118,5 +134,37 @@ public class RecruitmentQueryParam implements Serializable {
 
     public void setStatus(RecruitmentStatus status) {
         this.status = status;
+    }
+
+    public String getIndication() {
+        return indication;
+    }
+
+    public void setIndication(String indication) {
+        this.indication = indication;
+    }
+
+    public Long getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+    public Long getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Long districtId) {
+        this.districtId = districtId;
     }
 }

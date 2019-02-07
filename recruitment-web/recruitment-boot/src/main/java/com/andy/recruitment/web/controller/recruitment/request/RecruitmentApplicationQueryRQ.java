@@ -8,7 +8,7 @@ import java.io.Serializable;
  *
  * @author 庞先海 2019-01-25
  */
-public class RecruitmentApplicationQueryParamRQ extends BaseQueryRQ implements Serializable {
+public class RecruitmentApplicationQueryRQ extends BaseQueryRQ implements Serializable {
 
     /**
      * 申请记录ID

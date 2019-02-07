@@ -8,12 +8,13 @@ import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddRQ;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryParamRQ;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.request.ResearchCenterAddRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
+import com.andy.recruitment.web.controller.recruitment.response.ResearchCenterVO;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.StringUtil;
@@ -68,7 +69,7 @@ public class RecruitmentUtil {
     }
 
     public static RecruitmentApplicationQueryParam transformApplicationQueryParam(
-        RecruitmentApplicationQueryParamRQ queryParamRQ) {
+        RecruitmentApplicationQueryRQ queryParamRQ) {
         if (null == queryParamRQ) {
             return null;
         }
@@ -134,6 +135,27 @@ public class RecruitmentUtil {
             return null;
         }
         return addRQList.stream().map((addRQ) -> RecruitmentUtil.transformResearchCenterInfo(regionAO, addRQ)).filter(
+            Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static ResearchCenterVO transformResearchCenterVO(RegionAO regionAO, ResearchCenterInfo centerInfo) {
+        if (null == centerInfo) {
+            return null;
+        }
+        ResearchCenterVO centerVO = new ResearchCenterVO();
+        centerVO.setName(centerInfo.getName());
+        centerVO.setAddress(
+            regionAO.parseAddressName(centerInfo.getProvinceId(), centerInfo.getCityId(), centerInfo.getDistrictId()));
+        return centerVO;
+    }
+
+    public static List<ResearchCenterVO> transformResearchCenterVO(RegionAO regionAO,
+                                                                   List<ResearchCenterInfo> centerInfoList) {
+        if (CollectionUtil.isEmpty(centerInfoList)) {
+            return new ArrayList<>(0);
+        }
+        return centerInfoList.stream().map(
+            (centerInfo) -> RecruitmentUtil.transformResearchCenterVO(regionAO, centerInfo)).filter(
             Objects::nonNull).collect(Collectors.toList());
     }
 }
