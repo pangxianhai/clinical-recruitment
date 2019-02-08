@@ -23,6 +23,10 @@ public enum BusinessErrorCode {
      * 地址参数错误
      */
     REGION_ADDRESS_ERROR(102003),
+    /**
+     * 账户信息异常
+     */
+    USER_ACCOUNT_ERROR(102004),
 
     /**
      * 招募信息不能为空

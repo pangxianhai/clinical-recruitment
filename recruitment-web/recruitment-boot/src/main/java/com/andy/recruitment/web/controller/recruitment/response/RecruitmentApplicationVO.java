@@ -1,6 +1,8 @@
 package com.andy.recruitment.web.controller.recruitment.response;
 
 import com.andy.recruitment.recruitment.constant.RecruitmentApplicationStatus;
+import com.andy.recruitment.web.controller.doctor.response.DoctorInfoVO;
+import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import java.io.Serializable;
 
 /**
@@ -18,14 +20,28 @@ public class RecruitmentApplicationVO implements Serializable {
      * 招募ID
      */
     private Long recruitmentId;
+
+    /**
+     * 招募信息
+     */
+    private RecruitmentVO recruitmentVO;
+
     /**
      * 患者ID
      */
     private Long patientId;
     /**
+     * 患者信息
+     */
+    private PatientVO patientVO;
+    /**
      * 医生ID
      */
     private Long doctorId;
+    /**
+     * 医生信息VO
+     */
+    private DoctorInfoVO doctorInfoVO;
     /**
      * 申请状态
      */
@@ -81,5 +97,29 @@ public class RecruitmentApplicationVO implements Serializable {
 
     public void setApplicationTime(String applicationTime) {
         this.applicationTime = applicationTime;
+    }
+
+    public RecruitmentVO getRecruitmentVO() {
+        return recruitmentVO;
+    }
+
+    public void setRecruitmentVO(RecruitmentVO recruitmentVO) {
+        this.recruitmentVO = recruitmentVO;
+    }
+
+    public PatientVO getPatientVO() {
+        return patientVO;
+    }
+
+    public void setPatientVO(PatientVO patientVO) {
+        this.patientVO = patientVO;
+    }
+
+    public DoctorInfoVO getDoctorInfoVO() {
+        return doctorInfoVO;
+    }
+
+    public void setDoctorInfoVO(DoctorInfoVO doctorInfoVO) {
+        this.doctorInfoVO = doctorInfoVO;
     }
 }

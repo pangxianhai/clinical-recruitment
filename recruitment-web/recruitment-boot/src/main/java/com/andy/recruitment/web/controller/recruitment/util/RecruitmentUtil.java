@@ -85,7 +85,7 @@ public class RecruitmentUtil {
         }
         RecruitmentApplicationVO applicationVO = new RecruitmentApplicationVO();
         BeanUtil.copyProperties(applicationInfo, applicationVO);
-        applicationVO.setApplicationTime(DateUtil.format(applicationInfo.getApplicationTime()));
+        applicationVO.setApplicationTime(DateUtil.format(applicationInfo.getApplicationTime(),"yyyy-MM-dd"));
         return applicationVO;
     }
 

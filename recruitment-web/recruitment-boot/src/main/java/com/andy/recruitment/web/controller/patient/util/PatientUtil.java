@@ -2,6 +2,7 @@ package com.andy.recruitment.web.controller.patient.util;
 
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.web.controller.patient.request.PatientAddRQ;
+import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import com.xgimi.util.BeanUtil;
 
 /**
@@ -18,5 +19,14 @@ public class PatientUtil {
         PatientInfo patientInfo = new PatientInfo();
         BeanUtil.copyProperties(patientAddRQ, patientInfo);
         return patientInfo;
+    }
+
+    public static PatientVO transformPatientVO(PatientInfo patientInfo) {
+        if (null == patientInfo) {
+            return null;
+        }
+        PatientVO patientVO = new PatientVO();
+        BeanUtil.copyProperties(patientInfo,patientVO);
+        return patientVO;
     }
 }

@@ -27,12 +27,20 @@ function home_build_web() {
     build $source_dir recruitment-web /Users/pangxianhai/
 }
 
+function build_product() {
+    cd /Users/pangxianhai/code/java/clinical-recruitment/recruitment-web
+    mvn -Dmaven.test.skip=true -Pproduct package
+    scp recruitment-boot/target/recruitment-boot-product.tar.gz root@59.110.230.31:/home/release
+    ssh root@59.110.230.31 "/home/bin/build.sh"
+}
 
 if [ "$1" == "web" ];then
     build_web
 elif [ "$1" == "webh" ];then
     home_build_web
+elif [ "$1" == "pro" ];then
+    build_product
 else
-    echo $0 "[web|webh]"
+    echo $0 "[web|webh|pro]"
 fi
 

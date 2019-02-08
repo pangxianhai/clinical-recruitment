@@ -3,12 +3,13 @@
 <nav class="bar bar-tab">
     <c:set var="menuItem" value='<%=request.getParameter("menuItem")%>'/>
     <c:set var="recruitmentList" value='${menuItem == "recruitmentList" ? "active":"" }'/>
+    <c:set var="applicationList" value='${menuItem == "applicationList" ? "active":"" }'/>
     <c:if test="${userInfo.userType.code == 3}">
         <a class="tab-item external ${recruitmentList}" href="/recruitment/list">
             <span class="icon icon-menu"></span>
             <span class="tab-label">任务列表</span>
         </a>
-        <a class="tab-item external" href="#">
+        <a class="tab-item external ${applicationList}" href="/recruitmentapplication/list">
             <span class="icon icon-message"></span>
             <span class="tab-label">申请记录</span>
         </a>
@@ -22,7 +23,7 @@
             <span class="icon icon-menu"></span>
             <span class="tab-label">任务列表</span>
         </a>
-        <a class="tab-item external" href="#">
+        <a class="tab-item external ${applicationList}" href="/recruitmentapplication/list">
             <span class="icon icon-message"></span>
             <span class="tab-label">申请记录</span>
         </a>

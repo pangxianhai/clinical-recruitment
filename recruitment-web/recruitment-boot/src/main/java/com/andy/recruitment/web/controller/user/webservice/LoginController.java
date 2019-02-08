@@ -37,6 +37,9 @@ public class LoginController {
         this.userAO = userAO;
     }
 
+    //医生登陆页面 http://www.aiteruiyiyao.cn/user/login?userType=2
+    //患者登陆页面 http://www.aiteruiyiyao.cn/user/login?userType=3
+    //管理员登陆页面 http://www.aiteruiyiyao.cn/user/login?userType=1
     //医生登陆页面 http://www.andy.com/user/login?userType=2
     //患者登陆页面 http://www.andy.com/user/login?userType=3
     //管理员登陆页面 http://www.andy.com/user/login?userType=1

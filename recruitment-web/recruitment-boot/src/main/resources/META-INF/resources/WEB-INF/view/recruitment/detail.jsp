@@ -127,6 +127,7 @@
 </div>
 </body>
 <input type="hidden" id="recruitmentId" value="${recruitmentInfo.recruitmentId}">
+<input type="hidden" id="doctorId" value="${doctorId}">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>

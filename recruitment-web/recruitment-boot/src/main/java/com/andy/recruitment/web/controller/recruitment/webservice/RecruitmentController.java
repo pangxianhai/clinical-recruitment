@@ -54,13 +54,14 @@ public class RecruitmentController {
     }
 
     @RequestMapping(value = "/detail/{recruitmentId:\\d+}", method = RequestMethod.GET)
-    public String recruitmentDetail(@PathVariable Long recruitmentId, Map<String, Object> model) {
+    public String recruitmentDetail(@PathVariable Long recruitmentId, Long doctorId, Map<String, Object> model) {
         RecruitmentInfo recruitmentInfo = recruitmentAO.getRecruitmentInfoById(recruitmentId);
         RecruitmentVO recruitmentVO = RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
         List<ResearchCenterInfo> researchCenterInfoList = this.researchCenterAO.getResearchCenterByRecruitmentId(
             recruitmentId);
         model.put("researchCenterListVO", RecruitmentUtil.transformResearchCenterVO(regionAO, researchCenterInfoList));
         model.put("recruitmentInfo", recruitmentVO);
+        model.put("doctorId", doctorId);
         return "recruitment/detail";
     }
 
