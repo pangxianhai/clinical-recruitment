@@ -1,6 +1,7 @@
 package com.andy.recruitment.recruitment.model;
 
 import com.andy.recruitment.recruitment.constant.RecruitmentApplicationStatus;
+import com.xgimi.commons.util.JsonUtil;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -94,5 +95,10 @@ public class RecruitmentApplicationInfo implements Serializable {
 
     public void setApplicationId(Long applicationId) {
         this.applicationId = applicationId;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtil.toJson(this);
     }
 }

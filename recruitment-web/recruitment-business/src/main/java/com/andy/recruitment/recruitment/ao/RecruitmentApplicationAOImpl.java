@@ -81,4 +81,9 @@ public class RecruitmentApplicationAOImpl implements RecruitmentApplicationAO {
         RecruitmentApplicationQueryParam queryParam, Paginator paginator) {
         return this.recruitmentApplicationService.getRecruitmentApplicationInfo(queryParam, paginator);
     }
+
+    @Override
+    public RecruitmentApplicationInfo getRecruitmentApplicationInfo(Long applicationId) {
+        return this.recruitmentApplicationService.getRecruitmentApplicationInfo(applicationId);
+    }
 }

@@ -76,6 +76,17 @@ public class RecruitmentApplicationServiceImpl implements RecruitmentApplication
         return new PageResult<>(applicationInfoList, PageUtil.transformToPaginator(page));
     }
 
+    @Override
+    public RecruitmentApplicationInfo getRecruitmentApplicationInfo(Long applicationId) {
+        if (null == applicationId) {
+            return null;
+        }
+        RecruitmentApplicationQueryParam queryParam = new RecruitmentApplicationQueryParam();
+        queryParam.setApplicationId(applicationId);
+        List<RecruitmentApplicationDO> applicationDOList = this.recruitmentApplicationMapper.select(queryParam);
+        return CollectionUtil.parseOne(applicationDOList, RecruitmentUtil::transformApplicationInfo);
+    }
+
     private RecruitmentApplicationInfo getRecruitmentApplicationInfo(Long recruitmentId, Long patientId) {
         if (null == recruitmentId || null == patientId) {
             return null;

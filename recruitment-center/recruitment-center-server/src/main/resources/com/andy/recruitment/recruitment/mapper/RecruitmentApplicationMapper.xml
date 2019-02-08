@@ -38,7 +38,7 @@
         from medical_clinical_recruitment_application
         <where>
             <if test="applicationId != null">
-                and application_id = #{applicationId, jdbcType=BIGINT}
+                and id = #{applicationId, jdbcType=BIGINT}
             </if>
             <if test="recruitmentId != null">
                 and recruitment_id = #{recruitmentId, jdbcType=BIGINT}

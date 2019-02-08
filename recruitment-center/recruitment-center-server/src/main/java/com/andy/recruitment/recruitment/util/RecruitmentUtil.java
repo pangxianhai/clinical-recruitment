@@ -57,6 +57,7 @@ public class RecruitmentUtil {
         }
         RecruitmentApplicationInfo applicationInfo = new RecruitmentApplicationInfo();
         BeanUtil.copyProperties(applicationDO, applicationInfo);
+        applicationInfo.setApplicationId(applicationDO.getId());
         applicationInfo.setApplicationTime(applicationDO.getCreatedTime());
         return applicationInfo;
     }
@@ -76,6 +77,7 @@ public class RecruitmentUtil {
         }
         RecruitmentApplicationDO applicationDO = new RecruitmentApplicationDO();
         BeanUtil.copyProperties(applicationInfo, applicationDO);
+        applicationDO.setId(applicationInfo.getApplicationId());
         return applicationDO;
     }
 }

@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -73,6 +74,15 @@ public class RecruitmentApplicationController {
     }
 
     @Login
+    @RequestMapping(value = "/detail/{applicationId:\\d+}", method = RequestMethod.GET)
+    public String recruitmentDetail(@PathVariable Long applicationId, Map<String, Object> model) {
+        RecruitmentApplicationInfo applicationInfo = this.recruitmentApplicationAO.getRecruitmentApplicationInfo(
+            applicationId);
+        model.put("applicationInfo", applicationInfo);
+        return "recruitment/application/detail";
+    }
+
+    @Login
     @RequestMapping(value = "/listInfo", method = RequestMethod.GET)
     public String recruitmentList(RecruitmentApplicationQueryRQ queryRQ, Map<String, Object> model) {
         RecruitmentApplicationQueryParam queryParam = RecruitmentUtil.transformApplicationQueryParam(queryRQ);
@@ -104,26 +114,27 @@ public class RecruitmentApplicationController {
         if (CollectionUtil.isEmpty(applicationVOList)) {
             return;
         }
-        for (RecruitmentApplicationVO applicationVO : applicationVOList) {
-            RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(
-                applicationVO.getRecruitmentId());
-            applicationVO.setRecruitmentVO(RecruitmentUtil.transformRecruitmentVO(recruitmentInfo));
-            DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoById(applicationVO.getDoctorId());
-            DoctorInfoVO doctorInfoVO = DoctorUtil.transformDoctorInfoVO(doctorInfo);
-            if (null != doctorInfoVO) {
-                UserInfo userInfo = this.userAO.getUserInfoByUserId(doctorInfo.getUserId());
-                UserInfoVO userInfoVO = UserUtil.transformUserInfoVO(userInfo);
-                doctorInfoVO.setUserInfoVO(userInfoVO);
-                applicationVO.setDoctorInfoVO(doctorInfoVO);
-            }
-            PatientInfo patientInfo = this.patientAO.getPatientInfoById(applicationVO.getPatientId());
-            PatientVO patientVO = PatientUtil.transformPatientVO(patientInfo);
-            if (null != patientVO) {
-                UserInfo userInfo = this.userAO.getUserInfoByUserId(patientInfo.getUserId());
-                UserInfoVO userInfoVO = UserUtil.transformUserInfoVO(userInfo);
-                patientVO.setUserInfoVO(userInfoVO);
-                applicationVO.setPatientVO(patientVO);
-            }
+        applicationVOList.forEach(this::buildApplicationVO);
+    }
+
+    private void buildApplicationVO(RecruitmentApplicationVO applicationVO) {
+        RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(applicationVO.getRecruitmentId());
+        applicationVO.setRecruitmentVO(RecruitmentUtil.transformRecruitmentVO(recruitmentInfo));
+        DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoById(applicationVO.getDoctorId());
+        DoctorInfoVO doctorInfoVO = DoctorUtil.transformDoctorInfoVO(doctorInfo);
+        if (null != doctorInfoVO) {
+            UserInfo userInfo = this.userAO.getUserInfoByUserId(doctorInfo.getUserId());
+            UserInfoVO userInfoVO = UserUtil.transformUserInfoVO(userInfo);
+            doctorInfoVO.setUserInfoVO(userInfoVO);
+            applicationVO.setDoctorInfoVO(doctorInfoVO);
+        }
+        PatientInfo patientInfo = this.patientAO.getPatientInfoById(applicationVO.getPatientId());
+        PatientVO patientVO = PatientUtil.transformPatientVO(patientInfo);
+        if (null != patientVO) {
+            UserInfo userInfo = this.userAO.getUserInfoByUserId(patientInfo.getUserId());
+            UserInfoVO userInfoVO = UserUtil.transformUserInfoVO(userInfo);
+            patientVO.setUserInfoVO(userInfoVO);
+            applicationVO.setPatientVO(patientVO);
         }
     }
 }
