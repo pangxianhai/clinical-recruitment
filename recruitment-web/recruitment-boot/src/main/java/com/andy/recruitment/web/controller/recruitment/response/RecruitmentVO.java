@@ -1,7 +1,6 @@
 package com.andy.recruitment.web.controller.recruitment.response;
 
 import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
-import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import java.io.Serializable;
 import java.util.List;
 
@@ -84,7 +83,7 @@ public class RecruitmentVO implements Serializable {
     /**
      * 研究中心
      */
-    private List<ResearchCenterInfo> researchCenterInfoList;
+    private List<ResearchCenterVO> researchCenterVOList;
 
     public Long getRecruitmentId() {
         return recruitmentId;
@@ -222,11 +221,11 @@ public class RecruitmentVO implements Serializable {
         this.status = status;
     }
 
-    public List<ResearchCenterInfo> getResearchCenterInfoList() {
-        return researchCenterInfoList;
+    public List<ResearchCenterVO> getResearchCenterVOList() {
+        return researchCenterVOList;
     }
 
-    public void setResearchCenterInfoList(List<ResearchCenterInfo> researchCenterInfoList) {
-        this.researchCenterInfoList = researchCenterInfoList;
+    public void setResearchCenterVOList(List<ResearchCenterVO> researchCenterVOList) {
+        this.researchCenterVOList = researchCenterVOList;
     }
 }

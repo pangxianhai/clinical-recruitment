@@ -11,9 +11,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="/static/css/lib/sm.min.css">
     <link rel="stylesheet" href="/static/css/lib/sm-extend.min.css">
-    <style>
-
-    </style>
 </head>
 <body>
 <div class="page-group">

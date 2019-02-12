@@ -96,24 +96,20 @@ public class RegionAOImpl implements RegionAO {
     @Override
     public String parseAddressName(Long provinceId, Long cityId, Long districtId) {
         StringBuilder buffer = new StringBuilder();
-        if (null != provinceId) {
-            Region region = this.regionService.getRegionById(provinceId);
-            if (null != region) {
-                buffer.append(region.getRegionName());
-            }
+        Region province = this.getRegionById(provinceId);
+        Region city = this.getRegionById(cityId);
+        Region district = this.getRegionById(districtId);
+        if (null != province) {
+            buffer.append(province.getRegionName());
         }
-        if (null != cityId) {
-            Region region = this.regionService.getRegionById(cityId);
-            if (null != region) {
-                buffer.append(" ").append(region.getRegionName());
-            }
+        boolean cityAndProvinceSame = null != province && city.getRegionName().equals(province.getRegionName());
+        if (null != city && ! cityAndProvinceSame) {
+            buffer.append(city.getRegionName());
         }
-        if (null != districtId) {
-            Region region = this.regionService.getRegionById(districtId);
-            if (null != region) {
-                buffer.append(" ").append(region.getRegionName());
-            }
+        if (null != district) {
+            buffer.append(district.getRegionName());
         }
+
         return buffer.toString();
     }
 

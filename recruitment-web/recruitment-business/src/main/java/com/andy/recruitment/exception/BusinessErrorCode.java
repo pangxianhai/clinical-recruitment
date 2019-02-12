@@ -45,6 +45,10 @@ public enum BusinessErrorCode {
      * 您不是患者不能报名招募
      */
     RECRUITMENT_APPLICATION_USER_ERROR(102200),
+    /**
+     * 您没有权限查看该报名记录
+     */
+    RECRUITMENT_APPLICATION_NOT_AUTH(102201),
 
     ;
 

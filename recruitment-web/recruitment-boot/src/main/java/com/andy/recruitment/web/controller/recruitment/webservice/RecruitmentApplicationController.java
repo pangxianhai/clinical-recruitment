@@ -11,6 +11,9 @@ import com.andy.recruitment.recruitment.ao.RecruitmentApplicationAO;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
+import com.andy.recruitment.region.ao.RegionAO;
+import com.andy.recruitment.researchcenter.ao.ResearchCenterAO;
+import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
@@ -20,6 +23,7 @@ import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import com.andy.recruitment.web.controller.patient.util.PatientUtil;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
+import com.andy.recruitment.web.controller.recruitment.response.ResearchCenterVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
@@ -56,15 +60,21 @@ public class RecruitmentApplicationController {
 
     private final UserAO userAO;
 
+    private final RegionAO regionAO;
+
+    private final ResearchCenterAO researchCenterAO;
+
     @Autowired
     public RecruitmentApplicationController(RecruitmentApplicationAO recruitmentApplicationAO,
                                             RecruitmentAO recruitmentAO, PatientAO patientAO, DoctorAO doctorAO,
-                                            UserAO userAO) {
+                                            UserAO userAO, RegionAO regionAO, ResearchCenterAO researchCenterAO) {
         this.recruitmentApplicationAO = recruitmentApplicationAO;
         this.recruitmentAO = recruitmentAO;
         this.patientAO = patientAO;
         this.doctorAO = doctorAO;
         this.userAO = userAO;
+        this.regionAO = regionAO;
+        this.researchCenterAO = researchCenterAO;
     }
 
     @Login
@@ -76,9 +86,32 @@ public class RecruitmentApplicationController {
     @Login
     @RequestMapping(value = "/detail/{applicationId:\\d+}", method = RequestMethod.GET)
     public String recruitmentDetail(@PathVariable Long applicationId, Map<String, Object> model) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
         RecruitmentApplicationInfo applicationInfo = this.recruitmentApplicationAO.getRecruitmentApplicationInfo(
             applicationId);
-        model.put("applicationInfo", applicationInfo);
+        if (UserType.PATIENT.equals(userInfo.getUserType())) {
+            PatientInfo patientInfo = this.patientAO.getPatientInfoByUserId(userInfo.getUserId());
+            AssertUtil.assertNull(patientInfo, () -> {
+                throw new BusinessException(BusinessErrorCode.USER_ACCOUNT_ERROR);
+            });
+            AssertUtil.assertBoolean(applicationInfo.getPatientId().equals(patientInfo.getPatientId()), () -> {
+                throw new BusinessException(BusinessErrorCode.RECRUITMENT_APPLICATION_NOT_AUTH);
+            });
+        }
+        if (UserType.DOCTOR.equals(userInfo.getUserType())) {
+            DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoByUserId(userInfo.getUserId());
+            AssertUtil.assertNull(doctorInfo, () -> {
+                throw new BusinessException(BusinessErrorCode.USER_ACCOUNT_ERROR);
+            });
+            AssertUtil.assertBoolean(applicationInfo.getDoctorId().equals(doctorInfo.getDoctorId()), () -> {
+                throw new BusinessException(BusinessErrorCode.RECRUITMENT_APPLICATION_NOT_AUTH);
+            });
+        }
+        RecruitmentApplicationVO applicationVO = RecruitmentUtil.transformApplicationVO(applicationInfo);
+        this.buildApplicationVO(applicationVO);
+        this.buildPatientAddressInfo(applicationVO);
+        model.put("applicationVO", applicationVO);
         return "recruitment/application/detail";
     }
 
@@ -136,5 +169,21 @@ public class RecruitmentApplicationController {
             patientVO.setUserInfoVO(userInfoVO);
             applicationVO.setPatientVO(patientVO);
         }
+        List<ResearchCenterInfo> centerInfoList = researchCenterAO.getResearchCenterByRecruitmentId(
+            recruitmentInfo.getRecruitmentId());
+        List<ResearchCenterVO> centerVOList = RecruitmentUtil.transformResearchCenterVO(regionAO, centerInfoList);
+        applicationVO.getRecruitmentVO().setResearchCenterVOList(centerVOList);
+    }
+
+    private void buildPatientAddressInfo(RecruitmentApplicationVO applicationVO) {
+        if (null == applicationVO) {
+            return;
+        }
+        PatientVO patientVO = applicationVO.getPatientVO();
+        if (null == patientVO) {
+            return;
+        }
+        patientVO.setAddress(this.regionAO.parseAddressName(patientVO.getProvinceId(), patientVO.getCityId(),
+                                                            patientVO.getDistrictId()));
     }
 }
