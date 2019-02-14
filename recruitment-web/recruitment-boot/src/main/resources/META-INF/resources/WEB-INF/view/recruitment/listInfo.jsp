@@ -47,6 +47,16 @@
                         <div class="col-content">${recruitmentInfo.indication}</div>
                     </div>
                 </div>
+                <c:if test="${userInfo.userType.code == 2}">
+                    <div class="sign-up-panel">
+                        <a href="javascript:void(0)"
+                           item="recommend_qrcode"
+                           class="button button-fill button-warning"
+                           style="width: 30%"
+                           recruitmentId="${recruitmentInfo.recruitmentId}"
+                        >推荐二维码</a>
+                    </div>
+                </c:if>
                 <c:if test="${userInfo.userType.code == 3}">
                     <div class="sign-up-panel">
                         <a href="javascript:void(0)"

@@ -117,6 +117,12 @@
                 </div>
             </div>
         </div>
+        <c:if test="${userInfo.userType.code == 2}">
+            <nav class="bar bar-tab">
+                <a href="javascript:void(0)" id="recommend_qrcode"
+                   class="button button-fill button-warning">推荐二维码</a>
+            </nav>
+        </c:if>
         <c:if test="${userInfo.userType.code == 3}">
             <nav class="bar bar-tab">
                 <a href="javascript:void(0)" id="sign_up_button"
@@ -124,12 +130,18 @@
             </nav>
         </c:if>
     </div>
+    <div class="popup popup-qrcode">
+        <a href="#" class="close-popup">
+            <div class="content-block" id="qrCode"></div>
+        </a>
+    </div>
 </div>
 </body>
 <input type="hidden" id="recruitmentId" value="${recruitmentInfo.recruitmentId}">
 <input type="hidden" id="doctorId" value="${doctorId}">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/qrcode.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/recruitment/detail.js?_v=${version}'
         charset="utf-8"></script>

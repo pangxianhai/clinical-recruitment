@@ -17,8 +17,8 @@
 
     <properties>
         <recruitment-center.version>0.0.0-SNAPSHOT</recruitment-center.version>
-        <xgimi-common.version>0.0.19-RELEASE</xgimi-common.version>
-        <xgimi-spring.version>0.1.1-RELEASE</xgimi-spring.version>
+        <xgimi-common.version>0.0.21-RELEASE</xgimi-common.version>
+        <xgimi-spring.version>0.1.2-RELEASE</xgimi-spring.version>
     </properties>
 
     <modules>

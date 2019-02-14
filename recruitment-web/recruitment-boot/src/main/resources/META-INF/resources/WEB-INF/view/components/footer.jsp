@@ -5,20 +5,7 @@
     <c:set var="recruitmentList" value='${menuItem == "recruitmentList" ? "active":"" }'/>
     <c:set var="applicationList" value='${menuItem == "applicationList" ? "active":"" }'/>
     <c:set var="me" value='${menuItem == "me" ? "active":"" }'/>
-    <c:if test="${userInfo.userType.code == 3}">
-        <a class="tab-item external ${recruitmentList}" href="/recruitment/list">
-            <span class="icon icon-menu"></span>
-            <span class="tab-label">任务列表</span>
-        </a>
-        <a class="tab-item external ${applicationList}" href="/recruitmentapplication/list">
-            <span class="icon icon-message"></span>
-            <span class="tab-label">申请记录</span>
-        </a>
-        <a class="tab-item external ${me}" href="/patient/me">
-            <span class="icon icon-me"></span>
-            <span class="tab-label">我</span>
-        </a>
-    </c:if>
+
     <c:if test="${userInfo.userType.code == 1}">
         <a class="tab-item external ${recruitmentList}" href="/recruitment/list">
             <span class="icon icon-menu"></span>
@@ -37,6 +24,34 @@
             <span class="tab-label">医生列表</span>
         </a>
         <a class="tab-item external" href="#">
+            <span class="icon icon-me"></span>
+            <span class="tab-label">我</span>
+        </a>
+    </c:if>
+    <c:if test="${userInfo.userType.code == 2}">
+        <a class="tab-item external ${recruitmentList}" href="/recruitment/list">
+            <span class="icon icon-menu"></span>
+            <span class="tab-label">任务列表</span>
+        </a>
+        <a class="tab-item external ${applicationList}" href="/recruitmentapplication/list">
+            <span class="icon icon-message"></span>
+            <span class="tab-label">患者申请记录</span>
+        </a>
+        <a class="tab-item external ${me}" href="/doctor/me">
+            <span class="icon icon-me"></span>
+            <span class="tab-label">我</span>
+        </a>
+    </c:if>
+    <c:if test="${userInfo.userType.code == 3}">
+        <a class="tab-item external ${recruitmentList}" href="/recruitment/list">
+            <span class="icon icon-menu"></span>
+            <span class="tab-label">任务列表</span>
+        </a>
+        <a class="tab-item external ${applicationList}" href="/recruitmentapplication/list">
+            <span class="icon icon-message"></span>
+            <span class="tab-label">申请记录</span>
+        </a>
+        <a class="tab-item external ${me}" href="/patient/me">
             <span class="icon icon-me"></span>
             <span class="tab-label">我</span>
         </a>

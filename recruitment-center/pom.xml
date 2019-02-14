@@ -16,8 +16,8 @@
     </parent>
 
     <properties>
-        <xgimi-common.version>0.0.19-RELEASE</xgimi-common.version>
-        <xgimi-spring.version>0.1.0-RELEASE</xgimi-spring.version>
+        <xgimi-common.version>0.0.21-RELEASE</xgimi-common.version>
+        <xgimi-spring.version>0.1.2-RELEASE</xgimi-spring.version>
         <mysql-connector.version>8.0.13</mysql-connector.version>
     </properties>
 

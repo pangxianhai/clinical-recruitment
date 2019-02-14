@@ -50,7 +50,7 @@ public class PatientController {
 
     @Login
     @RequestMapping(value = "/me", method = RequestMethod.GET)
-    public String register(Map<String, Object> model) {
+    public String patientInfo(Map<String, Object> model) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         PatientInfo patientInfo = patientAO.getPatientInfoByUserId(loginInfo.getUserId());
         UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());

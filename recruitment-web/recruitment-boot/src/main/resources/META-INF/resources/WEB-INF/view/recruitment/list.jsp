@@ -63,12 +63,18 @@
             <div id="recruitment-list" class="recruitment-list"></div>
         </div>
     </div>
+    <div class="popup popup-qrcode">
+        <a href="#" class="close-popup">
+            <div class="content-block" id="qrCode"></div>
+        </a>
+    </div>
 </div>
 <input type="hidden" id="indicationOptions" value="${indicationOptions}">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-city-picker.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/lib/qrcode.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/recruitment/list.js?_v=${version}'
         charset="utf-8"></script>

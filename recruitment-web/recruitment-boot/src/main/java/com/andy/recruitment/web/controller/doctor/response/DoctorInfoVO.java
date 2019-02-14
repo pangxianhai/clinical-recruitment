@@ -35,6 +35,10 @@ public class DoctorInfoVO implements Serializable {
      */
     private Long districtId;
     /**
+     * 地址信息
+     */
+    private String address;
+    /**
      * 执业机构
      */
     private String medicalInstitution;
@@ -105,5 +109,13 @@ public class DoctorInfoVO implements Serializable {
 
     public void setUserInfoVO(UserInfoVO userInfoVO) {
         this.userInfoVO = userInfoVO;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

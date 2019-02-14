@@ -46,3 +46,14 @@
   float: right;
   margin-right: 2em;
 }
+
+.popup-qrcode {
+  text-align: center;
+}
+
+.popup-qrcode .content-block {
+  padding: 0;
+  margin: 4em auto;
+  width: 250px;
+  height: 250px;
+}
