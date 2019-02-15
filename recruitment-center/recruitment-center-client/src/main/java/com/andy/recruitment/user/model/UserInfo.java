@@ -33,6 +33,10 @@ public class UserInfo implements Serializable {
      */
     private String phone;
     /**
+     * 密码
+     */
+    private String password;
+    /**
      * 性别
      */
     private Gender gender;
@@ -107,5 +111,13 @@ public class UserInfo implements Serializable {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

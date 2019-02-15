@@ -30,6 +30,10 @@ public class UserInfoDO extends BaseDO {
      */
     private String phone;
     /**
+     * 密码
+     */
+    private String password;
+    /**
      * 性别
      */
     private Gender gender;
@@ -96,6 +100,14 @@ public class UserInfoDO extends BaseDO {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

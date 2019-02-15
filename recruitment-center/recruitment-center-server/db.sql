@@ -6,12 +6,13 @@
 drop table  if exists user_info;
 create table user_info(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  open_id varchar(64) NOT NULL COLLATE utf8_bin COMMENT '微信OPEN_ID',
+  open_id varchar(64) COLLATE utf8_bin COMMENT '微信OPEN_ID',
   union_id varchar(64)  COLLATE utf8_bin COMMENT '微信唯一ID',
   real_name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '姓名',
   gender TINYINT  NOT NULL COMMENT '性别: 1-男 2-女',
   user_type TINYINT COMMENT '用户类型 1:管理员，2:医生，3病人',
   phone varchar(64)  COLLATE utf8_bin COMMENT '联系方式',
+  password varchar(128)  COLLATE utf8_bin COMMENT '密码',
   status TINYINT  NOT NULL COMMENT '用户状态 1-正常,2-冻结',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',
@@ -19,8 +20,11 @@ create table user_info(
   updated_time datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE(open_id),
-  UNIQUE(union_id)
+  UNIQUE(union_id),
+  UNIQUE(phone)
 )ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息表';
+
+INSERT INTO `user_info` VALUES (10000,NULL,NULL,'庞先海',1,1,'17780583960','B014C176A075F6D789A4D8D349D8E679FE587CFD',1,'系统','2019-02-15 21:56:34',NULL,NULL);
 
 drop table  if exists doctor_info;
 create table doctor_info(

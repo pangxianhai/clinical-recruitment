@@ -84,4 +84,10 @@ public class LoginController {
         model.put("userType", userType);
         return "user/bandPhone";
     }
+
+    @RequestMapping(value = "/manage", method = RequestMethod.GET)
+    public String manageLogin(String redirectURL, Map<String, Object> model) {
+        model.put("redirectURL", redirectURL);
+        return "user/manageLogin";
+    }
 }

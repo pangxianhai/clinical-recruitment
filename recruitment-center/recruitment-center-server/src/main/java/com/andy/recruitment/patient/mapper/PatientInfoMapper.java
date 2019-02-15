@@ -4,12 +4,14 @@ import com.andy.recruitment.patient.model.PatientInfoDO;
 import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.xgimi.mybatis.paginator.Page;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * 患者信息Mapper
  *
  * @author 庞先海 2018-12-27
  */
+@Repository
 public interface PatientInfoMapper {
 
     /**

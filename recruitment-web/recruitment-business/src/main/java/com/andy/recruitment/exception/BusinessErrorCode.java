@@ -27,6 +27,18 @@ public enum BusinessErrorCode {
      * 账户信息异常
      */
     USER_ACCOUNT_ERROR(102004),
+    /**
+     * 用户不存在
+     */
+    USER_NOT_EXIST(102005),
+    /**
+     * 密码错误
+     */
+    USER_PASSWORD_ERROR(102006),
+    /**
+     * 用户已经被冻结
+     */
+    USER_FREEZE(102007),
 
     /**
      * 招募信息不能为空

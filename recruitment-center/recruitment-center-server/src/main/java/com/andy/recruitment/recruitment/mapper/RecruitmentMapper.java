@@ -4,12 +4,14 @@ import com.andy.recruitment.recruitment.model.RecruitmentInfoDO;
 import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
 import com.xgimi.mybatis.paginator.Page;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * 招募信息Mapper
  *
  * @author 庞先海 2018-12-29
  */
+@Repository
 public interface RecruitmentMapper {
 
     /**

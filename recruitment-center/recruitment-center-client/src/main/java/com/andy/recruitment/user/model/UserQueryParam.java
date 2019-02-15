@@ -33,6 +33,14 @@ public class UserQueryParam implements Serializable {
      */
     private String phone;
     /**
+     * 手机号码模糊查询
+     */
+    private String phoneLike;
+    /**
+     * 密码
+     */
+    private String password;
+    /**
      * 性别
      */
     private Gender gender;
@@ -107,5 +115,21 @@ public class UserQueryParam implements Serializable {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public String getPhoneLike() {
+        return phoneLike;
+    }
+
+    public void setPhoneLike(String phoneLike) {
+        this.phoneLike = phoneLike;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

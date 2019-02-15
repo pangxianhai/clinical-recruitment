@@ -4,12 +4,14 @@ import com.andy.recruitment.user.model.UserInfoDO;
 import com.andy.recruitment.user.model.UserQueryParam;
 import com.xgimi.mybatis.paginator.Page;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * 用户信息Mapper
  *
  * @author 庞先海 2018-12-28
  */
+@Repository
 public interface UserInfoMapper {
 
     /**

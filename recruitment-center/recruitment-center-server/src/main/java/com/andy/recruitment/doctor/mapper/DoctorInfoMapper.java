@@ -4,12 +4,14 @@ import com.andy.recruitment.doctor.model.DoctorInfoDO;
 import com.andy.recruitment.doctor.model.DoctorQueryParam;
 import com.xgimi.mybatis.paginator.Page;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * 医生信息Mapper
  *
  * @author 庞先海 2018-12-26
  */
+@Repository
 public interface DoctorInfoMapper {
 
     /**

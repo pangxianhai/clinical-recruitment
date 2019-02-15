@@ -8,6 +8,7 @@
         <result column="union_id" property="unionId" jdbcType="VARCHAR"/>
         <result column="real_name" property="realName" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="gender" property="gender"
           typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
         <result column="user_type" property="userType"
@@ -20,7 +21,7 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="baseColumnList">
-        id,open_id,union_id,real_name,phone,gender,user_type,status,
+        id,open_id,union_id,real_name,phone,password,gender,user_type,status,
         created_by,created_time,updated_by,updated_time
     </sql>
 
@@ -42,8 +43,14 @@
             <if test="realName != null and realName != ''">
                 and real_name like CONCAT('%', #{realName,jdbcType=VARCHAR},'%')
             </if>
-            <if test="phone != null and phone != ''">
+            <if test="phoneLike != null and phoneLike != ''">
                 and phone like CONCAT('%', #{phone,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone, jdbcType=VARCHAR}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password, jdbcType=VARCHAR}
             </if>
             <if test="userType != null">
                 and user_type = #{userType,typeHandler=com.xgimi.base.MyBaseTypeHandler}
@@ -66,6 +73,7 @@
         #{unionId, jdbcType=VARCHAR},
         #{realName, jdbcType=VARCHAR},
         #{phone, jdbcType=VARCHAR},
+        #{password, jdbcType=VARCHAR},
         #{gender,typeHandler=com.xgimi.base.MyBaseTypeHandler},
         #{userType,typeHandler=com.xgimi.base.MyBaseTypeHandler},
         #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler},
@@ -90,6 +98,9 @@
             </if>
             <if test="phone != null and phone != ''">
                 phone = #{phone, jdbcType=VARCHAR},
+            </if>
+          <if test="password != null and password != ''">
+              password = #{password, jdbcType=VARCHAR},
             </if>
             <if test="gender != null ">
                 gender = #{gender, typeHandler=com.xgimi.base.MyBaseTypeHandler},

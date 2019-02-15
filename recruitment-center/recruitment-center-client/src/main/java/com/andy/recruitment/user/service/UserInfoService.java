@@ -41,4 +41,12 @@ public interface UserInfoService {
      * @return 用户信息
      */
     UserInfo getUserInfoByOpenId(String openId);
+
+    /**
+     * 通过手机号查询用户
+     *
+     * @param phone 手机号码
+     * @return 用户信息
+     */
+    UserInfo getUserInfoByPhone(String phone);
 }

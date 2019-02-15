@@ -56,4 +56,21 @@ public interface UserAO {
      * @param operator 操作人
      */
     void updateUserInfo(UserInfo userInfo, String operator);
+
+    /**
+     * 通过手机号码登陆
+     *
+     * @param phone    手机号
+     * @param password 密码
+     * @return 用户信息
+     */
+    UserInfo loginByPhone(String phone, String password);
+
+    /**
+     * 添加用户信息
+     *
+     * @param userInfo 用户信息
+     * @param operator 操作人
+     */
+    void addUserInfo(UserInfo userInfo, String operator);
 }

@@ -2,6 +2,7 @@ package com.andy.recruitment.web.controller.user.webservice;
 
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.web.controller.user.request.BandPhoneRQ;
+import com.andy.recruitment.web.controller.user.request.MangeLoginRQ;
 import com.andy.recruitment.web.controller.user.request.VerCodeSendRQ;
 import com.xgimi.context.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,12 @@ public class LoginWebservice {
     public boolean bandPhone(@RequestBody BandPhoneRQ bandPhoneRQ) {
         Long userId = ServletContext.getLoginInfo().getUserId();
         this.userAO.bandPhone(userId, bandPhoneRQ.getPhone(), bandPhoneRQ.getVerCode());
+        return true;
+    }
+
+    @RequestMapping(value = "/manage.json", method = RequestMethod.POST)
+    public boolean manageLogin(@RequestBody MangeLoginRQ loginRQ) {
+        this.userAO.loginByPhone(loginRQ.getPhone(), loginRQ.getPassword());
         return true;
     }
 }

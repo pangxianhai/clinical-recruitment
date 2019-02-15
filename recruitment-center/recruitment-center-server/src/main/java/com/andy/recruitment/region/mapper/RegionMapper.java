@@ -3,12 +3,14 @@ package com.andy.recruitment.region.mapper;
 import com.andy.recruitment.region.model.RegionDO;
 import com.xgimi.mybatis.paginator.Page;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * 地区mapper接口
  *
  * @author 庞先海 2018-12-26
  */
+@Repository
 public interface RegionMapper {
 
     /**

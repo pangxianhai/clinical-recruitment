@@ -7,6 +7,7 @@ import com.xgimi.commons.util.encrypt.AESCBCUtil;
 import com.xgimi.commons.util.encrypt.AESUtil;
 import com.xgimi.commons.util.encrypt.EncodeUtil;
 import com.xgimi.commons.util.encrypt.HashUtil;
+import com.xgimi.commons.util.encrypt.HmacHashUtil;
 import com.xgimi.commons.util.encrypt.RSAUtil;
 import com.xgimi.logger.log4j.Logger;
 import com.xgimi.logger.log4j.MyLogger;
@@ -76,6 +77,7 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
         AESCBCUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
         EncodeUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
         RSAUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
+        HmacHashUtil.setCharsetName(CHARSET_NAME);
     }
 
     /**

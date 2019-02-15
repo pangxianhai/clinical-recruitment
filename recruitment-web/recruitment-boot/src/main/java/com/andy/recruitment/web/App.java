@@ -5,6 +5,7 @@ import com.xgimi.converter.MyHttpMessageConverter;
 import com.xgimi.datasource.EnableDataSource;
 import com.xgimi.executor.EnableExecutor;
 import com.xgimi.logger.EnableLog;
+import com.xgimi.redis.EnableRedis;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

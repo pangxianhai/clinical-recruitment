@@ -10,6 +10,7 @@ import com.andy.recruitment.user.model.UserQueryParam;
 import com.andy.recruitment.user.util.UserUtil;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
+import com.xgimi.commons.util.StringUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
 import java.sql.Timestamp;
 import java.util.List;
@@ -76,6 +77,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         UserQueryParam queryParam = new UserQueryParam();
         queryParam.setOpenId(openId);
+        List<UserInfoDO> userInfoDOList = this.userInfoMapper.select(queryParam);
+        return CollectionUtil.parseOne(userInfoDOList, UserUtil::transformUserInfo);
+    }
+
+    @Override
+    public UserInfo getUserInfoByPhone(String phone) {
+        if (StringUtil.isEmpty(phone)) {
+            return null;
+        }
+        UserQueryParam queryParam = new UserQueryParam();
+        queryParam.setPhone(phone);
         List<UserInfoDO> userInfoDOList = this.userInfoMapper.select(queryParam);
         return CollectionUtil.parseOne(userInfoDOList, UserUtil::transformUserInfo);
     }

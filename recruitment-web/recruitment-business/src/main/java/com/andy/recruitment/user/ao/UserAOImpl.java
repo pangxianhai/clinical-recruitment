@@ -4,6 +4,7 @@ import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.sms.service.SmsService;
 import com.andy.recruitment.user.constant.Gender;
+import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.user.service.UserInfoService;
@@ -13,6 +14,7 @@ import com.andy.recruitment.weixin.service.WeiXinService;
 import com.xgimi.commons.util.RandomUtil;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
+import com.xgimi.commons.util.encrypt.HmacHashUtil;
 import java.text.MessageFormat;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,10 +111,28 @@ public class UserAOImpl implements UserAO {
         this.userInfoService.updateUserInfo(userInfo, operator);
     }
 
-    private String getLoginVerCode(String phone) {
-        if (StringUtil.isEmpty(phone)) {
-            return null;
+    @Override
+    public UserInfo loginByPhone(String phone, String password) {
+        UserInfo userInfo = this.userInfoService.getUserInfoByPhone(phone);
+        AssertUtil.assertNull(userInfo, () -> {
+            throw new BusinessException(BusinessErrorCode.USER_NOT_EXIST);
+        });
+        String pas = HmacHashUtil.hmacSHAHash(password, phone);
+        AssertUtil.assertBoolean(pas.equals(userInfo.getPassword()), () -> {
+            throw new BusinessException(BusinessErrorCode.USER_PASSWORD_ERROR);
+        });
+        AssertUtil.assertBoolean(!UserStatus.FREEZE.equals(userInfo.getStatus()), () -> {
+            throw new BusinessException(BusinessErrorCode.USER_FREEZE);
+        });
+        return userInfo;
+    }
+
+    @Override
+    public void addUserInfo(UserInfo userInfo, String operator) {
+        if (StringUtil.isNotEmpty(userInfo.getPhone()) && StringUtil.isNotEmpty(userInfo.getPassword())) {
+            String password = HmacHashUtil.hmacSHAHash(userInfo.getPassword(), userInfo.getPhone());
+            userInfo.setPassword(password);
         }
-        return verCodeMap.get(phone);
+        this.userInfoService.addUserInfo(userInfo, operator);
     }
 }

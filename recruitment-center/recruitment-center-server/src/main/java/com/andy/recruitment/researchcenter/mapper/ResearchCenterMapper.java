@@ -4,12 +4,14 @@ import com.andy.recruitment.researchcenter.model.ResearchCenterDO;
 import com.andy.recruitment.researchcenter.model.ResearchCenterQueryParam;
 import com.xgimi.mybatis.paginator.Page;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * 研究中心mapper
  *
  * @author 庞先海 2019-01-08
  */
+@Repository
 public interface ResearchCenterMapper {
 
     /**
