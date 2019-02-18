@@ -11,7 +11,6 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryR
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.xgimi.commons.page.PageResult;
-import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.StringUtil;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class RecruitmentController {
 
     @RequestMapping("/add")
     public String addRecruitment() {
-        return "recruitment/add";
+        return "recruitment/add-pc";
     }
 
     @RequestMapping(value = "/detail/{recruitmentId:\\d+}", method = RequestMethod.GET)
@@ -73,11 +72,32 @@ public class RecruitmentController {
 
     @RequestMapping(value = "/listInfo", method = RequestMethod.GET)
     public String recruitmentListResult(RecruitmentQueryRQ recruitmentQueryRQ, Map<String, Object> model) {
+        PageResult<RecruitmentInfo> pageResult = this.queryRecruitmentInfo(recruitmentQueryRQ);
+        model.put("recruitmentInfoList", pageResult.getData());
+        return "recruitment/listInfo";
+    }
+
+    @RequestMapping(value = "/list-pc", method = RequestMethod.GET)
+    public String recruitmentListPc(Map<String, Object> model) {
+        model.put("indicationOptions", this.indicationConfig);
+        return "recruitment/list-pc";
+    }
+
+    @RequestMapping(value = "/listPcInfo", method = RequestMethod.GET)
+    public String recruitmentListPcResult(RecruitmentQueryRQ recruitmentQueryRQ, Map<String, Object> model) {
+        PageResult<RecruitmentInfo> pageResult = this.queryRecruitmentInfo(recruitmentQueryRQ);
+        List<RecruitmentVO> recruitmentVOList = RecruitmentUtil.transformRecruitmentVO(pageResult.getData());
+        model.put("recruitmentInfoList", recruitmentVOList);
+        model.put("paginator", pageResult.getPaginator());
+        return "recruitment/listInfo-pc";
+    }
+
+    private PageResult<RecruitmentInfo> queryRecruitmentInfo(RecruitmentQueryRQ queryRQ) {
         RecruitmentQueryParam queryParam = new RecruitmentQueryParam();
-        queryParam.setIndication(recruitmentQueryRQ.getIndication());
-        queryParam.setQueryText(recruitmentQueryRQ.getQueryText());
-        if (StringUtil.isNotEmpty(recruitmentQueryRQ.getAddressText())) {
-            AddressInfo addressInfo = regionAO.parseAddressInfo(recruitmentQueryRQ.getAddressText());
+        queryParam.setIndication(queryRQ.getIndication());
+        queryParam.setQueryText(queryRQ.getQueryText());
+        if (StringUtil.isNotEmpty(queryRQ.getAddressText())) {
+            AddressInfo addressInfo = regionAO.parseAddressInfo(queryRQ.getAddressText());
             if (null != addressInfo) {
                 if (null != addressInfo.getProvince()) {
                     queryParam.setProvinceId(addressInfo.getProvince().getRegionId());
@@ -90,8 +110,6 @@ public class RecruitmentController {
                 }
             }
         }
-        PageResult<RecruitmentInfo> pageResult = recruitmentAO.getRecruitmentInfo(queryParam, new Paginator(1, 5));
-        model.put("recruitmentInfoList", pageResult.getData());
-        return "recruitment/listInfo";
+        return recruitmentAO.getRecruitmentInfo(queryParam, queryRQ.getPaginator());
     }
 }

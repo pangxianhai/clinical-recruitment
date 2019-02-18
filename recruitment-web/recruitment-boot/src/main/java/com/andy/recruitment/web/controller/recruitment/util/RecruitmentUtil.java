@@ -59,6 +59,14 @@ public class RecruitmentUtil {
         return recruitmentVO;
     }
 
+    public static List<RecruitmentVO> transformRecruitmentVO(List<RecruitmentInfo> recruitmentInfoList) {
+        if (CollectionUtil.isEmpty(recruitmentInfoList)) {
+            return new ArrayList<>(0);
+        }
+        return recruitmentInfoList.stream().map(RecruitmentUtil::transformRecruitmentVO).filter(
+            Objects::nonNull).collect(Collectors.toList());
+    }
+
     public static RecruitmentApplicationInfo transformApplicationInfo(RecruitmentApplicationRQ applicationRQ) {
         if (null == applicationRQ) {
             return null;
@@ -85,7 +93,7 @@ public class RecruitmentUtil {
         }
         RecruitmentApplicationVO applicationVO = new RecruitmentApplicationVO();
         BeanUtil.copyProperties(applicationInfo, applicationVO);
-        applicationVO.setApplicationTime(DateUtil.format(applicationInfo.getApplicationTime(),"yyyy-MM-dd"));
+        applicationVO.setApplicationTime(DateUtil.format(applicationInfo.getApplicationTime(), "yyyy-MM-dd"));
         return applicationVO;
     }
 

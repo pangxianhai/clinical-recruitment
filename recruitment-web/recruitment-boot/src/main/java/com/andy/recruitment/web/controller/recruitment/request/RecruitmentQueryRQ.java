@@ -1,11 +1,13 @@
 package com.andy.recruitment.web.controller.recruitment.request;
 
+import com.xgimi.base.BaseQueryRQ;
+
 /**
  * 招募信息查询参数
  *
  * @author 庞先海 2019-02-06
  */
-public class RecruitmentQueryRQ {
+public class RecruitmentQueryRQ extends BaseQueryRQ {
 
     /**
      * 地区文本

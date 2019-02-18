@@ -24,10 +24,11 @@
 <body>
 <div class="sui-container">
     <form id="manageLoginForm" class="sui-form form-horizontal" novalidate="novalidate">
+        <p class="sui-text-xlarge" style="text-align: left;padding-left: 18px">临床试验招募系统管理员登陆</p>
         <div class="control-group">
-            <label for="inputEmail" class="control-label">手机号：</label>
+            <label for="inputPhone" class="control-label">手机号：</label>
             <div class="controls">
-                <input type="text" id="inputEmail" name="phone" placeholder="手机号"
+                <input type="text" id="inputPhone" name="phone" placeholder="手机号"
                        data-rules="required|mobile">
             </div>
         </div>

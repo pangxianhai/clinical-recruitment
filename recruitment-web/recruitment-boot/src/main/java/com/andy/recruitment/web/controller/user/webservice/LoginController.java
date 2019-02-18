@@ -88,6 +88,6 @@ public class LoginController {
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
     public String manageLogin(String redirectURL, Map<String, Object> model) {
         model.put("redirectURL", redirectURL);
-        return "user/manageLogin";
+        return "user/manageLogin-pc";
     }
 }
