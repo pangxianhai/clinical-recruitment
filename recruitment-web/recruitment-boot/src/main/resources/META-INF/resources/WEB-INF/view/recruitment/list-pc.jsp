@@ -16,6 +16,11 @@
     <jsp:param value="recruitmentList" name="menuItem"/>
 </jsp:include>
 <div class="sui-container">
+    <ul class="sui-breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">手机数码、电脑办公</a></li>
+        <li class="active">智能手机</li>
+    </ul>
     <form class="sui-form form-search">
         <input type="text" class="input-medium search-query">
         <button type="submit" class="sui-btn btn-primary">搜索</button>

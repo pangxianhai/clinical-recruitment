@@ -21,7 +21,21 @@ $(function () {
     bindAddRecruitmentBtnAction: function () {
       $('#addRecruitmentForm').validate({
         success: function () {
-          alert('验证成功');
+          const data = {};
+          $.each($('#addRecruitmentForm').serializeArray(), function (i, item) {
+            data[item.name] = item.value;
+          });
+          Ajax.post('/recruitment/add.json', data, function (result) {
+            if (result) {
+              $.alert('添加成功');
+              setTimeout(function () {
+                window.location.href = '/recruitment/list-pc';
+              }, 2000);
+            } else {
+              $.alert('添加失败');
+            }
+          });
+          return false;
         }
       });
     },
@@ -33,7 +47,7 @@ $(function () {
     },
 
     main: function () {
-      this.initTextarea();
+      // this.initTextarea();
       this.bindAddRecruitmentBtnAction();
       this.bindCancelRecruitmentBtnAction();
     }

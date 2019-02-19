@@ -1,10 +1,12 @@
 package com.andy.recruitment.web.controller.user.webservice;
 
 import com.andy.recruitment.user.ao.UserAO;
+import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.user.request.BandPhoneRQ;
 import com.andy.recruitment.web.controller.user.request.MangeLoginRQ;
 import com.andy.recruitment.web.controller.user.request.VerCodeSendRQ;
 import com.xgimi.context.ServletContext;
+import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +44,14 @@ public class LoginWebservice {
 
     @RequestMapping(value = "/manage.json", method = RequestMethod.POST)
     public boolean manageLogin(@RequestBody MangeLoginRQ loginRQ) {
-        this.userAO.loginByPhone(loginRQ.getPhone(), loginRQ.getPassword());
+        UserInfo userInfo = this.userAO.loginByPhone(loginRQ.getPhone(), loginRQ.getPassword());
+        if (null == userInfo) {
+            return false;
+        }
+        Cookie cookie = new Cookie("userId", String.valueOf(userInfo.getUserId()));
+        cookie.setMaxAge(Integer.MAX_VALUE);
+        cookie.setPath("/");
+        ServletContext.getResponse().addCookie(cookie);
         return true;
     }
 }
