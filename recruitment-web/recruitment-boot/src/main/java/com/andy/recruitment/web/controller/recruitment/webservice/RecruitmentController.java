@@ -47,7 +47,7 @@ public class RecruitmentController {
     }
 
 
-    @RequestMapping("/add")
+    @RequestMapping("/add-pc")
     public String addRecruitment() {
         return "recruitment/add-pc";
     }

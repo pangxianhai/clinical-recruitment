@@ -13,42 +13,38 @@
 </head>
 <body>
 <jsp:include page="../components/navbar-pc.jsp">
-    <jsp:param value="recruitment" name="menuTarget"/>
-    <jsp:param value="recruitmentList" name="menuAction"/>
+    <jsp:param value="user" name="menuTarget"/>
+    <jsp:param value="doctorList" name="menuAction"/>
 </jsp:include>
 <div class="sui-container">
     <ul class="sui-breadcrumb">
-        <li><a href="#">任务管理</a></li>
-        <li class="active">任务列表</li>
+        <li><a href="#">医生管理</a></li>
+        <li class="active">医生列表</li>
     </ul>
     <form class="sui-form form-search">
         <input type="text" class="input-medium search-query">
         <button type="submit" class="sui-btn btn-primary">搜索</button>
-        <a href="/recruitment/add-pc" target="_blank" class="sui-btn btn-large btn-primary">发布任务</a>
     </form>
     <table class="sui-table table-primary">
         <thead>
         <tr>
-            <th>招募ID</th>
-            <th>标题</th>
-            <th>登记编号</th>
-            <th>实验分期</th>
-            <th>适应症状</th>
-            <th>药物名称</th>
-            <th>药物类型</th>
-            <th>招募人数</th>
-            <th>启始时间</th>
-            <th>截至时间</th>
-            <th>招募状态</th>
+            <th>医生姓名</th>
+            <th>手机号</th>
+            <th>性别</th>
+            <th>地址</th>
+            <th>执业机构</th>
+            <th>执业类别</th>
+            <th>状态</th>
             <th>操作</th>
         </tr>
         </thead>
-        <tbody id="recruitment-panel"></tbody>
+        <tbody id="doctor-panel"></tbody>
     </table>
     <div class="pagination" style="text-align: right;margin-right: 20px">
     </div>
 </div>
 </body>
 <script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
-<script type="text/javascript" src="/static/js/recruitment/list-pc.js?_v=${version}"></script>
+<script type='text/javascript' src='/static/js/doctor/list-pc.js?_v=${version}'
+        charset="utf-8"></script>
 </html>

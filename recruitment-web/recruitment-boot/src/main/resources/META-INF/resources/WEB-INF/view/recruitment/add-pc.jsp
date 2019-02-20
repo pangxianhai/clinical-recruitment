@@ -25,13 +25,13 @@
 </head>
 <body>
 <jsp:include page="../components/navbar-pc.jsp">
-    <jsp:param value="recruitmentList" name="menuItem"/>
+    <jsp:param value="recruitment" name="menuTarget"/>
+    <jsp:param value="recruitmentAdd" name="menuAction"/>
 </jsp:include>
 <div class="sui-container">
     <ul class="sui-breadcrumb">
-        <li><a href="#">首页</a></li>
-        <li><a href="#">手机数码、电脑办公</a></li>
-        <li class="active">智能手机</li>
+        <li><a href="#">任务管理</a></li>
+        <li class="active">发布任务</li>
     </ul>
     <form id="addRecruitmentForm" class="sui-form form-horizontal" novalidate="novalidate">
         <div class="control-group">
