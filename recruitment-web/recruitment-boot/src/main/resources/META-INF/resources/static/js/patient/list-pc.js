@@ -1,9 +1,9 @@
 $(function () {
-  const DoctorList = {
-    loadDoctorInfo: function (currentPage) {
+  const PatientList = {
+    loadPatientInfo: function (currentPage) {
       const $this = this;
       $.ajax({
-        url: '/doctor/listPcInfo',
+        url: '/patient/listPcInfo',
         type: 'get',
         data: {
           currentPage: currentPage,
@@ -13,24 +13,24 @@ $(function () {
           token: CookieUtil.getCookie("userId")
         },
         success: function (html) {
-          $('#doctor-panel').html(html);
-          $this.doctorPagination();
+          $('#patient-panel').html(html);
+          $this.patientPagination();
         }
       });
     },
-    doctorPagination: function () {
+    patientPagination: function () {
       const $this = this;
       $('.pagination').pagination({
         pages: parseInt($('#totalPages').val()),
         displayPage: 6,
         onSelect: function (page) {
-          $this.loadDoctorInfo(page);
+          $this.loadPatientInfo(page);
         }
       });
     },
     main: function () {
-      this.loadDoctorInfo(1);
+      this.loadPatientInfo(1);
     }
   };
-  DoctorList.main();
+  PatientList.main();
 });

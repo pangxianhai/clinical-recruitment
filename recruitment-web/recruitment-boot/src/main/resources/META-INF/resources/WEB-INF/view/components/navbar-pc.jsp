@@ -68,6 +68,8 @@
         <c:if test="${menuTarget == 'user'}">
             <c:set var="doctorList" value='${menuAction == "doctorList" ? "active":"" }'/>
             <c:set var="doctorAdd" value='${menuAction == "doctorAdd" ? "active":"" }'/>
+            <c:set var="patientList" value='${menuAction == "patientList" ? "active":"" }'/>
+            <c:set var="patientAdd" value='${menuAction == "patientAdd" ? "active":"" }'/>
             <li class="nav-header">医生</li>
             <li class="${doctorList}">
                 <a href="/doctor/list-pc">医生列表</a>
@@ -76,10 +78,10 @@
                 <a href="#">添加医生</a>
             </li>
             <li class="nav-header">患者</li>
-            <li class="">
-                <a href="#">患者列表</a>
+            <li class="${patientList}">
+                <a href="/patient/list-pc">患者列表</a>
             </li>
-            <li class="">
+            <li class="${patientAdd}">
                 <a href="#">添加患者</a>
             </li>
         </c:if>
