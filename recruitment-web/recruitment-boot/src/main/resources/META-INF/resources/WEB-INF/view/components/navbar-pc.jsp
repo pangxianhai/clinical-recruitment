@@ -41,9 +41,6 @@
             <li class="${userTarget}">
                 <a href="/doctor/list-pc">用户管理</a>
             </li>
-            <li>
-                <a href="#">管理员管理</a>
-            </li>
         </ul>
     </div>
 </div>
@@ -70,6 +67,7 @@
             <c:set var="doctorAdd" value='${menuAction == "doctorAdd" ? "active":"" }'/>
             <c:set var="patientList" value='${menuAction == "patientList" ? "active":"" }'/>
             <c:set var="patientAdd" value='${menuAction == "patientAdd" ? "active":"" }'/>
+            <c:set var="managerList" value='${menuAction == "managerList" ? "active":"" }'/>
             <li class="nav-header">医生</li>
             <li class="${doctorList}">
                 <a href="/doctor/list-pc">医生列表</a>
@@ -83,6 +81,13 @@
             </li>
             <li class="${patientAdd}">
                 <a href="#">添加患者</a>
+            </li>
+            <li class="nav-header">管理员</li>
+            <li class="${managerList}">
+                <a href="/user/manager/list-pc">管理员列表</a>
+            </li>
+            <li class="${patientAdd}">
+                <a href="#">添加管理员</a>
             </li>
         </c:if>
     </ul>

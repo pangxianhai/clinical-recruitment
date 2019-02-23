@@ -8,10 +8,14 @@ import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.user.model.UserInfoDO;
 import com.andy.recruitment.user.model.UserQueryParam;
 import com.andy.recruitment.user.util.UserUtil;
+import com.xgimi.commons.page.PageResult;
+import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
+import com.xgimi.mybatis.paginator.Page;
+import com.xgimi.util.PageUtil;
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +94,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         queryParam.setPhone(phone);
         List<UserInfoDO> userInfoDOList = this.userInfoMapper.select(queryParam);
         return CollectionUtil.parseOne(userInfoDOList, UserUtil::transformUserInfo);
+    }
+
+    @Override
+    public PageResult<UserInfo> getUserInfo(UserQueryParam queryParam, Paginator paginator) {
+        Page page = PageUtil.transformToPage(paginator);
+        List<UserInfoDO> userInfoDOList = this.userInfoMapper.select(queryParam, page);
+        List<UserInfo> userInfoList = UserUtil.transformUserInfo(userInfoDOList);
+        return new PageResult<>(userInfoList, PageUtil.transformToPaginator(page));
     }
 }

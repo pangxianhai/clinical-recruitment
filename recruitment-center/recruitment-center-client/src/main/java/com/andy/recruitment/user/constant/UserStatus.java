@@ -1,6 +1,7 @@
 package com.andy.recruitment.user.constant;
 
 import com.xgimi.commons.base.BaseType;
+import java.util.List;
 
 /**
  * 用户状态
@@ -15,5 +16,13 @@ public class UserStatus extends BaseType {
 
     public UserStatus(int code, String desc) {
         super(code, desc);
+    }
+
+    public static List<UserStatus> getValues() {
+        return BaseType.getValues(UserStatus.class);
+    }
+
+    public static UserStatus parse(Integer code) {
+        return BaseType.parse(UserStatus.getValues(), code);
     }
 }

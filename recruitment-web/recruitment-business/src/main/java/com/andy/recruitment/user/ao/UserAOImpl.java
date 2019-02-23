@@ -7,10 +7,13 @@ import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
+import com.andy.recruitment.user.model.UserQueryParam;
 import com.andy.recruitment.user.service.UserInfoService;
 import com.andy.recruitment.weixin.model.OauthToken;
 import com.andy.recruitment.weixin.model.WxUserInfo;
 import com.andy.recruitment.weixin.service.WeiXinService;
+import com.xgimi.commons.page.PageResult;
+import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.RandomUtil;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
@@ -121,7 +124,7 @@ public class UserAOImpl implements UserAO {
         AssertUtil.assertBoolean(pas.equals(userInfo.getPassword()), () -> {
             throw new BusinessException(BusinessErrorCode.USER_PASSWORD_ERROR);
         });
-        AssertUtil.assertBoolean(!UserStatus.FREEZE.equals(userInfo.getStatus()), () -> {
+        AssertUtil.assertBoolean(! UserStatus.FREEZE.equals(userInfo.getStatus()), () -> {
             throw new BusinessException(BusinessErrorCode.USER_FREEZE);
         });
         return userInfo;
@@ -134,5 +137,10 @@ public class UserAOImpl implements UserAO {
             userInfo.setPassword(password);
         }
         this.userInfoService.addUserInfo(userInfo, operator);
+    }
+
+    @Override
+    public PageResult<UserInfo> getUserInfo(UserQueryParam queryParam, Paginator paginator) {
+        return this.userInfoService.getUserInfo(queryParam, paginator);
     }
 }
