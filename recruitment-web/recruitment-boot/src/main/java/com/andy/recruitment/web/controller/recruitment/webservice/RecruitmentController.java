@@ -93,7 +93,7 @@ public class RecruitmentController {
     }
 
     private PageResult<RecruitmentInfo> queryRecruitmentInfo(RecruitmentQueryRQ queryRQ) {
-        RecruitmentQueryParam queryParam = new RecruitmentQueryParam();
+        RecruitmentQueryParam queryParam = RecruitmentUtil.transformQueryParam(queryRQ);
         queryParam.setIndication(queryRQ.getIndication());
         queryParam.setQueryText(queryRQ.getQueryText());
         if (StringUtil.isNotEmpty(queryRQ.getAddressText())) {

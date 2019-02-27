@@ -1,9 +1,11 @@
 package com.andy.recruitment.web.controller.recruitment.util;
 
 import com.andy.recruitment.recruitment.constant.RecruitmentApplicationStatus;
+import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
+import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
@@ -11,6 +13,7 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.ResearchCenterAddRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
@@ -165,5 +168,23 @@ public class RecruitmentUtil {
         return centerInfoList.stream().map(
             (centerInfo) -> RecruitmentUtil.transformResearchCenterVO(regionAO, centerInfo)).filter(
             Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static RecruitmentQueryParam transformQueryParam(RecruitmentQueryRQ queryRQ) {
+        if (null == queryRQ) {
+            return null;
+        }
+        RecruitmentQueryParam queryParam = new RecruitmentQueryParam();
+        BeanUtil.copyProperties(queryRQ, queryParam);
+        queryParam.setStartTimeBegin(DateUtil.parse(queryRQ.getStartTimeBegin(), "yyyy-MM-dd"));
+        if (StringUtil.isNotEmpty(queryRQ.getStartTimeEnd())) {
+            queryParam.setStartTimeEnd(DateUtil.parse(queryRQ.getStartTimeEnd() + " 23:59:59"));
+        }
+        queryParam.setStopTimeBegin(DateUtil.parse(queryRQ.getStopTimeBegin(), "yyyy-MM-dd"));
+        if (StringUtil.isNotEmpty(queryRQ.getStopTimeEnd())) {
+            queryParam.setStopTimeEnd(DateUtil.parse(queryRQ.getStopTimeEnd() + " 23:59:59"));
+        }
+        queryParam.setStatus(RecruitmentStatus.parse(queryRQ.getStatus()));
+        return queryParam;
     }
 }
