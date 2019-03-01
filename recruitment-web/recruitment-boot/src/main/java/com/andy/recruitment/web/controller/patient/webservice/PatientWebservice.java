@@ -2,16 +2,22 @@ package com.andy.recruitment.web.controller.patient.webservice;
 
 import com.andy.recruitment.patient.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
+import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.patient.request.PatientAddRQ;
+import com.andy.recruitment.web.controller.patient.request.PatientQueryRQ;
+import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import com.andy.recruitment.web.controller.patient.util.PatientUtil;
+import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
+import com.xgimi.commons.page.PageResult;
 import com.xgimi.context.ServletContext;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,5 +70,18 @@ public class PatientWebservice {
         this.userAO.updateUserInfo(userInfo, ServletContext.getLoginUname());
         this.userAO.bandPhone(loginInfo.getUserId(), patientAddRQ.getPhone(), null);
         return true;
+    }
+
+    @Login
+    @RequestMapping(value = "/list.json", method = RequestMethod.GET)
+    public PageResult<PatientVO> getPatientInfo(PatientQueryRQ queryRQ) {
+        PatientQueryParam queryParam = PatientUtil.transformPatientQueryParam(queryRQ);
+        PageResult<PatientInfo> pageResult = this.patientAO.getPatientInfo(queryParam, queryRQ.getPaginator());
+        List<PatientVO> patientVOList = PatientUtil.transformPatientVO(pageResult.getData());
+        for (PatientVO patientVO : patientVOList) {
+            UserInfo userInfo = this.userAO.getUserInfoByUserId(patientVO.getUserId());
+            patientVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
+        }
+        return new PageResult<>(patientVOList, pageResult.getPaginator());
     }
 }

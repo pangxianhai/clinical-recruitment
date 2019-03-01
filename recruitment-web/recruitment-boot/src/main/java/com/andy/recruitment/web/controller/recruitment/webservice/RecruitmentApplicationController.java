@@ -143,6 +143,12 @@ public class RecruitmentApplicationController {
         return "recruitment/application/listInfo";
     }
 
+    @Login
+    @RequestMapping(value = "/list-pc", method = RequestMethod.GET)
+    public String recruitmentPcList(Map<String, Object> model) {
+        return "recruitment/application/list-pc";
+    }
+
     private void buildApplicationVO(List<RecruitmentApplicationVO> applicationVOList) {
         if (CollectionUtil.isEmpty(applicationVOList)) {
             return;
