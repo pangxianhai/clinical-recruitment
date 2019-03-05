@@ -49,6 +49,7 @@
     </form>
 </div>
 </body>
+<input id="redirectURL" type="hidden" value="${redirectURL}">
 <script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
 <script type="text/javascript" src="/static/js/user/manageLogin.js?_v=${version}"></script>
 </html>

@@ -42,6 +42,16 @@
                 <a href="/doctor/list-pc">用户管理</a>
             </li>
         </ul>
+        <ul class="sui-nav pull-right">
+            <c:if test="${not empty userInfo}">
+                <li>
+                    <a href="#">${userInfo.realName}</a>
+                </li>
+                <li>
+                    <a href="/user/login/logout">退出</a>
+                </li>
+            </c:if>
+        </ul>
     </div>
 </div>
 <c:set var="menuAction" value='<%=request.getParameter("menuAction")%>'/>
@@ -68,6 +78,7 @@
             <c:set var="patientList" value='${menuAction == "patientList" ? "active":"" }'/>
             <c:set var="patientAdd" value='${menuAction == "patientAdd" ? "active":"" }'/>
             <c:set var="managerList" value='${menuAction == "managerList" ? "active":"" }'/>
+            <c:set var="managerAdd" value='${menuAction == "managerAdd" ? "active":"" }'/>
             <li class="nav-header">医生</li>
             <li class="${doctorList}">
                 <a href="/doctor/list-pc">医生列表</a>
@@ -86,8 +97,8 @@
             <li class="${managerList}">
                 <a href="/user/manager/list-pc">管理员列表</a>
             </li>
-            <li class="${patientAdd}">
-                <a href="#">添加管理员</a>
+            <li class="${managerAdd}">
+                <a href="/user/manager/add-pc">添加管理员</a>
             </li>
         </c:if>
     </ul>

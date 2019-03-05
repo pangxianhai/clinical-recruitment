@@ -10,6 +10,7 @@ import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
+import com.xgimi.auth.Login;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.util.StringUtil;
 import java.util.List;
@@ -77,12 +78,14 @@ public class RecruitmentController {
         return "recruitment/listInfo";
     }
 
+    @Login
     @RequestMapping(value = "/list-pc", method = RequestMethod.GET)
     public String recruitmentListPc(Map<String, Object> model) {
         model.put("indicationOptions", this.indicationConfig);
         return "recruitment/list-pc";
     }
 
+    @Login
     @RequestMapping(value = "/listPcInfo", method = RequestMethod.GET)
     public String recruitmentListPcResult(RecruitmentQueryRQ recruitmentQueryRQ, Map<String, Object> model) {
         PageResult<RecruitmentInfo> pageResult = this.queryRecruitmentInfo(recruitmentQueryRQ);

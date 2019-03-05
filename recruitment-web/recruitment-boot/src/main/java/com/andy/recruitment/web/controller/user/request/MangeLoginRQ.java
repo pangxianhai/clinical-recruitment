@@ -1,8 +1,8 @@
 package com.andy.recruitment.web.controller.user.request;
 
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * 管理员登陆参数

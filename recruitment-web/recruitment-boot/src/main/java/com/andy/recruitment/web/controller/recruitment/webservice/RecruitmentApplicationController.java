@@ -33,6 +33,7 @@ import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
+import com.xgimi.converter.MyParameter;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +119,24 @@ public class RecruitmentApplicationController {
     @Login
     @RequestMapping(value = "/listInfo", method = RequestMethod.GET)
     public String recruitmentList(RecruitmentApplicationQueryRQ queryRQ, Map<String, Object> model) {
+        this.queryApplication(queryRQ, model);
+        return "recruitment/application/listInfo";
+    }
+
+    @Login
+    @RequestMapping(value = "/list-pc", method = RequestMethod.GET)
+    public String recruitmentPcList(Map<String, Object> model) {
+        return "recruitment/application/list-pc";
+    }
+
+    @Login
+    @RequestMapping(value = "/listInfo-pc", method = RequestMethod.GET)
+    public String recruitmentPcListInfo(@MyParameter RecruitmentApplicationQueryRQ queryRQ, Map<String, Object> model) {
+        this.queryApplication(queryRQ, model);
+        return "recruitment/application/listInfo-pc";
+    }
+
+    private void queryApplication(RecruitmentApplicationQueryRQ queryRQ, Map<String, Object> model) {
         RecruitmentApplicationQueryParam queryParam = RecruitmentUtil.transformApplicationQueryParam(queryRQ);
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
@@ -138,15 +157,9 @@ public class RecruitmentApplicationController {
         PageResult<RecruitmentApplicationInfo> pageResult = this.recruitmentApplicationAO.getRecruitmentApplicationInfo(
             queryParam, queryRQ.getPaginator());
         List<RecruitmentApplicationVO> applicationVOList = RecruitmentUtil.transformApplicationVO(pageResult.getData());
-        model.put("applicationVOList", applicationVOList);
         this.buildApplicationVO(applicationVOList);
-        return "recruitment/application/listInfo";
-    }
-
-    @Login
-    @RequestMapping(value = "/list-pc", method = RequestMethod.GET)
-    public String recruitmentPcList(Map<String, Object> model) {
-        return "recruitment/application/list-pc";
+        model.put("paginator", pageResult.getPaginator());
+        model.put("applicationVOList", applicationVOList);
     }
 
     private void buildApplicationVO(List<RecruitmentApplicationVO> applicationVOList) {

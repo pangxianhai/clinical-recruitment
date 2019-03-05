@@ -35,7 +35,7 @@ function build_product() {
 }
 
 if [ "$1" == "web" ];then
-    build_web
+    work_build_web
 elif [ "$1" == "webh" ];then
     home_build_web
 elif [ "$1" == "pro" ];then

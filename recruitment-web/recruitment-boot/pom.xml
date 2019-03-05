@@ -99,7 +99,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
+                            <classpathPrefix></classpathPrefix>
                             <mainClass>com.andy.recruitment.web.App</mainClass>
                         </manifest>
                     </archive>

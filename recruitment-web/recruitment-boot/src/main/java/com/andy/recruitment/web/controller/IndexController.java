@@ -4,6 +4,7 @@ import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
+import com.xgimi.util.ServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,11 @@ public class IndexController {
 
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     public String homePage() {
-        return "redirect:/recruitment/list";
+        if (ServletUtil.isMobile()) {
+            return "redirect:/recruitment/list";
+        } else {
+            return "redirect:/recruitment/list-pc";
+        }
     }
 
     @ResponseBody

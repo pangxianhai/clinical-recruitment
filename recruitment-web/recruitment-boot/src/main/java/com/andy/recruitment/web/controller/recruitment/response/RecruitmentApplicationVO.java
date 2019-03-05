@@ -20,12 +20,10 @@ public class RecruitmentApplicationVO implements Serializable {
      * 招募ID
      */
     private Long recruitmentId;
-
     /**
      * 招募信息
      */
     private RecruitmentVO recruitmentVO;
-
     /**
      * 患者ID
      */

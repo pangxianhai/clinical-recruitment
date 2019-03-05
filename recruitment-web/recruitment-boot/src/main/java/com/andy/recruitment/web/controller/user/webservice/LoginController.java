@@ -7,6 +7,7 @@ import com.andy.recruitment.weixin.ao.WeiXinAO;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.context.ServletContext;
+import com.xgimi.util.ServletUtil;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,26 @@ public class LoginController {
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
     public String manageLogin(String redirectURL, Map<String, Object> model) {
+        if (StringUtil.isEmpty(redirectURL)) {
+            redirectURL = "/recruitment/list-pc";
+        }
         model.put("redirectURL", redirectURL);
-        return "user/manageList-pc";
+        return "user/manageLogin-pc";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(String redirectURL) {
+        if (StringUtil.isEmpty(redirectURL)) {
+            if (ServletUtil.isMobile()) {
+                redirectURL = "/recruitment/list";
+            } else {
+                redirectURL = "/recruitment/list-pc";
+            }
+        }
+        Cookie cookie = new Cookie("userId", "");
+        cookie.setMaxAge(1);
+        cookie.setPath("/");
+        ServletContext.getResponse().addCookie(cookie);
+        return "redirect:" + redirectURL;
     }
 }

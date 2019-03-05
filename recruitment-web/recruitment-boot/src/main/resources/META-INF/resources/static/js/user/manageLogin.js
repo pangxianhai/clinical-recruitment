@@ -9,7 +9,7 @@ $(function () {
           });
           Ajax.post('/user/login/manage.json', data, function (result) {
             if (result) {
-              window.location.href = '/recruitment/list-pc';
+              window.location.href = $('#redirectURL').val();
             } else {
               $.alert('登陆失败');
             }

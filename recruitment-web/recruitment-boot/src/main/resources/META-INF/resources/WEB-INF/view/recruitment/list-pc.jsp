@@ -6,48 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <title>任务列表</title>
-    <link href="/static/css/lib/sui.min.css" rel="stylesheet">
-    <link href="/static/css/lib/sui-append.min.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/sj/dpl/1.5.1/css/sui.min.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/sj/dpl/1.5.1/css/sui-append.min.css" rel="stylesheet">
+    <link href="/static/css/lib/list-pc.css?_v=${version}" rel="stylesheet">
     <script type="text/javascript"
-            src="/static/js/lib/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/lib/sui.min.js"></script>
-    <style>
-        .form-search input {
-            margin-right: 20px;
-        }
-
-        .sui-breadcrumb {
-            margin: 0;
-            padding: 8px 0 0 0;
-        }
-
-        .tips-error {
-            height: 24px;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .tips-error .msg-error {
-            display: none;
-        }
-
-        .loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: #000;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            opacity: 0.6;
-            filter: alpha(opacity=60);
-            display: none;
-        }
-
-        .loading .sui-loading {
-            margin-top: 253px;
-        }
-    </style>
+            src="http://g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="http://g.alicdn.com/sj/dpl/1.5.1/js/sui.min.js"></script>
 </head>
 <body>
 <jsp:include page="../components/navbar-pc.jsp">

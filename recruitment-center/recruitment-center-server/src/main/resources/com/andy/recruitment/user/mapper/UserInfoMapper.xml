@@ -44,7 +44,7 @@
                 and real_name like CONCAT('%', #{realName,jdbcType=VARCHAR},'%')
             </if>
             <if test="phoneLike != null and phoneLike != ''">
-                and phone like CONCAT('%', #{phone,jdbcType=VARCHAR},'%')
+                and phone like CONCAT('%', #{phoneLike,jdbcType=VARCHAR},'%')
             </if>
             <if test="phone != null and phone != ''">
                 and phone = #{phone, jdbcType=VARCHAR}

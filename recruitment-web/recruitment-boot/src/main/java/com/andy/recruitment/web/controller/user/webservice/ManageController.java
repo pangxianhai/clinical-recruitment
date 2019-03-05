@@ -47,4 +47,9 @@ public class ManageController {
         model.put("paginator", pageResult.getPaginator());
         return "user/manageLoginInfo-pc";
     }
+
+    @RequestMapping(value = "/add-pc", method = RequestMethod.GET)
+    public String manageAdd(Map<String, Object> model) {
+        return "user/manageAdd-pc";
+    }
 }

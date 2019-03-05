@@ -18,8 +18,8 @@
 </jsp:include>
 <div class="sui-container">
     <ul class="sui-breadcrumb">
-        <li><a href="#">用户管理</a></li>
-        <li><a href="#">患者管理</a></li>
+        <li><a>用户管理</a></li>
+        <li><a>患者管理</a></li>
         <li class="active">患者列表</li>
     </ul>
     <form class="sui-form form-search">

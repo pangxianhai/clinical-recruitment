@@ -1,8 +1,11 @@
 package com.andy.recruitment.web.controller.user.util;
 
+import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.constant.UserStatus;
+import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.user.model.UserQueryParam;
+import com.andy.recruitment.web.controller.user.request.ManageAddRQ;
 import com.andy.recruitment.web.controller.user.request.UserQueryRQ;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.xgimi.commons.util.CollectionUtil;
@@ -44,5 +47,16 @@ public class UserUtil {
         BeanUtil.copyProperties(queryRQ, queryParam);
         queryParam.setStatus(UserStatus.parse(queryRQ.getStatus()));
         return queryParam;
+    }
+
+    public static UserInfo transformUserInfo(ManageAddRQ manageAddRQ) {
+        if (null == manageAddRQ) {
+            return null;
+        }
+        UserInfo userInfo = new UserInfo();
+        BeanUtil.copyProperties(manageAddRQ, userInfo);
+        userInfo.setGender(Gender.parse(manageAddRQ.getGender()));
+        userInfo.setUserType(UserType.ADMIN);
+        return userInfo;
     }
 }
