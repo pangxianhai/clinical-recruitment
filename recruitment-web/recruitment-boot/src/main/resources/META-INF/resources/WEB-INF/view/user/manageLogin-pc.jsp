@@ -29,7 +29,8 @@
             <label for="inputPhone" class="control-label">手机号：</label>
             <div class="controls">
                 <input type="text" id="inputPhone" name="phone" placeholder="手机号"
-                       data-rules="required|mobile">
+                       data-rules="required|digits|minlength=11|maxlength=11"
+                       data-error-msg="请填写正确的手机号码">
             </div>
         </div>
         <div class="control-group">

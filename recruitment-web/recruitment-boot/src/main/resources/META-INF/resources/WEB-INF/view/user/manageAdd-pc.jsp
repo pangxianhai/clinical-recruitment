@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <title>添加管理员</title>
-    <link href="/static/css/lib/sui.min.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/sj/dpl/1.5.1/css/sui.min.css" rel="stylesheet">
     <script type="text/javascript"
-            src="/static/js/lib/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/lib/sui.min.js"></script>
+            src="http://g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="http://g.alicdn.com/sj/dpl/1.5.1/js/sui.min.js"></script>
 </head>
 <body>
 <jsp:include page="../components/navbar-pc.jsp">
@@ -34,21 +34,21 @@
             <label for="phone" class="control-label">手机号：</label>
             <div class="controls">
                 <input type="text" id="phone" name="phone" placeholder="手机号码"
-                       data-rules="required|maxlength=16">
+                       data-rules="required|digits|minlength=11|maxlength=11" data-error-msg="请填写正确的手机号码">
             </div>
         </div>
         <div class="control-group">
             <label for="password" class="control-label">密码：</label>
             <div class="controls">
-                <input type="text" id="password" name="password" placeholder="密码"
-                       data-rules="required|maxlength=16">
+                <input type="password" id="password" name="password" placeholder="密码"
+                       data-rules="required|minlength=8|maxlength=16">
             </div>
         </div>
         <div class="control-group">
             <label for="rePassword" class="control-label">重复密码：</label>
             <div class="controls">
-                <input type="text" id="rePassword" name="rePassword" placeholder="重复密码"
-                       data-rules="required|maxlength=16">
+                <input type="password" id="rePassword" name="rePassword" placeholder="重复密码"
+                       data-rules="required|match=password">
             </div>
         </div>
         <div class="control-group">
@@ -72,4 +72,5 @@
 </div>
 </body>
 <script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
+<script type="text/javascript" src="/static/js/user/manageAdd.js?_v=${version}"></script>
 </html>
