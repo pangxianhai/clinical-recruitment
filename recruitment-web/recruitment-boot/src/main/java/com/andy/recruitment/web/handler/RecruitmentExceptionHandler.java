@@ -63,15 +63,10 @@ public class RecruitmentExceptionHandler extends MyExceptionHandler {
             printErrorLog(result, e);
         }
         if (request.getRequestURI().endsWith(".json")) {
-            this.jsonError(result, response);
-            return null;
+           return result;
         } else {
             return this.viewError(request, result);
         }
-    }
-
-    private void jsonError(Result result, HttpServletResponse response) throws IOException {
-        response.getOutputStream().write(JsonUtil.toJson(result).getBytes());
     }
 
     private ModelAndView viewError(HttpServletRequest request, Result result) {

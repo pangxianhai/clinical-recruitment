@@ -99,13 +99,17 @@ public class UserAOImpl implements UserAO {
         AssertUtil.assertNull(userInfo, () -> {
             throw new BusinessException(BusinessErrorCode.USER_NOT_EMPTY);
         });
+        UserInfo userInfoByPhone = this.userInfoService.getUserInfoByPhone(phone);
+        if (null != userInfoByPhone && ! userInfoByPhone.getUserId().equals(userId)) {
+            throw new BusinessException(BusinessErrorCode.USER_PHONE_HAS_REGISTER);
+        }
+
         UserInfo updateUserInfo = new UserInfo();
         if (managerPhone.equals(phone)) {
             updateUserInfo.setUserType(UserType.ADMIN);
         }
         updateUserInfo.setUserId(userId);
         updateUserInfo.setPhone(phone);
-
         this.userInfoService.updateUserInfo(updateUserInfo, userInfo.getRealName());
     }
 

@@ -62,13 +62,14 @@ public class PatientWebservice {
         if (null != addressInfo.getDistrict()) {
             patientInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
         }
+        //先注册手机号,排除手机号重复的情况
+        this.userAO.bandPhone(loginInfo.getUserId(), patientAddRQ.getPhone(), null);
         this.patientAO.addPatientInfo(patientInfo, ServletContext.getLoginUname());
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(loginInfo.getUserId());
         userInfo.setUserType(UserType.PATIENT);
         userInfo.setRealName(patientAddRQ.getName());
         this.userAO.updateUserInfo(userInfo, ServletContext.getLoginUname());
-        this.userAO.bandPhone(loginInfo.getUserId(), patientAddRQ.getPhone(), null);
         return true;
     }
 

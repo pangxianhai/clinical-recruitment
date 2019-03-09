@@ -39,6 +39,10 @@ public enum BusinessErrorCode {
      * 用户已经被冻结
      */
     USER_FREEZE(102007),
+    /**
+     * 该手机号已被注册
+     */
+    USER_PHONE_HAS_REGISTER(102008),
 
     /**
      * 招募信息不能为空

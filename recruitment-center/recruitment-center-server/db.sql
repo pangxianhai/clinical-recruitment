@@ -39,7 +39,8 @@ create table doctor_info(
  created_time datetime NOT NULL COMMENT '创建时间',
  updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
  updated_time datetime COMMENT '更新时间',
- PRIMARY KEY (id)
+ PRIMARY KEY (id),
+ UNIQUE(user_id)
 )ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='医生信息表';
 
 drop table if exists patient_info;
@@ -54,7 +55,8 @@ create table patient_info(
   created_time datetime NOT NULL COMMENT '创建时间',
   updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
   updated_time datetime COMMENT '更新时间',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE(user_id)
 )ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='患者信息表';
 
 drop table if exists medical_clinical_recruitment_info;
