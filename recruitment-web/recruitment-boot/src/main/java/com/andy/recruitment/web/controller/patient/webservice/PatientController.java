@@ -48,9 +48,15 @@ public class PatientController {
     @Login
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register(String redirectURL, Integer userType, Map<String, Object> model) {
-        model.put("redirectURL", redirectURL);
-        model.put("userType", userType);
-        return "patient/register";
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        if (null != userInfo.getPhone()) {
+            return "redirect:" + redirectURL;
+        } else {
+            model.put("redirectURL", redirectURL);
+            model.put("userType", userType);
+            return "patient/register";
+        }
     }
 
     @Login

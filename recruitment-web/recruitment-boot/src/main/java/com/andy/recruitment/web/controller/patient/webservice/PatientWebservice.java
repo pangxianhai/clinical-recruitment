@@ -1,5 +1,7 @@
 package com.andy.recruitment.web.controller.patient.webservice;
 
+import com.andy.recruitment.exception.BusinessErrorCode;
+import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.patient.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
@@ -16,6 +18,7 @@ import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.page.PageResult;
+import com.xgimi.commons.util.StringUtil;
 import com.xgimi.context.ServletContext;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +65,19 @@ public class PatientWebservice {
         if (null != addressInfo.getDistrict()) {
             patientInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
         }
-        //先注册手机号,排除手机号重复的情况
-        this.userAO.bandPhone(loginInfo.getUserId(), patientAddRQ.getPhone(), null);
-        this.patientAO.addPatientInfo(patientInfo, ServletContext.getLoginUname());
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUserId(loginInfo.getUserId());
-        userInfo.setUserType(UserType.PATIENT);
-        userInfo.setRealName(patientAddRQ.getName());
-        this.userAO.updateUserInfo(userInfo, ServletContext.getLoginUname());
+        UserInfo currentUserInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        if (StringUtil.isNotEmpty(currentUserInfo.getPhone())) {
+            throw new BusinessException(BusinessErrorCode.USER_HAS_REGISTER);
+        } else {
+            //先注册手机号,排除手机号重复的情况
+            this.userAO.bandPhone(loginInfo.getUserId(), patientAddRQ.getPhone(), null);
+            this.patientAO.addPatientInfo(patientInfo, ServletContext.getLoginUname());
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserId(loginInfo.getUserId());
+            userInfo.setUserType(UserType.PATIENT);
+            userInfo.setRealName(patientAddRQ.getName());
+            this.userAO.updateUserInfo(userInfo, ServletContext.getLoginUname());
+        }
         return true;
     }
 

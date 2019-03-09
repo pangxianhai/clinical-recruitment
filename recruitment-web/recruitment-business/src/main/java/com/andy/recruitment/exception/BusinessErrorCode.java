@@ -43,6 +43,10 @@ public enum BusinessErrorCode {
      * 该手机号已被注册
      */
     USER_PHONE_HAS_REGISTER(102008),
+    /**
+     * 该用户已经注册
+     */
+    USER_HAS_REGISTER(102009),
 
     /**
      * 招募信息不能为空
