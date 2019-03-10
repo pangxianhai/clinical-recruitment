@@ -74,7 +74,7 @@ public class DoctorWebservice {
             this.doctorAO.addDoctorInfo(doctorInfo, ServletContext.getLoginUname());
             UserInfo userInfo = new UserInfo();
             userInfo.setUserId(loginInfo.getUserId());
-            userInfo.setUserType(UserType.PATIENT);
+            userInfo.setUserType(UserType.DOCTOR);
             userInfo.setRealName(doctorAddRQ.getName());
             this.userAO.updateUserInfo(userInfo, ServletContext.getLoginUname());
         }
