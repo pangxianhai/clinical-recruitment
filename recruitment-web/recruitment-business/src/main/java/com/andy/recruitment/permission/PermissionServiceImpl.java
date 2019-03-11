@@ -2,6 +2,7 @@ package com.andy.recruitment.permission;
 
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
+import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.user.service.UserInfoService;
 import com.xgimi.auth.Login;
@@ -48,8 +49,17 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public boolean hasPrivilege(String appId, Permission permission, Login login) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
-        if (null != login && null == loginInfo) {
-            throw new BusinessException(BusinessErrorCode.LOGIN_NOT_LOGIN);
+        if (null != login) {
+            if (null == loginInfo) {
+                throw new BusinessException(BusinessErrorCode.LOGIN_NOT_LOGIN);
+            }
+            UserInfo userInfo = (UserInfo)ServletContext.getRequest().getAttribute("userInfo");
+            if (null == userInfo) {
+                throw new BusinessException(BusinessErrorCode.LOGIN_NOT_LOGIN);
+            }
+            if (UserStatus.FREEZE.equals(userInfo.getStatus())) {
+                throw new BusinessException(BusinessErrorCode.USER_FREEZE);
+            }
         }
         return true;
     }

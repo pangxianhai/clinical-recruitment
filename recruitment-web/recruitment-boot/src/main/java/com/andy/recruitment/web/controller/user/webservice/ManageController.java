@@ -7,6 +7,7 @@ import com.andy.recruitment.user.model.UserQueryParam;
 import com.andy.recruitment.web.controller.user.request.UserQueryRQ;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
+import com.xgimi.auth.Login;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.converter.MyParameter;
 import java.util.List;
@@ -32,11 +33,13 @@ public class ManageController {
         this.userAO = userAO;
     }
 
+    @Login
     @RequestMapping(value = "/list-pc", method = RequestMethod.GET)
     public String manageList(Map<String, Object> model) {
         return "user/manageList-pc";
     }
 
+    @Login
     @RequestMapping(value = "/listPcInfo", method = RequestMethod.GET)
     public String manageListInfo(@MyParameter UserQueryRQ queryRQ, Map<String, Object> model) {
         UserQueryParam queryParam = UserUtil.transformUserQueryParam(queryRQ);
@@ -48,6 +51,7 @@ public class ManageController {
         return "user/manageLoginInfo-pc";
     }
 
+    @Login
     @RequestMapping(value = "/add-pc", method = RequestMethod.GET)
     public String manageAdd(Map<String, Object> model) {
         return "user/manageAdd-pc";

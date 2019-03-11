@@ -1,5 +1,6 @@
 package com.andy.recruitment.user.service;
 
+import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.user.model.UserQueryParam;
 import com.xgimi.commons.page.PageResult;
@@ -28,6 +29,15 @@ public interface UserInfoService {
      * @param operator 操作人
      */
     void updateUserInfo(UserInfo userInfo, String operator);
+
+    /**
+     * 更新用户状态
+     *
+     * @param userId   用户ID
+     * @param status   更新后的状态
+     * @param operator 操作人
+     */
+    void updateUserStatus(Long userId, UserStatus status, String operator);
 
     /**
      * 通过用户ID查询用户信息

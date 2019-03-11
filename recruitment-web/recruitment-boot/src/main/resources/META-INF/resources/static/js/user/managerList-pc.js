@@ -60,10 +60,44 @@ $(function () {
         }
       });
     },
+    bindFreezeManageUser: function () {
+      $('#manager-panel').on('click', '[item="freeze"]', function () {
+        let userId = $(this).attr('userId');
+        Ajax.post('/user/manager/' + userId + '/freeze.json', {},
+            function (result) {
+              if (result) {
+                $.alert('操作成功！！');
+                setTimeout(function () {
+                  window.location.reload(true);
+                }, 2000);
+              } else {
+                $.alert('操作失败！！');
+              }
+            });
+      });
+    },
+    bindUnfreezeManageUser: function () {
+      $('#manager-panel').on('click', '[item="unfreeze"]', function () {
+        let userId = $(this).attr('userId');
+        Ajax.post('/user/manager/' + userId + '/unfreeze.json', {},
+            function (result) {
+              if (result) {
+                $.alert('操作成功！！');
+                setTimeout(function () {
+                  window.location.reload(true);
+                }, 2000);
+              } else {
+                $.alert('操作失败！！');
+              }
+            });
+      });
+    },
     main: function () {
       $('#tips-error .msg-error').hide();
       this.loadManagerInfo(1);
       this.bindSearchAction();
+      this.bindFreezeManageUser();
+      this.bindUnfreezeManageUser();
     }
   };
   ManagerList.main();

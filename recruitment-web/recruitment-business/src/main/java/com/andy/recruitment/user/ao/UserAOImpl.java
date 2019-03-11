@@ -119,6 +119,11 @@ public class UserAOImpl implements UserAO {
     }
 
     @Override
+    public void updateUserStatus(Long userId, UserStatus status, String operator) {
+        this.userInfoService.updateUserStatus(userId, status, operator);
+    }
+
+    @Override
     public UserInfo loginByPhone(String phone, String password) {
         UserInfo userInfo = this.userInfoService.getUserInfoByPhone(phone);
         AssertUtil.assertNull(userInfo, () -> {

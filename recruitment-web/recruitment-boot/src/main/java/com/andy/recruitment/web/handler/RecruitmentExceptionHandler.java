@@ -5,7 +5,6 @@ import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.web.RecruitmentSystemInfo;
 import com.xgimi.commons.base.Result;
 import com.xgimi.commons.exception.CommonCode;
-import com.xgimi.commons.util.JsonUtil;
 import com.xgimi.commons.util.encrypt.EncodeUtil;
 import com.xgimi.handler.MyExceptionHandler;
 import com.xgimi.logger.log4j.Logger;
@@ -48,6 +47,14 @@ public class RecruitmentExceptionHandler extends MyExceptionHandler {
         } else {
             result = new Result<>(resultObj);
         }
+        //用户传入的参数发生的错误不打印日志
+        if (result.getCode() != CommonCode.PARAM_ERROR.getCode()) {
+            printErrorLog(result, e);
+        }
+        if (request.getRequestURI().endsWith(".json")) {
+            return result;
+        }
+
         if (result.getCode() == BusinessErrorCode.LOGIN_NOT_LOGIN.getCode()) {
             String redirectURL = EncodeUtil.urlEncode(request.getRequestURL().toString());
             if (ServletUtil.isMobile()) {
@@ -57,13 +64,6 @@ public class RecruitmentExceptionHandler extends MyExceptionHandler {
                 response.sendRedirect("/user/login/manage?redirectURL=" + redirectURL);
             }
             return null;
-        }
-        //用户传入的参数发生的错误不打印日志
-        if (result.getCode() != CommonCode.PARAM_ERROR.getCode()) {
-            printErrorLog(result, e);
-        }
-        if (request.getRequestURI().endsWith(".json")) {
-           return result;
         } else {
             return this.viewError(request, result);
         }

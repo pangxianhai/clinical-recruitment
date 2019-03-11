@@ -64,6 +64,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public void updateUserStatus(Long userId, UserStatus status, String operator) {
+        AssertUtil.assertNull(userId, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.USER_ID_EMPTY);
+        });
+        UserInfoDO userInfoDO = new UserInfoDO();
+        userInfoDO.setId(userId);
+        userInfoDO.setStatus(status);
+        userInfoDO.setUpdatedBy(operator);
+        userInfoDO.setUpdatedTime(new Timestamp(DateUtil.currentMilliseconds()));
+        int count = this.userInfoMapper.update(userInfoDO);
+        AssertUtil.assertBoolean(count > 0, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.USER_UPDATE_FAILED);
+        });
+    }
+
+    @Override
     public UserInfo getUserInfoByUserId(Long userId) {
         if (null == userId) {
             return null;
