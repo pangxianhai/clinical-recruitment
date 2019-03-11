@@ -10,9 +10,13 @@ import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
+import com.andy.recruitment.web.controller.region.response.RegionVO;
+import com.andy.recruitment.web.controller.region.util.RegionUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.util.StringUtil;
+import com.xgimi.logger.log4j.Logger;
+import com.xgimi.logger.log4j.MyLogger;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/recruitment")
 public class RecruitmentController {
 
+    @Logger
+    private MyLogger logger;
+
     private final RecruitmentAO recruitmentAO;
 
     private final RegionAO regionAO;
@@ -47,9 +54,11 @@ public class RecruitmentController {
         this.researchCenterAO = researchCenterAO;
     }
 
-
     @RequestMapping("/add-pc")
-    public String addRecruitment() {
+    public String addRecruitment(Map<String, Object> model) {
+        List<RegionVO> regionVOList = RegionUtil.buildSelectOptions(null, regionAO);
+        logger.info("regionList :" + regionVOList);
+        model.put("regionVOList", regionVOList);
         return "recruitment/add-pc";
     }
 

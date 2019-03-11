@@ -43,8 +43,8 @@ public class RecruitmentWebservice {
     public boolean addRecruitment(@RequestBody RecruitmentAddRQ recruitmentAddRQ) {
         RecruitmentInfo recruitmentInfo = RecruitmentUtil.transformRecruitmentInfo(recruitmentAddRQ);
         Long recruitmentId = recruitmentAO.addRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
-        List<ResearchCenterInfo> centerInfoList = RecruitmentUtil.transformResearchCenterInfo(regionAO,
-                                                                                              recruitmentAddRQ.getResearchCenterList());
+        List<ResearchCenterInfo> centerInfoList = RecruitmentUtil.transformResearchCenterInfo(
+            recruitmentAddRQ.getResearchCenterList());
         this.researchCenterAO.addResearchCenter(recruitmentId, centerInfoList, ServletContext.getLoginUname());
         return true;
     }

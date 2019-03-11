@@ -4,6 +4,7 @@ import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.region.model.Region;
 import com.andy.recruitment.web.controller.region.response.RegionVO;
 import com.xgimi.commons.util.CollectionUtil;
+import com.xgimi.util.BeanUtil;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -20,9 +21,7 @@ public class RegionUtil {
             return null;
         }
         RegionVO regionVO = new RegionVO();
-        regionVO.setLabel(region.getRegionName());
-        regionVO.setValue(String.valueOf(region.getRegionId()));
-        regionVO.setRegionId(region.getRegionId());
+        BeanUtil.copyProperties(region, regionVO);
         return regionVO;
     }
 
@@ -34,16 +33,21 @@ public class RegionUtil {
             Collectors.toList());
     }
 
-    public static List<RegionVO> buildSelectOptions(RegionAO regionAO) {
-        List<Region> regionList = regionAO.getRegionByParentId(null);
+    public static List<RegionVO> buildSelectOptions(Long regionId, RegionAO regionAO) {
+        List<Region> regionList = regionAO.getRegionByParentId(regionId);
+        if (CollectionUtil.isEmpty(regionList)) {
+            return null;
+        }
         List<RegionVO> regionVOList = RegionUtil.transformRegionVO(regionList);
         if (CollectionUtil.isNotEmpty(regionVOList)) {
             for (RegionVO regionVO : regionVOList) {
                 if (null == regionVO.getRegionId()) {
                     continue;
                 }
-                List<Region> children = regionAO.getRegionByParentId(regionVO.getRegionId());
-                regionVO.setChildren(RegionUtil.transformRegionVO(children));
+                List<RegionVO> childRegionVOList = RegionUtil.buildSelectOptions(regionVO.getRegionId(), regionAO);
+                if (CollectionUtil.isNotEmpty(childRegionVOList)) {
+                    regionVO.setChildren(childRegionVOList);
+                }
             }
         }
         return regionVOList;

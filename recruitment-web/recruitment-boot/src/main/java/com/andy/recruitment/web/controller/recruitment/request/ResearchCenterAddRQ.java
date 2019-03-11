@@ -15,9 +15,19 @@ public class ResearchCenterAddRQ implements Serializable {
     private String name;
 
     /**
-     * 研究中心地址
+     * 省ID
      */
-    private String address;
+    private Long provinceId;
+
+    /**
+     * 城市ID
+     */
+    private Long cityId;
+
+    /**
+     * 地区ID
+     */
+    private Long districtId;
 
     public String getName() {
         return name;
@@ -27,11 +37,27 @@ public class ResearchCenterAddRQ implements Serializable {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public Long getProvinceId() {
+        return provinceId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+    public Long getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Long districtId) {
+        this.districtId = districtId;
     }
 }

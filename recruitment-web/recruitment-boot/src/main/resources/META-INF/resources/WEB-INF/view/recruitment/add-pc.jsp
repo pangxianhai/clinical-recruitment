@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +23,17 @@
         .sui-form input {
             width: 250px;
         }
+
+        #addRecruitmentForm textarea {
+            height: auto;
+            resize: vertical;
+        }
+
+        .research-center .controls {
+            display: block !important;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
@@ -38,45 +51,6 @@
             <label for="title" class="control-label">标题：</label>
             <div class="controls">
                 <input type="text" id="title" name="title" placeholder="标题" data-rules="required">
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="introductionArea" class="control-label">简介：</label>
-            <div class="controls">
-                <textarea id="introductionArea" name="introduction" data-rules="required"
-                          style="height: 80px;"
-                          class="input-xxlarge"></textarea>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="treatmentPlanArea" class="control-label">治疗方案：</label>
-            <div class="controls">
-                <textarea id="treatmentPlanArea" name="treatmentPlan" data-rules="required"
-                          style="height: 80px;"
-                          class="input-xxlarge"></textarea>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="screeningStandardArea" class="control-label">初筛要点：</label>
-            <div class="controls">
-                <textarea id="screeningStandardArea" name="screeningStandard" data-rules="required"
-                          style="height: 80px;"
-                          class="input-xxlarge"></textarea>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="entryCriteriaArea" class="control-label">入排标准：</label>
-            <div class="controls">
-                <textarea id="entryCriteriaArea" name="entryCriteria" data-rules="required"
-                          style="height: 80px;"
-                          class="input-xxlarge"></textarea>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="patientRightsArea" class="control-label">患者权益：</label>
-            <div class="controls">
-                <textarea id="patientRightsArea" name="patientRights" data-rules="required"
-                          style="height: 80px;" class="input-xxlarge"></textarea>
             </div>
         </div>
         <div class="control-group">
@@ -127,6 +101,41 @@
             </div>
         </div>
         <div class="control-group">
+            <label for="introductionArea" class="control-label">简介：</label>
+            <div class="controls">
+                <textarea id="introductionArea" name="introduction" data-rules="required"
+                          class="input-xxlarge"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="treatmentPlanArea" class="control-label">治疗方案：</label>
+            <div class="controls">
+                <textarea id="treatmentPlanArea" name="treatmentPlan" data-rules="required"
+                          class="input-xxlarge"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="screeningStandardArea" class="control-label">初筛要点：</label>
+            <div class="controls">
+                <textarea id="screeningStandardArea" name="screeningStandard" data-rules="required"
+                          class="input-xxlarge"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="entryCriteriaArea" class="control-label">入排标准：</label>
+            <div class="controls">
+                <textarea id="entryCriteriaArea" name="entryCriteria" data-rules="required"
+                          class="input-xxlarge"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="patientRightsArea" class="control-label">患者权益：</label>
+            <div class="controls">
+                <textarea id="patientRightsArea" name="patientRights" data-rules="required"
+                          class="input-xxlarge"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
             <label for="startTime" class="control-label">启至时间：</label>
             <div class="controls">
                 <input type="text" id="startTime" name="startTime" class="input-medium input-date"
@@ -136,6 +145,83 @@
                 <input type="text" id="stopTime" name="stopTime" class="input-medium input-date"
                        data-toggle="datepicker" data-rules="required"
                        placeholder="截至时间">
+            </div>
+        </div>
+        <div class="control-group research-center">
+            <label class="control-label">研究中心：</label>
+            <div class="controls">
+                <input type="text" name="centerName" placeholder="中心名称">
+                <input type="hidden" name="provinceId" value="">
+                <input type="hidden" name="cityId" value="">
+                <input type="hidden" name="districtId" value="">
+                <span class="sui-dropdown dropdown-bordered">
+                    <span class="dropdown-inner">
+                        <a role="button" data-toggle="dropdown" href="javascript:void(0)"
+                           class="dropdown-toggle">
+                            <i class="caret"></i>
+                            <span item="choiceText">选择地址</span>
+                        </a>
+                        <ul role="menu" aria-labelledby="drop1" class="sui-dropdown-menu">
+                            <c:forEach var="regionVO" items="${regionVOList}">
+                                <c:if test="${not empty regionVO.children}">
+                                    <li role="presentation" class="dropdown-submenu">
+                                        <a role="menuitem" tabindex="-1" href="#">
+                                            <i class="sui-icon icon-angle-right pull-right"></i>${regionVO.regionName}
+                                        </a>
+                                        <ul class="sui-dropdown-menu">
+                                            <c:forEach var="childRegionVO"
+                                                       items="${regionVO.children}">
+                                                <c:if test="${not empty regionVO.children}">
+                                                    <li role="presentation"
+                                                        class="dropdown-submenu">
+                                                         <a role="menuitem" tabindex="-1" href="#">
+                                                             <i class="sui-icon icon-angle-right pull-right"></i>${childRegionVO.regionName}
+                                                         </a>
+                                                         <ul class="sui-dropdown-menu">
+                                                              <c:forEach var="grandChildRegionVO"
+                                                                         items="${childRegionVO.children}">
+                                                                  <li role="presentation">
+                                                                      <a role="menuitem"
+                                                                         tabindex="-1"
+                                                                         href="javascript:void(0)"
+                                                                         item="regionSelectItem"
+                                                                         regionName="${regionVO.regionName} ${childRegionVO.regionName} ${grandChildRegionVO.regionName}"
+                                                                         provinceId="${regionVO.regionId}"
+                                                                         cityId="${childRegionVO.regionId}"
+                                                                         districtId="${grandChildRegionVO.regionId}">
+                                                                          ${grandChildRegionVO.regionName}
+                                                                      </a>
+                                                                  </li>
+                                                              </c:forEach>
+                                                         </ul>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${empty regionVO.children}">
+                                                    <li role="presentation">
+                                                        <a role="menuitem" tabindex="-1"
+                                                           href="javascript:void(0)">${childRegionVO.regionName}</a>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+                                         </ul>
+                                    </li>
+                                </c:if>
+                                <c:if test="${empty regionVO.children}">
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1"
+                                           href="javascript:void(0)">${regionVO.regionName}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                        </ul>
+                    </span>
+                </span>
+                <a href="javascript:void(0);" class="sui-btn btn-bordered btn-primary">
+                    <i class="sui-icon icon-touch-plus-circle"></i>
+                </a>
+                <a href="javascript:void(0);" class="sui-btn btn-bordered btn-danger">
+                    <i class="sui-icon icon-touch-minus-circle"></i>
+                </a>
             </div>
         </div>
         <div class="control-group">

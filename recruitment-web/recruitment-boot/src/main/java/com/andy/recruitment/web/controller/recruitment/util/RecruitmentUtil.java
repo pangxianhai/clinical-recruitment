@@ -7,7 +7,6 @@ import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
 import com.andy.recruitment.region.ao.RegionAO;
-import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
@@ -119,34 +118,21 @@ public class RecruitmentUtil {
         return applicationInfo;
     }
 
-    public static ResearchCenterInfo transformResearchCenterInfo(RegionAO regionAO, ResearchCenterAddRQ addRQ) {
+    public static ResearchCenterInfo transformResearchCenterInfo(ResearchCenterAddRQ addRQ) {
         if (null == addRQ) {
             return null;
         }
         ResearchCenterInfo researchCenterInfo = new ResearchCenterInfo();
-        researchCenterInfo.setName(addRQ.getName());
-        AddressInfo addressInfo = regionAO.parseAddressInfo(addRQ.getAddress());
-        if (null != addressInfo) {
-            if (null != addressInfo.getProvince()) {
-                researchCenterInfo.setProvinceId(addressInfo.getProvince().getRegionId());
-            }
-            if (null != addressInfo.getCity()) {
-                researchCenterInfo.setCityId(addressInfo.getCity().getRegionId());
-            }
-            if (null != addressInfo.getDistrict()) {
-                researchCenterInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
-            }
-        }
+        BeanUtil.copyProperties(addRQ, researchCenterInfo);
         return researchCenterInfo;
     }
 
-    public static List<ResearchCenterInfo> transformResearchCenterInfo(RegionAO regionAO,
-                                                                       List<ResearchCenterAddRQ> addRQList) {
+    public static List<ResearchCenterInfo> transformResearchCenterInfo(List<ResearchCenterAddRQ> addRQList) {
         if (CollectionUtil.isEmpty(addRQList)) {
             return null;
         }
-        return addRQList.stream().map((addRQ) -> RecruitmentUtil.transformResearchCenterInfo(regionAO, addRQ)).filter(
-            Objects::nonNull).collect(Collectors.toList());
+        return addRQList.stream().map(RecruitmentUtil::transformResearchCenterInfo).filter(Objects::nonNull).collect(
+            Collectors.toList());
     }
 
     public static ResearchCenterVO transformResearchCenterVO(RegionAO regionAO, ResearchCenterInfo centerInfo) {

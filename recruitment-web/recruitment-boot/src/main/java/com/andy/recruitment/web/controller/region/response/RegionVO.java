@@ -1,6 +1,7 @@
 package com.andy.recruitment.web.controller.region.response;
 
 import com.xgimi.commons.util.JsonUtil;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,30 +9,29 @@ import java.util.List;
  *
  * @author 庞先海 2019-01-10
  */
-public class RegionVO {
+public class RegionVO implements Serializable {
 
+    /**
+     * 地区ID
+     */
     private Long regionId;
 
-    private String label;
+    /**
+     * 地区名字
+     */
+    private String regionName;
 
-    private String value;
-
+    /**
+     * 子地区
+     */
     private List<RegionVO> children;
 
-    public String getLabel() {
-        return label;
+    public String getRegionName() {
+        return regionName;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
     public List<RegionVO> getChildren() {
