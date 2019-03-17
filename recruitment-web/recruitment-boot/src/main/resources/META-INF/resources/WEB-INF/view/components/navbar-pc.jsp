@@ -91,7 +91,7 @@
                 <a href="/patient/list-pc">患者列表</a>
             </li>
             <li class="${patientAdd}">
-                <a href="#">添加患者</a>
+                <a href="/patient/add-pc">添加患者</a>
             </li>
             <li class="nav-header">管理员</li>
             <li class="${managerList}">

@@ -2,6 +2,7 @@ package com.andy.recruitment.web.controller.doctor.util;
 
 import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.doctor.model.DoctorQueryParam;
+import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.web.controller.doctor.request.DoctorAddRQ;
 import com.andy.recruitment.web.controller.doctor.request.DoctorQueryRQ;
 import com.andy.recruitment.web.controller.doctor.response.DoctorInfoVO;
@@ -51,6 +52,7 @@ public class DoctorUtil {
         }
         DoctorQueryParam queryParam = new DoctorQueryParam();
         BeanUtil.copyProperties(queryRQ, queryParam);
+        queryParam.setStatus(UserStatus.parse(queryRQ.getStatus()));
         return queryParam;
     }
 }

@@ -4,6 +4,7 @@
     <tr>
         <td>${doctorInfo.userInfoVO.realName}</td>
         <td>${doctorInfo.userInfoVO.phone}</td>
+        <td>${doctorInfo.userInfoVO.nickname}</td>
         <td>${doctorInfo.userInfoVO.gender.desc}</td>
         <td>${doctorInfo.address}</td>
         <td>${doctorInfo.medicalInstitution}</td>

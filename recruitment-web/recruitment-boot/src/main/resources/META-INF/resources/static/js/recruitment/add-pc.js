@@ -50,7 +50,6 @@ $(function () {
           } catch (e) {
             console.error(e);
           }
-          console.log(data);
           Ajax.post('/recruitment/add.json', data, function (result) {
             if (result) {
               $.alert('添加成功');

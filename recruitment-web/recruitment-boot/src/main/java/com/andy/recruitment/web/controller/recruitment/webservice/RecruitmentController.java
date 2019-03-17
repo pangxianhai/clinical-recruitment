@@ -57,7 +57,6 @@ public class RecruitmentController {
     @RequestMapping("/add-pc")
     public String addRecruitment(Map<String, Object> model) {
         List<RegionVO> regionVOList = RegionUtil.buildSelectOptions(null, regionAO);
-        logger.info("regionList :" + regionVOList);
         model.put("regionVOList", regionVOList);
         return "recruitment/add-pc";
     }

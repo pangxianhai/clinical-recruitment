@@ -3,6 +3,7 @@ package com.andy.recruitment.user.model;
 import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.constant.UserType;
+import com.xgimi.commons.util.JsonUtil;
 import java.io.Serializable;
 
 /**
@@ -24,6 +25,10 @@ public class UserInfo implements Serializable {
      * 微信关联唯一ID
      */
     private String unionId;
+    /**
+     * 昵称
+     */
+    private String nickname;
     /**
      * 真实姓名
      */
@@ -119,5 +124,18 @@ public class UserInfo implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtil.toJson(this);
     }
 }

@@ -25,6 +25,10 @@ public class UserInfoVO implements Serializable {
      */
     private String unionId;
     /**
+     * 昵称
+     */
+    private String nickname;
+    /**
      * 真实姓名
      */
     private String realName;
@@ -107,5 +111,13 @@ public class UserInfoVO implements Serializable {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

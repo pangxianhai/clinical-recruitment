@@ -26,6 +26,18 @@ public class DoctorQueryRQ extends BaseQueryRQ implements Serializable {
      * 城市ID
      */
     private Long cityId;
+    /**
+     * 真实姓名
+     */
+    private String realName;
+    /**
+     * 手机号码模糊查询
+     */
+    private String phoneLike;
+    /**
+     * 用户状态
+     */
+    private Integer status;
 
     public Long getUserId() {
         return userId;
@@ -57,5 +69,29 @@ public class DoctorQueryRQ extends BaseQueryRQ implements Serializable {
 
     public void setCityId(Long cityId) {
         this.cityId = cityId;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getPhoneLike() {
+        return phoneLike;
+    }
+
+    public void setPhoneLike(String phoneLike) {
+        this.phoneLike = phoneLike;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

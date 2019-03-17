@@ -1,7 +1,6 @@
 package com.andy.recruitment.web.controller.patient.request;
 
 import com.xgimi.base.BaseQueryRQ;
-import com.xgimi.base.BaseRQ;
 
 /**
  * 患者查询参数
@@ -30,6 +29,18 @@ public class PatientQueryRQ extends BaseQueryRQ {
      * 区ID
      */
     private Long districtId;
+    /**
+     * 真实姓名
+     */
+    private String realName;
+    /**
+     * 手机号码模糊查询
+     */
+    private String phoneLike;
+    /**
+     * 用户状态
+     */
+    private Integer status;
 
     public Long getPatientId() {
         return patientId;
@@ -69,5 +80,29 @@ public class PatientQueryRQ extends BaseQueryRQ {
 
     public void setDistrictId(Long districtId) {
         this.districtId = districtId;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getPhoneLike() {
+        return phoneLike;
+    }
+
+    public void setPhoneLike(String phoneLike) {
+        this.phoneLike = phoneLike;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

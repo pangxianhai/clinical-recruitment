@@ -2,14 +2,18 @@ $(function () {
   const PatientList = {
     loadPatientInfo: function (currentPage) {
       $('.loading').show();
+      const data = {};
+      $.each($('.form-search').serializeArray(), function (i, item) {
+        data[item.name] = item.value;
+      });
       const $this = this;
       $.ajax({
         url: '/patient/listPcInfo',
         type: 'get',
-        data: {
+        data: $.extend(data, {
           currentPage: currentPage,
           pageSize: 10
-        },
+        }),
         headers: {
           token: CookieUtil.getCookie("userId")
         },
@@ -46,12 +50,12 @@ $(function () {
           return false;
         },
         messages: {
-          relName: '患者姓名输入太长',
-          phone: '手机号输入太长'
+          realName: '患者姓名输入太长',
+          phoneLike: '手机号输入太长'
         },
         success: function () {
           $('#tips-error .msg-error').hide();
-          $this.loadRecruitmentInfo(1);
+          $this.loadPatientInfo(1);
           return false;
         }
       });

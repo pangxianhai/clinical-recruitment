@@ -18,9 +18,12 @@ import com.xgimi.commons.util.RandomUtil;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.commons.util.encrypt.HmacHashUtil;
+import com.xgimi.context.ServletContext;
 import java.text.MessageFormat;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -67,19 +70,28 @@ public class UserAOImpl implements UserAO {
     @Override
     public UserInfo loginByWeixin(String code) {
         OauthToken oauthToken = this.weiXinService.getOauthAccessToken(code);
+        WxUserInfo wxUserInfo = this.weiXinService.getWxUserInfo(oauthToken.getAccessToken(), oauthToken.getOpenId());
         UserInfo userInfo = this.userInfoService.getUserInfoByOpenId(oauthToken.getOpenId());
         if (null != userInfo) {
+            if (! wxUserInfo.getNickname().equals(userInfo.getNickname())) {
+                UserInfo updateUserInfo = new UserInfo();
+                updateUserInfo.setUserId(userInfo.getUserId());
+                updateUserInfo.setNickname(wxUserInfo.getNickname());
+                this.userInfoService.updateUserInfo(updateUserInfo, userInfo.getRealName());
+                userInfo.setNickname(wxUserInfo.getNickname());
+            }
             return userInfo;
+        } else {
+            UserInfo addUserInfo = new UserInfo();
+            addUserInfo.setOpenId(wxUserInfo.getOpenId());
+            addUserInfo.setUnionId(wxUserInfo.getUnionid());
+            addUserInfo.setGender(Gender.parse(wxUserInfo.getSex()));
+            addUserInfo.setRealName(wxUserInfo.getNickname());
+            addUserInfo.setNickname(wxUserInfo.getNickname());
+            //            Long userId = this.userInfoService.addUserInfo(addUserInfo, addUserInfo.getRealName());
+            //            addUserInfo.setUserId(userId);
+            return addUserInfo;
         }
-        WxUserInfo wxUserInfo = this.weiXinService.getWxUserInfo(oauthToken.getAccessToken(), oauthToken.getOpenId());
-        UserInfo addUserInfo = new UserInfo();
-        addUserInfo.setOpenId(wxUserInfo.getOpenId());
-        addUserInfo.setUnionId(wxUserInfo.getUnionid());
-        addUserInfo.setGender(Gender.parse(wxUserInfo.getSex()));
-        addUserInfo.setRealName(wxUserInfo.getNickname());
-        Long userId = this.userInfoService.addUserInfo(addUserInfo, addUserInfo.getRealName());
-        addUserInfo.setUserId(userId);
-        return addUserInfo;
     }
 
     @Override
@@ -140,16 +152,37 @@ public class UserAOImpl implements UserAO {
     }
 
     @Override
-    public void addUserInfo(UserInfo userInfo, String operator) {
+    public Long addUserInfo(UserInfo userInfo, String operator) {
+        UserInfo userInfoByPhone = this.userInfoService.getUserInfoByPhone(userInfo.getPhone());
+        if (null != userInfoByPhone) {
+            throw new BusinessException(BusinessErrorCode.USER_PHONE_HAS_REGISTER);
+        }
+
         if (StringUtil.isNotEmpty(userInfo.getPhone()) && StringUtil.isNotEmpty(userInfo.getPassword())) {
             String password = HmacHashUtil.hmacSHAHash(userInfo.getPassword(), userInfo.getPhone());
             userInfo.setPassword(password);
         }
-        this.userInfoService.addUserInfo(userInfo, operator);
+        return this.userInfoService.addUserInfo(userInfo, operator);
     }
 
     @Override
     public PageResult<UserInfo> getUserInfo(UserQueryParam queryParam, Paginator paginator) {
         return this.userInfoService.getUserInfo(queryParam, paginator);
+    }
+
+    @Override
+    public void saveUserInfoCookie(UserInfo userInfo, HttpServletResponse response) {
+        if (null == userInfo || null == userInfo.getUserId() || null == response) {
+            return;
+        }
+        Cookie cookie = new Cookie("userId", String.valueOf(userInfo.getUserId()));
+        cookie.setMaxAge(Integer.MAX_VALUE);
+        cookie.setPath("/");
+        ServletContext.getResponse().addCookie(cookie);
+    }
+
+    @Override
+    public UserInfo getUserInfoByPhone(String phone) {
+        return this.userInfoService.getUserInfoByPhone(phone);
     }
 }

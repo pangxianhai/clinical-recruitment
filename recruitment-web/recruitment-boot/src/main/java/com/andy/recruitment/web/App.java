@@ -52,7 +52,6 @@ public class App extends WebMvcConfigurerAdapter {
         argumentResolvers.add(argumentResolver);
     }
 
-
     public static void main(String... args) {
         SpringApplication.run(App.class, args);
     }

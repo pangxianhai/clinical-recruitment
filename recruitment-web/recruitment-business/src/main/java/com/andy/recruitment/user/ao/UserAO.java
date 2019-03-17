@@ -5,6 +5,7 @@ import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.user.model.UserQueryParam;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户AO
@@ -20,6 +21,14 @@ public interface UserAO {
      * @return 用户信息
      */
     UserInfo getUserInfoByUserId(Long userId);
+
+    /**
+     * 通过手机号查询用户信息
+     *
+     * @param phone 手机号
+     * @return 用户信息
+     */
+    UserInfo getUserInfoByPhone(String phone);
 
     /**
      * 通过OpenID查询用户信息
@@ -84,8 +93,9 @@ public interface UserAO {
      *
      * @param userInfo 用户信息
      * @param operator 操作人
+     * @return 用户ID
      */
-    void addUserInfo(UserInfo userInfo, String operator);
+    Long addUserInfo(UserInfo userInfo, String operator);
 
     /**
      * 分页用户查询
@@ -95,4 +105,12 @@ public interface UserAO {
      * @return 分页查询结果
      */
     PageResult<UserInfo> getUserInfo(UserQueryParam queryParam, Paginator paginator);
+
+    /**
+     * 保存用户cookie信息
+     *
+     * @param userInfo 用户信息
+     * @param response response
+     */
+    void saveUserInfoCookie(UserInfo userInfo, HttpServletResponse response);
 }

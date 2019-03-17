@@ -16,30 +16,48 @@
     </resultMap>
 
     <sql id="baseColumnList">
-        id,user_id,province_id,city_id,district_id,age,
-        created_by,created_time,updated_by,updated_time
+        id,
+        user_id,
+        province_id,
+        city_id,
+        district_id,
+        age,
+        created_by,
+        created_time,
+        updated_by,
+        updated_time
     </sql>
 
     <select id="select" resultMap="baseResultMap"
       parameterType="com.andy.recruitment.patient.model.PatientQueryParam">
         select
-        <include refid="baseColumnList"/>
-        from patient_info
+        p.id,p.user_id,p.province_id ,p.city_id,p.district_id ,p.age ,p.created_by,p.created_time,
+        p.updated_by,p.updated_time
+        from patient_info p inner join user_info u on (p.user_id = u.id)
         <where>
             <if test="patientId != null">
-                and id = #{patientId,jdbcType=BIGINT}
+                and p.id = #{patientId,jdbcType=BIGINT}
             </if>
             <if test="userId != null">
-                and user_id = #{userId,jdbcType=BIGINT}
+                and p.user_id = #{userId,jdbcType=BIGINT}
             </if>
             <if test="provinceId != null">
-                and province_id = #{provinceId, jdbcType=BIGINT}
+                and p.province_id = #{provinceId, jdbcType=BIGINT}
             </if>
             <if test="cityId != null">
-                and city_id = #{cityId, jdbcType=BIGINT}
+                and p.city_id = #{cityId, jdbcType=BIGINT}
             </if>
             <if test="districtId != null">
-                and district_id = #{districtId, jdbcType=BIGINT}
+                and p. district_id = #{districtId, jdbcType=BIGINT}
+            </if>
+            <if test="realName != null and realName != ''">
+                and u.real_name like CONCAT('%', #{realName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="phoneLike != null and phoneLike != ''">
+                and u.phone like CONCAT('%', #{phoneLike,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="status != null">
+                and u.status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
             </if>
         </where>
     </select>

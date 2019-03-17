@@ -35,7 +35,10 @@ $(function () {
           phone: phone,
           address: address,
           age: age,
-          name: name
+          name: name,
+          openId: $('#openId').val(),
+          nickname: $('#nickname').val(),
+          gender: $('#genderInput').val()
         }, function (data) {
           if (data) {
             $.alert('注册成功', function () {

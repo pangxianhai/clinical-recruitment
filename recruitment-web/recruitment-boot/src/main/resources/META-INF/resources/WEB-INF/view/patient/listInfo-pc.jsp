@@ -5,6 +5,7 @@
         <td>${patientInfo.userInfoVO.realName}</td>
         <td>${patientInfo.userInfoVO.phone}</td>
         <td>${patientInfo.userInfoVO.gender.desc}</td>
+        <td>${patientInfo.userInfoVO.nickname}</td>
         <td>${patientInfo.address}</td>
         <td>${patientInfo.age}</td>
         <td>${patientInfo.userInfoVO.status.desc}</td>

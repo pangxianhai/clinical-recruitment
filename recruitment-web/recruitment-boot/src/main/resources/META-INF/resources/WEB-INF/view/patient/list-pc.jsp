@@ -20,8 +20,8 @@
 </jsp:include>
 <div class="sui-container">
     <ul class="sui-breadcrumb">
-        <li><a>用户管理</a></li>
-        <li><a>患者管理</a></li>
+        <li><a href="javascript:void(0)">用户管理</a></li>
+        <li><a href="javascript:void(0)">患者管理</a></li>
         <li class="active">患者列表</li>
     </ul>
     <div id="tips-error" class="tips-error">
@@ -31,8 +31,8 @@
         </div>
     </div>
     <form class="sui-form form-search">
-        患者姓名：<input type="text" name="relName" placeholder="患者姓名" data-rules="maxlength=32">
-        手机号：<input type="text" name="phone" placeholder="手机号" data-rules="digits|maxlength=11">
+        患者姓名：<input type="text" name="realName" placeholder="患者姓名" data-rules="maxlength=32">
+        手机号：<input type="text" name="phoneLike" placeholder="手机号" data-rules="digits|maxlength=11">
         状态：
         <span class="sui-dropdown dropdown-bordered select">
             <span class="dropdown-inner">
@@ -65,6 +65,7 @@
             <th>患者姓名</th>
             <th>手机号</th>
             <th>性别</th>
+            <th>微信昵称</th>
             <th>地址</th>
             <th>年龄</th>
             <th>状态</th>

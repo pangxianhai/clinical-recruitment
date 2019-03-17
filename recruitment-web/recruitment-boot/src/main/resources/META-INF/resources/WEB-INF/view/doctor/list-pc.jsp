@@ -18,12 +18,43 @@
 </jsp:include>
 <div class="sui-container">
     <ul class="sui-breadcrumb">
-        <li><a href="#">用户管理</a></li>
-        <li><a href="#">医生管理</a></li>
+        <li><a href="javascript:void(0)">用户管理</a></li>
+        <li><a href="javascript:void(0)">医生管理</a></li>
         <li class="active">医生列表</li>
     </ul>
-    <form class="sui-form form-search">
-        <input type="text" class="input-medium search-query">
+    <div id="tips-error" class="tips-error">
+        <div class="sui-msg msg-error">
+            <div class="msg-con">错误信息提示</div>
+            <s class="msg-icon"></s>
+        </div>
+    </div>
+    <form class="sui-form form-search form-horizontal">
+        医生姓名：<input type="text" name="realName" placeholder="医生姓名" data-rules="maxlength=32">
+        手机号：<input type="text" name="phoneLike" placeholder="手机号" data-rules="digits|maxlength=11">
+        状态：
+        <span class="sui-dropdown dropdown-bordered select">
+            <span class="dropdown-inner">
+                <a role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+                    <input name="status" type="hidden">
+                    <i class="caret"></i>
+                    <span>请选择</span>
+                </a>
+                <ul id="menu4" role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+                     <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
+                           value="">请选择</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
+                           value="1">正常</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
+                           value="2">冻结</a>
+                    </li>
+                </ul>
+                </span>
+        </span>
         <button type="submit" class="sui-btn btn-primary">搜索</button>
     </form>
     <table class="sui-table table-primary">
@@ -31,6 +62,7 @@
         <tr>
             <th>医生姓名</th>
             <th>手机号</th>
+            <th>微信昵称</th>
             <th>性别</th>
             <th>地址</th>
             <th>执业机构</th>
@@ -42,6 +74,11 @@
         <tbody id="doctor-panel"></tbody>
     </table>
     <div class="pagination" style="text-align: right;margin-right: 20px">
+    </div>
+</div>
+<div class="loading">
+    <div class="sui-loading loading-inline">
+        <i class="sui-icon icon-pc-loading"></i>
     </div>
 </div>
 </body>

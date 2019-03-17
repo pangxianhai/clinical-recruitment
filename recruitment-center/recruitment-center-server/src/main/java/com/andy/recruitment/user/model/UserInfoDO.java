@@ -22,6 +22,10 @@ public class UserInfoDO extends BaseDO {
      */
     private String unionId;
     /**
+     * 昵称
+     */
+    private String nickname;
+    /**
      * 真实姓名
      */
     private String realName;
@@ -108,6 +112,14 @@ public class UserInfoDO extends BaseDO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Override

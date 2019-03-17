@@ -10,6 +10,8 @@ import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.patient.request.PatientQueryRQ;
 import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import com.andy.recruitment.web.controller.patient.util.PatientUtil;
+import com.andy.recruitment.web.controller.region.response.RegionVO;
+import com.andy.recruitment.web.controller.region.util.RegionUtil;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
@@ -45,16 +47,18 @@ public class PatientController {
         this.regionAO = regionAO;
     }
 
-    @Login
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register(String redirectURL, Integer userType, Map<String, Object> model) {
-        LoginInfo loginInfo = ServletContext.getLoginInfo();
-        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
-        if (null != userInfo.getPhone()) {
+    public String register(String redirectURL, Integer userType, String openId, String nickname,
+                           Map<String, Object> model) {
+        UserInfo userInfo = this.userAO.getUserInfoByOpenId(openId);
+        if (null != userInfo) {
+            this.userAO.saveUserInfoCookie(userInfo, ServletContext.getResponse());
             return "redirect:" + redirectURL;
         } else {
             model.put("redirectURL", redirectURL);
             model.put("userType", userType);
+            model.put("openId", openId);
+            model.put("nickname", nickname);
             return "patient/register";
         }
     }
@@ -97,5 +101,12 @@ public class PatientController {
         return "patient/listInfo-pc";
     }
 
+    @Login
+    @RequestMapping(value = "/add-pc", method = RequestMethod.GET)
+    public String patientAddPc(Map<String, Object> model) {
+        List<RegionVO> regionVOList = RegionUtil.buildSelectOptions(null, regionAO);
+        model.put("regionVOList", regionVOList);
+        return "patient/add-pc";
+    }
 
 }

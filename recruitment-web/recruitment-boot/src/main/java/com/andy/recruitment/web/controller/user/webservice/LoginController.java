@@ -6,6 +6,7 @@ import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.weixin.ao.WeiXinAO;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.util.StringUtil;
+import com.xgimi.commons.util.encrypt.EncodeUtil;
 import com.xgimi.context.ServletContext;
 import com.xgimi.util.ServletUtil;
 import java.util.Map;
@@ -60,10 +61,7 @@ public class LoginController {
     @RequestMapping(value = "/weixinlogin", method = RequestMethod.GET)
     public String weixinResponse(String code, String redirectURL, Integer userType) {
         UserInfo userInfo = this.userAO.loginByWeixin(code);
-        Cookie cookie = new Cookie("userId", String.valueOf(userInfo.getUserId()));
-        cookie.setMaxAge(Integer.MAX_VALUE);
-        cookie.setPath("/");
-        ServletContext.getResponse().addCookie(cookie);
+        this.userAO.saveUserInfoCookie(userInfo, ServletContext.getResponse());
         if (StringUtil.isNotEmpty(userInfo.getPhone())) {
             return "redirect:" + redirectURL;
         } else {
@@ -74,7 +72,8 @@ public class LoginController {
             } else if (UserType.PATIENT.equals(uType)) {
                 url = "/patient/register";
             }
-            return "redirect:" + url + "?redirectURL=" + redirectURL + "&userType=" + userType;
+            return "redirect:" + url + "?redirectURL=" + redirectURL + "&userType=" + userType + "&openId="
+                   + userInfo.getOpenId() + "&nickname=" + EncodeUtil.urlEncode(userInfo.getNickname());
         }
     }
 
