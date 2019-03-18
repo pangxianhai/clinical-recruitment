@@ -2,7 +2,12 @@ package com.andy.recruitment.web.controller.doctor.util;
 
 import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.doctor.model.DoctorQueryParam;
+import com.andy.recruitment.region.ao.RegionAO;
+import com.andy.recruitment.region.model.AddressInfo;
+import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.constant.UserStatus;
+import com.andy.recruitment.user.constant.UserType;
+import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.doctor.request.DoctorAddRQ;
 import com.andy.recruitment.web.controller.doctor.request.DoctorQueryRQ;
 import com.andy.recruitment.web.controller.doctor.response.DoctorInfoVO;
@@ -20,12 +25,24 @@ import java.util.stream.Collectors;
  */
 public class DoctorUtil {
 
-    public static DoctorInfo transformDoctorInfo(DoctorAddRQ doctorAddRQ) {
+    public static DoctorInfo transformDoctorInfo(DoctorAddRQ doctorAddRQ, RegionAO regionAO) {
         if (null == doctorAddRQ) {
             return null;
         }
         DoctorInfo doctorInfo = new DoctorInfo();
         BeanUtil.copyProperties(doctorAddRQ, doctorInfo);
+        AddressInfo addressInfo = regionAO.parseAddressInfo(doctorAddRQ.getAddress());
+        if (null != addressInfo) {
+            if (null != addressInfo.getProvince()) {
+                doctorInfo.setProvinceId(addressInfo.getProvince().getRegionId());
+            }
+            if (null != addressInfo.getCity()) {
+                doctorInfo.setCityId(addressInfo.getCity().getRegionId());
+            }
+            if (null != addressInfo.getDistrict()) {
+                doctorInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
+            }
+        }
         return doctorInfo;
     }
 
@@ -54,5 +71,17 @@ public class DoctorUtil {
         BeanUtil.copyProperties(queryRQ, queryParam);
         queryParam.setStatus(UserStatus.parse(queryRQ.getStatus()));
         return queryParam;
+    }
+
+    public static UserInfo transformUserInfo(DoctorAddRQ doctorAddRQ) {
+        if (null == doctorAddRQ) {
+            return null;
+        }
+        UserInfo userInfo = new UserInfo();
+        BeanUtil.copyProperties(doctorAddRQ, userInfo);
+        userInfo.setGender(Gender.parse(doctorAddRQ.getGender()));
+        userInfo.setRealName(doctorAddRQ.getName());
+        userInfo.setUserType(UserType.DOCTOR);
+        return userInfo;
     }
 }

@@ -185,4 +185,9 @@ public class UserAOImpl implements UserAO {
     public UserInfo getUserInfoByPhone(String phone) {
         return this.userInfoService.getUserInfoByPhone(phone);
     }
+
+    @Override
+    public void delete(Long userId) {
+        this.userInfoService.delete(userId);
+    }
 }

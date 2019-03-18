@@ -9,6 +9,8 @@ import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.doctor.request.DoctorQueryRQ;
 import com.andy.recruitment.web.controller.doctor.response.DoctorInfoVO;
 import com.andy.recruitment.web.controller.doctor.util.DoctorUtil;
+import com.andy.recruitment.web.controller.region.response.RegionVO;
+import com.andy.recruitment.web.controller.region.util.RegionUtil;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
@@ -45,16 +47,18 @@ public class DoctorController {
         this.regionAO = regionAO;
     }
 
-    @Login
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register(String redirectURL, Integer userType, Map<String, Object> model) {
-        LoginInfo loginInfo = ServletContext.getLoginInfo();
-        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
-        if (null != userInfo.getPhone()) {
+    public String register(String redirectURL, Integer userType, String openId, String nickname,
+                           Map<String, Object> model) {
+        UserInfo userInfo = this.userAO.getUserInfoByOpenId(openId);
+        if (null != userInfo) {
+            this.userAO.saveUserInfoCookie(userInfo, ServletContext.getResponse());
             return "redirect:" + redirectURL;
         } else {
             model.put("redirectURL", redirectURL);
             model.put("userType", userType);
+            model.put("openId", openId);
+            model.put("nickname", nickname);
             return "doctor/register";
         }
     }
@@ -97,4 +101,11 @@ public class DoctorController {
         return "doctor/listInfo-pc";
     }
 
+    @Login
+    @RequestMapping(value = "/add-pc", method = RequestMethod.GET)
+    public String doctorAddPc(Map<String, Object> model) {
+        List<RegionVO> regionVOList = RegionUtil.buildSelectOptions(null, regionAO);
+        model.put("regionVOList", regionVOList);
+        return "doctor/add-pc";
+    }
 }

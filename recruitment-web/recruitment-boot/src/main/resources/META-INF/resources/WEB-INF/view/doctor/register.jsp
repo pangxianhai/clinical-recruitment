@@ -81,6 +81,20 @@
                             </div>
                         </div>
                     </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">性别</div>
+                                <div class="item-input">
+                                    <select id="genderInput">
+                                        <option value="1">男</option>
+                                        <option value="2">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="content-block">
@@ -92,13 +106,16 @@
         </div>
     </div>
 </div>
+<input type="hidden" value="${openId}" id="openId">
+<input type="hidden" value="${nickname}" id="nickname">
 <input type="hidden" value="${userType}" id="userTypeValue">
 <input type="hidden" value="${redirectURL}" id="redirectURL">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-city-picker.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/doctor/register.js?_v=${version}' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/doctor/register.js?_v=${version}'
+        charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
 </body>
 </html>

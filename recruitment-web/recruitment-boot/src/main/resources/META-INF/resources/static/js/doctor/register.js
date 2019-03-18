@@ -37,7 +37,10 @@ $(function () {
           phone: phone,
           address: address,
           medicalInstitution: medicalInstitution,
-          medicalCategory: medicalCategory
+          medicalCategory: medicalCategory,
+          openId: $('#openId').val(),
+          nickname: $('#nickname').val(),
+          gender: $('#genderInput').val()
         }, function (data) {
           if (data) {
             $.alert('注册成功', function () {

@@ -64,7 +64,6 @@ public class PatientWebservice {
             if (null == existPatient) {
                 patientInfo.setUserId(addUserInfo.getUserId());
                 this.patientAO.addPatientInfo(patientInfo, patientAddRQ.getName());
-                this.patientAO.addPatientInfo(patientInfo, patientAddRQ.getName());
             } else {
                 patientInfo.setPatientId(existPatient.getPatientId());
                 this.patientAO.updatePatientInfo(patientInfo, patientAddRQ.getName());

@@ -71,4 +71,11 @@ public interface UserInfoService {
      * @return 分页查询结果
      */
     PageResult<UserInfo> getUserInfo(UserQueryParam queryParam, Paginator paginator);
+
+    /**
+     * 删除用户信息
+     *
+     * @param userId 用户ID
+     */
+    void delete(Long userId);
 }

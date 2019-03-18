@@ -22,8 +22,20 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="baseColumnList">
-        id,open_id,union_id,nickname,real_name,phone,password,gender,user_type,status,
-        created_by,created_time,updated_by,updated_time
+        id,
+        open_id,
+        union_id,
+        nickname,
+        real_name,
+        phone,
+        password,
+        gender,
+        user_type,
+        status,
+        created_by,
+        created_time,
+        updated_by,
+        updated_time
     </sql>
 
     <select id="select" resultMap="baseResultMap"
@@ -56,7 +68,7 @@
             <if test="userType != null">
                 and user_type = #{userType,typeHandler=com.xgimi.base.MyBaseTypeHandler}
             </if>
-             <if test="gender != null">
+            <if test="gender != null">
                 and gender = #{gender,typeHandler=com.xgimi.base.MyBaseTypeHandler}
             </if>
             <if test="status != null">
@@ -104,8 +116,8 @@
             <if test="phone != null and phone != ''">
                 phone = #{phone, jdbcType=VARCHAR},
             </if>
-          <if test="password != null and password != ''">
-              password = #{password, jdbcType=VARCHAR},
+            <if test="password != null and password != ''">
+                password = #{password, jdbcType=VARCHAR},
             </if>
             <if test="gender != null ">
                 gender = #{gender, typeHandler=com.xgimi.base.MyBaseTypeHandler},
@@ -113,8 +125,8 @@
             <if test="status != null ">
                 status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
             </if>
-          <if test="userType != null ">
-              user_type = #{userType, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+            <if test="userType != null ">
+                user_type = #{userType, typeHandler=com.xgimi.base.MyBaseTypeHandler},
             </if>
         </set>
         <where>
@@ -123,4 +135,7 @@
             </if>
         </where>
     </update>
+    <delete id="delete">
+        delete from user_info where id = #{userId,jdbcType=BIGINT}
+    </delete>
 </mapper>

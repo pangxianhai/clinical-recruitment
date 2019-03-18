@@ -47,4 +47,12 @@ public interface UserInfoMapper {
      */
     int update(UserInfoDO userInfoDO);
 
+    /**
+     * 删除用户信息
+     *
+     * @param userId 用户ID
+     * @return 删除数量
+     */
+    int delete(Long userId);
+
 }

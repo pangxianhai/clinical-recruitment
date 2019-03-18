@@ -84,7 +84,7 @@
                 <a href="/doctor/list-pc">医生列表</a>
             </li>
             <li class="${doctorAdd}">
-                <a href="#">添加医生</a>
+                <a href="/doctor/add-pc">添加医生</a>
             </li>
             <li class="nav-header">患者</li>
             <li class="${patientList}">

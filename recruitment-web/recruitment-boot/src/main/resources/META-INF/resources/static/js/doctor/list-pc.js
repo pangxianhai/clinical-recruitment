@@ -50,18 +50,19 @@ $(function () {
           return false;
         },
         messages: {
-          realName: '患者姓名输入太长',
+          realName: '医生姓名输入太长',
           phoneLike: '手机号输入太长'
         },
         success: function () {
           $('#tips-error .msg-error').hide();
-          $this.loadPatientInfo(1);
+          $this.loadDoctorInfo(1);
           return false;
         }
       });
     },
     main: function () {
       this.loadDoctorInfo(1);
+      this.bindSearchAction();
     }
   };
   DoctorList.main();

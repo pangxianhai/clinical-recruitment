@@ -113,4 +113,11 @@ public interface UserAO {
      * @param response response
      */
     void saveUserInfoCookie(UserInfo userInfo, HttpServletResponse response);
+
+    /**
+     * 删除用户信息
+     *
+     * @param userId 用户ID
+     */
+    void delete(Long userId);
 }

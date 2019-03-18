@@ -80,6 +80,9 @@ public class PatientUtil {
             return;
         }
         AddressInfo addressInfo = regionAO.parseAddressInfo(patientAddRQ.getAddress());
+        if (null == addressInfo) {
+            return;
+        }
         if (null != addressInfo.getProvince()) {
             patientInfo.setProvinceId(addressInfo.getProvince().getRegionId());
         }

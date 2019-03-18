@@ -119,4 +119,12 @@ public class UserInfoServiceImpl implements UserInfoService {
         List<UserInfo> userInfoList = UserUtil.transformUserInfo(userInfoDOList);
         return new PageResult<>(userInfoList, PageUtil.transformToPaginator(page));
     }
+
+    @Override
+    public void delete(Long userId) {
+        AssertUtil.assertNull(userId, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.USER_ID_EMPTY);
+        });
+        this.userInfoMapper.delete(userId);
+    }
 }

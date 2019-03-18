@@ -3,12 +3,9 @@ package com.andy.recruitment.web.controller.doctor.webservice;
 import com.andy.recruitment.doctor.ao.DoctorAO;
 import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.doctor.model.DoctorQueryParam;
-import com.andy.recruitment.exception.BusinessErrorCode;
-import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.region.ao.RegionAO;
-import com.andy.recruitment.region.model.AddressInfo;
 import com.andy.recruitment.user.ao.UserAO;
-import com.andy.recruitment.user.constant.UserType;
+import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.doctor.request.DoctorAddRQ;
 import com.andy.recruitment.web.controller.doctor.request.DoctorQueryRQ;
@@ -18,7 +15,6 @@ import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.page.PageResult;
-import com.xgimi.commons.util.StringUtil;
 import com.xgimi.context.ServletContext;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,35 +45,30 @@ public class DoctorWebservice {
         this.userAO = userAO;
     }
 
-    @Login
     @RequestMapping(value = "/register.json", method = RequestMethod.POST)
     public boolean register(@RequestBody DoctorAddRQ doctorAddRQ) {
-        LoginInfo loginInfo = ServletContext.getLoginInfo();
-        DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ);
-        doctorInfo.setUserId(loginInfo.getUserId());
-        AddressInfo addressInfo = regionAO.parseAddressInfo(doctorAddRQ.getAddress());
-        if (null != addressInfo.getProvince()) {
-            doctorInfo.setProvinceId(addressInfo.getProvince().getRegionId());
-        }
-        if (null != addressInfo.getCity()) {
-            doctorInfo.setCityId(addressInfo.getCity().getRegionId());
-        }
-        if (null != addressInfo.getDistrict()) {
-            doctorInfo.setDistrictId(addressInfo.getDistrict().getRegionId());
-        }
-        UserInfo currentUserInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
-        if (StringUtil.isNotEmpty(currentUserInfo.getPhone())) {
-            throw new BusinessException(BusinessErrorCode.USER_HAS_REGISTER);
+        UserInfo userInfo = this.userAO.getUserInfoByPhone(doctorAddRQ.getPhone());
+        UserInfo addUserInfo = DoctorUtil.transformUserInfo(doctorAddRQ);
+        if (null == userInfo) {
+            Long userId = this.userAO.addUserInfo(addUserInfo, doctorAddRQ.getName());
+            addUserInfo.setUserId(userId);
+            DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ, regionAO);
+            doctorInfo.setUserId(addUserInfo.getUserId());
+            this.doctorAO.addDoctorInfo(doctorInfo, doctorAddRQ.getName());
         } else {
-            //先注册手机号,排除手机号重复的情况
-            this.userAO.bandPhone(loginInfo.getUserId(), doctorAddRQ.getPhone(), null);
-            this.doctorAO.addDoctorInfo(doctorInfo, ServletContext.getLoginUname());
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserId(loginInfo.getUserId());
-            userInfo.setUserType(UserType.DOCTOR);
-            userInfo.setRealName(doctorAddRQ.getName());
-            this.userAO.updateUserInfo(userInfo, ServletContext.getLoginUname());
+            addUserInfo.setUserId(userInfo.getUserId());
+            this.userAO.updateUserInfo(addUserInfo, addUserInfo.getRealName());
+            DoctorInfo existDoctor = this.doctorAO.getDoctorInfoByUserId(addUserInfo.getUserId());
+            DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ, regionAO);
+            if (null == existDoctor) {
+                doctorInfo.setUserId(addUserInfo.getUserId());
+                this.doctorAO.addDoctorInfo(doctorInfo, doctorAddRQ.getName());
+            } else {
+                doctorInfo.setDoctorId(existDoctor.getDoctorId());
+                this.doctorAO.updateDoctorInfo(doctorInfo, doctorAddRQ.getName());
+            }
         }
+        this.userAO.saveUserInfoCookie(addUserInfo, ServletContext.getResponse());
         return true;
     }
 
@@ -92,5 +83,27 @@ public class DoctorWebservice {
             doctorInfoVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
         }
         return new PageResult<>(doctorInfoVOList, pageResult.getPaginator());
+    }
+
+    @Login
+    @RequestMapping(value = "/add.json", method = RequestMethod.POST)
+    public boolean add(@RequestBody DoctorAddRQ addRQ) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setPhone(addRQ.getPhone());
+        userInfo.setRealName(addRQ.getName());
+        userInfo.setGender(Gender.parse(addRQ.getGender()));
+        Long userId = this.userAO.addUserInfo(userInfo, loginInfo.getRealName());
+
+        try {
+            DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(addRQ, regionAO);
+            doctorInfo.setUserId(userId);
+            this.doctorAO.addDoctorInfo(doctorInfo, loginInfo.getRealName());
+        } catch (Exception e) {
+            this.userAO.delete(userId);
+            throw e;
+        }
+        return true;
     }
 }
