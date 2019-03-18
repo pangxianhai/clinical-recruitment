@@ -60,9 +60,43 @@ $(function () {
         }
       });
     },
+    bindFreezePatient: function () {
+      $('#patient-panel').on('click', '[item="freeze"]', function () {
+        let userId = $(this).attr('userId');
+        Ajax.post('/user/' + userId + '/freeze.json', {},
+            function (result) {
+              if (result) {
+                $.alert('操作成功！！');
+                setTimeout(function () {
+                  window.location.reload(true);
+                }, 2000);
+              } else {
+                $.alert('操作失败！！');
+              }
+            });
+      });
+    },
+    bindUnfreezePatient: function () {
+      $('#patient-panel').on('click', '[item="unfreeze"]', function () {
+        let userId = $(this).attr('userId');
+        Ajax.post('/user/' + userId + '/unfreeze.json', {},
+            function (result) {
+              if (result) {
+                $.alert('操作成功！！');
+                setTimeout(function () {
+                  window.location.reload(true);
+                }, 2000);
+              } else {
+                $.alert('操作失败！！');
+              }
+            });
+      });
+    },
     main: function () {
       this.loadPatientInfo(1);
       this.bindSearchAction();
+      this.bindFreezePatient();
+      this.bindUnfreezePatient();
     }
   };
   PatientList.main();

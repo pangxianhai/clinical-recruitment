@@ -60,9 +60,43 @@ $(function () {
         }
       });
     },
+    bindFreezeDoctor: function () {
+      $('#doctor-panel').on('click', '[item="freeze"]', function () {
+        let userId = $(this).attr('userId');
+        Ajax.post('/user/' + userId + '/freeze.json', {},
+            function (result) {
+              if (result) {
+                $.alert('操作成功！！');
+                setTimeout(function () {
+                  window.location.reload(true);
+                }, 2000);
+              } else {
+                $.alert('操作失败！！');
+              }
+            });
+      });
+    },
+    bindUnfreezeDoctor: function () {
+      $('#doctor-panel').on('click', '[item="unfreeze"]', function () {
+        let userId = $(this).attr('userId');
+        Ajax.post('/user/' + userId + '/unfreeze.json', {},
+            function (result) {
+              if (result) {
+                $.alert('操作成功！！');
+                setTimeout(function () {
+                  window.location.reload(true);
+                }, 2000);
+              } else {
+                $.alert('操作失败！！');
+              }
+            });
+      });
+    },
     main: function () {
       this.loadDoctorInfo(1);
       this.bindSearchAction();
+      this.bindFreezeDoctor();
+      this.bindUnfreezeDoctor();
     }
   };
   DoctorList.main();

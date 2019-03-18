@@ -63,7 +63,7 @@ $(function () {
     bindFreezeManageUser: function () {
       $('#manager-panel').on('click', '[item="freeze"]', function () {
         let userId = $(this).attr('userId');
-        Ajax.post('/user/manager/' + userId + '/freeze.json', {},
+        Ajax.post('/user/' + userId + '/freeze.json', {},
             function (result) {
               if (result) {
                 $.alert('操作成功！！');
@@ -79,7 +79,7 @@ $(function () {
     bindUnfreezeManageUser: function () {
       $('#manager-panel').on('click', '[item="unfreeze"]', function () {
         let userId = $(this).attr('userId');
-        Ajax.post('/user/manager/' + userId + '/unfreeze.json', {},
+        Ajax.post('/user/' + userId + '/unfreeze.json', {},
             function (result) {
               if (result) {
                 $.alert('操作成功！！');
