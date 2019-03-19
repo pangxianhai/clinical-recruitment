@@ -24,9 +24,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegionServiceImpl implements RegionService {
 
-    private final static ConcurrentMap<Long, Future<Region>> regionCacheId = new ConcurrentHashMap<>();
+    private final static ConcurrentMap<Long, Future<Region>> REGION_CACHE_ID = new ConcurrentHashMap<>();
 
-    private final static ConcurrentMap<Long, Future<List<Region>>> parentCache = new ConcurrentHashMap<>();
+    private final static ConcurrentMap<Long, Future<List<Region>>> PARENT_CACHE = new ConcurrentHashMap<>();
 
     private final RegionMapper regionMapper;
 
@@ -42,7 +42,7 @@ public class RegionServiceImpl implements RegionService {
             return null;
         }
         while (true) {
-            Future<Region> cacheRegionFuture = regionCacheId.get(regionId);
+            Future<Region> cacheRegionFuture = REGION_CACHE_ID.get(regionId);
             if (null == cacheRegionFuture) {
                 FutureTask<Region> ft = new FutureTask<>(() -> {
                     RegionDO regionDO = new RegionDO();
@@ -50,7 +50,7 @@ public class RegionServiceImpl implements RegionService {
                     List<RegionDO> regionDOList = this.regionMapper.select(regionDO);
                     return CollectionUtil.parseOne(regionDOList, RegionUtil::transformRegion);
                 });
-                cacheRegionFuture = regionCacheId.putIfAbsent(regionId, ft);
+                cacheRegionFuture = REGION_CACHE_ID.putIfAbsent(regionId, ft);
                 if (null == cacheRegionFuture) {
                     cacheRegionFuture = ft;
                     ft.run();
@@ -59,7 +59,7 @@ public class RegionServiceImpl implements RegionService {
             try {
                 return cacheRegionFuture.get();
             } catch (CancellationException e) {
-                regionCacheId.remove(regionId, cacheRegionFuture);
+                REGION_CACHE_ID.remove(regionId, cacheRegionFuture);
             } catch (ExecutionException | InterruptedException e) {
                 return null;
             }
@@ -70,7 +70,7 @@ public class RegionServiceImpl implements RegionService {
     public List<Region> getRegionByParentId(Long parentId) {
 
         while (true) {
-            Future<List<Region>> cacheParentFuture = parentCache.get(parentId);
+            Future<List<Region>> cacheParentFuture = PARENT_CACHE.get(parentId);
             if (null == cacheParentFuture) {
                 FutureTask<List<Region>> ft = new FutureTask<>(() -> {
                     RegionDO regionDO = new RegionDO();
@@ -82,7 +82,7 @@ public class RegionServiceImpl implements RegionService {
                     return RegionUtil.transformRegion(regionDOList);
 
                 });
-                cacheParentFuture = parentCache.putIfAbsent(parentId, ft);
+                cacheParentFuture = PARENT_CACHE.putIfAbsent(parentId, ft);
                 if (null == cacheParentFuture) {
                     cacheParentFuture = ft;
                     ft.run();
@@ -91,7 +91,7 @@ public class RegionServiceImpl implements RegionService {
             try {
                 return cacheParentFuture.get();
             } catch (CancellationException e) {
-                parentCache.remove(parentId, cacheParentFuture);
+                PARENT_CACHE.remove(parentId, cacheParentFuture);
             } catch (ExecutionException | InterruptedException e) {
                 return null;
             }

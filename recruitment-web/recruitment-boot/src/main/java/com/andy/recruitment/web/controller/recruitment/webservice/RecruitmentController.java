@@ -103,6 +103,18 @@ public class RecruitmentController {
         return "recruitment/listInfo-pc";
     }
 
+    @Login
+    @RequestMapping(value = "/detailPc/{recruitmentId:\\d+}", method = RequestMethod.GET)
+    public String recruitmentListPcDetail(@PathVariable Long recruitmentId, Map<String, Object> model) {
+        RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(recruitmentId);
+        RecruitmentVO recruitmentVO = RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
+        List<ResearchCenterInfo> researchCenterInfoList = this.researchCenterAO.getResearchCenterByRecruitmentId(
+            recruitmentId);
+        model.put("researchCenterListVO", RecruitmentUtil.transformResearchCenterVO(regionAO, researchCenterInfoList));
+        model.put("recruitmentVO", recruitmentVO);
+        return "recruitment/detail-pc";
+    }
+
     private PageResult<RecruitmentInfo> queryRecruitmentInfo(RecruitmentQueryRQ queryRQ) {
         RecruitmentQueryParam queryParam = RecruitmentUtil.transformQueryParam(queryRQ);
         queryParam.setIndication(queryRQ.getIndication());
