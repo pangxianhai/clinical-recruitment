@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class RecruitmentStatus extends BaseType {
 
-    public static final RecruitmentStatus NOT_BEGIN = new RecruitmentStatus(0, "未招募");
+    public static final RecruitmentStatus NOT_BEGIN = new RecruitmentStatus(0, "未开始");
 
     public static final RecruitmentStatus IN_PROCESS = new RecruitmentStatus(1, "进行中");
 
-    public static final RecruitmentStatus FINISHED = new RecruitmentStatus(2, "已完成");
+    public static final RecruitmentStatus FINISHED = new RecruitmentStatus(2, "已结束");
 
     public RecruitmentStatus(int code, String desc) {
         super(code, desc);
