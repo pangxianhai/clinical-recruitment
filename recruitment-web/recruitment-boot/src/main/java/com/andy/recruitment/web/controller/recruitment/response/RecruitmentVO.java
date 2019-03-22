@@ -60,10 +60,6 @@ public class RecruitmentVO implements Serializable {
      */
     private String entryCriteria;
     /**
-     * 研究中心
-     */
-    private String researchCenter;
-    /**
      * 患者权益
      */
     private String patientRights;
@@ -179,14 +175,6 @@ public class RecruitmentVO implements Serializable {
 
     public void setEntryCriteria(String entryCriteria) {
         this.entryCriteria = entryCriteria;
-    }
-
-    public String getResearchCenter() {
-        return researchCenter;
-    }
-
-    public void setResearchCenter(String researchCenter) {
-        this.researchCenter = researchCenter;
     }
 
     public String getPatientRights() {
