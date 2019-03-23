@@ -18,21 +18,17 @@
                href="/recruitment/detailPc/${recruitmentInfo.recruitmentId}">
                 详情
             </a>
+            <a class="sui-btn btn-small btn-success"
+               href="/recruitment/updatePc/${recruitmentInfo.recruitmentId}">
+                更新
+            </a>
             <c:if test="${recruitmentInfo.status.code == 0}">
-                <a class="sui-btn btn-small btn-success"
-                   href="/recruitment/updatePc/${recruitmentInfo.recruitmentId}">
-                    更新
-                </a>
                 <a class="sui-btn btn-small btn-info" href="javascript:void(0)"
                    recruitmentId="${recruitmentInfo.recruitmentId}" item="begin">
                     开始
                 </a>
             </c:if>
             <c:if test="${recruitmentInfo.status.code == 1}">
-                <a class="sui-btn btn-small btn-success"
-                   href="/recruitment/updatePc/${recruitmentInfo.recruitmentId}">
-                    更新
-                </a>
                 <a class="sui-btn btn-small btn-danger" href="javascript:void(0)"
                    recruitmentId="${recruitmentInfo.recruitmentId}" item="stop">
                     结束

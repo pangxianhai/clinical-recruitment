@@ -1,6 +1,7 @@
 package com.andy.recruitment.web.controller.recruitment.webservice;
 
 import com.andy.recruitment.recruitment.ao.RecruitmentAO;
+import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.researchcenter.ao.ResearchCenterAO;
@@ -11,6 +12,7 @@ import com.xgimi.auth.Login;
 import com.xgimi.context.ServletContext;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +48,26 @@ public class RecruitmentWebservice {
         List<ResearchCenterInfo> centerInfoList = RecruitmentUtil.transformResearchCenterInfo(
             recruitmentAddRQ.getResearchCenterList());
         this.researchCenterAO.addResearchCenter(recruitmentId, centerInfoList, ServletContext.getLoginUname());
+        return true;
+    }
+
+    @Login
+    @RequestMapping(value = "/{recruitmentId:\\d+}/begin.json", method = RequestMethod.POST)
+    public boolean recruitmentBegin(@PathVariable Long recruitmentId) {
+        RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
+        recruitmentInfo.setRecruitmentId(recruitmentId);
+        recruitmentInfo.setStatus(RecruitmentStatus.IN_PROCESS);
+        this.recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
+        return true;
+    }
+
+    @Login
+    @RequestMapping(value = "/{recruitmentId:\\d+}/end.json", method = RequestMethod.POST)
+    public boolean recruitmentEnd(@PathVariable Long recruitmentId) {
+        RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
+        recruitmentInfo.setRecruitmentId(recruitmentId);
+        recruitmentInfo.setStatus(RecruitmentStatus.FINISHED);
+        this.recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
         return true;
     }
 }

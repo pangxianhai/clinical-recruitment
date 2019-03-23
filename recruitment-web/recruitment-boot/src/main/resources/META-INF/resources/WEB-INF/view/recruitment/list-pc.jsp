@@ -112,4 +112,5 @@
 </body>
 <script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
 <script type="text/javascript" src="/static/js/recruitment/list-pc.js?_v=${version}"></script>
+<script src="/static/js/recruitment/detail-pc.js?_v=${version}"></script>
 </html>

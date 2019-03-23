@@ -89,7 +89,7 @@
         </div>
         <div class="sui-row-fluid">
             <div class="span1">启始时间：</div>
-            <div class="span6">${recruitmentVO.startTime}至${recruitmentVO.stopTime}</div>
+            <div class="span6">${recruitmentVO.startTime}&nbsp;至&nbsp;${recruitmentVO.stopTime}</div>
         </div>
         <div class="sui-row-fluid">
             <div class="span1">招募状态：</div>
@@ -106,24 +106,20 @@
         <div class="sui-row-fluid operator">
             <div class="span1"></div>
             <div class="span6">
+                <a class="sui-btn btn-small btn-success"
+                   href="/recruitment/updatePc/${recruitmentVO.recruitmentId}">
+                    更新
+                </a>
                 <c:if test="${recruitmentVO.status.code == 0}">
                     <a class="sui-btn btn-small btn-info" href="javascript:void(0)"
                        recruitmentId="${recruitmentVO.recruitmentId}" item="begin">
                         开始
-                    </a>
-                    <a class="sui-btn btn-small btn-success"
-                       href="/recruitment/updatePc/${recruitmentVO.recruitmentId}">
-                        更新
                     </a>
                 </c:if>
                 <c:if test="${recruitmentVO.status.code == 1}">
                     <a class="sui-btn btn-small btn-danger" href="javascript:void(0)"
                        recruitmentId="${recruitmentVO.recruitmentId}" item="stop">
                         结束
-                    </a>
-                    <a class="sui-btn btn-small btn-success"
-                       href="/recruitment/updatePc/${recruitmentVO.recruitmentId}">
-                        更新
                     </a>
                 </c:if>
                 <c:if test="${recruitmentVO.status.code == 2}">
@@ -136,5 +132,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
+<script src="/static/js/recruitment/detail-pc.js?_v=${version}"></script>
 </body>
 </html>
