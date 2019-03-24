@@ -7,6 +7,7 @@ import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.researchcenter.ao.ResearchCenterAO;
 import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddRQ;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.context.ServletContext;
@@ -68,6 +69,14 @@ public class RecruitmentWebservice {
         recruitmentInfo.setRecruitmentId(recruitmentId);
         recruitmentInfo.setStatus(RecruitmentStatus.FINISHED);
         this.recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
+        return true;
+    }
+
+    @Login
+    @RequestMapping(value = "/update.json", method = RequestMethod.POST)
+    public boolean updateRecruitment(@RequestBody RecruitmentUpdateRQ recruitmentUpdateRQ) {
+        RecruitmentInfo recruitmentInfo = RecruitmentUtil.transformRecruitmentInfo(recruitmentUpdateRQ);
+        recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
         return true;
     }
 }

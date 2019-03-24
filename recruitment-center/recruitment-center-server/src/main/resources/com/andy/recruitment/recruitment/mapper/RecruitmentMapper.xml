@@ -146,6 +146,18 @@
             <if test="title != null and title != ''">
                 title = #{title, jdbcType=VARCHAR},
             </if>
+            <if test="drugName != null and drugName != ''">
+                drug_name = #{drugName, jdbcType=VARCHAR},
+            </if>
+            <if test="drugType != null and drugType != ''">
+                drug_type = #{drugType, jdbcType=VARCHAR},
+            </if>
+            <if test="recruitmentNumber != null">
+                recruitment_number = #{recruitmentNumber,jdbcType=INTEGER},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction, jdbcType=VARCHAR},
+            </if>
             <if test="practiceStages != null and practiceStages != ''">
                 practice_stages = #{practiceStages, jdbcType=VARCHAR},
             </if>
