@@ -1,6 +1,7 @@
 package com.andy.recruitment.web.controller.recruitment.webservice;
 
 import com.andy.recruitment.recruitment.ao.RecruitmentAO;
+import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentQueryParam;
 import com.andy.recruitment.region.ao.RegionAO;
@@ -89,7 +90,9 @@ public class RecruitmentController {
     @Login
     @RequestMapping(value = "/list-pc", method = RequestMethod.GET)
     public String recruitmentListPc(Map<String, Object> model) {
+        List<RecruitmentStatus> recruitmentStatusList = RecruitmentStatus.getValues();
         model.put("indicationOptions", this.indicationConfig);
+        model.put("statusList", recruitmentStatusList);
         return "recruitment/list-pc";
     }
 

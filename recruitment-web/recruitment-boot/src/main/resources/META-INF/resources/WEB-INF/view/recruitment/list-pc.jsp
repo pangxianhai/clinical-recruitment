@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,18 +64,12 @@
                         <a role="menuitem" tabindex="-1" href="javascript:void(0);"
                            value="">请选择</a>
                     </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
-                           value="0">未招募</a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
-                           value="1">进行中</a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
-                           value="2">已完成</a>
-                    </li>
+                    <c:forEach items="${statusList}" var="status">
+                         <li role="presentation">
+                             <a role="menuitem" tabindex="-1" href="javascript:void(0);"
+                                value="${status.code}">${status.desc}</a>
+                         </li>
+                    </c:forEach>
                 </ul>
                 </span>
         </span>
