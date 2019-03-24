@@ -15,6 +15,7 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplic
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.request.ResearchCenterAddRQ;
+import com.andy.recruitment.web.controller.recruitment.request.ResearchCenterUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.andy.recruitment.web.controller.recruitment.response.ResearchCenterVO;
@@ -133,6 +134,23 @@ public class RecruitmentUtil {
             return null;
         }
         return addRQList.stream().map(RecruitmentUtil::transformResearchCenterInfo).filter(Objects::nonNull).collect(
+            Collectors.toList());
+    }
+
+    public static ResearchCenterInfo transformResearchCenterInfo(ResearchCenterUpdateRQ updateRQ) {
+        if (null == updateRQ) {
+            return null;
+        }
+        ResearchCenterInfo researchCenterInfo = new ResearchCenterInfo();
+        BeanUtil.copyProperties(updateRQ, researchCenterInfo);
+        return researchCenterInfo;
+    }
+
+    public static List<ResearchCenterInfo> transformResearchCenterInfoByUpdate(List<ResearchCenterUpdateRQ> updateRQList) {
+        if (CollectionUtil.isEmpty(updateRQList)) {
+            return null;
+        }
+        return updateRQList.stream().map(RecruitmentUtil::transformResearchCenterInfo).filter(Objects::nonNull).collect(
             Collectors.toList());
     }
 

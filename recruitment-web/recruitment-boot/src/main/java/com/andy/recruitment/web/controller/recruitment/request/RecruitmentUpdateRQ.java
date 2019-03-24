@@ -1,6 +1,7 @@
 package com.andy.recruitment.web.controller.recruitment.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 招募信息更新参数
@@ -69,6 +70,10 @@ public class RecruitmentUpdateRQ implements Serializable {
      * 截至时间
      */
     private String stopTime;
+    /**
+     * 研究中心
+     */
+    private List<ResearchCenterUpdateRQ> researchCenterList;
 
     public Long getRecruitmentId() {
         return recruitmentId;
@@ -188,5 +193,13 @@ public class RecruitmentUpdateRQ implements Serializable {
 
     public void setStopTime(String stopTime) {
         this.stopTime = stopTime;
+    }
+
+    public List<ResearchCenterUpdateRQ> getResearchCenterList() {
+        return researchCenterList;
+    }
+
+    public void setResearchCenterList(List<ResearchCenterUpdateRQ> researchCenterList) {
+        this.researchCenterList = researchCenterList;
     }
 }

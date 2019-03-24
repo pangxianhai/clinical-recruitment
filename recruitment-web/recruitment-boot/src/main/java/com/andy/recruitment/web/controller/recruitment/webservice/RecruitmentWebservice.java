@@ -10,6 +10,7 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.xgimi.auth.Login;
+import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.context.ServletContext;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,14 @@ public class RecruitmentWebservice {
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     public boolean updateRecruitment(@RequestBody RecruitmentUpdateRQ recruitmentUpdateRQ) {
         RecruitmentInfo recruitmentInfo = RecruitmentUtil.transformRecruitmentInfo(recruitmentUpdateRQ);
+        List<ResearchCenterInfo> researchCenterInfoList = RecruitmentUtil.transformResearchCenterInfoByUpdate(
+            recruitmentUpdateRQ.getResearchCenterList());
         recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
+        if (CollectionUtil.isEmpty(researchCenterInfoList)) {
+            return true;
+        }
+        this.researchCenterAO.updateResearchCenter(recruitmentUpdateRQ.getRecruitmentId(), researchCenterInfoList,
+                                                   ServletContext.getLoginUname());
         return true;
     }
 }

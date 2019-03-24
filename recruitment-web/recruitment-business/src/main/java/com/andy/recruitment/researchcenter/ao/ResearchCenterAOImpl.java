@@ -3,7 +3,11 @@ package com.andy.recruitment.researchcenter.ao;
 import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.researchcenter.service.ResearchCenterService;
 import com.xgimi.commons.util.CollectionUtil;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +39,33 @@ public class ResearchCenterAOImpl implements ResearchCenterAO {
             for (ResearchCenterInfo researchCenterInfo : centerInfoList) {
                 researchCenterInfo.setRecruitmentId(recruitmentId);
                 this.researchCenterService.addResearchCenter(researchCenterInfo, operator);
+            }
+        }
+    }
+
+    @Override
+    public void updateResearchCenter(Long recruitmentId, List<ResearchCenterInfo> centerInfoList, String operator) {
+        List<ResearchCenterInfo> researchCenterInfoList = this.researchCenterService.getResearchCenterByRecruitmentId(
+            recruitmentId);
+        Set<Long> sourceCenterIdSet = new HashSet<>();
+        if (CollectionUtil.isNotEmpty(researchCenterInfoList)) {
+            sourceCenterIdSet = researchCenterInfoList.stream().map(ResearchCenterInfo::getCenterId).filter(
+                Objects::nonNull).collect(Collectors.toSet());
+        }
+        Set<Long> updateIdSet = new HashSet<>();
+        for (ResearchCenterInfo centerInfo : centerInfoList) {
+            if (null == centerInfo.getCenterId()) {
+                centerInfo.setRecruitmentId(recruitmentId);
+                this.researchCenterService.addResearchCenter(centerInfo, operator);
+            } else {
+                this.researchCenterService.updateResearchCenter(centerInfo, operator);
+                updateIdSet.add(centerInfo.getCenterId());
+            }
+        }
+        sourceCenterIdSet.removeAll(updateIdSet);
+        if (CollectionUtil.isNotEmpty(sourceCenterIdSet)) {
+            for (Long centerId : sourceCenterIdSet) {
+                this.researchCenterService.deleteResearchCenterInfo(centerId);
             }
         }
     }

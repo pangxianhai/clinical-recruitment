@@ -148,6 +148,24 @@
                        placeholder="截至时间">
             </div>
         </div>
+        <div class="control-group research-center">
+            <label class="control-label">研究中心：</label>
+            <c:forEach items="${researchCenterListVO}" var="center">
+                <div class="controls">
+                    <input type="text" name="centerName" value="${center.name}" placeholder="中心名称"/>
+                    <input type="hidden" name="centerId" value="${center.centerId}"
+                           provinceId="${center.provinceId}" cityId="${center.cityId}"
+                           districtId="${center.districtId}"/>
+                    <span class="region-select"></span>
+                    <a href="javascript:void(0);" class="sui-btn btn-bordered btn-primary">
+                        <i class="sui-icon icon-touch-plus-circle"></i>
+                    </a>
+                    <a href="javascript:void(0);" class="sui-btn btn-bordered btn-danger">
+                        <i class="sui-icon icon-touch-minus-circle"></i>
+                    </a>
+                </div>
+            </c:forEach>
+        </div>
         <div class="control-group">
             <label class="control-label"></label>
             <div class="controls">
@@ -169,5 +187,6 @@
 <script type="text/javascript"
         src="http://g.alicdn.com/sj/sui-editor/0.0.2/editor/js/sui-editor.js"></script>
 <script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
+<script type="text/javascript" src="/static/js/region/regionSelect-pc.js?_v=${version}"></script>
 <script type="text/javascript" src="/static/js/recruitment/update-pc.js?_v=${version}"></script>
 </html>
