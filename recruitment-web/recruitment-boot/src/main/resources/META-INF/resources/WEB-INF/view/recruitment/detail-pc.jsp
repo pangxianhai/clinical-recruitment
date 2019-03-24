@@ -22,6 +22,10 @@
             text-align: right;
         }
 
+        .span6 {
+            width: 90%;
+        }
+
         .operator {
             margin-top: 10px;
         }
@@ -41,31 +45,28 @@
     <div class="details">
         <div class="sui-row-fluid">
             <div class="span1">标题：</div>
-            <div class="span6">${recruitmentVO.title}</div>
-        </div>
-        <div class="sui-row-fluid">
+            <div class="span3">${recruitmentVO.title}</div>
             <div class="span1">登记编号：</div>
-            <div class="span6">${recruitmentVO.registerCode}</div>
-        </div>
-        <div class="sui-row-fluid">
+            <div class="span3">${recruitmentVO.registerCode}</div>
             <div class="span1">实验分期：</div>
-            <div class="span6">${recruitmentVO.practiceStages}</div>
+            <div class="span3">${recruitmentVO.practiceStages}</div>
         </div>
         <div class="sui-row-fluid">
             <div class="span1">适应症状：</div>
-            <div class="span6">${recruitmentVO.indication}</div>
-        </div>
-        <div class="sui-row-fluid">
+            <div class="span3">${recruitmentVO.indication}</div>
             <div class="span1">药物名称：</div>
-            <div class="span6">${recruitmentVO.drugName}</div>
-        </div>
-        <div class="sui-row-fluid">
+            <div class="span3">${recruitmentVO.drugName}</div>
             <div class="span1">药物类型：</div>
-            <div class="span6">${recruitmentVO.drugType}</div>
+            <div class="span3">${recruitmentVO.drugType}</div>
         </div>
         <div class="sui-row-fluid">
             <div class="span1">招募人数：</div>
-            <div class="span6">${recruitmentVO.recruitmentNumber}</div>
+            <div class="span3">${recruitmentVO.recruitmentNumber}</div>
+            <div class="span1">启始时间：</div>
+            <div class="span3">${recruitmentVO.startTime}&nbsp;至&nbsp;${recruitmentVO.stopTime}</div>
+            <div class="span1">招募状态：</div>
+            <div class="span3">${recruitmentVO.status.desc}</div>
+
         </div>
         <div class="sui-row-fluid">
             <div class="span1">简介：</div>
@@ -86,14 +87,6 @@
         <div class="sui-row-fluid">
             <div class="span1">患者权益：</div>
             <div class="span6">${recruitmentVO.patientRights}</div>
-        </div>
-        <div class="sui-row-fluid">
-            <div class="span1">启始时间：</div>
-            <div class="span6">${recruitmentVO.startTime}&nbsp;至&nbsp;${recruitmentVO.stopTime}</div>
-        </div>
-        <div class="sui-row-fluid">
-            <div class="span1">招募状态：</div>
-            <div class="span6">${recruitmentVO.status.desc}</div>
         </div>
         <div class="sui-row-fluid">
             <div class="span1">研究中心：</div>

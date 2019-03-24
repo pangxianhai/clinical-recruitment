@@ -28,6 +28,10 @@
         .span1 {
             text-align: right;
         }
+
+        .span6 {
+            width: 90%;
+        }
     </style>
 </head>
 <body>
