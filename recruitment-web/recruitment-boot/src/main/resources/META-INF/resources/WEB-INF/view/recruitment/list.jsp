@@ -9,19 +9,20 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="/static/css/lib/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <link rel="stylesheet" href="/static/css/recruitment/list.css?_v=${version}">
 </head>
 <body>
 <div class="page-group">
     <div class="page page-current">
         <header class="bar bar-nav">
-            <c:if test="${userInfo.userType.code == 1}">
-                <a class="button pull-right" href="/recruitment/add">
-                    发布任务
-                </a>
+            <c:if test="${userInfo.userType.code == 2}">
+                <h1 class="title">推荐中心</h1>
             </c:if>
-            <h1 class="title">任务大厅</h1>
+            <c:if test="${empty userInfo || userInfo.userType.code == 3}">
+                <h1 class="title">招募大厅</h1>
+            </c:if>
         </header>
         <jsp:include page="../components/footer.jsp">
             <jsp:param value="recruitmentList" name="menuItem"/>
@@ -70,10 +71,14 @@
     </div>
 </div>
 <input type="hidden" id="indicationOptions" value="${indicationOptions}">
-<script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/lib/sm-city-picker.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js'
+        charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js'
+        charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js'
+        charset='utf-8'></script>
+<script type="text/javascript" src="//g.alicdn.com/msui/sm/0.6.2/js/sm-city-picker.min.js"
+        charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/lib/qrcode.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/recruitment/list.js?_v=${version}'

@@ -41,11 +41,15 @@ $(function () {
           gender: $('#genderInput').val()
         }, function (data) {
           if (data) {
-            $.alert('注册成功', function () {
+            if ('application' === $('#action').val()) {
               window.location.href = $('#redirectURL').val();
-            });
+            } else {
+              $.alert('注册成功', function () {
+                window.location.href = $('#redirectURL').val();
+              });
+            }
           } else {
-            $.alert('注册失败');
+            $.alert('操作失败');
           }
         });
       });

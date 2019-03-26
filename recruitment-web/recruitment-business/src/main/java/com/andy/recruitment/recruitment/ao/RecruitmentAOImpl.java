@@ -8,6 +8,7 @@ import com.andy.recruitment.researchcenter.service.ResearchCenterService;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.CollectionUtil;
+import com.xgimi.commons.util.StringUtil;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,9 @@ public class RecruitmentAOImpl implements RecruitmentAO {
 
     @Override
     public PageResult<RecruitmentInfo> getRecruitmentInfo(RecruitmentQueryParam queryParam, Paginator paginator) {
+        if (StringUtil.isEmpty(paginator.getOrderSegment())) {
+            paginator.setOrderSegment("created_time.desc");
+        }
         PageResult<RecruitmentInfo> pageResult = this.recruitmentService.getRecruitmentInfo(queryParam, paginator);
         if (CollectionUtil.isNotEmpty(pageResult.getData())) {
             for (RecruitmentInfo recruitmentInfo : pageResult.getData()) {

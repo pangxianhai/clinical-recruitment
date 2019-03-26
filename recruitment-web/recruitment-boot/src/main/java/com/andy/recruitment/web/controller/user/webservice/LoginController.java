@@ -1,8 +1,12 @@
 package com.andy.recruitment.web.controller.user.webservice;
 
+import com.andy.recruitment.recruitment.ao.RecruitmentAO;
+import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
+import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
+import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.andy.recruitment.weixin.ao.WeiXinAO;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.util.StringUtil;
@@ -33,10 +37,13 @@ public class LoginController {
 
     private final UserAO userAO;
 
+    private final RecruitmentAO recruitmentAO;
+
     @Autowired
-    public LoginController(WeiXinAO weiXinAO, UserAO userAO) {
+    public LoginController(WeiXinAO weiXinAO, UserAO userAO, RecruitmentAO recruitmentAO) {
         this.weiXinAO = weiXinAO;
         this.userAO = userAO;
+        this.recruitmentAO = recruitmentAO;
     }
 
     //医生登陆页面 http://www.aiteruiyiyao.cn/user/login?userType=2
@@ -46,7 +53,7 @@ public class LoginController {
     //患者登陆页面 http://www.andy.com/user/login?userType=3
     //管理员登陆页面 http://www.andy.com/user/login?userType=1
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String login(String redirectURL, Integer userType) {
+    public String login(String redirectURL, Integer userType, String action, Long recruitmentId) {
         if (StringUtil.isEmpty(redirectURL) || redirectURL.contains("/user/login")) {
             redirectURL = "/";
         }
@@ -54,12 +61,19 @@ public class LoginController {
             userType = UserType.PATIENT.getCode();
         }
         String url = serverAddress + "/user/login/weixinlogin?redirectURL=" + redirectURL;
-        url += "&userType=" + userType;
+        url += "&userType=" + userType + "&";
+        if (StringUtil.isNotEmpty(action)) {
+            url += "&action=" + action;
+        }
+        if (null != recruitmentId) {
+            url += "&recruitmentId=" + recruitmentId;
+        }
         return "redirect:" + weiXinAO.getWeiXinLoginUrl(url);
     }
 
     @RequestMapping(value = "/weixinlogin", method = RequestMethod.GET)
-    public String weixinResponse(String code, String redirectURL, Integer userType) {
+    public String weixinResponse(String code, String action, Long recruitmentId, String redirectURL, Integer userType,
+                                 Map<String, Object> model) {
         UserInfo userInfo = this.userAO.loginByWeixin(code);
         this.userAO.saveUserInfoCookie(userInfo, ServletContext.getResponse());
         if (StringUtil.isNotEmpty(userInfo.getPhone())) {
@@ -73,7 +87,8 @@ public class LoginController {
                 url = "/patient/register";
             }
             return "redirect:" + url + "?redirectURL=" + redirectURL + "&userType=" + userType + "&openId="
-                   + userInfo.getOpenId() + "&nickname=" + EncodeUtil.urlEncode(userInfo.getNickname());
+                   + userInfo.getOpenId() + "&nickname=" + EncodeUtil.urlEncode(userInfo.getNickname()) + "&action="
+                   + action + "&recruitmentId=" + recruitmentId;
         }
     }
 

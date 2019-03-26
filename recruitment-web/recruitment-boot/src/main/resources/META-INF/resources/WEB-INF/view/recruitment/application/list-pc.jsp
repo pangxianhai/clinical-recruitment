@@ -56,7 +56,7 @@
 </jsp:include>
 <div class="sui-container">
     <ul class="sui-breadcrumb">
-        <li><a href="#">任务管理</a></li>
+        <li><a href="javascript:void(0)">任务管理</a></li>
         <li class="active">申请记录列表</li>
     </ul>
     <div id="tips-error" class="tips-error">
@@ -143,4 +143,6 @@
 <script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
 <script type="text/javascript"
         src="/static/js/recruitment/application/list-pc.js?_v=${version}"></script>
+<script type="text/javascript"
+        src="/static/js/recruitment/application/detail-pc.js?_v=${version}"></script>
 </html>

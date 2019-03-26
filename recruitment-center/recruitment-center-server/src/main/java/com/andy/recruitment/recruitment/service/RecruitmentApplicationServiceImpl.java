@@ -87,7 +87,8 @@ public class RecruitmentApplicationServiceImpl implements RecruitmentApplication
         return CollectionUtil.parseOne(applicationDOList, RecruitmentUtil::transformApplicationInfo);
     }
 
-    private RecruitmentApplicationInfo getRecruitmentApplicationInfo(Long recruitmentId, Long patientId) {
+    @Override
+    public RecruitmentApplicationInfo getRecruitmentApplicationInfo(Long recruitmentId, Long patientId) {
         if (null == recruitmentId || null == patientId) {
             return null;
         }

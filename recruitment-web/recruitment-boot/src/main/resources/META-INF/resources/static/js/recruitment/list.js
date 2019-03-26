@@ -68,13 +68,17 @@ $(function () {
       $('#recruitment-list').on('click', '[item="sign_up_button"]',
           function () {
             const recruitmentId = $(this).attr("recruitmentId");
-            Ajax.post('/recruitmentapplication', {
+            Ajax.post('/recruitmentapplication/application.json', {
               recruitmentId: recruitmentId
             }, function (data) {
-              if (data) {
+              if (data.success) {
                 $.alert('报名成功');
               } else {
-                $.alert('报名失败');
+                if (data.redirectUrl.length > 0) {
+                  window.location.href = data.redirectUrl;
+                } else {
+                  $.alert('报名失败');
+                }
               }
             });
           });

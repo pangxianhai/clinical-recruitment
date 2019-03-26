@@ -15,6 +15,7 @@ import com.andy.recruitment.web.controller.region.response.RegionVO;
 import com.andy.recruitment.web.controller.region.util.RegionUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.page.PageResult;
+import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.logger.log4j.Logger;
 import com.xgimi.logger.log4j.MyLogger;
@@ -63,7 +64,8 @@ public class RecruitmentController {
     }
 
     @RequestMapping(value = "/detail/{recruitmentId:\\d+}", method = RequestMethod.GET)
-    public String recruitmentDetail(@PathVariable Long recruitmentId, Long doctorId, Map<String, Object> model) {
+    public String recruitmentDetail(@PathVariable Long recruitmentId, Long doctorId, String action,
+                                    Map<String, Object> model) {
         RecruitmentInfo recruitmentInfo = recruitmentAO.getRecruitmentInfoById(recruitmentId);
         RecruitmentVO recruitmentVO = RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
         List<ResearchCenterInfo> researchCenterInfoList = this.researchCenterAO.getResearchCenterByRecruitmentId(
@@ -71,6 +73,7 @@ public class RecruitmentController {
         model.put("researchCenterListVO", RecruitmentUtil.transformResearchCenterVO(regionAO, researchCenterInfoList));
         model.put("recruitmentInfo", recruitmentVO);
         model.put("doctorId", doctorId);
+        model.put("action", action);
         return "recruitment/detail";
     }
 
@@ -148,6 +151,7 @@ public class RecruitmentController {
                 }
             }
         }
+       queryParam.setStatus(RecruitmentStatus.IN_PROCESS);
         return recruitmentAO.getRecruitmentInfo(queryParam, queryRQ.getPaginator());
     }
 }

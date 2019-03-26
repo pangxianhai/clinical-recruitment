@@ -14,6 +14,18 @@
                href="/recruitmentapplication/detailPc/${application.applicationId}">
                 详情
             </a>
+            <c:if test="${application.status.code == 1}">
+                <a class="sui-btn btn-small btn-success" applicationId="${application.applicationId}"
+                   href="javascript:void(0)" item="accede">
+                    入组
+                </a>
+            </c:if>
+            <c:if test="${application.status.code == 2}">
+                <a class="sui-btn btn-small btn-danger" applicationId="${application.applicationId}"
+                   href="javascript:void(0)" item="cancelAccede">
+                    取消入组
+                </a>
+            </c:if>
         </td>
     </tr>
 </c:forEach>

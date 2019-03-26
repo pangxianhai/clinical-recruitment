@@ -152,7 +152,22 @@
                 <div class="span3">${applicationVO.doctorInfoVO.userInfoVO.status.desc}</div>
             </div>
         </c:if>
+        <c:if test="${applicationVO.status.code == 1}">
+            <a class="sui-btn btn-small btn-success" applicationId="${applicationVO.applicationId}"
+               href="javascript:void(0)" item="accede">
+                入组
+            </a>
+        </c:if>
+        <c:if test="${applicationVO.status.code == 2}">
+            <a class="sui-btn btn-small btn-danger" applicationId="${applicationVO.applicationId}"
+               href="javascript:void(0)" item="cancelAccede">
+                取消入组
+            </a>
+        </c:if>
     </div>
 </div>
+<script type="text/javascript" src="/static/js/util/ajax.js?_v=${version}"></script>
+<script type="text/javascript"
+        src="/static/js/recruitment/application/detail-pc.js?_v=${version}"></script>
 </body>
 </html>

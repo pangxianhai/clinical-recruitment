@@ -16,11 +16,30 @@
 <div class="page-group">
     <div class="page page-current">
         <header class="bar bar-nav">
-            <h1 class="title">患者信息注册</h1>
+            <c:if test="${'application' == action}">
+                <h1 class="title">招募报名</h1>
+            </c:if>
+            <c:if test="${'application' != action}">
+                <h1 class="title">患者信息注册</h1>
+            </c:if>
         </header>
         <div class="content">
             <div class="list-block">
                 <ul>
+                    <c:if test="${not empty recruitmentVO}">
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">项目</div>
+                                    <div class="item-input">
+                                        <input disabled="disabled" type="text"
+                                               value="${recruitmentVO.title}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </c:if>
                     <li>
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
@@ -83,8 +102,20 @@
             </div>
             <div class="content-block">
                 <div class="row" style="margin-left: auto">
-                    <a href="javascript:void(0)" id="registerButton"
-                       class="button button-big button-fill button-success">注册</a>
+                    <div class="col-50">
+                        <a href="/recruitment/list"
+                           class="button button-big button-fill button-danger external">取消</a>
+                    </div>
+                    <div class="col-50">
+                        <c:if test="${'application' == action}">
+                            <a href="javascript:void(0)" id="registerButton"
+                               class="button button-big button-fill button-success">报名</a>
+                        </c:if>
+                        <c:if test="${'application' != action}">
+                            <a href="javascript:void(0)" id="registerButton"
+                               class="button button-big button-fill button-success">注册</a>
+                        </c:if>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,6 +125,7 @@
 <input type="hidden" value="${nickname}" id="nickname">
 <input type="hidden" value="${userType}" id="userTypeValue">
 <input type="hidden" value="${redirectURL}" id="redirectURL">
+<input type="hidden" value="${action}" id="action">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>

@@ -47,6 +47,10 @@ public enum BusinessErrorCode {
      * 该用户已经注册
      */
     USER_HAS_REGISTER(102009),
+    /**
+     * 非法访问
+     */
+    ILLEGAL_ACCESS(102010),
 
     /**
      * 招募信息不能为空
@@ -69,7 +73,6 @@ public enum BusinessErrorCode {
      * 您没有权限查看该报名记录
      */
     RECRUITMENT_APPLICATION_NOT_AUTH(102201),
-
     ;
 
     private int code;

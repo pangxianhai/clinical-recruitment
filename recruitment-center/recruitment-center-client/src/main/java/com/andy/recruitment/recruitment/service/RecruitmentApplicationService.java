@@ -45,4 +45,13 @@ public interface RecruitmentApplicationService {
      * @return 申请记录信息
      */
     RecruitmentApplicationInfo getRecruitmentApplicationInfo(Long applicationId);
+
+    /**
+     * 通过患者和招募查询申请记录
+     *
+     * @param patientId     患者ID
+     * @param recruitmentId 招募ID
+     * @return 申请信息
+     */
+    RecruitmentApplicationInfo getRecruitmentApplicationInfo(Long patientId, Long recruitmentId);
 }

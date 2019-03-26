@@ -16,6 +16,7 @@
 <div class="page-group">
     <div class="page page-current" style="background-color: #FFF">
         <header class="bar bar-nav">
+            <a href="/recruitment/list" class="icon icon-left pull-left open-panel" external></a>
             <h1 class="title">任务详情</h1>
         </header>
         <div class="content">
@@ -139,6 +140,7 @@
 </body>
 <input type="hidden" id="recruitmentId" value="${recruitmentInfo.recruitmentId}">
 <input type="hidden" id="doctorId" value="${doctorId}">
+<input type="hidden" id="action" value="${action}">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/qrcode.min.js' charset='utf-8'></script>

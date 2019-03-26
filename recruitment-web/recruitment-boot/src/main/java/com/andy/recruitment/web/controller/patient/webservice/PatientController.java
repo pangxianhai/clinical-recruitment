@@ -4,12 +4,16 @@ package com.andy.recruitment.web.controller.patient.webservice;
 import com.andy.recruitment.patient.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
+import com.andy.recruitment.recruitment.ao.RecruitmentAO;
+import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.patient.request.PatientQueryRQ;
 import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import com.andy.recruitment.web.controller.patient.util.PatientUtil;
+import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
+import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.andy.recruitment.web.controller.region.response.RegionVO;
 import com.andy.recruitment.web.controller.region.util.RegionUtil;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
@@ -40,16 +44,19 @@ public class PatientController {
 
     private final RegionAO regionAO;
 
+    private final RecruitmentAO recruitmentAO;
+
     @Autowired
-    public PatientController(PatientAO patientAO, UserAO userAO, RegionAO regionAO) {
+    public PatientController(PatientAO patientAO, UserAO userAO, RegionAO regionAO, RecruitmentAO recruitmentAO) {
         this.patientAO = patientAO;
         this.userAO = userAO;
         this.regionAO = regionAO;
+        this.recruitmentAO = recruitmentAO;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register(String redirectURL, Integer userType, String openId, String nickname,
-                           Map<String, Object> model) {
+    public String register(String redirectURL, Integer userType, String action, Long recruitmentId, String openId,
+                           String nickname, Map<String, Object> model) {
         UserInfo userInfo = this.userAO.getUserInfoByOpenId(openId);
         if (null != userInfo) {
             this.userAO.saveUserInfoCookie(userInfo, ServletContext.getResponse());
@@ -59,6 +66,12 @@ public class PatientController {
             model.put("userType", userType);
             model.put("openId", openId);
             model.put("nickname", nickname);
+            model.put("action", action);
+            if (null != recruitmentId) {
+                RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(recruitmentId);
+                RecruitmentVO recruitmentVO = RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
+                model.put("recruitmentVO", recruitmentVO);
+            }
             return "patient/register";
         }
     }
