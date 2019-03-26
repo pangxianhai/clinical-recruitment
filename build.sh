@@ -2,12 +2,12 @@
 
 function build() {
     if [ "$3" == "" ];then
-	return;
+		return;
     fi
     cd $1
-    build_dir=$3/www/$2
+    build_dir=$3/$2
     if [ -d $build_dir ]; then
-	$build_dir/bin/stop.sh
+		$build_dir/bin/stop.sh
         rm -rf $build_dir/*
     fi
     mvn_tools.sh install
@@ -18,17 +18,18 @@ function build() {
 }
 
 function work_build_web() {
-    source_dir=/home/xavier.pang/work/clinical-recruitment/recruitment-web
-    build $source_dir recruitment-web /home
+	source_dir=/home/xavier.pang/work/clinical-recruitment/recruitment-web
+	build $source_dir recruitment-web /home/www
+
 }
 
 function home_build_web() {
-    source_dir=/Users/pangxianhai/code/java/clinical-recruitment/recruitment-web
-    build $source_dir recruitment-web /Users/pangxianhai/
+    source_dir=/d/work/clinical-recruitment/recruitment-web
+    build $source_dir recruitment-web /d/run
 }
 
 function build_product() {
-    cd /Users/pangxianhai/code/java/clinical-recruitment/recruitment-web
+    cd D:\work\clinical-recruitment\recruitment-web
     mvn -Dmaven.test.skip=true -Pproduct package
     scp recruitment-boot/target/recruitment-boot-product.tar.gz root@59.110.230.31:/home/release
     ssh root@59.110.230.31 "/home/bin/build.sh"

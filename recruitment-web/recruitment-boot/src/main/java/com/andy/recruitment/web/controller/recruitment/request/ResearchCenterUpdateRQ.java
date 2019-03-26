@@ -1,11 +1,13 @@
-package com.andy.recruitment.web.controller.recruitment.response;
+package com.andy.recruitment.web.controller.recruitment.request;
+
+import java.io.Serializable;
 
 /**
- * 研究中心VO
+ * 研究中心更新参数
  *
- * @author 庞先海 2019-02-06
+ * @author 庞先海 2019-03-24
  */
-public class ResearchCenterVO {
+public class ResearchCenterUpdateRQ implements Serializable {
 
     /**
      * 中心ID
@@ -18,37 +20,19 @@ public class ResearchCenterVO {
     private String name;
 
     /**
-     * 研究中心地址
-     */
-    private String address;
-    /**
      * 省ID
      */
     private Long provinceId;
+
     /**
      * 城市ID
      */
     private Long cityId;
+
     /**
-     * 区ID
+     * 地区ID
      */
     private Long districtId;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public Long getCenterId() {
         return centerId;
@@ -56,6 +40,14 @@ public class ResearchCenterVO {
 
     public void setCenterId(Long centerId) {
         this.centerId = centerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getProvinceId() {

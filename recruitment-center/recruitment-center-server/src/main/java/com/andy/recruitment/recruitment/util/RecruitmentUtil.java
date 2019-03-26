@@ -42,6 +42,7 @@ public class RecruitmentUtil {
         }
         RecruitmentInfoDO recruitmentInfoDO = new RecruitmentInfoDO();
         BeanUtil.copyProperties(recruitmentInfo, recruitmentInfoDO);
+        recruitmentInfoDO.setId(recruitmentInfo.getRecruitmentId());
         if (null != recruitmentInfo.getStartTime()) {
             recruitmentInfoDO.setStartTime(new Timestamp(recruitmentInfo.getStartTime().getTime()));
         }

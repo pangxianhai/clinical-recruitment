@@ -9,7 +9,12 @@
         <td>${application.doctorInfoVO.userInfoVO.realName}</td>
         <td>${application.status.desc}</td>
         <td>${application.applicationTime}</td>
-        <td>详情</td>
+        <td>
+            <a class="sui-btn btn-small btn-primary"
+               href="/recruitmentapplication/detailPc/${application.applicationId}">
+                详情
+            </a>
+        </td>
     </tr>
 </c:forEach>
 <input type="hidden" id="totalPages" value="${paginator.totalPage}"/>

@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <title>任务列表</title>
-    <link href="/static/css/lib/sui.min.css" rel="stylesheet">
-    <link href="/static/css/lib/sui-append.min.css" rel="stylesheet">
+    <title>申请记录列表</title>
+    <link href="http://g.alicdn.com/sj/dpl/1.5.1/css/sui.min.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/sj/dpl/1.5.1/css/sui-append.min.css" rel="stylesheet">
     <script type="text/javascript"
-            src="/static/js/lib/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/lib/sui.min.js"></script>
+            src="http://g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="http://g.alicdn.com/sj/dpl/1.5.1/js/sui.min.js"></script>
     <style>
         .form-search input {
             margin-right: 20px;

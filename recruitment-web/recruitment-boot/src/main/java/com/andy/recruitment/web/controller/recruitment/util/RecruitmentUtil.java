@@ -13,7 +13,9 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplic
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryRQ;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.request.ResearchCenterAddRQ;
+import com.andy.recruitment.web.controller.recruitment.request.ResearchCenterUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.andy.recruitment.web.controller.recruitment.response.ResearchCenterVO;
@@ -44,7 +46,7 @@ public class RecruitmentUtil {
             recruitmentInfo.setStartTime(DateUtil.parse(startTime));
         }
         if (StringUtil.isNotEmpty(recruitmentAddRQ.getStopTime())) {
-            String stopTime = recruitmentAddRQ.getStartTime() + " 23:59:59";
+            String stopTime = recruitmentAddRQ.getStopTime() + " 23:59:59";
             recruitmentInfo.setStopTime(DateUtil.parse(stopTime));
         }
         return recruitmentInfo;
@@ -135,14 +137,32 @@ public class RecruitmentUtil {
             Collectors.toList());
     }
 
+    public static ResearchCenterInfo transformResearchCenterInfo(ResearchCenterUpdateRQ updateRQ) {
+        if (null == updateRQ) {
+            return null;
+        }
+        ResearchCenterInfo researchCenterInfo = new ResearchCenterInfo();
+        BeanUtil.copyProperties(updateRQ, researchCenterInfo);
+        return researchCenterInfo;
+    }
+
+    public static List<ResearchCenterInfo> transformResearchCenterInfoByUpdate(List<ResearchCenterUpdateRQ> updateRQList) {
+        if (CollectionUtil.isEmpty(updateRQList)) {
+            return null;
+        }
+        return updateRQList.stream().map(RecruitmentUtil::transformResearchCenterInfo).filter(Objects::nonNull).collect(
+            Collectors.toList());
+    }
+
     public static ResearchCenterVO transformResearchCenterVO(RegionAO regionAO, ResearchCenterInfo centerInfo) {
         if (null == centerInfo) {
             return null;
         }
         ResearchCenterVO centerVO = new ResearchCenterVO();
-        centerVO.setName(centerInfo.getName());
-        centerVO.setAddress(
-            regionAO.parseAddressName(centerInfo.getProvinceId(), centerInfo.getCityId(), centerInfo.getDistrictId()));
+        BeanUtil.copyProperties(centerInfo, centerVO);
+        String address = regionAO.parseAddressName(centerInfo.getProvinceId(), centerInfo.getCityId(),
+                                                   centerInfo.getDistrictId());
+        centerVO.setAddress(address);
         return centerVO;
     }
 
@@ -172,5 +192,22 @@ public class RecruitmentUtil {
         }
         queryParam.setStatus(RecruitmentStatus.parse(queryRQ.getStatus()));
         return queryParam;
+    }
+
+    public static RecruitmentInfo transformRecruitmentInfo(RecruitmentUpdateRQ recruitmentUpdateRQ) {
+        if (null == recruitmentUpdateRQ) {
+            return null;
+        }
+        RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
+        BeanUtil.copyProperties(recruitmentUpdateRQ, recruitmentInfo);
+        if (StringUtil.isNotEmpty(recruitmentUpdateRQ.getStartTime())) {
+            String startTime = recruitmentUpdateRQ.getStartTime() + " 00:00:00";
+            recruitmentInfo.setStartTime(DateUtil.parse(startTime));
+        }
+        if (StringUtil.isNotEmpty(recruitmentUpdateRQ.getStopTime())) {
+            String stopTime = recruitmentUpdateRQ.getStopTime() + " 23:59:59";
+            recruitmentInfo.setStopTime(DateUtil.parse(stopTime));
+        }
+        return recruitmentInfo;
     }
 }

@@ -1,15 +1,14 @@
-package com.andy.recruitment.web.controller.recruitment.response;
+package com.andy.recruitment.web.controller.recruitment.request;
 
-import com.andy.recruitment.recruitment.constant.RecruitmentStatus;
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * 招募信息
+ * 招募信息更新参数
  *
- * @author 庞先海 2019-01-06
+ * @author 庞先海 2019-03-23
  */
-public class RecruitmentVO implements Serializable {
+public class RecruitmentUpdateRQ implements Serializable {
 
     /**
      * 招募ID
@@ -72,14 +71,9 @@ public class RecruitmentVO implements Serializable {
      */
     private String stopTime;
     /**
-     * 招募状态
-     */
-    private RecruitmentStatus status;
-
-    /**
      * 研究中心
      */
-    private List<ResearchCenterVO> researchCenterVOList;
+    private List<ResearchCenterUpdateRQ> researchCenterList;
 
     public Long getRecruitmentId() {
         return recruitmentId;
@@ -201,19 +195,11 @@ public class RecruitmentVO implements Serializable {
         this.stopTime = stopTime;
     }
 
-    public RecruitmentStatus getStatus() {
-        return status;
+    public List<ResearchCenterUpdateRQ> getResearchCenterList() {
+        return researchCenterList;
     }
 
-    public void setStatus(RecruitmentStatus status) {
-        this.status = status;
-    }
-
-    public List<ResearchCenterVO> getResearchCenterVOList() {
-        return researchCenterVOList;
-    }
-
-    public void setResearchCenterVOList(List<ResearchCenterVO> researchCenterVOList) {
-        this.researchCenterVOList = researchCenterVOList;
+    public void setResearchCenterList(List<ResearchCenterUpdateRQ> researchCenterList) {
+        this.researchCenterList = researchCenterList;
     }
 }

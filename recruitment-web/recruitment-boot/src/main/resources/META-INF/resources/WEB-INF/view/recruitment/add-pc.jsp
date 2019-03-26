@@ -139,11 +139,11 @@
             <label for="startTime" class="control-label">启至时间：</label>
             <div class="controls">
                 <input type="text" id="startTime" name="startTime" class="input-medium input-date"
-                       data-toggle="datepicker" data-rules="required"
+                       data-toggle="datepicker" data-rules="required" autocomplete="off"
                        placeholder="启始时间">
                 <span>-</span>
                 <input type="text" id="stopTime" name="stopTime" class="input-medium input-date"
-                       data-toggle="datepicker" data-rules="required"
+                       data-toggle="datepicker" data-rules="required" autocomplete="off"
                        placeholder="截至时间">
             </div>
         </div>

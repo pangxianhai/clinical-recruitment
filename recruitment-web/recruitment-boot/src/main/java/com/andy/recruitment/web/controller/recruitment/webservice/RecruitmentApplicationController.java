@@ -136,6 +136,18 @@ public class RecruitmentApplicationController {
         return "recruitment/application/listInfo-pc";
     }
 
+    @Login
+    @RequestMapping(value = "/detailPc/{applicationId:\\d+}", method = RequestMethod.GET)
+    public String recruitmentPcDetail(@PathVariable Long applicationId, Map<String, Object> model) {
+        RecruitmentApplicationInfo applicationInfo = this.recruitmentApplicationAO.getRecruitmentApplicationInfo(
+            applicationId);
+        RecruitmentApplicationVO applicationVO = RecruitmentUtil.transformApplicationVO(applicationInfo);
+        this.buildApplicationVO(applicationVO);
+        this.buildPatientAddressInfo(applicationVO);
+        model.put("applicationVO", applicationVO);
+        return "recruitment/application/detail-pc";
+    }
+
     private void queryApplication(RecruitmentApplicationQueryRQ queryRQ, Map<String, Object> model) {
         RecruitmentApplicationQueryParam queryParam = RecruitmentUtil.transformApplicationQueryParam(queryRQ);
         LoginInfo loginInfo = ServletContext.getLoginInfo();
