@@ -1,0 +1,11 @@
+{
+  "name": "recruitment",
+  "scripts": {
+      "dev": "nuxt",
+      "build": "nuxt build",
+      "start": "nuxt build && PORT=3002 nuxt start"
+  },
+  "dependencies": {
+    "nuxt": "^2.5.1"
+  }
+}
