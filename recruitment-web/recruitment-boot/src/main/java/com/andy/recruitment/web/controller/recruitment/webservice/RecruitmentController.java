@@ -85,6 +85,7 @@ public class RecruitmentController {
 
     @RequestMapping(value = "/listInfo", method = RequestMethod.GET)
     public String recruitmentListResult(RecruitmentQueryRQ recruitmentQueryRQ, Map<String, Object> model) {
+        recruitmentQueryRQ.setStatus(RecruitmentStatus.IN_PROCESS.getCode());
         PageResult<RecruitmentInfo> pageResult = this.queryRecruitmentInfo(recruitmentQueryRQ);
         model.put("recruitmentInfoList", pageResult.getData());
         return "recruitment/listInfo";
@@ -151,7 +152,6 @@ public class RecruitmentController {
                 }
             }
         }
-       queryParam.setStatus(RecruitmentStatus.IN_PROCESS);
         return recruitmentAO.getRecruitmentInfo(queryParam, queryRQ.getPaginator());
     }
 }

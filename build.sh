@@ -29,7 +29,7 @@ function home_build_web() {
 }
 
 function build_product() {
-    cd D:\work\clinical-recruitment\recruitment-web
+    cd /Users/pangxianhai/code/java/clinical-recruitment/recruitment-web
     mvn -Dmaven.test.skip=true -Pproduct package
     scp recruitment-boot/target/recruitment-boot-product.tar.gz root@59.110.230.31:/home/release
     ssh root@59.110.230.31 "/home/bin/build.sh"
