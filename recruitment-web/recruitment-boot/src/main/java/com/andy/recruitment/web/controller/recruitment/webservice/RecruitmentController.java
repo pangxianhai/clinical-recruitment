@@ -15,7 +15,6 @@ import com.andy.recruitment.web.controller.region.response.RegionVO;
 import com.andy.recruitment.web.controller.region.util.RegionUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.page.PageResult;
-import com.xgimi.commons.page.Paginator;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.logger.log4j.Logger;
 import com.xgimi.logger.log4j.MyLogger;
@@ -133,6 +132,17 @@ public class RecruitmentController {
         model.put("recruitmentVO", recruitmentVO);
         return "recruitment/update-pc";
     }
+
+    @Login
+    @RequestMapping(value = "/doctorRecommend/{recruitmentId:\\d+}", method = RequestMethod.GET)
+    public String doctorRecommend(@PathVariable Long recruitmentId, String redirectURL, Map<String, Object> model) {
+        RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(recruitmentId);
+        RecruitmentVO recruitmentVO = RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
+        model.put("recruitmentVO", recruitmentVO);
+        model.put("redirectURL", redirectURL);
+        return "recruitment/doctorRecommend";
+    }
+
 
     private PageResult<RecruitmentInfo> queryRecruitmentInfo(RecruitmentQueryRQ queryRQ) {
         RecruitmentQueryParam queryParam = RecruitmentUtil.transformQueryParam(queryRQ);

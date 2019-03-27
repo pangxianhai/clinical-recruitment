@@ -1,5 +1,6 @@
 package com.andy.recruitment.web.controller.recruitment.request;
 
+import com.andy.recruitment.web.controller.patient.request.PatientAddRQ;
 import java.io.Serializable;
 
 /**
@@ -7,7 +8,7 @@ import java.io.Serializable;
  *
  * @author 庞先海 2019-01-25
  */
-public class RecruitmentApplicationRQ implements Serializable {
+public class RecruitmentApplicationRQ extends PatientAddRQ implements Serializable {
 
     /**
      * 招募ID

@@ -176,7 +176,7 @@ public class UserAOImpl implements UserAO {
             return;
         }
         Cookie cookie = new Cookie("userId", String.valueOf(userInfo.getUserId()));
-        cookie.setMaxAge(Integer.MAX_VALUE);
+        cookie.setMaxAge(- 1);
         cookie.setPath("/");
         ServletContext.getResponse().addCookie(cookie);
     }

@@ -1,16 +1,21 @@
 package com.andy.recruitment.web.controller.recruitment.webservice;
 
+import com.andy.recruitment.doctor.ao.DoctorAO;
+import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.patient.PatientAO;
+import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.recruitment.ao.RecruitmentApplicationAO;
 import com.andy.recruitment.recruitment.constant.RecruitmentApplicationStatus;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentApplicationQueryParam;
+import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
+import com.andy.recruitment.web.controller.patient.util.PatientUtil;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
@@ -48,15 +53,21 @@ public class RecruitmentApplicationWebservice {
 
     private final UserAO userAO;
 
+    private final RegionAO regionAO;
+
+    private final DoctorAO doctorAO;
+
     @Value("${recruitment.address}")
     private String serverAddress;
 
     @Autowired
     public RecruitmentApplicationWebservice(RecruitmentApplicationAO recruitmentApplicationAO, PatientAO patientAO,
-                                            UserAO userAO) {
+                                            UserAO userAO, RegionAO regionAO, DoctorAO doctorAO) {
         this.recruitmentApplicationAO = recruitmentApplicationAO;
         this.patientAO = patientAO;
         this.userAO = userAO;
+        this.regionAO = regionAO;
+        this.doctorAO = doctorAO;
     }
 
     @RequestMapping(value = "/application.json", method = RequestMethod.POST)
@@ -82,7 +93,24 @@ public class RecruitmentApplicationWebservice {
                 this.recruitmentApplicationAO.addRecruitmentApplication(loginInfo.getUserId(), applicationInfo,
                                                                         ServletContext.getLoginUname());
             } else if (UserType.DOCTOR.equals(userInfo.getUserType())) {
-
+                UserInfo patentUserInfo = this.userAO.getUserInfoByPhone(applicationRQ.getPhone());
+                Long patentUserId;
+                if (null == patentUserInfo) {
+                    UserInfo addUserInfo = PatientUtil.transformUserInfo(applicationRQ);
+                    Long userId = this.userAO.addUserInfo(addUserInfo, applicationRQ.getName());
+                    addUserInfo.setUserId(userId);
+                    PatientInfo patientInfo = PatientUtil.transformPatientInfo(applicationRQ, regionAO);
+                    patientInfo.setUserId(addUserInfo.getUserId());
+                    this.patientAO.addPatientInfo(patientInfo, applicationRQ.getName());
+                    patentUserId = userId;
+                } else {
+                    patentUserId = patentUserInfo.getUserId();
+                }
+                RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
+                DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoByUserId(loginInfo.getUserId());
+                applicationInfo.setDoctorId(doctorInfo.getDoctorId());
+                this.recruitmentApplicationAO.addRecruitmentApplication(patentUserId, applicationInfo,
+                                                                        ServletContext.getLoginUname());
             } else {
                 throw new BusinessException(BusinessErrorCode.ILLEGAL_ACCESS);
             }

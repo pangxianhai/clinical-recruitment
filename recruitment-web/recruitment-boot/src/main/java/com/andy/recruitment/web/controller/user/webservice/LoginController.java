@@ -109,6 +109,7 @@ public class LoginController {
         return "user/manageLogin-pc";
     }
 
+    //http://www.aiteruiyiyao.cn/user/logout
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(String redirectURL) {
         if (StringUtil.isEmpty(redirectURL)) {
@@ -119,7 +120,7 @@ public class LoginController {
             }
         }
         Cookie cookie = new Cookie("userId", "");
-        cookie.setMaxAge(1);
+        cookie.setMaxAge(0);
         cookie.setPath("/");
         ServletContext.getResponse().addCookie(cookie);
         return "redirect:" + redirectURL;

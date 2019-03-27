@@ -46,6 +46,12 @@
                 <c:if test="${userInfo.userType.code == 2}">
                     <div class="sign-up-panel">
                         <a href="javascript:void(0)"
+                           item="doctor_recommend"
+                           class="button button-fill button-warning"
+                           recruitmentId="${recruitmentInfo.recruitmentId}"
+                           style="width: 30%"
+                        >我要推荐</a>
+                        <a href="javascript:void(0)"
                            item="recommend_qrcode"
                            class="button button-fill button-warning"
                            style="width: 30%"

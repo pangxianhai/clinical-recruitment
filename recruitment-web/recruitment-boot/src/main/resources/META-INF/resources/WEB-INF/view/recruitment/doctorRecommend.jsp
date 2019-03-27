@@ -16,18 +16,19 @@
 <div class="page-group">
     <div class="page page-current">
         <header class="bar bar-nav">
-            <h1 class="title">医生信息注册</h1>
+            <h1 class="title">医生推荐报名</h1>
         </header>
         <div class="content">
             <div class="list-block">
                 <ul>
                     <li>
                         <div class="item-content">
-                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-media"><i class="icon"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label">姓名</div>
+                                <div class="item-title label">项目</div>
                                 <div class="item-input">
-                                    <input id="nameInput" type="text" placeholder="请填姓名"/>
+                                    <input disabled="disabled" type="text"
+                                           value="${recruitmentVO.title}"/>
                                 </div>
                             </div>
                         </div>
@@ -36,9 +37,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label">手机号</div>
+                                <div class="item-title label">患者姓名</div>
                                 <div class="item-input">
-                                    <input id="phoneInput" type="text" placeholder="请填写您的手机号码">
+                                    <input id="nameInput" type="text" placeholder="请填患者姓名"/>
                                 </div>
                             </div>
                         </div>
@@ -47,9 +48,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label">地址</div>
+                                <div class="item-title label">患者手机号</div>
                                 <div class="item-input">
-                                    <input id="addressInput" type="text" placeholder="请选择您的地址"/>
+                                    <input id="phoneInput" type="text" placeholder="请填写患者手机号码">
                                 </div>
                             </div>
                         </div>
@@ -58,10 +59,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label">执业机构</div>
+                                <div class="item-title label">患者地址</div>
                                 <div class="item-input">
-                                    <input id="medicalInstitutionInput" type="text"
-                                           placeholder="请填写执业机构"/>
+                                    <input id="addressInput" type="text" placeholder="请选择患者的地址"/>
                                 </div>
                             </div>
                         </div>
@@ -70,10 +70,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label">执业类别</div>
+                                <div class="item-title label">患者年龄</div>
                                 <div class="item-input">
-                                    <input id="medicalCategoryInput" type="text"
-                                           placeholder="请填写执业类型">
+                                    <input id="ageInput" type="text" placeholder="请填患者年龄"/>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +81,7 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label">性别</div>
+                                <div class="item-title label">患者性别</div>
                                 <div class="item-input">
                                     <select id="genderInput">
                                         <option value="1">男</option>
@@ -97,22 +96,19 @@
             <div class="content-block">
                 <div class="row" style="margin-left: auto">
                     <a href="javascript:void(0)" id="registerButton"
-                       class="button button-big button-fill button-success">注册</a>
+                       class="button button-big button-fill button-success">推荐报名</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<input type="hidden" value="${openId}" id="openId">
-<input type="hidden" value="${nickname}" id="nickname">
-<input type="hidden" value="${userType}" id="userTypeValue">
 <input type="hidden" value="${redirectURL}" id="redirectURL">
+<input type="hidden" value="${recruitmentVO.recruitmentId}" id="recruitmentId">
 <script type='text/javascript' src='/static/js/lib/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/lib/sm-city-picker.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='/static/js/doctor/register.js?_v=${version}'
-        charset="utf-8"></script>
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
+<script type='text/javascript' src='/static/js/recruitment/doctorRecommend.js?_v=${version}' charset="utf-8"></script>
 </body>
 </html>

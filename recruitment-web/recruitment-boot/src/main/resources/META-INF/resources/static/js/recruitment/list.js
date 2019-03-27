@@ -100,6 +100,15 @@ $(function () {
             $.popup('.popup-qrcode');
           });
     },
+    bindDoctorRecommendAction: function () {
+      $('#recruitment-list').on('click', '[item="doctor_recommend"]',
+          function () {
+            const recruitmentId = $(this).attr("recruitmentId");
+            window.location.href = '/recruitment/doctorRecommend/'
+                + recruitmentId + '?redirectURL=' + encodeURIComponent(
+                    window.location.href);
+          });
+    },
     main: function () {
       $.init();
       this.loadRecruitmentInfo();
@@ -108,6 +117,7 @@ $(function () {
       this.bindSignUpAction();
       this.bindSearchAction();
       this.bindRecommendQrCodeAction();
+      this.bindDoctorRecommendAction();
     }
   };
   recruitment.main();

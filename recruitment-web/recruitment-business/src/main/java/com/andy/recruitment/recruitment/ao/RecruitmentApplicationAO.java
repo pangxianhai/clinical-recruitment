@@ -16,7 +16,7 @@ public interface RecruitmentApplicationAO {
      * 添加申请记录
      *
      * @param applicationInfo 招募申请信息
-     * @param userId          申请人用户ID
+     * @param userId          患者用户ID
      * @param operator        操作人
      */
     void addRecruitmentApplication(Long userId, RecruitmentApplicationInfo applicationInfo, String operator);
