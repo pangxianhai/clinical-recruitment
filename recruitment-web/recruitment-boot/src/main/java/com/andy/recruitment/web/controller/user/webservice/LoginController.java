@@ -109,7 +109,7 @@ public class LoginController {
         return "user/manageLogin-pc";
     }
 
-    //http://www.aiteruiyiyao.cn/user/logout
+    //http://www.aiteruiyiyao.cn/user/login/logout
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(String redirectURL) {
         if (StringUtil.isEmpty(redirectURL)) {

@@ -51,6 +51,10 @@ public enum BusinessErrorCode {
      * 非法访问
      */
     ILLEGAL_ACCESS(102010),
+    /**
+     * 您的操作有误
+     */
+    OPERATE_ERROR(102011),
 
     /**
      * 招募信息不能为空

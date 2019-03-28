@@ -70,8 +70,8 @@
             <p>${recruitmentInfo.introduction}</p>
             <div class="buttons-tab">
                 <a href="#treatmentPlan" class="tab-link active button">治疗方案</a>
-                <a href="#screeningStandard" class="tab-link button">初筛要点</a>
-                <a href="#entryCriteria" class="tab-link button">入拍标准</a>
+                <%--<a href="#screeningStandard" class="tab-link button">初筛要点</a>--%>
+                <a href="#entryCriteria" class="tab-link button">入排标准</a>
                 <a href="#researchCenterInfo" class="tab-link button">研究中心</a>
                 <a href="#patientRights" class="tab-link button">患者权益</a>
             </div>

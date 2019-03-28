@@ -96,13 +96,17 @@ public class RecruitmentApplicationWebservice {
                 UserInfo patentUserInfo = this.userAO.getUserInfoByPhone(applicationRQ.getPhone());
                 Long patentUserId;
                 if (null == patentUserInfo) {
-                    UserInfo addUserInfo = PatientUtil.transformUserInfo(applicationRQ);
-                    Long userId = this.userAO.addUserInfo(addUserInfo, applicationRQ.getName());
-                    addUserInfo.setUserId(userId);
-                    PatientInfo patientInfo = PatientUtil.transformPatientInfo(applicationRQ, regionAO);
-                    patientInfo.setUserId(addUserInfo.getUserId());
-                    this.patientAO.addPatientInfo(patientInfo, applicationRQ.getName());
-                    patentUserId = userId;
+                    try {
+                        UserInfo addUserInfo = PatientUtil.transformUserInfo(applicationRQ);
+                        Long userId = this.userAO.addUserInfo(addUserInfo, applicationRQ.getName());
+                        addUserInfo.setUserId(userId);
+                        PatientInfo patientInfo = PatientUtil.transformPatientInfo(applicationRQ, regionAO);
+                        patientInfo.setUserId(addUserInfo.getUserId());
+                        this.patientAO.addPatientInfo(patientInfo, applicationRQ.getName());
+                        patentUserId = userId;
+                    } catch (Exception e) {
+                        throw new BusinessException(BusinessErrorCode.OPERATE_ERROR);
+                    }
                 } else {
                     patentUserId = patentUserInfo.getUserId();
                 }
