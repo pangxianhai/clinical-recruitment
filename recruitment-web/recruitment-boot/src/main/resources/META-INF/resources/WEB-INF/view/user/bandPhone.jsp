@@ -53,3 +53,17 @@
 <script type='text/javascript' src='/static/js/util/ajax.js?_v=${version}' charset="utf-8"></script>
 </body>
 </html>
+
+
+"eslint": "^4.19.1",
+eslint-config-standard
+
+
+"eslint-config-standard": "^11.0.0",
+"eslint-friendly-formatter": "^4.0.1",
+"eslint-loader": "^2.0.0",
+"eslint-plugin-html": "^4.0.5",
+"eslint-plugin-import": "^2.12.0",
+"eslint-plugin-node": "^6.0.1",
+"eslint-plugin-promise": "^3.8.0",
+"eslint-plugin-standard": "^3.1.0",
