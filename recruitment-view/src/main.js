@@ -1,11 +1,18 @@
 import Vue from 'vue';
 import Vant from 'vant';
 import router from './router';
+import Vuex from 'vuex'
 import 'vant/lib/index.css';
 import App from './App.vue';
+import components from './components/index'
 
 Vue.config.productionTip = false;
 Vue.use(Vant);
+Vue.use(Vuex);
+
+components.map(component => {
+  Vue.component(component.name, component);
+});
 
 new Vue({
   el: '#app',
