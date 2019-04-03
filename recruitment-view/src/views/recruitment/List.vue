@@ -12,11 +12,11 @@
         </van-swipe>
         <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="searchParam.queryText"/>
         <van-row style="padding-bottom: 10px">
-            <van-col class="title" span="8">智能推荐</van-col>
-            <van-col class="choice" span="7" offset="1">所有疾病类型
+            <van-col class="title" span="7">智能推荐</van-col>
+            <van-col class="choice" span="8" offset="1">{{showRecommendText}}
                 <van-icon name="arrow-down" @click="showRecommend = !showRecommend"/>
             </van-col>
-            <van-col class="choice" span="5" offset="1">所有城市
+            <van-col class="choice" span="5" offset="1">{{showAddressText}}
                 <van-icon name="arrow-down" @click="showAddress= !showAddress"/>
             </van-col>
         </van-row>
@@ -24,7 +24,7 @@
                         @cancel="addressSelectCancel"></address-select>
         <van-popup class="show-recommend-popup" v-model="showRecommend" position="top">
             <van-col v-for="item in recommendList" :key="item">
-                <van-button type="default">{{item}}</van-button>
+                <van-button @click="choiceRecommend(item)" type="default">{{item}}</van-button>
             </van-col>
         </van-popup>
         <van-list
@@ -80,6 +80,7 @@
 
     .recruitment-list .van-row .choice {
         font-size: 12px;
+        text-align: right;
     }
 
     .recruitment-list .van-row .choice .van-icon {
@@ -133,6 +134,8 @@
         },
         recommendList: ['所有疾病类型', '糖尿病', '肺癌', '胃癌、结肠直癌', '食道癌', '肝癌、胆道癌', '乳腺癌', '脑癌、甲状腺癌', '泌尿生殖',
           '淋巴癌、白血病', '神经系统', '风湿免疫', '胰腺癌', '实体瘤', '黑色素瘤', '软组织肉瘤', '鼻咽癌'],
+        showRecommendText: '所有疾病类型',
+        showAddressText: '所有城市'
       }
     },
     methods: {
@@ -158,6 +161,10 @@
       },
       addressSelectConfirm: function () {
         this.showAddress = false;
+      },
+      choiceRecommend: function (item) {
+        this.showRecommendText = item;
+        this.showRecommend = false;
       }
     }
   }
