@@ -10,17 +10,23 @@
                 <img width="100%" src="../../assets/banner2.png"/>
             </van-swipe-item>
         </van-swipe>
-        <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="value"/>
+        <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="searchParam.queryText"/>
         <van-row style="padding-bottom: 10px">
             <van-col class="title" span="8">智能推荐</van-col>
             <van-col class="choice" span="7" offset="1">所有疾病类型
-                <van-icon name="arrow-down"/>
+                <van-icon name="arrow-down" @click="showRecommend = !showRecommend"/>
             </van-col>
             <van-col class="choice" span="5" offset="1">所有城市
                 <van-icon name="arrow-down" @click="showAddress= !showAddress"/>
             </van-col>
         </van-row>
-        <address-select :show="showAddress"></address-select>
+        <address-select :show="showAddress" @confirm="addressSelectConfirm"
+                        @cancel="addressSelectCancel"></address-select>
+        <van-popup class="show-recommend-popup" v-model="showRecommend" position="top">
+            <van-col v-for="item in recommendList" :key="item">
+                <van-button type="default">{{item}}</van-button>
+            </van-col>
+        </van-popup>
         <van-list
             v-model="loading"
             :finished="finished"
@@ -58,11 +64,7 @@
                 </van-row>
             </van-panel>
         </van-list>
-        <van-tabbar>
-            <van-tabbar-item icon="more-o">任务列表</van-tabbar-item>
-            <van-tabbar-item icon="records">申请记录</van-tabbar-item>
-            <van-tabbar-item icon="user-o">我</van-tabbar-item>
-        </van-tabbar>
+        <my-footer></my-footer>
     </div>
 </template>
 
@@ -84,10 +86,16 @@
         color: #1989fa;
     }
 
-    .van-popup {
+    .recruitment-list .show-recommend-popup {
         width: 100%;
-        transform: none;
-        position: inherit;
+    }
+
+    .recruitment-list .show-recommend-popup .van-col {
+        margin: 10px;
+    }
+
+    .recruitment-list .show-recommend-popup .van-col .van-button--normal {
+        width: 130px;
     }
 
     .recruitment-panel {
@@ -109,28 +117,25 @@
 </style>
 
 <script>
+  import AddressSelect from "../../components/AddressSelect";
+
   export default {
+    components: {AddressSelect},
     data: function () {
       return {
-        active: 0,
-        sms: '',
-        value: '',
         showAddress: false,
+        showRecommend: false,
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        searchParam: {
+          queryText: ''
+        },
+        recommendList: ['所有疾病类型', '糖尿病', '肺癌', '胃癌、结肠直癌', '食道癌', '肝癌、胆道癌', '乳腺癌', '脑癌、甲状腺癌', '泌尿生殖',
+          '淋巴癌、白血病', '神经系统', '风湿免疫', '胰腺癌', '实体瘤', '黑色素瘤', '软组织肉瘤', '鼻咽癌'],
       }
     },
     methods: {
-      onNavClick(index) {
-        this.mainActiveIndex = index;
-      },
-      onItemClick(data) {
-        this.activeId = data.id;
-      },
-      showTree: function () {
-        this.showList = !this.showList;
-      },
       onLoad: function () {
         // 异步更新数据
         setTimeout(() => {
@@ -147,6 +152,12 @@
             this.finished = true;
           }
         }, 500);
+      },
+      addressSelectCancel: function () {
+        this.showAddress = false;
+      },
+      addressSelectConfirm: function () {
+        this.showAddress = false;
       }
     }
   }

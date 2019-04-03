@@ -52,24 +52,24 @@ public class LoginController {
     //医生登陆页面 http://www.andy.com/user/login?userType=2
     //患者登陆页面 http://www.andy.com/user/login?userType=3
     //管理员登陆页面 http://www.andy.com/user/login?userType=1
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String login(String redirectURL, Integer userType, String action, Long recruitmentId) {
-        if (StringUtil.isEmpty(redirectURL) || redirectURL.contains("/user/login")) {
-            redirectURL = "/";
-        }
-        if (null == userType) {
-            userType = UserType.PATIENT.getCode();
-        }
-        String url = serverAddress + "/user/login/weixinlogin?redirectURL=" + redirectURL;
-        url += "&userType=" + userType + "&";
-        if (StringUtil.isNotEmpty(action)) {
-            url += "&action=" + action;
-        }
-        if (null != recruitmentId) {
-            url += "&recruitmentId=" + recruitmentId;
-        }
-        return "redirect:" + weiXinAO.getWeiXinLoginUrl(url);
-    }
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    public String login(String redirectURL, Integer userType, String action, Long recruitmentId) {
+//        if (StringUtil.isEmpty(redirectURL) || redirectURL.contains("/user/login")) {
+//            redirectURL = "/";
+//        }
+//        if (null == userType) {
+//            userType = UserType.PATIENT.getCode();
+//        }
+//        String url = serverAddress + "/user/login/weixinlogin?redirectURL=" + redirectURL;
+//        url += "&userType=" + userType + "&";
+//        if (StringUtil.isNotEmpty(action)) {
+//            url += "&action=" + action;
+//        }
+//        if (null != recruitmentId) {
+//            url += "&recruitmentId=" + recruitmentId;
+//        }
+//        return "redirect:" + weiXinAO.getWeiXinLoginUrl(url);
+//    }
 
     @RequestMapping(value = "/weixinlogin", method = RequestMethod.GET)
     public String weixinResponse(String code, String action, Long recruitmentId, String redirectURL, Integer userType,

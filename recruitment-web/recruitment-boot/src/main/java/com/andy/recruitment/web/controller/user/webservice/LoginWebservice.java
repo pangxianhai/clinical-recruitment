@@ -5,6 +5,9 @@ import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.user.request.BandPhoneRQ;
 import com.andy.recruitment.web.controller.user.request.MangeLoginRQ;
 import com.andy.recruitment.web.controller.user.request.VerCodeSendRQ;
+import com.andy.recruitment.web.controller.user.response.UserInfoVO;
+import com.andy.recruitment.web.controller.user.util.UserUtil;
+import com.xgimi.auth.LoginInfo;
 import com.xgimi.context.ServletContext;
 import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,19 @@ public class LoginWebservice {
     @Autowired
     public LoginWebservice(UserAO userAO) {
         this.userAO = userAO;
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public UserInfoVO getCurrentUserInfo() {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        if (null == loginInfo) {
+            return null;
+        }
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        if (null == userInfo) {
+            return null;
+        }
+        return UserUtil.transformUserInfoVO(userInfo);
     }
 
     @RequestMapping(value = "/sendVerCode.json", method = RequestMethod.POST)

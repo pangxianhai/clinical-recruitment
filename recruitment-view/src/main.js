@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Vant from 'vant';
-import router from './router';
+import router from './router/Index';
 import Vuex from 'vuex'
 import 'vant/lib/index.css';
 import App from './App.vue';
-import components from './components/index'
+import components from './components/Index'
 
 Vue.config.productionTip = false;
 Vue.use(Vant);

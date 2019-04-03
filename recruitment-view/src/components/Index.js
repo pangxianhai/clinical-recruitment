@@ -1,10 +1,10 @@
 'use strict';
 
-import NavBar from './NavBar';
 import AddressSelect from './AddressSelect';
+import Footer from './Footer';
 
 const components = [
-  NavBar,
-  AddressSelect
+  AddressSelect,
+  Footer
 ];
 export default components;
