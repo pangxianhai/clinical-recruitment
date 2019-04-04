@@ -30,7 +30,7 @@ public class RegionWebservice {
         return this.regionAO.getRegionByParentId(regionId);
     }
 
-    @RequestMapping(value = "/\\", method = {RequestMethod.GET})
+    @RequestMapping(value = "/parent", method = {RequestMethod.GET})
     public List<Region> getRegionByParentId() {
         return this.regionAO.getRegionByParentId(null);
     }

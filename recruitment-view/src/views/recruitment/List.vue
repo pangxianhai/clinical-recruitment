@@ -10,13 +10,14 @@
                 <img width="100%" src="../../assets/banner2.png"/>
             </van-swipe-item>
         </van-swipe>
-        <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="searchParam.queryText"/>
+        <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="searchParam.queryText"
+                    @search="recruitmentOnSearch"/>
         <van-row style="padding-bottom: 10px">
-            <van-col class="title" span="7">智能推荐</van-col>
+            <van-col class="title" span="6">智能推荐</van-col>
             <van-col class="choice" span="8" offset="1">{{showRecommendText}}
                 <van-icon name="arrow-down" @click="showRecommend = !showRecommend"/>
             </van-col>
-            <van-col class="choice" span="5" offset="1">{{showAddressText}}
+            <van-col class="choice" span="7" offset="1">{{showAddressText}}
                 <van-icon name="arrow-down" @click="showAddress= !showAddress"/>
             </van-col>
         </van-row>
@@ -28,31 +29,32 @@
             </van-col>
         </van-popup>
         <van-list
-            v-model="loading"
-            :finished="finished"
+            v-model="recruitmentLoading"
+            :finished="recruitmentFinished"
             finished-text="没有更多了"
-            @load="onLoad">
-            <van-panel class="recruitment-panel" v-for="(item, index) in list" :title="item.title"
+            @load="onLoadRecruitment">
+            <van-panel class="recruitment-panel" v-for="(item, index) in recruitmentInfList"
+                       :title="item.title"
                        :key="index">
                 <van-row type="flex">
                     <van-col span="5">登记编号:</van-col>
-                    <van-col span="8">A0001234</van-col>
+                    <van-col span="8">{{item.registerCode}}</van-col>
                     <van-col span="5">实验分期:</van-col>
-                    <van-col span="3">III期</van-col>
+                    <van-col span="3">{{item.practiceStages}}</van-col>
                 </van-row>
                 <van-row type="flex">
                     <van-col span="5">药物名称:</van-col>
-                    <van-col span="19">蟑螂药老鼠蟑螂鼠药蟑螂药老鼠药</van-col>
+                    <van-col span="19">{{item.drugName}}</van-col>
                 </van-row>
                 <van-row type="flex">
                     <van-col span="5">招募人数:</van-col>
-                    <van-col span="8">3人</van-col>
+                    <van-col span="8">{{item.recruitmentNumber}}人</van-col>
                     <van-col span="5">招募状态:</van-col>
-                    <van-col span="3">进行中</van-col>
+                    <van-col span="3">{{item.status.desc}}</van-col>
                 </van-row>
                 <van-row type="flex">
                     <van-col span="5">适应症状:</van-col>
-                    <van-col span="19">蟑螂药老鼠老鼠蟑螂药老鼠药</van-col>
+                    <van-col span="19">{{item.indication}}</van-col>
                 </van-row>
                 <van-row type="flex" justify="end">
                     <van-col>
@@ -119,6 +121,7 @@
 
 <script>
   import AddressSelect from "../../components/AddressSelect";
+  import RecruitmentApi from '@/api/RecruitmentApi';
 
   export default {
     components: {AddressSelect},
@@ -126,11 +129,15 @@
       return {
         showAddress: false,
         showRecommend: false,
-        list: [],
-        loading: false,
-        finished: false,
+        recruitmentInfList: [],
+        recruitmentLoading: false,
+        recruitmentFinished: false,
         searchParam: {
-          queryText: ''
+          queryText: '',
+          indication: '',
+          addressText: '',
+          currentPage: 1,
+          pageSize: 1
         },
         recommendList: ['所有疾病类型', '糖尿病', '肺癌', '胃癌、结肠直癌', '食道癌', '肝癌、胆道癌', '乳腺癌', '脑癌、甲状腺癌', '泌尿生殖',
           '淋巴癌、白血病', '神经系统', '风湿免疫', '胰腺癌', '实体瘤', '黑色素瘤', '软组织肉瘤', '鼻咽癌'],
@@ -139,32 +146,54 @@
       }
     },
     methods: {
-      onLoad: function () {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            const item = {};
-            item.title = '【流口】水的减肥徕卡健身房拉开睡觉地方是凉快地方就是df';
-            this.list.push(item);
+      onLoadRecruitment: function () {
+        RecruitmentApi.getRecruitment(this.searchParam).then(pageResult => {
+          if (this.searchParam.currentPage === 1) {
+            this.recruitmentInfList = pageResult.data;
+          } else {
+            this.recruitmentInfList = this.recruitmentInfList.concat(pageResult.data);
           }
-          // 加载状态结束
-          this.loading = false;
-
-          // 数据全部加载完成
-          if (this.list.length >= 40) {
-            this.finished = true;
+          this.recruitmentLoading = false;
+          this.searchParam.currentPage = this.searchParam.currentPage + 1;
+          if (pageResult.paginator.currentPage >= pageResult.paginator.totalPage) {
+            this.recruitmentFinished = true;
           }
-        }, 500);
+        });
+      },
+      recruitmentOnSearch: function () {
+        this.searchParam.currentPage = 1;
+        this.recruitmentLoading = false;
+        this.recruitmentFinished = false;
       },
       addressSelectCancel: function () {
+        this.showAddressText = '所有城市';
         this.showAddress = false;
+        this.searchParam.addressText = '';
+        this.searchParam.currentPage = 1;
+        this.recruitmentLoading = false;
+        this.recruitmentFinished = false;
       },
-      addressSelectConfirm: function () {
+      addressSelectConfirm: function (data) {
+        window.console.log(data);
+        const addressText = data[0].name + " " + data[1].name + " " + data[2].name;
+        this.showAddressText = data[1].name + data[2].name;
         this.showAddress = false;
+        this.searchParam.addressText = addressText;
+        this.searchParam.currentPage = 1;
+        this.recruitmentLoading = false;
+        this.recruitmentFinished = false;
       },
       choiceRecommend: function (item) {
         this.showRecommendText = item;
         this.showRecommend = false;
+        if ('所有疾病类型' === item) {
+          this.searchParam.indication = '';
+        } else {
+          this.searchParam.indication = item;
+        }
+        this.searchParam.currentPage = 1;
+        this.recruitmentLoading = false;
+        this.recruitmentFinished = false;
       }
     }
   }
