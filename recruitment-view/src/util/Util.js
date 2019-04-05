@@ -72,10 +72,7 @@ const Api = {
         url: url,
         data: params
       });
-      const data = await response.data;
-      return {
-        data
-      }
+      return response;
     } catch (e) {
       window.console.error(e);
     }

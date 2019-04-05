@@ -17,7 +17,8 @@ export default new Router({
               resolve),
         }
       ]
-    }, {
+    },
+    {
       path: '/patient',
       component: (resolve) => require(['../views/patient/Layout'], resolve),
       children: [
@@ -25,7 +26,28 @@ export default new Router({
           path: 'info',
           component: (resolve) => require(['../views/patient/PatientInfo'],
               resolve),
+        },
+        {
+          path: 'login',
+          component: (resolve) => require(['../views/user/Login'],
+              resolve),
         }
+      ]
+    },
+    {
+      path: '/user',
+      component: (resolve) => require(['../views/user/Layout'], resolve),
+      children: [
+        {
+          path: 'login',
+          component: (resolve) => require(['../views/user/Login'],
+              resolve),
+        },
+        {
+          path: 'wxlogin',
+          component: (resolve) => require(['../views/user/WxLogin'],
+              resolve),
+        },
       ]
     }
   ]
