@@ -21,7 +21,6 @@
       });
       let code = this.$route.query.code;
       UserApi.wxLogin(code).then(userInfo => {
-        window.console.log(userInfo);
         CookieUtil.setCookie('userId', userInfo.userId);
         Toast.clear();
         this.$router.push({path: '/recruitment/list'});

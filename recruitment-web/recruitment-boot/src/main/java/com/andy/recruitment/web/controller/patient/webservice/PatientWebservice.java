@@ -1,5 +1,7 @@
 package com.andy.recruitment.web.controller.patient.webservice;
 
+import com.andy.recruitment.exception.BusinessErrorCode;
+import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.patient.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
@@ -15,6 +17,7 @@ import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.page.PageResult;
+import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
 import com.xgimi.converter.MyParameter;
 import java.util.List;
@@ -46,7 +49,7 @@ public class PatientWebservice {
         this.userAO = userAO;
     }
 
-    @RequestMapping(value = "/register.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public boolean register(@RequestBody PatientAddRQ patientAddRQ) {
         UserInfo userInfo = this.userAO.getUserInfoByPhone(patientAddRQ.getPhone());
         UserInfo addUserInfo = PatientUtil.transformUserInfo(patientAddRQ);
@@ -74,7 +77,7 @@ public class PatientWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/list.json", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public PageResult<PatientVO> getPatientInfo(@MyParameter PatientQueryRQ queryRQ) {
         PatientQueryParam queryParam = PatientUtil.transformPatientQueryParam(queryRQ);
         PageResult<PatientInfo> pageResult = this.patientAO.getPatientInfo(queryParam, queryRQ.getPaginator());
@@ -87,10 +90,9 @@ public class PatientWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/add.json", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public boolean add(@RequestBody PatientAddRQ addRQ) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
-
         UserInfo userInfo = new UserInfo();
         userInfo.setPhone(addRQ.getPhone());
         userInfo.setRealName(addRQ.getName());
@@ -101,5 +103,21 @@ public class PatientWebservice {
         patientInfo.setUserId(userId);
         this.patientAO.addPatientInfo(patientInfo, loginInfo.getRealName());
         return true;
+    }
+
+    @Login
+    @RequestMapping(value = "/currentInfo", method = RequestMethod.GET)
+    public PatientVO getPatientInfo() {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        PatientInfo patientInfo = this.patientAO.getPatientInfoByUserId(loginInfo.getUserId());
+        AssertUtil.assertNull(patientInfo, () -> {
+            throw new BusinessException(BusinessErrorCode.OPERATE_ERROR);
+        });
+        PatientVO patientVO = PatientUtil.transformPatientVO(patientInfo);
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        patientVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
+        patientVO.setAddress(this.regionAO.parseAddressName(patientVO.getProvinceId(), patientVO.getCityId(),
+                                                            patientVO.getDistrictId()));
+        return patientVO;
     }
 }

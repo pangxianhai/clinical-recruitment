@@ -1,7 +1,7 @@
 import {ApiUtil} from '../util/Util';
 
 export default {
-  getLoginfo: async () => {
+  getLogInfo: async () => {
     return await ApiUtil.get('/user/login', {});
   },
   getWxLoginUrl: async (redirectURL) => {

@@ -15,6 +15,10 @@ export default new Router({
           path: 'list',
           component: (resolve) => require(['../views/recruitment/List'],
               resolve),
+        }, {
+          path: 'applicationList',
+          component: (resolve) => require(['../views/recruitment/ApplicationList'],
+              resolve),
         }
       ]
     },
