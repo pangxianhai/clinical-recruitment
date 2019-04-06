@@ -17,7 +17,8 @@ export default new Router({
               resolve),
         }, {
           path: 'applicationList',
-          component: (resolve) => require(['../views/recruitment/ApplicationList'],
+          component: (resolve) => require(
+              ['../views/recruitment/ApplicationList'],
               resolve),
         }
       ]
@@ -32,8 +33,8 @@ export default new Router({
               resolve),
         },
         {
-          path: 'login',
-          component: (resolve) => require(['../views/user/Login'],
+          path: 'register',
+          component: (resolve) => require(['../views/patient/Register'],
               resolve),
         }
       ]

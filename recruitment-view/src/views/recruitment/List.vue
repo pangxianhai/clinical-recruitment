@@ -120,7 +120,7 @@
 </style>
 
 <script>
-  import AddressSelect from "../../components/AddressSelect";
+  import AddressSelect from "@/components/AddressSelect";
   import RecruitmentApi from '@/api/RecruitmentApi';
 
   export default {
@@ -174,7 +174,6 @@
         this.recruitmentFinished = false;
       },
       addressSelectConfirm: function (data) {
-        window.console.log(data);
         const addressText = data[0].name + " " + data[1].name + " " + data[2].name;
         this.showAddressText = data[1].name + data[2].name;
         this.showAddress = false;

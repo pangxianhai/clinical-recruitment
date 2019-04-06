@@ -20,10 +20,17 @@
         message: '微信登录中...'
       });
       let code = this.$route.query.code;
+      let userType = this.$route.query.userType;
       UserApi.wxLogin(code).then(userInfo => {
-        CookieUtil.setCookie('userId', userInfo.userId);
         Toast.clear();
-        this.$router.push({path: '/recruitment/list'});
+        if (typeof userInfo.userId === 'undefined') {
+          if (this.UserConstants.PATIENT === parseInt(userType)) {
+            this.$router.push({path: '/patient/register'});
+          }
+        } else {
+          CookieUtil.setCookie('userId', userInfo.userId);
+          this.$router.push({path: '/recruitment/list'});
+        }
       })
     }
   }
