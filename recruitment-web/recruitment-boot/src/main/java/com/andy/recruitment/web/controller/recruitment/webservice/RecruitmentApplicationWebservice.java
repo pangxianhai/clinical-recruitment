@@ -16,7 +16,6 @@ import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.researchcenter.ao.ResearchCenterAO;
 import com.andy.recruitment.researchcenter.model.ResearchCenterInfo;
 import com.andy.recruitment.user.ao.UserAO;
-import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.doctor.response.DoctorInfoVO;
@@ -26,7 +25,6 @@ import com.andy.recruitment.web.controller.patient.util.PatientUtil;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
-import com.andy.recruitment.web.controller.recruitment.response.ApplicationResultVO;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
 import com.andy.recruitment.web.controller.recruitment.response.ResearchCenterVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
@@ -37,7 +35,6 @@ import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
-import com.xgimi.commons.util.encrypt.EncodeUtil;
 import com.xgimi.context.ServletContext;
 import com.xgimi.converter.MyParameter;
 import java.util.List;
@@ -88,56 +85,33 @@ public class RecruitmentApplicationWebservice {
         this.recruitmentAO = recruitmentAO;
     }
 
-    @RequestMapping(value = "/application.json", method = RequestMethod.POST)
-    public ApplicationResultVO applicationRecruitment(@RequestBody RecruitmentApplicationRQ applicationRQ) {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public boolean applicationRecruitment(@RequestBody RecruitmentApplicationRQ applicationRQ) {
+        String operator;
         LoginInfo loginInfo = ServletContext.getLoginInfo();
-        UserInfo userInfo = null;
-        if (null != loginInfo) {
-            userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
-        }
-        if (null == userInfo) {
-            Long recruitmentId = applicationRQ.getRecruitmentId();
-            String redirectURL = "/recruitment/detail/" + recruitmentId + "?action=application&doctorId="
-                                 + applicationRQ.getDoctorId();
-            String url = serverAddress + "/user/login?action=application&recruitmentId=" + recruitmentId
-                         + "&userType=3&redirectURL=" + EncodeUtil.urlEncode(redirectURL);
-            return new ApplicationResultVO(url);
+        if (null == loginInfo) {
+            operator = applicationRQ.getName();
         } else {
-            AssertUtil.assertBoolean(UserStatus.NORMAL.equals(userInfo.getStatus()), () -> {
-                throw new BusinessException(BusinessErrorCode.USER_FREEZE);
-            });
-            if (UserType.PATIENT.equals(userInfo.getUserType())) {
-                RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
-                this.recruitmentApplicationAO.addRecruitmentApplication(loginInfo.getUserId(), applicationInfo,
-                                                                        ServletContext.getLoginUname());
-            } else if (UserType.DOCTOR.equals(userInfo.getUserType())) {
-                UserInfo patentUserInfo = this.userAO.getUserInfoByPhone(applicationRQ.getPhone());
-                Long patentUserId;
-                if (null == patentUserInfo) {
-                    try {
-                        UserInfo addUserInfo = PatientUtil.transformUserInfo(applicationRQ);
-                        Long userId = this.userAO.addUserInfo(addUserInfo, applicationRQ.getName());
-                        addUserInfo.setUserId(userId);
-                        PatientInfo patientInfo = PatientUtil.transformPatientInfo(applicationRQ, regionAO);
-                        patientInfo.setUserId(addUserInfo.getUserId());
-                        this.patientAO.addPatientInfo(patientInfo, applicationRQ.getName());
-                        patentUserId = userId;
-                    } catch (Exception e) {
-                        throw new BusinessException(BusinessErrorCode.OPERATE_ERROR);
-                    }
-                } else {
-                    patentUserId = patentUserInfo.getUserId();
-                }
-                RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
-                DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoByUserId(loginInfo.getUserId());
-                applicationInfo.setDoctorId(doctorInfo.getDoctorId());
-                this.recruitmentApplicationAO.addRecruitmentApplication(patentUserId, applicationInfo,
-                                                                        ServletContext.getLoginUname());
-            } else {
-                throw new BusinessException(BusinessErrorCode.ILLEGAL_ACCESS);
-            }
-            return new ApplicationResultVO();
+            operator = loginInfo.getRealName();
         }
+        PatientInfo patientInfo = PatientUtil.transformPatientInfo(applicationRQ, regionAO);
+        UserInfo userInfo = PatientUtil.transformUserInfo(applicationRQ);
+        patientInfo.setUserInfo(userInfo);
+        Long patientId = this.patientAO.addPatientInfo(patientInfo, operator);
+
+        RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
+        applicationInfo.setPatientId(patientId);
+        if (null != loginInfo) {
+            UserInfo loginUserInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+            if (UserType.DOCTOR.equals(loginUserInfo.getUserType())) {
+                DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoByUserId(loginUserInfo.getUserId());
+                if (null != doctorInfo) {
+                    applicationInfo.setDoctorId(doctorInfo.getDoctorId());
+                }
+            }
+        }
+        this.recruitmentApplicationAO.addRecruitmentApplication(applicationInfo, operator);
+        return true;
     }
 
     @Login

@@ -14,6 +14,7 @@ import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
+import com.xgimi.commons.util.encrypt.HmacHashUtil;
 import com.xgimi.mybatis.paginator.Page;
 import com.xgimi.util.PageUtil;
 import java.sql.Timestamp;
@@ -38,15 +39,18 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Long addUserInfo(UserInfo userInfo, String operator) {
-        UserInfoDO userInfoDO = UserUtil.transformUserInfoDO(userInfo);
-        userInfoDO.setStatus(UserStatus.NORMAL);
-        userInfoDO.setCreatedBy(operator);
-        userInfoDO.setCreatedTime(new Timestamp(DateUtil.currentMilliseconds()));
-        int count = this.userInfoMapper.insert(userInfoDO);
-        AssertUtil.assertBoolean(count > 0, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.USER_ADD_FAILED);
-        });
-        return userInfoDO.getId();
+        UserInfo existUserInfo = this.getUserInfoByPhone(userInfo.getPhone());
+        if (null == existUserInfo) {
+            if (StringUtil.isNotEmpty(userInfo.getPhone()) && StringUtil.isNotEmpty(userInfo.getPassword())) {
+                String password = HmacHashUtil.hmacSHAHash(userInfo.getPassword(), userInfo.getPhone());
+                userInfo.setPassword(password);
+            }
+            return this.addUserInfo0(userInfo, operator);
+        } else {
+            userInfo.setUserId(existUserInfo.getUserId());
+            this.updateUserInfo(userInfo, operator);
+            return existUserInfo.getUserId();
+        }
     }
 
     @Override
@@ -126,5 +130,17 @@ public class UserInfoServiceImpl implements UserInfoService {
             throw new RecruitmentException(RecruitmentErrorCode.USER_ID_EMPTY);
         });
         this.userInfoMapper.delete(userId);
+    }
+
+    private Long addUserInfo0(UserInfo userInfo, String operator) {
+        UserInfoDO userInfoDO = UserUtil.transformUserInfoDO(userInfo);
+        userInfoDO.setStatus(UserStatus.NORMAL);
+        userInfoDO.setCreatedBy(operator);
+        userInfoDO.setCreatedTime(new Timestamp(DateUtil.currentMilliseconds()));
+        int count = this.userInfoMapper.insert(userInfoDO);
+        AssertUtil.assertBoolean(count > 0, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.USER_ADD_FAILED);
+        });
+        return userInfoDO.getId();
     }
 }

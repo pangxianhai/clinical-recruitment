@@ -1,7 +1,6 @@
 <template>
     <div class="recruitment-list">
-        <van-nav-bar title="招募大厅">
-        </van-nav-bar>
+        <van-nav-bar title="招募大厅"></van-nav-bar>
         <van-swipe :autoplay="3000">
             <van-swipe-item>
                 <img width="100%" src="../../assets/banner1.png"/>
@@ -11,14 +10,14 @@
             </van-swipe-item>
         </van-swipe>
         <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="searchParam.queryText"
-                    @search="recruitmentOnSearch"/>
+                    @search="recruitmentOnSearch"></van-search>
         <van-row style="padding-bottom: 10px">
             <van-col class="title" span="6">智能推荐</van-col>
             <van-col class="choice" span="8" offset="1">{{showRecommendText}}
-                <van-icon name="arrow-down" @click="showRecommend = !showRecommend"/>
+                <van-icon name="arrow-down" @click="showRecommend = !showRecommend"></van-icon>
             </van-col>
             <van-col class="choice" span="7" offset="1">{{showAddressText}}
-                <van-icon name="arrow-down" @click="showAddress= !showAddress"/>
+                <van-icon name="arrow-down" @click="showAddress= !showAddress"></van-icon>
             </van-col>
         </van-row>
         <address-select :show="showAddress" @confirm="addressSelectConfirm"
@@ -61,7 +60,10 @@
                         <van-button type="info" size="small">联系我们</van-button>
                     </van-col>
                     <van-col style="margin-left: 15px">
-                        <van-button type="warning" size="small">我要参加</van-button>
+                        <van-button type="warning" size="small"
+                                    @click="onRecruitmentApplication(item)">
+                            我要参加
+                        </van-button>
                     </van-col>
                 </van-row>
             </van-panel>
@@ -193,6 +195,16 @@
         this.searchParam.currentPage = 1;
         this.recruitmentLoading = false;
         this.recruitmentFinished = false;
+      },
+      onRecruitmentApplication: function (recruitment) {
+        let redirectURL = this.$route.path;
+        this.$router.push({
+          path: '/recruitment/application',
+          query: {
+            recruitmentId: recruitment.recruitmentId,
+            redirectURL: redirectURL
+          }
+        });
       }
     }
   }

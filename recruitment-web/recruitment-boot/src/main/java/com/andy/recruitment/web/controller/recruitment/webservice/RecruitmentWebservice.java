@@ -67,27 +67,7 @@ public class RecruitmentWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/{recruitmentId:\\d+}/begin.json", method = RequestMethod.POST)
-    public boolean recruitmentBegin(@PathVariable Long recruitmentId) {
-        RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
-        recruitmentInfo.setRecruitmentId(recruitmentId);
-        recruitmentInfo.setStatus(RecruitmentStatus.IN_PROCESS);
-        this.recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
-        return true;
-    }
-
-    @Login
-    @RequestMapping(value = "/{recruitmentId:\\d+}/end.json", method = RequestMethod.POST)
-    public boolean recruitmentEnd(@PathVariable Long recruitmentId) {
-        RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
-        recruitmentInfo.setRecruitmentId(recruitmentId);
-        recruitmentInfo.setStatus(RecruitmentStatus.FINISHED);
-        this.recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
-        return true;
-    }
-
-    @Login
-    @RequestMapping(value = "/update.json", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
     public boolean updateRecruitment(@RequestBody RecruitmentUpdateRQ recruitmentUpdateRQ) {
         RecruitmentInfo recruitmentInfo = RecruitmentUtil.transformRecruitmentInfo(recruitmentUpdateRQ);
         List<ResearchCenterInfo> researchCenterInfoList = RecruitmentUtil.transformResearchCenterInfoByUpdate(
@@ -100,6 +80,33 @@ public class RecruitmentWebservice {
                                                    ServletContext.getLoginUname());
         return true;
     }
+
+    @Login
+    @RequestMapping(value = "/{recruitmentId:\\d+}/begin", method = RequestMethod.POST)
+    public boolean recruitmentBegin(@PathVariable Long recruitmentId) {
+        RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
+        recruitmentInfo.setRecruitmentId(recruitmentId);
+        recruitmentInfo.setStatus(RecruitmentStatus.IN_PROCESS);
+        this.recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
+        return true;
+    }
+
+    @Login
+    @RequestMapping(value = "/{recruitmentId:\\d+}/end", method = RequestMethod.POST)
+    public boolean recruitmentEnd(@PathVariable Long recruitmentId) {
+        RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
+        recruitmentInfo.setRecruitmentId(recruitmentId);
+        recruitmentInfo.setStatus(RecruitmentStatus.FINISHED);
+        this.recruitmentAO.updateRecruitmentInfo(recruitmentInfo, ServletContext.getLoginUname());
+        return true;
+    }
+
+    @RequestMapping(value = "/{recruitmentId:\\d+}", method = RequestMethod.GET)
+    public RecruitmentVO getRecruitment(@PathVariable Long recruitmentId) {
+        RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(recruitmentId);
+        return RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
+    }
+
 
     private PageResult<RecruitmentInfo> queryRecruitmentInfo(RecruitmentQueryRQ queryRQ) {
         RecruitmentQueryParam queryParam = RecruitmentUtil.transformQueryParam(queryRQ);

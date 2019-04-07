@@ -1,5 +1,6 @@
 package com.andy.recruitment.patient.model;
 
+import com.andy.recruitment.user.model.UserInfo;
 import java.io.Serializable;
 
 /**
@@ -33,6 +34,11 @@ public class PatientInfo implements Serializable {
      * 年龄
      */
     private Integer age;
+
+    /**
+     * 医生相关的用户信息
+     */
+    private UserInfo userInfo;
 
     public Long getPatientId() {
         return patientId;
@@ -80,5 +86,13 @@ public class PatientInfo implements Serializable {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

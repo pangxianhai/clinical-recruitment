@@ -5,7 +5,6 @@
 <script>
   import {Toast} from 'vant';
   import UserApi from '@/api/UserApi';
-  import {CookieUtil} from '@/util/Util';
 
   export default {
     data: function () {
@@ -28,7 +27,7 @@
             this.$router.push({path: '/patient/register'});
           }
         } else {
-          CookieUtil.setCookie('userId', userInfo.userId);
+          UserApi.saveUserId(userInfo.userId);
           this.$router.push({path: '/recruitment/list'});
         }
       })

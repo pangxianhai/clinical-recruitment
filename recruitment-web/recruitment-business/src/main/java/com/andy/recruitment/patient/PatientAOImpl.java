@@ -1,8 +1,11 @@
 package com.andy.recruitment.patient;
 
+import com.andy.recruitment.exception.BusinessErrorCode;
+import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.andy.recruitment.patient.service.PatientInfoService;
+import com.andy.recruitment.user.service.UserInfoService;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +21,29 @@ public class PatientAOImpl implements PatientAO {
 
     private final PatientInfoService patientInfoService;
 
+    private final UserInfoService userInfoService;
+
     @Autowired
-    public PatientAOImpl(PatientInfoService patientInfoService) {
+    public PatientAOImpl(PatientInfoService patientInfoService, UserInfoService userInfoService) {
         this.patientInfoService = patientInfoService;
+        this.userInfoService = userInfoService;
     }
 
     @Override
-    public void addPatientInfo(PatientInfo patientInfo, String operator) {
-        this.patientInfoService.addPatientInfo(patientInfo, operator);
+    public Long addPatientInfo(PatientInfo patientInfo, String operator) {
+        if (null == patientInfo.getUserInfo()) {
+            throw new BusinessException(BusinessErrorCode.USER_NOT_EMPTY);
+        }
+        Long userId = this.userInfoService.addUserInfo(patientInfo.getUserInfo(), operator);
+        patientInfo.setUserId(userId);
+        PatientInfo existPatientInfo = this.patientInfoService.getPatientInfoByUserId(userId);
+        if (null == existPatientInfo) {
+            return this.patientInfoService.addPatientInfo(patientInfo, operator);
+        } else {
+            patientInfo.setPatientId(existPatientInfo.getPatientId());
+            this.patientInfoService.updatePatientInfo(patientInfo, operator);
+            return existPatientInfo.getPatientId();
+        }
     }
 
     @Override

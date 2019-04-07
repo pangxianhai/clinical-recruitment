@@ -153,15 +153,6 @@ public class UserAOImpl implements UserAO {
 
     @Override
     public Long addUserInfo(UserInfo userInfo, String operator) {
-        UserInfo userInfoByPhone = this.userInfoService.getUserInfoByPhone(userInfo.getPhone());
-        if (null != userInfoByPhone) {
-            throw new BusinessException(BusinessErrorCode.USER_PHONE_HAS_REGISTER);
-        }
-
-        if (StringUtil.isNotEmpty(userInfo.getPhone()) && StringUtil.isNotEmpty(userInfo.getPassword())) {
-            String password = HmacHashUtil.hmacSHAHash(userInfo.getPassword(), userInfo.getPhone());
-            userInfo.setPassword(password);
-        }
         return this.userInfoService.addUserInfo(userInfo, operator);
     }
 

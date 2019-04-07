@@ -103,7 +103,6 @@
       patientRegister: function () {
         this.validatorAll().then(() => {
           PatientApi.registerPatient(this.patientInfo).then(data => {
-            window.console.log(data);
             if (data) {
               Toast.success('注册成功！');
             }

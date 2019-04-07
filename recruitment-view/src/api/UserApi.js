@@ -1,4 +1,4 @@
-import {ApiUtil} from '../util/Util';
+import {ApiUtil, CookieUtil} from '@/util/Util';
 
 export default {
   getLogInfo: async () => {
@@ -13,5 +13,12 @@ export default {
     return await ApiUtil.post('/user/login/wx', {
       code: code
     });
+  },
+  isLogin: function () {
+    let userId = CookieUtil.getCookie('userId');
+    return typeof userId !== 'undefined' && null != userId && userId.length > 0;
+  },
+  saveUserId: function (userId) {
+    CookieUtil.setCookie('userId', userId + "");
   }
 }

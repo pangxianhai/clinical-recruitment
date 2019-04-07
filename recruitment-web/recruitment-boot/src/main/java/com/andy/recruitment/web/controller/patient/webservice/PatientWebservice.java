@@ -51,28 +51,9 @@ public class PatientWebservice {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public boolean register(@RequestBody PatientAddRQ patientAddRQ) {
-        UserInfo userInfo = this.userAO.getUserInfoByPhone(patientAddRQ.getPhone());
-        UserInfo addUserInfo = PatientUtil.transformUserInfo(patientAddRQ);
-        if (null == userInfo) {
-            Long userId = this.userAO.addUserInfo(addUserInfo, patientAddRQ.getName());
-            addUserInfo.setUserId(userId);
-            PatientInfo patientInfo = PatientUtil.transformPatientInfo(patientAddRQ, regionAO);
-            patientInfo.setUserId(addUserInfo.getUserId());
-            this.patientAO.addPatientInfo(patientInfo, patientAddRQ.getName());
-        } else {
-            addUserInfo.setUserId(userInfo.getUserId());
-            this.userAO.updateUserInfo(addUserInfo, addUserInfo.getRealName());
-            PatientInfo existPatient = this.patientAO.getPatientInfoByUserId(addUserInfo.getUserId());
-            PatientInfo patientInfo = PatientUtil.transformPatientInfo(patientAddRQ, regionAO);
-            if (null == existPatient) {
-                patientInfo.setUserId(addUserInfo.getUserId());
-                this.patientAO.addPatientInfo(patientInfo, patientAddRQ.getName());
-            } else {
-                patientInfo.setPatientId(existPatient.getPatientId());
-                this.patientAO.updatePatientInfo(patientInfo, patientAddRQ.getName());
-            }
-        }
-        this.userAO.saveUserInfoCookie(addUserInfo, ServletContext.getResponse());
+        PatientInfo patientInfo = PatientUtil.transformPatientInfo(patientAddRQ, regionAO);
+        UserInfo userInfo = PatientUtil.transformUserInfo(patientAddRQ);
+        patientInfo.setUserInfo(userInfo);
         return true;
     }
 
