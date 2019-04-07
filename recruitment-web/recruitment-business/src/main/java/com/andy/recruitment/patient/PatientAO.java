@@ -17,9 +17,9 @@ public interface PatientAO {
      *
      * @param patientInfo 患者信息
      * @param operator    操作人
-     * @return 患者ID
+     * @return 添加后的患者信息
      */
-    Long addPatientInfo(PatientInfo patientInfo, String operator);
+    PatientInfo addPatientInfo(PatientInfo patientInfo, String operator);
 
     /**
      * 更新患者信息

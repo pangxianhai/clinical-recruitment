@@ -57,7 +57,9 @@
                 </van-row>
                 <van-row type="flex" justify="end">
                     <van-col>
-                        <van-button type="info" size="small">联系我们</van-button>
+                        <van-button type="info" size="small"
+                                    @click="onContactUs">联系我们
+                        </van-button>
                     </van-col>
                     <van-col style="margin-left: 15px">
                         <van-button type="warning" size="small"
@@ -124,6 +126,7 @@
 <script>
   import AddressSelect from "@/components/AddressSelect";
   import RecruitmentApi from '@/api/RecruitmentApi';
+  import UserApi from '@/api/UserApi';
 
   export default {
     components: {AddressSelect},
@@ -198,11 +201,31 @@
       },
       onRecruitmentApplication: function (recruitment) {
         let redirectURL = this.$route.path;
+        if (UserApi.isLogin()) {
+          this.$router.push({
+            path: '/recruitment/application',
+            query: {
+              recruitmentId: recruitment.recruitmentId,
+              redirectURL: redirectURL
+            },
+          });
+        } else {
+          this.$router.push({
+            path: '/user/login',
+            query: {
+              userType: 3,
+              recruitmentId: recruitment.recruitmentId,
+              action: 'application',
+              redirectURL: redirectURL
+            },
+          });
+        }
+      },
+      onContactUs: function () {
         this.$router.push({
-          path: '/recruitment/application',
+          path: '/site/contactUs',
           query: {
-            recruitmentId: recruitment.recruitmentId,
-            redirectURL: redirectURL
+            redirectURL: this.$route.path
           }
         });
       }

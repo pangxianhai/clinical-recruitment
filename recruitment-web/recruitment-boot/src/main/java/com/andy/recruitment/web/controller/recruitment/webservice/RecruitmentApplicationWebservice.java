@@ -85,8 +85,13 @@ public class RecruitmentApplicationWebservice {
         this.recruitmentAO = recruitmentAO;
     }
 
+    /**
+     * 招募项目报名
+     *
+     * @return 患者用户ID
+     */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public boolean applicationRecruitment(@RequestBody RecruitmentApplicationRQ applicationRQ) {
+    public Long applicationRecruitment(@RequestBody RecruitmentApplicationRQ applicationRQ) {
         String operator;
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         if (null == loginInfo) {
@@ -97,10 +102,10 @@ public class RecruitmentApplicationWebservice {
         PatientInfo patientInfo = PatientUtil.transformPatientInfo(applicationRQ, regionAO);
         UserInfo userInfo = PatientUtil.transformUserInfo(applicationRQ);
         patientInfo.setUserInfo(userInfo);
-        Long patientId = this.patientAO.addPatientInfo(patientInfo, operator);
+        patientInfo = this.patientAO.addPatientInfo(patientInfo, operator);
 
         RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
-        applicationInfo.setPatientId(patientId);
+        applicationInfo.setPatientId(patientInfo.getPatientId());
         if (null != loginInfo) {
             UserInfo loginUserInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
             if (UserType.DOCTOR.equals(loginUserInfo.getUserType())) {
@@ -111,7 +116,7 @@ public class RecruitmentApplicationWebservice {
             }
         }
         this.recruitmentApplicationAO.addRecruitmentApplication(applicationInfo, operator);
-        return true;
+        return patientInfo.getUserId();
     }
 
     @Login

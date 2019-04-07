@@ -109,6 +109,7 @@
   import AsyncValidator from 'async-validator';
   import RecruitmentApi from "@/api/RecruitmentApi";
   import PatientApi from "@/api/PatientApi";
+  import UserApi from "@/api/UserApi";
 
   export default {
     data: function () {
@@ -132,9 +133,12 @@
     methods: {
       onApplicationAction: function () {
         this.validatorApplicationInfo().then(() => {
-          RecruitmentApi.recruitmentApplication(this.applicationInfo).then(data => {
-            if (data) {
+          RecruitmentApi.recruitmentApplication(this.applicationInfo).then(userId => {
+            if (userId) {
               this.$toast('报名成功！即将跳转');
+              if (!UserApi.isLogin()) {
+                UserApi.saveUserId(userId);
+              }
               setTimeout(() => {
                 let redirectURL = this.$route.query.redirectURL;
                 this.$router.push({path: redirectURL});
@@ -176,7 +180,7 @@
         }
       },
       addressSelectConfirm: function (data) {
-        this.applicationInfo.address = data[1].name + data[2].name;
+        this.applicationInfo.address = data[1].name + " " + data[2].name;
         this.showAddress = false;
         this.validator('address');
       },
@@ -215,6 +219,8 @@
           this.applicationInfo.address = patientInfo.address;
           this.applicationInfo.age = patientInfo.age;
         });
+        this.applicationInfo.nickname = this.$route.query.nickname;
+        this.applicationInfo.openId = this.$route.query.openId;
       }
     }
   }

@@ -22,9 +22,22 @@
       let userType = this.$route.query.userType;
       UserApi.wxLogin(code).then(userInfo => {
         Toast.clear();
+        let query = this.$route.query;
         if (typeof userInfo.userId === 'undefined') {
           if (this.UserConstants.PATIENT === parseInt(userType)) {
-            this.$router.push({path: '/patient/register'});
+            if ('application' === query.action && query.recruitmentId.length > 0) {
+              this.$router.push({
+                path: '/recruitment/application',
+                query: {
+                  recruitmentId: query.recruitmentId,
+                  redirectURL: query.redirectURL,
+                  openId: userInfo.openId,
+                  nickname: userInfo.nickname
+                }
+              });
+            } else {
+              this.$router.push({path: '/patient/register'});
+            }
           }
         } else {
           UserApi.saveUserId(userInfo.userId);

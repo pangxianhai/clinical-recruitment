@@ -50,15 +50,20 @@
     },
     methods: {
       initMenu: function () {
-        let path = this.$route.path;
-        if (this.userInfo.userType.code === 3) {
+        if (typeof this.userInfo.userId === 'undefined') {
           this.menuList = this.menuInfo.patient;
-          for (let i = 0; i < this.menuList.length; ++i) {
-            let m = this.menuList[i];
-            if (m.path === path) {
-              this.active = i;
-              break;
-            }
+        } else if (this.userInfo.userType.code === 3) {
+          this.menuList = this.menuInfo.patient;
+        }
+        this.initActiveMenu();
+      },
+      initActiveMenu: function () {
+        let path = this.$route.path;
+        for (let i = 0; i < this.menuList.length; ++i) {
+          let m = this.menuList[i];
+          if (m.path === path) {
+            this.active = i;
+            break;
           }
         }
       }

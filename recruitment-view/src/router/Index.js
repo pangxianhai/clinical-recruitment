@@ -61,6 +61,16 @@ export default new Router({
               resolve),
         },
       ]
+    }, {
+      path: '/site',
+      component: (resolve) => require(['../views/site/Layout'], resolve),
+      children: [
+        {
+          path: 'contactUs',
+          component: (resolve) => require(['../views/site/ContactUs'],
+              resolve),
+        },
+      ]
     }
   ]
 });

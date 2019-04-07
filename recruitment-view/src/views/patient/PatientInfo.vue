@@ -6,6 +6,8 @@
                       :value="patientInfo.userInfoVO.realName"></van-cell>
             <van-cell icon="more-o" title="性别"
                       :value="patientInfo.userInfoVO.gender.desc"></van-cell>
+            <van-cell icon="flower-o" title="微信昵称"
+                      :value="patientInfo.userInfoVO.nickname"></van-cell>
             <van-cell icon="phone-o" title="手机号" :value="patientInfo.userInfoVO.phone"></van-cell>
             <van-cell icon="gem-o" title="年龄" :value="patientInfo.age"></van-cell>
             <van-cell icon="location-o" title="地址" :value="patientInfo.address"></van-cell>
@@ -31,7 +33,6 @@
     created: function () {
       PatientApi.getCurrentPatientInfo().then(patientInfo => {
         this.patientInfo = patientInfo;
-        window.console.log(this.patientInfo);
       });
     }
   }
