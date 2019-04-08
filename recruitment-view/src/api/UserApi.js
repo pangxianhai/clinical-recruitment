@@ -2,7 +2,7 @@ import {ApiUtil, CookieUtil} from '@/util/Util';
 
 export default {
   getLogInfo: async () => {
-    return await ApiUtil.get('/user/login', {});
+    return await ApiUtil.get('/user', {});
   },
   getWxLoginUrl: async (redirectURL) => {
     return await ApiUtil.get('/user/login/wx', {

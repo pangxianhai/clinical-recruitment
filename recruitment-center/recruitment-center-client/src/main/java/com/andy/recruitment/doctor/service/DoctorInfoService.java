@@ -17,8 +17,9 @@ public interface DoctorInfoService {
      *
      * @param doctorInfo 医生信息
      * @param operator   添加人
+     * @return 医生ID
      */
-    void addDoctorInfo(DoctorInfo doctorInfo, String operator);
+    Long addDoctorInfo(DoctorInfo doctorInfo, String operator);
 
     /**
      * 更新医生信息

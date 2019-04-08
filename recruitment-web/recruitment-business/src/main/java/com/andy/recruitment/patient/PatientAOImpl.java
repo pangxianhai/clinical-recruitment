@@ -30,11 +30,11 @@ public class PatientAOImpl implements PatientAO {
     }
 
     @Override
-    public PatientInfo addPatientInfo(PatientInfo patientInfo, String operator) {
+    public PatientInfo registerPatient(PatientInfo patientInfo, String operator) {
         if (null == patientInfo.getUserInfo()) {
             throw new BusinessException(BusinessErrorCode.USER_NOT_EMPTY);
         }
-        Long userId = this.userInfoService.addUserInfo(patientInfo.getUserInfo(), operator);
+        Long userId = this.userInfoService.registerUser(patientInfo.getUserInfo(), operator);
         patientInfo.setUserId(userId);
         PatientInfo existPatientInfo = this.patientInfoService.getPatientInfoByUserId(userId);
         if (null == existPatientInfo) {
@@ -43,7 +43,6 @@ public class PatientAOImpl implements PatientAO {
         } else {
             patientInfo.setPatientId(existPatientInfo.getPatientId());
             this.patientInfoService.updatePatientInfo(patientInfo, operator);
-            patientInfo.setPatientId(existPatientInfo.getPatientId());
         }
         return patientInfo;
     }

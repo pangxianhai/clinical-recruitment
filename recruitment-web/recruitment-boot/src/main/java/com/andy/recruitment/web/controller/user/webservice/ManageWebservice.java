@@ -1,15 +1,12 @@
 package com.andy.recruitment.web.controller.user.webservice;
 
 import com.andy.recruitment.user.ao.UserAO;
-import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.user.request.ManageAddRQ;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
-import com.xgimi.auth.LoginInfo;
 import com.xgimi.context.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,10 +29,10 @@ public class ManageWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/add.json", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public Boolean manageAdd(@RequestBody ManageAddRQ addRQ) {
         UserInfo userInfo = UserUtil.transformUserInfo(addRQ);
-        this.userAO.addUserInfo(userInfo, ServletContext.getLoginUname());
+        this.userAO.registerUser(userInfo, ServletContext.getLoginUname());
         return true;
     }
 

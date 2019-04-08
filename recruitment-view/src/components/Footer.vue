@@ -8,23 +8,20 @@
 </template>
 
 <script>
-  import UserApi from '../api/UserApi';
+  import UserApi from '@/api/UserApi';
+  import {UserConstants} from '@/constants/Global';
 
   export default {
     name: 'my-footer',
     data: function () {
       return {
-        userInfo: {
-          userType: {
-            code: 3
-          }
-        },
+        userInfo: {},
         menuList: [],
         menuInfo: {
           patient: [
             {
               path: '/recruitment/list',
-              icon: 'more-o',
+              icon: 'orders-o',
               text: '任务列表'
             },
             {
@@ -34,6 +31,23 @@
             },
             {
               path: '/patient/info',
+              icon: 'user-o',
+              text: '我'
+            }
+          ],
+          doctor: [
+            {
+              path: '/recruitment/list',
+              icon: 'orders-o',
+              text: '任务列表'
+            },
+            {
+              path: '/recruitment/applicationList',
+              icon: 'records',
+              text: '申请记录'
+            },
+            {
+              path: '/doctor/info',
               icon: 'user-o',
               text: '我'
             }
@@ -52,8 +66,10 @@
       initMenu: function () {
         if (typeof this.userInfo.userId === 'undefined') {
           this.menuList = this.menuInfo.patient;
-        } else if (this.userInfo.userType.code === 3) {
+        } else if (this.userInfo.userType.code === UserConstants.PATIENT) {
           this.menuList = this.menuInfo.patient;
+        } else if (this.userInfo.userType.code === UserConstants.DOCTOR) {
+          this.menuList = this.menuInfo.doctor;
         }
         this.initActiveMenu();
       },

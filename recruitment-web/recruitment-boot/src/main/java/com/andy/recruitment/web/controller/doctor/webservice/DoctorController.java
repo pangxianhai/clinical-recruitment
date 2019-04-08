@@ -47,21 +47,21 @@ public class DoctorController {
         this.regionAO = regionAO;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register(String redirectURL, Integer userType, String openId, String nickname,
-                           Map<String, Object> model) {
-        UserInfo userInfo = this.userAO.getUserInfoByOpenId(openId);
-        if (null != userInfo) {
-            this.userAO.saveUserInfoCookie(userInfo, ServletContext.getResponse());
-            return "redirect:" + redirectURL;
-        } else {
-            model.put("redirectURL", redirectURL);
-            model.put("userType", userType);
-            model.put("openId", openId);
-            model.put("nickname", nickname);
-            return "doctor/register";
-        }
-    }
+//    @RequestMapping(value = "/register", method = RequestMethod.GET)
+//    public String register(String redirectURL, Integer userType, String openId, String nickname,
+//                           Map<String, Object> model) {
+//        UserInfo userInfo = this.userAO.getUserInfoByOpenId(openId);
+//        if (null != userInfo) {
+//            this.userAO.saveUserInfoCookie(userInfo, ServletContext.getResponse());
+//            return "redirect:" + redirectURL;
+//        } else {
+//            model.put("redirectURL", redirectURL);
+//            model.put("userType", userType);
+//            model.put("openId", openId);
+//            model.put("nickname", nickname);
+//            return "doctor/register";
+//        }
+//    }
 
     @Login
     @RequestMapping(value = "/me", method = RequestMethod.GET)

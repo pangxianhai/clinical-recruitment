@@ -34,17 +34,4 @@ public class IndexController {
             return "redirect:/recruitment/list-pc";
         }
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.POST})
-    public String initUser() {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setPhone("17780583960");
-        userInfo.setPassword("123456");
-        userInfo.setUserType(UserType.ADMIN);
-        userInfo.setRealName("庞先海");
-        userInfo.setGender(Gender.MALE);
-        this.userAO.addUserInfo(userInfo, "系统");
-        return "True";
-    }
 }

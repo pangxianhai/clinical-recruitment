@@ -60,7 +60,6 @@
 <script>
   import AsyncValidator from 'async-validator';
   import PatientApi from '@/api/PatientApi';
-  import {Toast} from 'vant';
 
   export default {
     data: function () {
@@ -104,7 +103,7 @@
         this.validatorAll().then(() => {
           PatientApi.registerPatient(this.patientInfo).then(data => {
             if (data) {
-              Toast.success('注册成功！');
+              this.$toast.success('注册成功！');
             }
           });
         }).catch(({errors, fields}) => {

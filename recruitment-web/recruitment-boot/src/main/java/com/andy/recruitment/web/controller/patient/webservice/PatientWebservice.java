@@ -7,7 +7,6 @@ import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.user.ao.UserAO;
-import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.patient.request.PatientAddRQ;
 import com.andy.recruitment.web.controller.patient.request.PatientQueryRQ;
@@ -49,11 +48,13 @@ public class PatientWebservice {
         this.userAO = userAO;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public boolean register(@RequestBody PatientAddRQ patientAddRQ) {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public boolean patientRegister(@RequestBody PatientAddRQ patientAddRQ) {
+        String operator = UserUtil.getOperator(patientAddRQ.getName());
         PatientInfo patientInfo = PatientUtil.transformPatientInfo(patientAddRQ, regionAO);
         UserInfo userInfo = PatientUtil.transformUserInfo(patientAddRQ);
         patientInfo.setUserInfo(userInfo);
+        this.patientAO.registerPatient(patientInfo, operator);
         return true;
     }
 
@@ -68,22 +69,6 @@ public class PatientWebservice {
             patientVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
         }
         return new PageResult<>(patientVOList, pageResult.getPaginator());
-    }
-
-    @Login
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public boolean add(@RequestBody PatientAddRQ addRQ) {
-        LoginInfo loginInfo = ServletContext.getLoginInfo();
-        UserInfo userInfo = new UserInfo();
-        userInfo.setPhone(addRQ.getPhone());
-        userInfo.setRealName(addRQ.getName());
-        userInfo.setGender(Gender.parse(addRQ.getGender()));
-        Long userId = this.userAO.addUserInfo(userInfo, loginInfo.getRealName());
-
-        PatientInfo patientInfo = PatientUtil.transformPatientInfo(addRQ, regionAO);
-        patientInfo.setUserId(userId);
-        this.patientAO.addPatientInfo(patientInfo, loginInfo.getRealName());
-        return true;
     }
 
     @Login

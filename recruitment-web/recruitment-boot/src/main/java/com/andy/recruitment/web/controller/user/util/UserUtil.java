@@ -8,7 +8,9 @@ import com.andy.recruitment.user.model.UserQueryParam;
 import com.andy.recruitment.web.controller.user.request.ManageAddRQ;
 import com.andy.recruitment.web.controller.user.request.UserQueryRQ;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
+import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.util.CollectionUtil;
+import com.xgimi.context.ServletContext;
 import com.xgimi.util.BeanUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +60,10 @@ public class UserUtil {
         userInfo.setGender(Gender.parse(manageAddRQ.getGender()));
         userInfo.setUserType(UserType.ADMIN);
         return userInfo;
+    }
+
+    public static String getOperator(String defaultOperator) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        return null == loginInfo ? defaultOperator : loginInfo.getRealName();
     }
 }

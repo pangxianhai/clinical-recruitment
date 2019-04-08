@@ -33,19 +33,6 @@ public class LoginWebservice {
         this.weiXinAO = weiXinAO;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public UserInfoVO getCurrentUserInfo() {
-        LoginInfo loginInfo = ServletContext.getLoginInfo();
-        if (null == loginInfo) {
-            return null;
-        }
-        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
-        if (null == userInfo) {
-            return null;
-        }
-        return UserUtil.transformUserInfoVO(userInfo);
-    }
-
     @RequestMapping(value = "/wx", method = RequestMethod.GET)
     public String getWxLoginUrl(String redirectURL) {
         return weiXinAO.getWeiXinLoginUrl(redirectURL);

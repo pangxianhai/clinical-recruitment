@@ -61,16 +61,54 @@
                                     @click="onContactUs">联系我们
                         </van-button>
                     </van-col>
-                    <van-col style="margin-left: 15px">
+                    <van-col v-if="userInfo.userType.code === UserConstants.PATIENT"
+                             style="margin-left: 15px">
                         <van-button type="warning" size="small"
                                     @click="onRecruitmentApplication(item)">
                             我要参加
+                        </van-button>
+                    </van-col>
+                    <van-col v-if="userInfo.userType.code === UserConstants.DOCTOR"
+                             style="margin-left: 15px">
+                        <van-button type="warning" size="small"
+                                    @click="onRecruitmentApplication(item)">
+                            我要推荐
+                        </van-button>
+                    </van-col>
+                    <van-col v-if="userInfo.userType.code === UserConstants.DOCTOR"
+                             style="margin-left: 15px">
+                        <van-button type="danger" size="small"
+                                    @click="onRecommendQrcode(item)">
+                            推荐二维码
                         </van-button>
                     </van-col>
                 </van-row>
             </van-panel>
         </van-list>
         <my-footer></my-footer>
+        <van-popup v-model="recommendQrcode"
+                   position="bottom"
+                   :overlay="true"
+                   :lazy-render="false"
+                   class="recommend-qrcode">
+            <van-panel :title="recommendQrcodeTitle">
+            </van-panel>
+            <div class="qrcode">
+                <canvas id="canvas" code=""></canvas>
+            </div>
+            <van-row style="margin-bottom: 8px">
+                <van-col span="9" offset="2">
+                    <van-button size="normal" type="warning" block
+                                @click="recommendQrcode=false">取消
+                    </van-button>
+                </van-col>
+                <van-col span="9" offset="2">
+                    <van-button size="normal" type="info" block @click="recommendQrcode=false">
+                        确定
+                    </van-button>
+                </van-col>
+            </van-row>
+        </van-popup>
     </div>
 </template>
 
@@ -121,19 +159,31 @@
         line-height: 22px;
         color: #888;
     }
+
+    .recommend-qrcode .qrcode {
+        width: 100%;
+        text-align: center;
+    }
 </style>
 
 <script>
+
+  import QRCode from 'qrcode';
   import AddressSelect from "@/components/AddressSelect";
   import RecruitmentApi from '@/api/RecruitmentApi';
   import UserApi from '@/api/UserApi';
+  import {UserConstants} from '@/constants/Global';
 
   export default {
     components: {AddressSelect},
     data: function () {
       return {
+        userInfo: {},
+        UserConstants: UserConstants,
         showAddress: false,
         showRecommend: false,
+        recommendQrcode: false,
+        recommendQrcodeTitle: '',
         recruitmentInfList: [],
         recruitmentLoading: false,
         recruitmentFinished: false,
@@ -142,13 +192,18 @@
           indication: '',
           addressText: '',
           currentPage: 1,
-          pageSize: 1
+          pageSize: 10
         },
         recommendList: ['所有疾病类型', '糖尿病', '肺癌', '胃癌、结肠直癌', '食道癌', '肝癌、胆道癌', '乳腺癌', '脑癌、甲状腺癌', '泌尿生殖',
           '淋巴癌、白血病', '神经系统', '风湿免疫', '胰腺癌', '实体瘤', '黑色素瘤', '软组织肉瘤', '鼻咽癌'],
         showRecommendText: '所有疾病类型',
         showAddressText: '所有城市'
       }
+    },
+    created: function () {
+      UserApi.getLogInfo().then(userInfo => {
+        this.userInfo = userInfo;
+      });
     },
     methods: {
       onLoadRecruitment: function () {
@@ -226,6 +281,22 @@
           path: '/site/contactUs',
           query: {
             redirectURL: this.$route.path
+          }
+        });
+      },
+      onRecommendQrcode: function (recruitmentInfo) {
+        let canvas = document.getElementById('canvas');
+        let recommendUrl = process.env.VUE_APP_HOST + '/recruitment/application?recruitmentId='
+            + recruitmentInfo.recruitmentId;
+        QRCode.toCanvas(canvas, recommendUrl, {
+          width: 320,
+          height: 320
+        }, (error) => {
+          if (error) {
+            window.console.log(error);
+          } else {
+            this.recommendQrcode = true;
+            this.recommendQrcodeTitle = recruitmentInfo.title;
           }
         });
       }

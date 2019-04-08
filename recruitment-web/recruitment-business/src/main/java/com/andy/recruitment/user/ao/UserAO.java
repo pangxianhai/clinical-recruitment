@@ -15,6 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 public interface UserAO {
 
     /**
+     * 注册用户信息
+     *
+     * @param userInfo 用户信息
+     * @param operator 操作人
+     * @return 用户ID
+     */
+    Long registerUser(UserInfo userInfo, String operator);
+
+    /**
      * 通过用户ID查询用户信息
      *
      * @param userId 用户ID
@@ -87,15 +96,6 @@ public interface UserAO {
      * @return 用户信息
      */
     UserInfo loginByPhone(String phone, String password);
-
-    /**
-     * 添加用户信息
-     *
-     * @param userInfo 用户信息
-     * @param operator 操作人
-     * @return 用户ID
-     */
-    Long addUserInfo(UserInfo userInfo, String operator);
 
     /**
      * 分页用户查询

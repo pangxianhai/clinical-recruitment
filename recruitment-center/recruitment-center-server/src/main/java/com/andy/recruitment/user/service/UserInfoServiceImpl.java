@@ -38,7 +38,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public Long addUserInfo(UserInfo userInfo, String operator) {
+    public Long registerUser(UserInfo userInfo, String operator) {
         UserInfo existUserInfo = this.getUserInfoByPhone(userInfo.getPhone());
         if (null == existUserInfo) {
             if (StringUtil.isNotEmpty(userInfo.getPhone()) && StringUtil.isNotEmpty(userInfo.getPassword())) {

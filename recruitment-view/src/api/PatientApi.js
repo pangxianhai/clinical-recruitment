@@ -5,6 +5,6 @@ export default {
     return await ApiUtil.get('/patient/currentInfo', {});
   },
   registerPatient: async (params) => {
-    return await ApiUtil.post('/patient/register', params);
+    return await ApiUtil.post('/patient', params);
   }
 }

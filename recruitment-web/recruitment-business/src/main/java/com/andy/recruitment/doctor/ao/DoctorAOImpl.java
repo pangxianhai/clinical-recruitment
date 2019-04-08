@@ -3,6 +3,9 @@ package com.andy.recruitment.doctor.ao;
 import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.doctor.model.DoctorQueryParam;
 import com.andy.recruitment.doctor.service.DoctorInfoService;
+import com.andy.recruitment.exception.BusinessErrorCode;
+import com.andy.recruitment.exception.BusinessException;
+import com.andy.recruitment.user.service.UserInfoService;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +21,30 @@ public class DoctorAOImpl implements DoctorAO {
 
     private final DoctorInfoService doctorInfoService;
 
+    private final UserInfoService userInfoService;
+
     @Autowired
-    public DoctorAOImpl(DoctorInfoService doctorInfoService) {
+    public DoctorAOImpl(DoctorInfoService doctorInfoService, UserInfoService userInfoService) {
         this.doctorInfoService = doctorInfoService;
+        this.userInfoService = userInfoService;
     }
 
     @Override
-    public void addDoctorInfo(DoctorInfo doctorInfo, String operator) {
-        this.doctorInfoService.addDoctorInfo(doctorInfo, operator);
+    public DoctorInfo registerDoctor(DoctorInfo doctorInfo, String operator) {
+        if (null == doctorInfo.getUserInfo()) {
+            throw new BusinessException(BusinessErrorCode.USER_NOT_EMPTY);
+        }
+        Long userId = this.userInfoService.registerUser(doctorInfo.getUserInfo(), operator);
+        doctorInfo.setUserId(userId);
+        DoctorInfo existDoctorInfo = this.doctorInfoService.getDoctorInfoByUserId(userId);
+        if (null == existDoctorInfo) {
+            Long doctorId = this.doctorInfoService.addDoctorInfo(doctorInfo, operator);
+            doctorInfo.setDoctorId(doctorId);
+        } else {
+            doctorInfo.setDoctorId(existDoctorInfo.getDoctorId());
+            this.doctorInfoService.updateDoctorInfo(doctorInfo, operator);
+        }
+        return doctorInfo;
     }
 
     @Override

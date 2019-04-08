@@ -38,8 +38,21 @@
             } else {
               this.$router.push({path: '/patient/register'});
             }
+          } else if (this.UserConstants.DOCTOR === parseInt(userType)) {
+            if ('application' === query.action && query.recruitmentId.length > 0) {
+              //医生替患者报名
+            } else {
+              this.$router.push({
+                path: '/doctor/register',
+                query: {
+                  openId: userInfo.openId,
+                  nickname: userInfo.nickname
+                }
+              });
+            }
           }
         } else {
+          //已登陆的用户
           UserApi.saveUserId(userInfo.userId);
           this.$router.push({path: '/recruitment/list'});
         }

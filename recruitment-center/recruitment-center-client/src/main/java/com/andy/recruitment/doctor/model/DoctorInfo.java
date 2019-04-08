@@ -1,5 +1,6 @@
 package com.andy.recruitment.doctor.model;
 
+import com.andy.recruitment.user.model.UserInfo;
 import java.io.Serializable;
 
 /**
@@ -37,6 +38,10 @@ public class DoctorInfo implements Serializable {
      * 执业类别
      */
     private String medicalCategory;
+    /**
+     * 医生相关的用户信息
+     */
+    private UserInfo userInfo;
 
     public Long getDoctorId() {
         return doctorId;
@@ -92,5 +97,13 @@ public class DoctorInfo implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

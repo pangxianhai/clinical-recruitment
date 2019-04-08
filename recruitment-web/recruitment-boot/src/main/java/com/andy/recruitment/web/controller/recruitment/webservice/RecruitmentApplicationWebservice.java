@@ -92,17 +92,12 @@ public class RecruitmentApplicationWebservice {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Long applicationRecruitment(@RequestBody RecruitmentApplicationRQ applicationRQ) {
-        String operator;
+        String operator = UserUtil.getOperator(applicationRQ.getName());
         LoginInfo loginInfo = ServletContext.getLoginInfo();
-        if (null == loginInfo) {
-            operator = applicationRQ.getName();
-        } else {
-            operator = loginInfo.getRealName();
-        }
         PatientInfo patientInfo = PatientUtil.transformPatientInfo(applicationRQ, regionAO);
         UserInfo userInfo = PatientUtil.transformUserInfo(applicationRQ);
         patientInfo.setUserInfo(userInfo);
-        patientInfo = this.patientAO.addPatientInfo(patientInfo, operator);
+        patientInfo = this.patientAO.registerPatient(patientInfo, operator);
 
         RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
         applicationInfo.setPatientId(patientInfo.getPatientId());

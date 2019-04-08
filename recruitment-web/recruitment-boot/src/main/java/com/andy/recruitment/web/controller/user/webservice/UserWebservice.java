@@ -2,6 +2,9 @@ package com.andy.recruitment.web.controller.user.webservice;
 
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserStatus;
+import com.andy.recruitment.user.model.UserInfo;
+import com.andy.recruitment.web.controller.user.response.UserInfoVO;
+import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.context.ServletContext;
@@ -25,6 +28,16 @@ public class UserWebservice {
     @Autowired
     public UserWebservice(UserAO userAO) {
         this.userAO = userAO;
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public UserInfoVO getCurrentUserInfo() {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        if (null == loginInfo) {
+            return null;
+        }
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        return UserUtil.transformUserInfoVO(userInfo);
     }
 
     @Login

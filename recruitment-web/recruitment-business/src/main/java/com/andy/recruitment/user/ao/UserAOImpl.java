@@ -58,6 +58,11 @@ public class UserAOImpl implements UserAO {
     }
 
     @Override
+    public Long registerUser(UserInfo userInfo, String operator) {
+        return this.userInfoService.registerUser(userInfo, operator);
+    }
+
+    @Override
     public UserInfo getUserInfoByUserId(Long userId) {
         return this.userInfoService.getUserInfoByUserId(userId);
     }
@@ -149,11 +154,6 @@ public class UserAOImpl implements UserAO {
             throw new BusinessException(BusinessErrorCode.USER_FREEZE);
         });
         return userInfo;
-    }
-
-    @Override
-    public Long addUserInfo(UserInfo userInfo, String operator) {
-        return this.userInfoService.addUserInfo(userInfo, operator);
     }
 
     @Override

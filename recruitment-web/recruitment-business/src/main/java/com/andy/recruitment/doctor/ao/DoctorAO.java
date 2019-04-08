@@ -13,12 +13,12 @@ import com.xgimi.commons.page.Paginator;
 public interface DoctorAO {
 
     /**
-     * 添加医生
+     * 注册医生
      *
      * @param doctorInfo 医生信息
      * @param operator   添加人
      */
-    void addDoctorInfo(DoctorInfo doctorInfo, String operator);
+    DoctorInfo registerDoctor(DoctorInfo doctorInfo, String operator);
 
     /**
      * 更新医生信息

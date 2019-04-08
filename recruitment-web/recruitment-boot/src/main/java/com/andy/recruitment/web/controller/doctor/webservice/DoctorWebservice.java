@@ -3,9 +3,10 @@ package com.andy.recruitment.web.controller.doctor.webservice;
 import com.andy.recruitment.doctor.ao.DoctorAO;
 import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.doctor.model.DoctorQueryParam;
+import com.andy.recruitment.exception.BusinessErrorCode;
+import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.region.ao.RegionAO;
 import com.andy.recruitment.user.ao.UserAO;
-import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.doctor.request.DoctorAddRQ;
 import com.andy.recruitment.web.controller.doctor.request.DoctorQueryRQ;
@@ -15,6 +16,7 @@ import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.page.PageResult;
+import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,35 +47,17 @@ public class DoctorWebservice {
         this.userAO = userAO;
     }
 
-    @RequestMapping(value = "/register.json", method = RequestMethod.POST)
-    public boolean register(@RequestBody DoctorAddRQ doctorAddRQ) {
-        UserInfo userInfo = this.userAO.getUserInfoByPhone(doctorAddRQ.getPhone());
-        UserInfo addUserInfo = DoctorUtil.transformUserInfo(doctorAddRQ);
-        if (null == userInfo) {
-            Long userId = this.userAO.addUserInfo(addUserInfo, doctorAddRQ.getName());
-            addUserInfo.setUserId(userId);
-            DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ, regionAO);
-            doctorInfo.setUserId(addUserInfo.getUserId());
-            this.doctorAO.addDoctorInfo(doctorInfo, doctorAddRQ.getName());
-        } else {
-            addUserInfo.setUserId(userInfo.getUserId());
-            this.userAO.updateUserInfo(addUserInfo, addUserInfo.getRealName());
-            DoctorInfo existDoctor = this.doctorAO.getDoctorInfoByUserId(addUserInfo.getUserId());
-            DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ, regionAO);
-            if (null == existDoctor) {
-                doctorInfo.setUserId(addUserInfo.getUserId());
-                this.doctorAO.addDoctorInfo(doctorInfo, doctorAddRQ.getName());
-            } else {
-                doctorInfo.setDoctorId(existDoctor.getDoctorId());
-                this.doctorAO.updateDoctorInfo(doctorInfo, doctorAddRQ.getName());
-            }
-        }
-        this.userAO.saveUserInfoCookie(addUserInfo, ServletContext.getResponse());
-        return true;
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Long register(@RequestBody DoctorAddRQ doctorAddRQ) {
+        DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ, regionAO);
+        UserInfo userInfo = DoctorUtil.transformUserInfo(doctorAddRQ);
+        doctorInfo.setUserInfo(userInfo);
+        String operator = UserUtil.getOperator(doctorAddRQ.getName());
+        return this.doctorAO.registerDoctor(doctorInfo, operator).getUserId();
     }
 
     @Login
-    @RequestMapping(value = "/list.json", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public PageResult<DoctorInfoVO> getDoctorInfo(DoctorQueryRQ queryRQ) {
         DoctorQueryParam queryParam = DoctorUtil.transformDoctorQueryParam(queryRQ);
         PageResult<DoctorInfo> pageResult = this.doctorAO.getDoctorInfo(queryParam, queryRQ.getPaginator());
@@ -86,24 +70,18 @@ public class DoctorWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/add.json", method = RequestMethod.POST)
-    public boolean add(@RequestBody DoctorAddRQ addRQ) {
+    @RequestMapping(value = "/currentInfo", method = RequestMethod.GET)
+    public DoctorInfoVO getDoctorInfo() {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
-
-        UserInfo userInfo = new UserInfo();
-        userInfo.setPhone(addRQ.getPhone());
-        userInfo.setRealName(addRQ.getName());
-        userInfo.setGender(Gender.parse(addRQ.getGender()));
-        Long userId = this.userAO.addUserInfo(userInfo, loginInfo.getRealName());
-
-        try {
-            DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(addRQ, regionAO);
-            doctorInfo.setUserId(userId);
-            this.doctorAO.addDoctorInfo(doctorInfo, loginInfo.getRealName());
-        } catch (Exception e) {
-            this.userAO.delete(userId);
-            throw e;
-        }
-        return true;
+        DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoByUserId(loginInfo.getUserId());
+        AssertUtil.assertNull(doctorInfo, () -> {
+            throw new BusinessException(BusinessErrorCode.OPERATE_ERROR);
+        });
+        DoctorInfoVO doctorInfoVO = DoctorUtil.transformDoctorInfoVO(doctorInfo);
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        doctorInfoVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
+        doctorInfoVO.setAddress(this.regionAO.parseAddressName(doctorInfoVO.getProvinceId(), doctorInfoVO.getCityId(),
+                                                               doctorInfoVO.getDistrictId()));
+        return doctorInfoVO;
     }
 }

@@ -14,13 +14,13 @@ import com.xgimi.commons.page.Paginator;
 public interface UserInfoService {
 
     /**
-     * 添加用户信息
+     * 注册用户信息
      *
      * @param userInfo 用户信息
      * @param operator 操作人
      * @return 用户ID
      */
-    Long addUserInfo(UserInfo userInfo, String operator);
+    Long registerUser(UserInfo userInfo, String operator);
 
     /**
      * 更新用户信息

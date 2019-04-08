@@ -35,7 +35,7 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     }
 
     @Override
-    public void addDoctorInfo(DoctorInfo doctorInfo, String operator) {
+    public Long addDoctorInfo(DoctorInfo doctorInfo, String operator) {
         DoctorInfoDO doctorInfoDO = DoctorInfoUtil.transformDoctorInfoDO(doctorInfo);
         doctorInfoDO.setCreatedBy(operator);
         doctorInfoDO.setCreatedTime(new Timestamp(DateUtil.currentMilliseconds()));
@@ -43,6 +43,7 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         AssertUtil.assertBoolean(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.DOCTOR_ADD_FAILED);
         });
+        return doctorInfoDO.getId();
     }
 
     @Override
