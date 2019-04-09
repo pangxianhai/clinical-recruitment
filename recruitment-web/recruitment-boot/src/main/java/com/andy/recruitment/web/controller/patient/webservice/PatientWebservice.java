@@ -1,7 +1,5 @@
 package com.andy.recruitment.web.controller.patient.webservice;
 
-import com.andy.recruitment.exception.BusinessErrorCode;
-import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.patient.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
@@ -16,7 +14,6 @@ import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.page.PageResult;
-import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
 import com.xgimi.converter.MyParameter;
 import java.util.List;
@@ -71,14 +68,16 @@ public class PatientWebservice {
         return new PageResult<>(patientVOList, pageResult.getPaginator());
     }
 
-    @Login
     @RequestMapping(value = "/currentInfo", method = RequestMethod.GET)
     public PatientVO getPatientInfo() {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
+        if (null == loginInfo) {
+            return null;
+        }
         PatientInfo patientInfo = this.patientAO.getPatientInfoByUserId(loginInfo.getUserId());
-        AssertUtil.assertNull(patientInfo, () -> {
-            throw new BusinessException(BusinessErrorCode.OPERATE_ERROR);
-        });
+        if (null == patientInfo) {
+            return null;
+        }
         PatientVO patientVO = PatientUtil.transformPatientVO(patientInfo);
         UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
         patientVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));

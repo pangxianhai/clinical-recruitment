@@ -180,7 +180,7 @@
         }
       },
       addressSelectConfirm: function (data) {
-        this.applicationInfo.address = data[1].name + " " + data[2].name;
+        this.applicationInfo.address = data[0].name + " " + data[1].name + " " + data[2].name;
         this.showAddress = false;
         this.validator('address');
       },
@@ -209,7 +209,7 @@
           this.applicationInfo.recruitmentId = recruitmentInfo.recruitmentId;
         });
         PatientApi.getCurrentPatientInfo().then(patientInfo => {
-          if (!patientInfo) {
+          if (!patientInfo.patientId) {
             return;
           }
           this.applicationInfo.name = patientInfo.userInfoVO.realName;
