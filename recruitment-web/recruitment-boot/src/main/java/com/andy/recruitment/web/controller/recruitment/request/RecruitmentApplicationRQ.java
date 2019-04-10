@@ -17,7 +17,7 @@ public class RecruitmentApplicationRQ extends PatientAddRQ implements Serializab
     /**
      * 医生ID
      */
-    private Long doctorId;
+    private Long doctorUserId;
 
     public Long getRecruitmentId() {
         return recruitmentId;
@@ -27,11 +27,11 @@ public class RecruitmentApplicationRQ extends PatientAddRQ implements Serializab
         this.recruitmentId = recruitmentId;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
+    public Long getDoctorUserId() {
+        return doctorUserId;
     }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorUserId(Long doctorUserId) {
+        this.doctorUserId = doctorUserId;
     }
 }

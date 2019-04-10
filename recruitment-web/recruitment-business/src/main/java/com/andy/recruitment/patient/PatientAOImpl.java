@@ -2,6 +2,8 @@ package com.andy.recruitment.patient;
 
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
+import com.andy.recruitment.exception.RecruitmentErrorCode;
+import com.andy.recruitment.exception.RecruitmentException;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.andy.recruitment.patient.service.PatientInfoService;
@@ -36,15 +38,20 @@ public class PatientAOImpl implements PatientAO {
         }
         Long userId = this.userInfoService.registerUser(patientInfo.getUserInfo(), operator);
         patientInfo.setUserId(userId);
-        PatientInfo existPatientInfo = this.patientInfoService.getPatientInfoByUserId(userId);
-        if (null == existPatientInfo) {
-            Long patientId = this.patientInfoService.addPatientInfo(patientInfo, operator);
-            patientInfo.setPatientId(patientId);
-        } else {
-            patientInfo.setPatientId(existPatientInfo.getPatientId());
-            this.patientInfoService.updatePatientInfo(patientInfo, operator);
+        try {
+            PatientInfo existPatientInfo = this.patientInfoService.getPatientInfoByUserId(userId);
+            if (null == existPatientInfo) {
+                Long patientId = this.patientInfoService.addPatientInfo(patientInfo, operator);
+                patientInfo.setPatientId(patientId);
+            } else {
+                patientInfo.setPatientId(existPatientInfo.getPatientId());
+                this.patientInfoService.updatePatientInfo(patientInfo, operator);
+            }
+            return patientInfo;
+        } catch (Exception e) {
+            this.userInfoService.delete(userId);
+            throw new RecruitmentException(RecruitmentErrorCode.PATIENT_ADD_FAILED, e);
         }
-        return patientInfo;
     }
 
     @Override

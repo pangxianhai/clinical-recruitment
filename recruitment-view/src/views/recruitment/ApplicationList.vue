@@ -11,7 +11,9 @@
                        :key="index">
                 <van-row type="flex">
                     <van-col span="5">患者姓名:</van-col>
-                    <van-col span="8">{{item.patientVO.userInfoVO.realName}}</van-col>
+                    <van-col span="8">
+                        <span v-if="item.patientVO">{{item.patientVO.userInfoVO.realName}}</span>
+                    </van-col>
                     <van-col span="5">状态:</van-col>
                     <van-col span="3">{{item.status.desc}}</van-col>
                 </van-row>
@@ -19,7 +21,9 @@
                     <van-col span="5">报名时间:</van-col>
                     <van-col span="8">{{item.applicationTime}}</van-col>
                     <van-col span="5">推荐医生:</van-col>
-                    <van-col span="3" v-if="item.doctorInfoVO">{{item.doctorInfoVO.userInfoVO.realName}}</van-col>
+                    <van-col span="3" v-if="item.doctorInfoVO">
+                        {{item.doctorInfoVO.userInfoVO.realName}}
+                    </van-col>
                 </van-row>
             </van-panel>
         </van-list>

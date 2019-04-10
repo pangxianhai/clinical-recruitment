@@ -178,7 +178,12 @@
     components: {AddressSelect},
     data: function () {
       return {
-        userInfo: {},
+        userInfo: {
+          userType: {
+            //默认为患者
+            code: UserConstants.PATIENT,
+          }
+        },
         UserConstants: UserConstants,
         showAddress: false,
         showRecommend: false,
@@ -202,7 +207,9 @@
     },
     created: function () {
       UserApi.getLogInfo().then(userInfo => {
-        this.userInfo = userInfo;
+        if (userInfo.userId) {
+          this.userInfo = userInfo;
+        }
       });
     },
     methods: {
@@ -287,7 +294,7 @@
       onRecommendQrcode: function (recruitmentInfo) {
         let canvas = document.getElementById('canvas');
         let recommendUrl = process.env.VUE_APP_HOST + '/recruitment/application?recruitmentId='
-            + recruitmentInfo.recruitmentId;
+            + recruitmentInfo.recruitmentId + "&doctorUserId=" + this.userInfo.userId;
         QRCode.toCanvas(canvas, recommendUrl, {
           width: 320,
           height: 320

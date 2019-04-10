@@ -7,7 +7,7 @@ package com.andy.recruitment.exception;
  */
 public enum RecruitmentErrorCode {
     /**
-     * 添加医生失败
+     * 注册医生失败
      */
     DOCTOR_ADD_FAILED(101100),
     /**
@@ -20,7 +20,7 @@ public enum RecruitmentErrorCode {
     DOCTOR_UPDATE_FAILED(101102),
 
     /**
-     * 添加患者失败
+     * 注册患者失败
      */
     PATIENT_ADD_FAILED(101200),
     /**

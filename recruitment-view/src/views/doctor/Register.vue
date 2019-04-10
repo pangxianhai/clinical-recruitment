@@ -139,7 +139,7 @@
         }
       },
       addressSelectConfirm: function (data) {
-        this.doctorInfo.address = data[1].name + " " + data[2].name;
+        this.doctorInfo.address = data[0].name + " " + data[1].name + " " + data[2].name;
         this.showAddress = false;
         this.validator('address');
       },

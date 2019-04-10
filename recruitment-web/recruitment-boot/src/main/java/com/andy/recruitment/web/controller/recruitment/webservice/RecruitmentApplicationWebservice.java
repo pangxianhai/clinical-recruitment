@@ -100,6 +100,12 @@ public class RecruitmentApplicationWebservice {
         patientInfo = this.patientAO.registerPatient(patientInfo, operator);
 
         RecruitmentApplicationInfo applicationInfo = RecruitmentUtil.transformApplicationInfo(applicationRQ);
+        if (null != applicationRQ.getDoctorUserId()) {
+            DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoByUserId(applicationRQ.getDoctorUserId());
+            if (null != doctorInfo) {
+                applicationInfo.setDoctorId(doctorInfo.getDoctorId());
+            }
+        }
         applicationInfo.setPatientId(patientInfo.getPatientId());
         if (null != loginInfo) {
             UserInfo loginUserInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());

@@ -140,15 +140,20 @@
                 UserApi.saveUserId(userId);
               }
               setTimeout(() => {
-                let redirectURL = this.$route.query.redirectURL;
-                this.$router.push({path: redirectURL});
+                this.onGoBack();
               }, 2000);
             }
           });
         });
       },
       onApplicationCancelAction: function () {
+        this.onGoBack();
+      },
+      onGoBack: function () {
         let redirectURL = this.$route.query.redirectURL;
+        if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
+          redirectURL = '/recruitment/applicationList';
+        }
         this.$router.push({path: redirectURL});
       },
       validatorApplicationInfo: function (item) {
@@ -221,6 +226,7 @@
         });
         this.applicationInfo.nickname = this.$route.query.nickname;
         this.applicationInfo.openId = this.$route.query.openId;
+        this.applicationInfo.doctorUserId = this.$route.query.doctorUserId;
       }
     }
   }

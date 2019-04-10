@@ -5,6 +5,8 @@ import com.andy.recruitment.doctor.model.DoctorQueryParam;
 import com.andy.recruitment.doctor.service.DoctorInfoService;
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
+import com.andy.recruitment.exception.RecruitmentErrorCode;
+import com.andy.recruitment.exception.RecruitmentException;
 import com.andy.recruitment.user.service.UserInfoService;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.page.Paginator;
@@ -36,15 +38,20 @@ public class DoctorAOImpl implements DoctorAO {
         }
         Long userId = this.userInfoService.registerUser(doctorInfo.getUserInfo(), operator);
         doctorInfo.setUserId(userId);
-        DoctorInfo existDoctorInfo = this.doctorInfoService.getDoctorInfoByUserId(userId);
-        if (null == existDoctorInfo) {
-            Long doctorId = this.doctorInfoService.addDoctorInfo(doctorInfo, operator);
-            doctorInfo.setDoctorId(doctorId);
-        } else {
-            doctorInfo.setDoctorId(existDoctorInfo.getDoctorId());
-            this.doctorInfoService.updateDoctorInfo(doctorInfo, operator);
+        try {
+            DoctorInfo existDoctorInfo = this.doctorInfoService.getDoctorInfoByUserId(userId);
+            if (null == existDoctorInfo) {
+                Long doctorId = this.doctorInfoService.addDoctorInfo(doctorInfo, operator);
+                doctorInfo.setDoctorId(doctorId);
+            } else {
+                doctorInfo.setDoctorId(existDoctorInfo.getDoctorId());
+                this.doctorInfoService.updateDoctorInfo(doctorInfo, operator);
+            }
+            return doctorInfo;
+        } catch (Exception e) {
+            this.userInfoService.delete(userId);
+            throw new RecruitmentException(RecruitmentErrorCode.DOCTOR_ADD_FAILED, e);
         }
-        return doctorInfo;
     }
 
     @Override
