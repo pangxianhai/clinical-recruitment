@@ -9,71 +9,71 @@ export default new Router({
   routes: [
     {
       path: '/recruitment',
-      component: import("@/views/recruitment/Layout"),
+      component: () => import("@/views/recruitment/Layout"),
       children: [
         {
           path: 'list',
-          component: import("@/views/recruitment/List"),
+          component: () => import("@/views/recruitment/List"),
         },
         {
           path: 'applicationList',
-          component: import("@/views/recruitment/ApplicationList"),
+          component: () => import("@/views/recruitment/ApplicationList"),
         },
         {
           path: 'application',
-          component: import("@/views/recruitment/Application"),
+          component: () => import("@/views/recruitment/Application"),
         }
       ]
     },
     {
       path: '/patient',
-      component: import("@/views/patient/Layout"),
+      component: () => import("@/views/patient/Layout"),
       children: [
         {
           path: 'info',
-          component: import("@/views/patient/PatientInfo"),
+          component: () => import("@/views/patient/PatientInfo"),
         },
         {
           path: 'register',
-          component: import("@/views/patient/Register"),
+          component: () => import("@/views/patient/Register"),
         }
       ]
     },
     {
       path: '/user',
-      component: import("@/views/user/Layout"),
+      component: () => import("@/views/user/Layout"),
       children: [
         {
           path: 'login',
-          component: import("@/views/user/Login"),
+          component: () => import("@/views/user/Login"),
         },
         {
           path: 'wxlogin',
-          component: import("@/views/user/WxLogin"),
+          component: () => import("@/views/user/WxLogin"),
         },
       ]
     },
     {
       path: '/site',
-      component: import("@/views/site/Layout"),
+      component: () => import("@/views/site/Layout"),
       children: [
         {
           path: 'contactUs',
-          component: import("@/views/site/ContactUs")
+          component: () => import("@/views/site/ContactUs")
         },
       ]
     },
     {
       path: '/doctor',
-      component: import("@/views/doctor/Layout"),
+      component: () => import("@/views/doctor/Layout"),
       children: [
         {
           path: 'register',
-          component: import("@/views/doctor/Register")
+          component: () => import("@/views/doctor/Register")
         },
         {
           path: 'info',
-          component: import("@/views/doctor/DoctorInfo"),
+          component: () => import("@/views/doctor/DoctorInfo"),
         }
       ]
     }

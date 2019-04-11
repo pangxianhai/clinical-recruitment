@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
-    "build": "vue-cli-service build --mode product",
-    "lint": "vue-cli-service lint --mode product",
+    "build": "vue-cli-service build --mode production",
+    "lint": "vue-cli-service lint --mode production",
     "analyzer": "use_analyzer=true npm run build"
   },
   "dependencies": {
