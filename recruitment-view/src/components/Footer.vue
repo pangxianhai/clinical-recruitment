@@ -8,11 +8,16 @@
 </template>
 
 <script>
+  import {Tabbar, TabbarItem} from 'vant';
   import UserApi from '@/api/UserApi';
   import {UserConstants} from '@/constants/Global';
 
   export default {
     name: 'my-footer',
+    components: {
+      [Tabbar.name]: Tabbar,
+      [TabbarItem.name]: TabbarItem,
+    },
     data: function () {
       return {
         userInfo: {},

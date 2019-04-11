@@ -11,7 +11,7 @@
         </van-swipe>
         <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="searchParam.queryText"
                     @search="recruitmentOnSearch"></van-search>
-        <van-row style="padding-bottom: 10px">
+        <van-row style="padding-bottom: 10px;background-color: #FFF">
             <van-col class="title" span="6">智能推荐</van-col>
             <van-col class="choice" span="8" offset="1">{{showRecommendText}}
                 <van-icon name="arrow-down" @click="showRecommend = !showRecommend"></van-icon>
@@ -167,15 +167,30 @@
 </style>
 
 <script>
-  import {} from 'vant';
+  import {NavBar, Button, List, Icon, Search, Row, Col, Popup, Swipe, SwipeItem, Panel} from 'vant';
   import QRCode from 'qrcode';
   import AddressSelect from "@/components/AddressSelect";
   import RecruitmentApi from '@/api/RecruitmentApi';
   import UserApi from '@/api/UserApi';
   import {UserConstants} from '@/constants/Global';
+  import Footer from '@/components/Footer';
 
   export default {
-    components: {AddressSelect},
+    components: {
+      [AddressSelect.name]: AddressSelect,
+      [Footer.name]: Footer,
+      [NavBar.name]: NavBar,
+      [Button.name]: Button,
+      [List.name]: List,
+      [Icon.name]: Icon,
+      [Search.name]: Search,
+      [Row.name]: Row,
+      [Col.name]: Col,
+      [Popup.name]: Popup,
+      [Swipe.name]: Swipe,
+      [SwipeItem.name]: SwipeItem,
+      [Panel.name]: Panel,
+    },
     data: function () {
       return {
         userInfo: {

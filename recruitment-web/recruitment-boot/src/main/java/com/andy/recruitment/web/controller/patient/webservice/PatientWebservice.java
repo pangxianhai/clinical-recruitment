@@ -46,13 +46,12 @@ public class PatientWebservice {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public boolean patientRegister(@RequestBody PatientAddRQ patientAddRQ) {
+    public Long patientRegister(@RequestBody PatientAddRQ patientAddRQ) {
         String operator = UserUtil.getOperator(patientAddRQ.getName());
         PatientInfo patientInfo = PatientUtil.transformPatientInfo(patientAddRQ, regionAO);
         UserInfo userInfo = PatientUtil.transformUserInfo(patientAddRQ);
         patientInfo.setUserInfo(userInfo);
-        this.patientAO.registerPatient(patientInfo, operator);
-        return true;
+        return this.patientAO.registerPatient(patientInfo, operator).getUserId();
     }
 
     @Login

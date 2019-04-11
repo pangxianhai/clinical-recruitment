@@ -106,12 +106,40 @@
     }
 </style>
 <script>
+  import {
+    NavBar,
+    Button,
+    Icon,
+    Row,
+    Col,
+    Popup,
+    Cell,
+    CellGroup,
+    Uploader,
+    Field,
+    Picker
+  } from 'vant';
+  import AddressSelect from "@/components/AddressSelect";
   import AsyncValidator from 'async-validator';
   import RecruitmentApi from "@/api/RecruitmentApi";
   import PatientApi from "@/api/PatientApi";
   import UserApi from "@/api/UserApi";
 
   export default {
+    components: {
+      [NavBar.name]: NavBar,
+      [Button.name]: Button,
+      [Icon.name]: Icon,
+      [Row.name]: Row,
+      [Col.name]: Col,
+      [Popup.name]: Popup,
+      [Cell.name]: Cell,
+      [CellGroup.name]: CellGroup,
+      [Uploader.name]: Uploader,
+      [Field.name]: Field,
+      [Picker.name]: Picker,
+      [AddressSelect.name]: AddressSelect,
+    },
     data: function () {
       return {
         recruitment: {

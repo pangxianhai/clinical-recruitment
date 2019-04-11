@@ -1,6 +1,6 @@
 <template>
     <div class="patient-register">
-        <van-nav-bar title=" 患者注册"></van-nav-bar>
+        <van-nav-bar title="患者注册" left-arrow @click-left="onGoBack"></van-nav-bar>
         <van-cell-group>
             <van-field
                 v-model="patientInfo.name"
@@ -20,6 +20,23 @@
                 :error-message="errorMsg.phone"
                 @blur="validator('phone')"
             ></van-field>
+            <van-field
+                v-model="patientInfo.genderShow"
+                required
+                clearable
+                label="性别"
+                placeholder="请选择性别"
+                :error-message="errorMsg.genderShow"
+                @blur="validator('genderShow')"
+                @focus="showGenderPopup = true"
+            ></van-field>
+            <van-popup v-model="showGenderPopup" position="bottom">
+                <van-picker :columns="genderList" show-toolbar title="选择性别"
+                            @change="onChangeGender" @confirm="onConfirmGender"
+                            cancel-button-text=""
+                            :visible-item-count=3>
+                </van-picker>
+            </van-popup>
             <van-field
                 v-model="patientInfo.address"
                 required
@@ -58,14 +75,30 @@
 </style>
 
 <script>
+  import {NavBar, CellGroup, Button, Col, Field, Popup, Picker, Row} from 'vant';
+  import AddressSelect from "@/components/AddressSelect";
   import AsyncValidator from 'async-validator';
   import PatientApi from '@/api/PatientApi';
+  import UserApi from "@/api/UserApi";
 
   export default {
+    components: {
+      [NavBar.name]: NavBar,
+      [CellGroup.name]: CellGroup,
+      [Button.name]: Button,
+      [Col.name]: Col,
+      [Field.name]: Field,
+      [Popup.name]: Popup,
+      [Picker.name]: Picker,
+      [Row.name]: Row,
+      [AddressSelect.name]: AddressSelect,
+    },
     data: function () {
       return {
         showAddress: false,
         patientInfo: {},
+        showGenderPopup: false,
+        genderList: [{text: '男', value: 1}, {text: '女', value: 2}],
         errorMsg: {
           name: '',
           phone: ''
@@ -98,12 +131,20 @@
         }
       }
     },
+    created: function () {
+      this.patientInfo.openId = this.$route.query.openId;
+      this.patientInfo.nickname = this.$route.query.nickname;
+    },
     methods: {
       patientRegister: function () {
         this.validatorAll().then(() => {
-          PatientApi.registerPatient(this.patientInfo).then(data => {
-            if (data) {
-              this.$toast.success('注册成功！');
+          PatientApi.registerPatient(this.patientInfo).then(userId => {
+            if (userId) {
+              UserApi.saveUserId(userId);
+              this.$toast.success('注册成功！即将跳转');
+              setTimeout(() => {
+                this.onGoBack();
+              }, 2000);
             }
           });
         }).catch(({errors, fields}) => {
@@ -145,8 +186,18 @@
           this.errorMsg = errorMsg;
         }
       },
+      onChangeGender: function (picker, value) {
+        this.patientInfo.gender = value.value;
+        this.patientInfo.genderShow = value.text;
+        this.showGenderPopup = false;
+      },
+      onConfirmGender: function (value) {
+        this.patientInfo.gender = value.value;
+        this.patientInfo.genderShow = value.text;
+        this.showGenderPopup = false;
+      },
       addressSelectConfirm: function (data) {
-        this.patientInfo.address = data[1].name + data[2].name;
+        this.patientInfo.address = data[0].name + " " + data[1].name + " " + data[2].name;
         this.showAddress = false;
         this.validator('address');
       },
@@ -154,7 +205,14 @@
         this.patientInfo.address = '';
         this.showAddress = false;
         this.validator('address');
-      }
+      },
+      onGoBack: function () {
+        let redirectURL = this.$route.query.redirectURL;
+        if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
+          redirectURL = '/recruitment/list';
+        }
+        this.$router.push({path: redirectURL});
+      },
     }
   }
 </script>

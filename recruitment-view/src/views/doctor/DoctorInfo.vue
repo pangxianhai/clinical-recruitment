@@ -19,9 +19,17 @@
 </template>
 
 <script>
+  import {NavBar, Cell, CellGroup} from 'vant';
+  import Footer from '@/components/Footer';
   import DoctorApi from '@/api/DoctorApi';
 
   export default {
+    components: {
+      [Footer.name]: Footer,
+      [NavBar.name]: NavBar,
+      [Cell.name]: Cell,
+      [CellGroup.name]: CellGroup,
+    },
     data: function () {
       return {
         doctorInfo: {

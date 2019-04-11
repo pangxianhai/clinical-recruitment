@@ -80,11 +80,24 @@
 </template>
 
 <script>
+  import {NavBar, CellGroup, Button, Col, Field, Popup, Picker, Row} from 'vant';
   import AsyncValidator from 'async-validator';
   import DoctorApi from '@/api/DoctorApi';
   import UserApi from "@/api/UserApi";
+  import AddressSelect from "@/components/AddressSelect";
 
   export default {
+    components: {
+      [NavBar.name]: NavBar,
+      [CellGroup.name]: CellGroup,
+      [Button.name]: Button,
+      [Col.name]: Col,
+      [Field.name]: Field,
+      [Popup.name]: Popup,
+      [Picker.name]: Picker,
+      [Row.name]: Row,
+      [AddressSelect.name]: AddressSelect,
+    },
     data: function () {
       return {
         showAddress: false,

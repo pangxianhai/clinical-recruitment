@@ -28,7 +28,16 @@
 </template>
 
 <script>
+  import {NavBar, Swipe, SwipeItem, Collapse, CollapseItem} from 'vant';
+
   export default {
+    components: {
+      [NavBar.name]: NavBar,
+      [Swipe.name]: Swipe,
+      [SwipeItem.name]: SwipeItem,
+      [Collapse.name]: Collapse,
+      [CollapseItem.name]: CollapseItem,
+    },
     data: function () {
       return {
         activeNames: ['1', '2', '3']

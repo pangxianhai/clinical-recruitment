@@ -18,9 +18,17 @@
 </template>
 
 <script>
-  import PatientApi from '@/api/PatientApi'
+  import {NavBar, Cell, CellGroup} from 'vant';
+  import PatientApi from '@/api/PatientApi';
+  import Footer from '@/components/Footer';
 
   export default {
+    components: {
+      [Footer.name]: Footer,
+      [NavBar.name]: NavBar,
+      [Cell.name]: Cell,
+      [CellGroup.name]: CellGroup,
+    },
     data: () => {
       return {
         patientInfo: {

@@ -51,9 +51,20 @@
 </style>
 
 <script>
+  import {NavBar, List, Icon, Panel, Row, Col} from 'vant';
+  import Footer from '@/components/Footer';
   import RecruitmentApi from '@/api/RecruitmentApi';
 
   export default {
+    components: {
+      [Footer.name]: Footer,
+      [NavBar.name]: NavBar,
+      [List.name]: List,
+      [Icon.name]: Icon,
+      [Panel.name]: Panel,
+      [Row.name]: Row,
+      [Col.name]: Col,
+    },
     data: function () {
       return {
         applicationList: [],

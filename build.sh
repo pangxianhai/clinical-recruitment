@@ -21,7 +21,7 @@ function build_view() {
     build_dir=/Users/pangxianhai/www/recruitment-view
     cd /Users/pangxianhai/code/java/clinical-recruitment/recruitment-view
     rm -rf ./dist/*
-    npm run build
+    npm run build-dev
     cd dist
     tar -czf dist.tar.gz ./*
     cd ..

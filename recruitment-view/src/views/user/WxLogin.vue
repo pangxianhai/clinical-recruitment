@@ -4,6 +4,7 @@
 
 <script>
   import {Toast} from 'vant';
+  import {UserConstants} from '@/constants/Global'
   import UserApi from '@/api/UserApi';
 
   export default {
@@ -24,7 +25,7 @@
         Toast.clear();
         let query = this.$route.query;
         if (typeof userInfo.userId === 'undefined') {
-          if (this.UserConstants.PATIENT === parseInt(userType)) {
+          if (UserConstants.PATIENT === parseInt(userType)) {
             if ('application' === query.action && query.recruitmentId.length > 0) {
               this.$router.push({
                 path: '/recruitment/application',
@@ -36,9 +37,17 @@
                 }
               });
             } else {
-              this.$router.push({path: '/patient/register'});
+              this.$router.push({
+                path: '/patient/register',
+                query: {
+                  recruitmentId: query.recruitmentId,
+                  redirectURL: query.redirectURL,
+                  openId: userInfo.openId,
+                  nickname: userInfo.nickname
+                }
+              });
             }
-          } else if (this.UserConstants.DOCTOR === parseInt(userType)) {
+          } else if (UserConstants.DOCTOR === parseInt(userType)) {
             if ('application' === query.action && query.recruitmentId.length > 0) {
               //医生替患者报名
             } else {
