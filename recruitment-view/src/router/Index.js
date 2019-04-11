@@ -9,77 +9,71 @@ export default new Router({
   routes: [
     {
       path: '/recruitment',
-      component: (resolve) => require(["@/views/recruitment/Layout"], resolve),
+      component: import("@/views/recruitment/Layout"),
       children: [
         {
           path: 'list',
-          component: (resolve) => require(["@/views/recruitment/List"],
-              resolve),
+          component: import("@/views/recruitment/List"),
         },
         {
           path: 'applicationList',
-          component: (resolve) => require(
-              ["@/views/recruitment/ApplicationList"], resolve),
+          component: import("@/views/recruitment/ApplicationList"),
         },
         {
           path: 'application',
-          component: (resolve) => require(["@/views/recruitment/Application"],
-              resolve),
+          component: import("@/views/recruitment/Application"),
         }
       ]
     },
     {
       path: '/patient',
-      component: (resolve) => require(["@/views/patient/Layout"], resolve),
+      component: import("@/views/patient/Layout"),
       children: [
         {
           path: 'info',
-          component: (resolve) => require(["@/views/patient/PatientInfo"],
-              resolve),
+          component: import("@/views/patient/PatientInfo"),
         },
         {
           path: 'register',
-          component: (resolve) => require(["@/views/patient/Register"],
-              resolve),
+          component: import("@/views/patient/Register"),
         }
       ]
     },
     {
       path: '/user',
-      component: (resolve) => require(["@/views/user/Layout"], resolve),
+      component: import("@/views/user/Layout"),
       children: [
         {
           path: 'login',
-          component: (resolve) => require(["@/views/user/Login"], resolve),
+          component: import("@/views/user/Login"),
         },
         {
           path: 'wxlogin',
-          component: (resolve) => require(["@/views/user/WxLogin"], resolve),
+          component: import("@/views/user/WxLogin"),
         },
       ]
     },
     {
       path: '/site',
-      component: (resolve) => require(["@/views/site/Layout"], resolve),
+      component: import("@/views/site/Layout"),
       children: [
         {
           path: 'contactUs',
-          component: (resolve) => require(["@/views/site/ContactUs"], resolve)
+          component: import("@/views/site/ContactUs")
         },
       ]
     },
     {
       path: '/doctor',
-      component: (resolve) => require(["@/views/doctor/Layout"], resolve),
+      component: import("@/views/doctor/Layout"),
       children: [
         {
           path: 'register',
-          component: (resolve) => require(["@/views/doctor/Register"], resolve),
+          component: import("@/views/doctor/Register")
         },
         {
           path: 'info',
-          component: (resolve) => require(["@/views/doctor/DoctorInfo"],
-              resolve),
+          component: import("@/views/doctor/DoctorInfo"),
         }
       ]
     }

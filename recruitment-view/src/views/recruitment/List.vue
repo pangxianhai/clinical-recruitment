@@ -167,7 +167,7 @@
 </style>
 
 <script>
-
+  import {} from 'vant';
   import QRCode from 'qrcode';
   import AddressSelect from "@/components/AddressSelect";
   import RecruitmentApi from '@/api/RecruitmentApi';
