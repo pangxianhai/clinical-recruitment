@@ -3,93 +3,83 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-import DoctorLayout from '@/views/doctor/Layout';
-import DoctorRegister from '@/views/doctor/Register';
-import DoctorInfo from '@/views/doctor/DoctorInfo';
-import SiteLayout from '@/views/site/Layout';
-import SiteContactUs from '@/views/site/ContactUs';
-import UserLayout from '@/views/user/Layout';
-import UserLogin from '@/views/user/Login';
-import UserWxLogin from '@/views/user/WxLogin';
-import RecruitmentLayout from '@/views/recruitment/Layout';
-import RecruitmentList from '@/views/recruitment/List';
-import RecruitmentApplicationList from '@/views/recruitment/ApplicationList';
-import RecruitmentApplication from '@/views/recruitment/Application';
-import PatientLayout from '@/views/patient/Layout';
-import PatientInfo from '@/views/patient/PatientInfo';
-import PatientRegister from '@/views/patient/Register';
-
 export default new Router({
   mode: 'history',
   base: __dirname,
   routes: [
     {
       path: '/recruitment',
-      component: RecruitmentLayout,
+      component: (resolve) => require(["@/views/recruitment/Layout"], resolve),
       children: [
         {
           path: 'list',
-          component: RecruitmentList,
+          component: (resolve) => require(["@/views/recruitment/List"],
+              resolve),
         },
         {
           path: 'applicationList',
-          component: RecruitmentApplicationList,
+          component: (resolve) => require(
+              ["@/views/recruitment/ApplicationList"], resolve),
         },
         {
           path: 'application',
-          component: RecruitmentApplication,
+          component: (resolve) => require(["@/views/recruitment/Application"],
+              resolve),
         }
       ]
     },
     {
       path: '/patient',
-      component: PatientLayout,
+      component: (resolve) => require(["@/views/patient/Layout"], resolve),
       children: [
         {
           path: 'info',
-          component: PatientInfo,
+          component: (resolve) => require(["@/views/patient/PatientInfo"],
+              resolve),
         },
         {
           path: 'register',
-          component: PatientRegister,
+          component: (resolve) => require(["@/views/patient/Register"],
+              resolve),
         }
       ]
     },
     {
       path: '/user',
-      component: UserLayout,
+      component: (resolve) => require(["@/views/user/Layout"], resolve),
       children: [
         {
           path: 'login',
-          component: UserLogin,
+          component: (resolve) => require(["@/views/user/Login"], resolve),
         },
         {
           path: 'wxlogin',
-          component: UserWxLogin,
+          component: (resolve) => require(["@/views/user/WxLogin"], resolve),
         },
       ]
     },
     {
       path: '/site',
-      component: SiteLayout,
+      component: (resolve) => require(["@/views/site/Layout"], resolve),
       children: [
         {
           path: 'contactUs',
-          component: SiteContactUs
+          component: (resolve) => require(["@/views/site/ContactUs"], resolve)
         },
       ]
     },
     {
       path: '/doctor',
-      component: DoctorLayout,
+      component: (resolve) => require(["@/views/doctor/Layout"], resolve),
       children: [
         {
           path: 'register',
-          component: DoctorRegister
+          component: (resolve) => require(["@/views/doctor/Register"], resolve),
         },
         {
           path: 'info',
-          component: DoctorInfo
+          component: (resolve) => require(["@/views/doctor/DoctorInfo"],
+              resolve),
         }
       ]
     }
