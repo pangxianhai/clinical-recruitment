@@ -76,6 +76,11 @@
     methods: {
       onLoadApplication: function () {
         RecruitmentApi.getRecruitmentApplication({}).then((pageResult) => {
+          if (!pageResult) {
+            this.applicationLoading = false;
+            this.applicationFinished = true;
+            return;
+          }
           if (this.currentPage === 1) {
             this.applicationList = pageResult.data;
           } else {

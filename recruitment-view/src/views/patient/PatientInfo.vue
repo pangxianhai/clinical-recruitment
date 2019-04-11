@@ -12,15 +12,20 @@
             <van-cell icon="gem-o" title="年龄" :value="patientInfo.age"></van-cell>
             <van-cell icon="location-o" title="地址" :value="patientInfo.address"></van-cell>
         </van-cell-group>
-
+        <van-button style="margin-top: 10px"
+                    size="small" block type="primary"
+                    @click="onPatientLogin">注册
+        </van-button>
         <my-footer></my-footer>
     </div>
 </template>
 
 <script>
-  import {NavBar, Cell, CellGroup} from 'vant';
+  import {NavBar, Cell, CellGroup, Button} from 'vant';
   import PatientApi from '@/api/PatientApi';
   import Footer from '@/components/Footer';
+  import UserApi from "@/api/UserApi";
+  import {UserConstants} from '@/constants/Global'
 
   export default {
     components: {
@@ -28,6 +33,7 @@
       [NavBar.name]: NavBar,
       [Cell.name]: Cell,
       [CellGroup.name]: CellGroup,
+      [Button.name]: Button,
     },
     data: () => {
       return {
@@ -39,9 +45,24 @@
       }
     },
     created: function () {
+      if (!UserApi.isLogin()) {
+        return;
+      }
       PatientApi.getCurrentPatientInfo().then(patientInfo => {
-        this.patientInfo = patientInfo;
+        if (patientInfo.userId) {
+          this.patientInfo = patientInfo;
+        }
       });
+    },
+    methods: {
+      onPatientLogin: function () {
+        this.$router.push({
+          path: '/user/login',
+          query: {
+            userType: UserConstants.PATIENT
+          }
+        });
+      }
     }
   }
 </script>
