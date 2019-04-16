@@ -77,6 +77,11 @@
                     <van-icon name="photograph"></van-icon>
                 </van-uploader>
             </van-field>
+            <van-row gutter="20">
+                <van-col span="8" v-for="(image,index) in uploadImageList" :key="index">
+                    <img width="80" height="80" :src="image.imageUrl"/>
+                </van-col>
+            </van-row>
             <van-checkbox v-model="checked">
                 我同意服务协议
                 <van-button size="small" to="/site/serviceAgreement">（服务协议）</van-button>
@@ -122,7 +127,8 @@
   import RecruitmentApi from "@/api/RecruitmentApi";
   import PatientApi from "@/api/PatientApi";
   import UserApi from "@/api/UserApi";
-  import FileApi from "@/api/FileApi";
+  // import FileApi from "@/api/FileApi";
+  import Vue from "vue"
 
   export default {
     components: {
@@ -154,7 +160,8 @@
         rules: {},
         showAddress: false,
         showGenderPopup: false,
-        genderList: [{text: '男', value: 1}, {text: '女', value: 2}]
+        genderList: [{text: '男', value: 1}, {text: '女', value: 2}],
+        uploadImageList: []
       }
     },
     created: function () {
@@ -235,14 +242,26 @@
         this.showGenderPopup = false;
       },
       onUploaderRead: function (file) {
-        FileApi.uploadFile({
-          data: file.content
-        }).then((data) => {
-          window.console.log(data);
+        this.uploadImageList.push({
+          imageId: '',
+          imageUrl: '/img/banner1.c604f981.png'
         });
+        let i = this.uploadImageList.length - 1;
+        Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
+
+        window.console.log(this.uploadImageList);
+        window.console.log(file);
+        // FileApi.uploadFile({
+        //   data: file.content
+        // }).then((data) => {
+        //   window.console.log(data);
+        // });
       },
       onLoadRecruitmentInfo: function () {
         let recruitmentId = this.$route.query.recruitmentId;
+        if (typeof recruitmentId === 'undefined') {
+          return;
+        }
         RecruitmentApi.getRecruitmentById(recruitmentId).then(recruitmentInfo => {
           this.recruitment = recruitmentInfo;
           this.applicationInfo.recruitmentId = recruitmentInfo.recruitmentId;
@@ -261,6 +280,9 @@
         this.applicationInfo.nickname = this.$route.query.nickname;
         this.applicationInfo.openId = this.$route.query.openId;
         this.applicationInfo.doctorUserId = this.$route.query.doctorUserId;
+      },
+      checked: function () {
+
       }
     }
   }
