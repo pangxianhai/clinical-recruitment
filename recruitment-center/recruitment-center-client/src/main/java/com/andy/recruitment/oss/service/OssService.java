@@ -22,4 +22,12 @@ public interface OssService {
      * @param fileName 文件名
      */
     void deleteFile(String fileName);
+
+    /**
+     * 生成图片地址
+     *
+     * @param fileName 文件名
+     * @return 图片地址
+     */
+    String generateUrl(String fileName);
 }

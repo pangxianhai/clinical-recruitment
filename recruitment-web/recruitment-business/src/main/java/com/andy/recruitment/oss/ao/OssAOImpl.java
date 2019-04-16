@@ -23,4 +23,9 @@ public class OssAOImpl implements OssAO {
     public String saveFile(byte[] data, String suffix) {
         return this.ossService.saveFile(data, suffix);
     }
+
+    @Override
+    public String generateUrl(String fileName) {
+        return this.ossService.generateUrl(fileName);
+    }
 }

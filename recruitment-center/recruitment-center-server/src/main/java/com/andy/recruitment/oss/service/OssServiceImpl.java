@@ -44,15 +44,15 @@ public class OssServiceImpl implements OssService {
         ossClient.shutdown();
     }
 
+    @Override
     public String generateUrl(String fileName) {
         OSSClient ossClient = new OSSClient(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(),
                                             ossProperties.getAccessKeySecret());
-        Date expiration = new Date(DateUtil.currentMilliseconds() + 1000 * 60 * 30 );
-        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(ossProperties.getBucketName(), fileName, HttpMethod.GET);
+        Date expiration = new Date(DateUtil.currentMilliseconds() + 1000 * 60 * 30);
+        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(ossProperties.getBucketName(), fileName,
+                                                                          HttpMethod.GET);
         req.setExpiration(expiration);
         URL signedUrl = ossClient.generatePresignedUrl(req);
-        System.out.println(signedUrl);
-
         ossClient.shutdown();
         return signedUrl.toString();
     }

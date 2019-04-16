@@ -20,10 +20,9 @@
                 艾特睿医药立志为中国新药临床试验保驾护航，做临床试验研究者合格、优秀的助手。
             </van-collapse-item>
             <van-collapse-item title="联系地址" name="3">
-                四川省成都市高新区天府大道北段1480号1栋1-5层
+                四川省成都市高新区天府大道北段1480号1栋1-5层。电话：028-68517858,156 0819 3178
             </van-collapse-item>
         </van-collapse>
-
     </div>
 </template>
 

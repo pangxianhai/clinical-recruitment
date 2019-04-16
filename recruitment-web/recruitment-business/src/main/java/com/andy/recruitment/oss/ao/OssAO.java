@@ -15,4 +15,12 @@ public interface OssAO {
      * @return 文件名
      */
     String saveFile(byte[] data, String suffix);
+
+    /**
+     * 生成图片地址
+     *
+     * @param fileName 文件名
+     * @return 图片地址
+     */
+    String generateUrl(String fileName);
 }

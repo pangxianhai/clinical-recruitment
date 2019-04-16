@@ -4,6 +4,7 @@ import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.oss.ao.OssAO;
 import com.andy.recruitment.web.controller.oss.request.OssUploadRQ;
+import com.andy.recruitment.web.controller.oss.response.UploadImageVO;
 import com.xgimi.commons.util.encrypt.EncodeUtil;
 import com.xgimi.logger.log4j.Logger;
 import com.xgimi.logger.log4j.MyLogger;
@@ -33,7 +34,7 @@ public class OssWebservice {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String uploadFile(@RequestBody OssUploadRQ uploadRQ) {
+    public UploadImageVO uploadFile(@RequestBody OssUploadRQ uploadRQ) {
         String suffix;
         byte[] data;
         try {
@@ -48,6 +49,8 @@ public class OssWebservice {
         } catch (Exception e) {
             throw new BusinessException(BusinessErrorCode.FILE_FORMATE_ERROR, e);
         }
-        return this.ossAO.saveFile(data, suffix);
+        String imageId = this.ossAO.saveFile(data, suffix);
+        String imageUrl = this.ossAO.generateUrl(imageId);
+        return new UploadImageVO(imageId, imageUrl);
     }
 }

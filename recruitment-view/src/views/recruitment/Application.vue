@@ -63,18 +63,10 @@
                 type="number"
             ></van-field>
             <van-field
-                v-model="applicationInfo.illHistory"
-                label="病史表述"
+                v-model="applicationInfo.diseaseDesc"
+                label="病例描述"
                 type="textarea"
-                placeholder="病史表述"
-                rows="2"
-                autosize
-            ></van-field>
-            <van-field
-                v-model="applicationInfo.familyIllHistory"
-                label="家族遗传病史"
-                type="textarea"
-                placeholder="家族遗传病史表述"
+                placeholder="病例描述"
                 rows="2"
                 autosize
             ></van-field>
@@ -85,6 +77,10 @@
                     <van-icon name="photograph"></van-icon>
                 </van-uploader>
             </van-field>
+            <van-checkbox v-model="checked">
+                我同意服务协议
+                <van-button size="small" to="/site/serviceAgreement">（服务协议）</van-button>
+            </van-checkbox>
         </van-cell-group>
         <van-row class="submit-panel">
             <van-col span="11">
@@ -117,7 +113,9 @@
     CellGroup,
     Uploader,
     Field,
-    Picker
+    Picker,
+    Checkbox,
+    CheckboxGroup
   } from 'vant';
   import AddressSelect from "@/components/AddressSelect";
   import AsyncValidator from 'async-validator';
@@ -140,6 +138,8 @@
       [Field.name]: Field,
       [Picker.name]: Picker,
       [AddressSelect.name]: AddressSelect,
+      [Checkbox.name]: Checkbox,
+      [CheckboxGroup.name]: CheckboxGroup,
     },
     data: function () {
       return {
@@ -147,7 +147,8 @@
           title: '',
         },
         applicationInfo: {
-          name: ''
+          name: '',
+          diseaseImageList: []
         },
         errorMsg: {},
         rules: {},
@@ -199,7 +200,7 @@
         this.validatorApplicationInfo(item);
       },
       handlerError: function (item, errors, fields) {
-        if (typeof  item !== 'undefined') {
+        if (typeof item !== 'undefined') {
           if (typeof fields[item] !== 'undefined') {
             this.errorMsg[item] = fields[item][0].message;
           } else {
@@ -239,7 +240,6 @@
         }).then((data) => {
           window.console.log(data);
         });
-        window.console.log(file);
       },
       onLoadRecruitmentInfo: function () {
         let recruitmentId = this.$route.query.recruitmentId;

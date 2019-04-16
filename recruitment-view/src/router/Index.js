@@ -61,6 +61,10 @@ export default new Router({
           path: 'contactUs',
           component: () => import("@/views/site/ContactUs")
         },
+        {
+          path: 'serviceAgreement',
+          component: () => import("@/views/site/ServiceAgreement")
+        },
       ]
     },
     {
