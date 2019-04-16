@@ -27,7 +27,7 @@
             {
               path: '/recruitment/list',
               icon: 'orders-o',
-              text: '任务列表'
+              text: '项目列表'
             },
             {
               path: '/recruitment/applicationList',
@@ -44,7 +44,7 @@
             {
               path: '/recruitment/list',
               icon: 'orders-o',
-              text: '任务列表'
+              text: '项目列表'
             },
             {
               path: '/recruitment/applicationList',
