@@ -77,9 +77,10 @@
                     <van-icon name="photograph"></van-icon>
                 </van-uploader>
             </van-field>
-            <van-row gutter="20">
+            <van-row gutter="20" style="text-align: center;min-height: 80px">
                 <van-col span="8" v-for="(image,index) in uploadImageList" :key="index">
-                    <img width="80" height="80" :src="image.imageUrl"/>
+                    <img width="80" height="80" :src="image.thumbnailUrl"
+                         @click="previewImage(index)"/>
                 </van-col>
             </van-row>
             <van-checkbox class="service-agreement" v-model="agreementService">
@@ -109,10 +110,13 @@
     .service-agreement {
         text-align: center;
         color: #323233;
+        font-size: 14px;
+        padding-bottom: 10px;
+        margin-top: 12px;
     }
 
     .service-agreement a {
-        color: #323233;
+        color: #07c160;
     }
 </style>
 <script>
@@ -129,14 +133,16 @@
     Field,
     Picker,
     Checkbox,
-    CheckboxGroup
+    CheckboxGroup,
+    ImagePreview,
+    Notify
   } from 'vant';
   import AddressSelect from "@/components/AddressSelect";
   import AsyncValidator from 'async-validator';
   import RecruitmentApi from "@/api/RecruitmentApi";
   import PatientApi from "@/api/PatientApi";
   import UserApi from "@/api/UserApi";
-  // import FileApi from "@/api/FileApi";
+  import FileApi from "@/api/FileApi";
   import Vue from "vue"
 
   export default {
@@ -155,6 +161,8 @@
       [AddressSelect.name]: AddressSelect,
       [Checkbox.name]: Checkbox,
       [CheckboxGroup.name]: CheckboxGroup,
+      [ImagePreview.name]: ImagePreview,
+      [Notify.name]: Notify,
     },
     data: function () {
       return {
@@ -180,6 +188,15 @@
     methods: {
       onApplicationAction: function () {
         this.validatorApplicationInfo().then(() => {
+          if (!this.agreementService) {
+            Notify('请您同意服务协议');
+            return;
+          }
+          let diseaseImageList = [];
+          this.uploadImageList.forEach((imageInfo) => {
+            diseaseImageList.push(imageInfo.imageId);
+          });
+          this.applicationInfo.diseaseImageList = diseaseImageList;
           RecruitmentApi.recruitmentApplication(this.applicationInfo).then(userId => {
             if (userId) {
               this.$toast('报名成功！即将跳转');
@@ -252,20 +269,17 @@
         this.showGenderPopup = false;
       },
       onUploaderRead: function (file) {
-        this.uploadImageList.push({
-          imageId: '',
-          imageUrl: '/img/banner1.c604f981.png'
+        FileApi.uploadFile({
+          data: file.content
+        }).then((imageInfo) => {
+          this.uploadImageList.push({
+            imageId: imageInfo.imageId,
+            thumbnailUrl: imageInfo.thumbnailUrl,
+            imageUrl: imageInfo.imageUrl,
+          });
+          let i = this.uploadImageList.length - 1;
+          Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
         });
-        let i = this.uploadImageList.length - 1;
-        Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
-
-        window.console.log(this.uploadImageList);
-        window.console.log(file);
-        // FileApi.uploadFile({
-        //   data: file.content
-        // }).then((data) => {
-        //   window.console.log(data);
-        // });
       },
       onLoadRecruitmentInfo: function () {
         let recruitmentId = this.$route.query.recruitmentId;
@@ -297,6 +311,16 @@
           query: {
             redirectURL: this.$route.path
           }
+        });
+      },
+      previewImage: function (index) {
+        let imageList = [];
+        this.uploadImageList.forEach((imageInfo) => {
+          imageList.push(imageInfo.imageUrl);
+        });
+        ImagePreview({
+          images: imageList,
+          startPosition: index
         });
       }
     }

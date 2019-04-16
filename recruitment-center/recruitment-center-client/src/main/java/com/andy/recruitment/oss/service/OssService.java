@@ -30,4 +30,14 @@ public interface OssService {
      * @return 图片地址
      */
     String generateUrl(String fileName);
+
+    /**
+     * 生成缩放图片地址
+     *
+     * @param fileName 文件名
+     * @param width    宽度
+     * @param height   高度
+     * @return 图片地址
+     */
+    String generateUrl(String fileName, int width, int height);
 }

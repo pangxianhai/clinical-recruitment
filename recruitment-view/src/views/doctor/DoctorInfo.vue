@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <van-nav-bar title="医生个人信息"></van-nav-bar>
+        <van-nav-bar title="医护人员信息"></van-nav-bar>
         <van-cell-group>
             <van-cell icon="manager-o" title="姓名"
                       :value="doctorInfo.userInfoVO.realName"></van-cell>

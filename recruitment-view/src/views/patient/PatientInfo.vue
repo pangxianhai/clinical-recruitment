@@ -12,7 +12,7 @@
             <van-cell icon="gem-o" title="年龄" :value="patientInfo.age"></van-cell>
             <van-cell icon="location-o" title="地址" :value="patientInfo.address"></van-cell>
         </van-cell-group>
-        <van-button style="margin-top: 10px"
+        <van-button v-if="!isLogin" style="margin-top: 10px"
                     size="small" block type="primary"
                     @click="onPatientLogin">注册
         </van-button>
@@ -41,13 +41,16 @@
           userInfoVO: {
             gender: {}
           }
-        }
+        },
+        isLogin: false
       }
     },
     created: function () {
       if (!UserApi.isLogin()) {
+        this.isLogin = false;
         return;
       }
+      this.isLogin = true;
       PatientApi.getCurrentPatientInfo().then(patientInfo => {
         if (patientInfo.userId) {
           this.patientInfo = patientInfo;

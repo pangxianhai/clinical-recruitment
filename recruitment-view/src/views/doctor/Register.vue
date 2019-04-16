@@ -1,6 +1,6 @@
 <template>
     <div class="doctor-register">
-        <van-nav-bar title="医生注册" left-arrow @click-left="onGoBack"></van-nav-bar>
+        <van-nav-bar title="医护人员注册" left-arrow @click-left="onGoBack"></van-nav-bar>
         <van-cell-group>
             <van-field
                 v-model="doctorInfo.name"

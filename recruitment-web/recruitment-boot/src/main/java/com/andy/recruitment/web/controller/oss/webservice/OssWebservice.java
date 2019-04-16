@@ -51,6 +51,7 @@ public class OssWebservice {
         }
         String imageId = this.ossAO.saveFile(data, suffix);
         String imageUrl = this.ossAO.generateUrl(imageId);
-        return new UploadImageVO(imageId, imageUrl);
+        String thumbnailUrl = this.ossAO.generateUrl(imageId, 80, 80);
+        return new UploadImageVO(imageId, imageUrl, thumbnailUrl);
     }
 }

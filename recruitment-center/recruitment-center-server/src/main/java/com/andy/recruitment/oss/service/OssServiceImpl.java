@@ -1,13 +1,8 @@
 package com.andy.recruitment.oss.service;
 
-import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.GeneratePresignedUrlRequest;
-import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.encrypt.HashUtil;
 import java.io.ByteArrayInputStream;
-import java.net.URL;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +25,7 @@ public class OssServiceImpl implements OssService {
     public String saveFile(byte[] data, String suffix) {
         OSSClient ossClient = new OSSClient(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(),
                                             ossProperties.getAccessKeySecret());
-        String fileName = HashUtil.md5Hash(data) + "." + suffix;
+        String fileName = ossProperties.getDirname() + "/" + HashUtil.md5Hash(data) + "." + suffix;
         ossClient.putObject(ossProperties.getBucketName(), fileName, new ByteArrayInputStream(data));
         ossClient.shutdown();
         return fileName;
@@ -46,14 +41,11 @@ public class OssServiceImpl implements OssService {
 
     @Override
     public String generateUrl(String fileName) {
-        OSSClient ossClient = new OSSClient(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(),
-                                            ossProperties.getAccessKeySecret());
-        Date expiration = new Date(DateUtil.currentMilliseconds() + 1000 * 60 * 30);
-        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(ossProperties.getBucketName(), fileName,
-                                                                          HttpMethod.GET);
-        req.setExpiration(expiration);
-        URL signedUrl = ossClient.generatePresignedUrl(req);
-        ossClient.shutdown();
-        return signedUrl.toString();
+        return "http://" + ossProperties.getImageDomain() + "/" + fileName;
+    }
+
+    @Override
+    public String generateUrl(String fileName, int width, int height) {
+        return this.generateUrl(fileName) + "?x-oss-process=image/resize,m_fixed,w_" + width + ",h_" + height;
     }
 }

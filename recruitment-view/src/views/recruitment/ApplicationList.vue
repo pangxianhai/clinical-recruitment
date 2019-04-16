@@ -20,8 +20,8 @@
                 <van-row type="flex">
                     <van-col span="5">报名时间:</van-col>
                     <van-col span="8">{{item.applicationTime}}</van-col>
-                    <van-col span="5">推荐医生:</van-col>
-                    <van-col span="3" v-if="item.doctorInfoVO">
+                    <van-col span="5" v-if="showRecommendDoctor">推荐医生:</van-col>
+                    <van-col span="3" v-if="showRecommendDoctor && item.doctorInfoVO">
                         {{item.doctorInfoVO.userInfoVO.realName}}
                     </van-col>
                 </van-row>
@@ -54,6 +54,8 @@
   import {NavBar, List, Icon, Panel, Row, Col} from 'vant';
   import Footer from '@/components/Footer';
   import RecruitmentApi from '@/api/RecruitmentApi';
+  import UserApi from '@/api/UserApi';
+  import {UserConstants} from '@/constants/Global';
 
   export default {
     components: {
@@ -71,7 +73,15 @@
         applicationLoading: false,
         applicationFinished: false,
         currentPage: 1,
+        currentUser: {},
+        showRecommendDoctor: false
       }
+    },
+    created: function () {
+      UserApi.getLogInfo().then((userInfo) => {
+        this.currentUser = userInfo;
+        this.showRecommendDoctor = userInfo.userType.code === UserConstants.DOCTOR;
+      });
     },
     methods: {
       onLoadApplication: function () {

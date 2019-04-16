@@ -28,7 +28,14 @@ public class OssProperties {
      * 阿里云存储空间（Bucket）
      */
     private String bucketName;
-//    private String
+    /**
+     * 文件访问域名
+     */
+    private String imageDomain;
+    /**
+     * 存储目录
+     */
+    private String dirname;
 
     public String getEndpoint() {
         return endpoint;
@@ -60,5 +67,21 @@ public class OssProperties {
 
     public void setBucketName(String bucketName) {
         this.bucketName = bucketName;
+    }
+
+    public String getImageDomain() {
+        return imageDomain;
+    }
+
+    public void setImageDomain(String imageDomain) {
+        this.imageDomain = imageDomain;
+    }
+
+    public String getDirname() {
+        return dirname;
+    }
+
+    public void setDirname(String dirname) {
+        this.dirname = dirname;
     }
 }

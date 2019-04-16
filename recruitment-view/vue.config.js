@@ -6,7 +6,8 @@ module.exports = {
     port: 8089,
     https: false,
     hotOnly: false,
-    proxy: null
+    proxy: null,
+    disableHostCheck: true
   },
   chainWebpack: config => {
     if (process.env.use_analyzer) {

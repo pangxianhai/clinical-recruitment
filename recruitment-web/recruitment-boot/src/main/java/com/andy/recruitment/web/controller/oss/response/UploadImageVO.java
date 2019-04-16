@@ -14,15 +14,20 @@ public class UploadImageVO implements Serializable {
      */
     private String imageUrl;
     /**
+     * 缩略图地址
+     */
+    private String thumbnailUrl;
+    /**
      * 图片ID
      */
     private String imageId;
 
     public UploadImageVO() {}
 
-    public UploadImageVO(String imageId, String imageUrl) {
+    public UploadImageVO(String imageId, String imageUrl, String thumbnailUrl) {
         this.imageId = imageId;
         this.imageUrl = imageUrl;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getImageUrl() {
@@ -39,5 +44,13 @@ public class UploadImageVO implements Serializable {
 
     public void setImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

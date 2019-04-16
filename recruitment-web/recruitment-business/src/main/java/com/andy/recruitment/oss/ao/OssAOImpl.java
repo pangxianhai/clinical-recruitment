@@ -28,4 +28,9 @@ public class OssAOImpl implements OssAO {
     public String generateUrl(String fileName) {
         return this.ossService.generateUrl(fileName);
     }
+
+    @Override
+    public String generateUrl(String fileName, int width, int height) {
+        return this.ossService.generateUrl(fileName, width, height);
+    }
 }
