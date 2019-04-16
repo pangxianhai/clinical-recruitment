@@ -82,9 +82,9 @@
                     <img width="80" height="80" :src="image.imageUrl"/>
                 </van-col>
             </van-row>
-            <van-checkbox v-model="checked">
+            <van-checkbox class="service-agreement" v-model="agreementService">
                 我同意服务协议
-                <van-button size="small" to="/site/serviceAgreement">（服务协议）</van-button>
+                <a @click="onToServiceAgreement">（服务协议）</a>
             </van-checkbox>
         </van-cell-group>
         <van-row class="submit-panel">
@@ -104,6 +104,15 @@
     .submit-panel {
         margin: 15px auto 10px auto;
         width: 95%;
+    }
+
+    .service-agreement {
+        text-align: center;
+        color: #323233;
+    }
+
+    .service-agreement a {
+        color: #323233;
     }
 </style>
 <script>
@@ -161,7 +170,8 @@
         showAddress: false,
         showGenderPopup: false,
         genderList: [{text: '男', value: 1}, {text: '女', value: 2}],
-        uploadImageList: []
+        uploadImageList: [],
+        agreementService: false
       }
     },
     created: function () {
@@ -281,8 +291,13 @@
         this.applicationInfo.openId = this.$route.query.openId;
         this.applicationInfo.doctorUserId = this.$route.query.doctorUserId;
       },
-      checked: function () {
-
+      onToServiceAgreement: function () {
+        this.$router.push({
+          path: '/site/serviceAgreement',
+          query: {
+            redirectURL: this.$route.path
+          }
+        });
       }
     }
   }
