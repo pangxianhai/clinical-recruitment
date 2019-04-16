@@ -4,6 +4,7 @@ import com.andy.recruitment.recruitment.constant.RecruitmentApplicationStatus;
 import com.xgimi.commons.util.JsonUtil;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 招募申请信息
@@ -32,6 +33,14 @@ public class RecruitmentApplicationInfo implements Serializable {
      * 医生ID
      */
     private Long doctorId;
+    /**
+     * 病症描述
+     */
+    private String diseaseDesc;
+    /**
+     * 病例图片
+     */
+    private List<String> diseaseImageList;
     /**
      * 申请状态
      */
@@ -95,6 +104,22 @@ public class RecruitmentApplicationInfo implements Serializable {
 
     public void setApplicationId(Long applicationId) {
         this.applicationId = applicationId;
+    }
+
+    public String getDiseaseDesc() {
+        return diseaseDesc;
+    }
+
+    public void setDiseaseDesc(String diseaseDesc) {
+        this.diseaseDesc = diseaseDesc;
+    }
+
+    public List<String> getDiseaseImageList() {
+        return diseaseImageList;
+    }
+
+    public void setDiseaseImageList(List<String> diseaseImageList) {
+        this.diseaseImageList = diseaseImageList;
     }
 
     @Override

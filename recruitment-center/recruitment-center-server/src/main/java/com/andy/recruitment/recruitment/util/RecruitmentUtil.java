@@ -5,6 +5,7 @@ import com.andy.recruitment.recruitment.model.RecruitmentApplicationInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentInfo;
 import com.andy.recruitment.recruitment.model.RecruitmentInfoDO;
 import com.xgimi.commons.util.CollectionUtil;
+import com.xgimi.commons.util.StringUtil;
 import com.xgimi.util.BeanUtil;
 import java.sql.Timestamp;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
  * @author 庞先海 2018-12-29
  */
 public class RecruitmentUtil {
+
+    private final static String SPLIT = ",";
 
     public static RecruitmentInfo transformRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDO) {
         if (null == recruitmentInfoDO) {
@@ -60,6 +63,7 @@ public class RecruitmentUtil {
         BeanUtil.copyProperties(applicationDO, applicationInfo);
         applicationInfo.setApplicationId(applicationDO.getId());
         applicationInfo.setApplicationTime(applicationDO.getCreatedTime());
+        applicationInfo.setDiseaseImageList(StringUtil.split(applicationDO.getDiseaseImage(), SPLIT));
         return applicationInfo;
     }
 
@@ -79,6 +83,7 @@ public class RecruitmentUtil {
         RecruitmentApplicationDO applicationDO = new RecruitmentApplicationDO();
         BeanUtil.copyProperties(applicationInfo, applicationDO);
         applicationDO.setId(applicationInfo.getApplicationId());
+        applicationDO.setDiseaseImage(StringUtil.join(applicationInfo.getDiseaseImageList(), SPLIT));
         return applicationDO;
     }
 }

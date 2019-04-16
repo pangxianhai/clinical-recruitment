@@ -2,6 +2,7 @@ package com.andy.recruitment.web.controller.recruitment.request;
 
 import com.andy.recruitment.web.controller.patient.request.PatientAddRQ;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 申请招募参数
@@ -18,6 +19,14 @@ public class RecruitmentApplicationRQ extends PatientAddRQ implements Serializab
      * 医生ID
      */
     private Long doctorUserId;
+    /**
+     * 病症描述
+     */
+    private String diseaseDesc;
+    /**
+     * 病例图片
+     */
+    private List<String> diseaseImageList;
 
     public Long getRecruitmentId() {
         return recruitmentId;
@@ -33,5 +42,21 @@ public class RecruitmentApplicationRQ extends PatientAddRQ implements Serializab
 
     public void setDoctorUserId(Long doctorUserId) {
         this.doctorUserId = doctorUserId;
+    }
+
+    public String getDiseaseDesc() {
+        return diseaseDesc;
+    }
+
+    public void setDiseaseDesc(String diseaseDesc) {
+        this.diseaseDesc = diseaseDesc;
+    }
+
+    public List<String> getDiseaseImageList() {
+        return diseaseImageList;
+    }
+
+    public void setDiseaseImageList(List<String> diseaseImageList) {
+        this.diseaseImageList = diseaseImageList;
     }
 }

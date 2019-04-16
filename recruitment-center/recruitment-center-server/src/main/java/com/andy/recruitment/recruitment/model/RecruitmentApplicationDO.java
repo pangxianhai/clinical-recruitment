@@ -24,10 +24,17 @@ public class RecruitmentApplicationDO extends BaseDO {
      */
     private Long patientId;
     /**
+     * 病症描述
+     */
+    private String diseaseDesc;
+    /**
+     * 病例图片
+     */
+    private String diseaseImage;
+    /**
      * 医生ID
      */
     private Long doctorId;
-
     /**
      * 申请状态
      */
@@ -71,6 +78,22 @@ public class RecruitmentApplicationDO extends BaseDO {
 
     public void setStatus(RecruitmentApplicationStatus status) {
         this.status = status;
+    }
+
+    public String getDiseaseDesc() {
+        return diseaseDesc;
+    }
+
+    public void setDiseaseDesc(String diseaseDesc) {
+        this.diseaseDesc = diseaseDesc;
+    }
+
+    public String getDiseaseImage() {
+        return diseaseImage;
+    }
+
+    public void setDiseaseImage(String diseaseImage) {
+        this.diseaseImage = diseaseImage;
     }
 
     @Override
