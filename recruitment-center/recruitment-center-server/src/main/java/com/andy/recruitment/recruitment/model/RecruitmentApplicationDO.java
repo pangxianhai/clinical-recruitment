@@ -28,6 +28,10 @@ public class RecruitmentApplicationDO extends BaseDO {
      */
     private String diseaseDesc;
     /**
+     * 遗传病描述
+     */
+    private String geneticDiseaseDesc;
+    /**
      * 病例图片
      */
     private String diseaseImage;
@@ -94,6 +98,14 @@ public class RecruitmentApplicationDO extends BaseDO {
 
     public void setDiseaseImage(String diseaseImage) {
         this.diseaseImage = diseaseImage;
+    }
+
+    public String getGeneticDiseaseDesc() {
+        return geneticDiseaseDesc;
+    }
+
+    public void setGeneticDiseaseDesc(String geneticDiseaseDesc) {
+        this.geneticDiseaseDesc = geneticDiseaseDesc;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.andy.recruitment.recruitment.constant.RecruitmentApplicationStatus;
 import com.andy.recruitment.web.controller.doctor.response.DoctorInfoVO;
 import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 招募申请信息VO
@@ -32,6 +33,18 @@ public class RecruitmentApplicationVO implements Serializable {
      * 患者信息
      */
     private PatientVO patientVO;
+    /**
+     * 病症描述
+     */
+    private String diseaseDesc;
+    /**
+     * 遗传病描述
+     */
+    private String geneticDiseaseDesc;
+    /**
+     * 病例图片
+     */
+    private List<String> diseaseImageList;
     /**
      * 医生ID
      */
@@ -119,5 +132,29 @@ public class RecruitmentApplicationVO implements Serializable {
 
     public void setDoctorInfoVO(DoctorInfoVO doctorInfoVO) {
         this.doctorInfoVO = doctorInfoVO;
+    }
+
+    public String getDiseaseDesc() {
+        return diseaseDesc;
+    }
+
+    public void setDiseaseDesc(String diseaseDesc) {
+        this.diseaseDesc = diseaseDesc;
+    }
+
+    public String getGeneticDiseaseDesc() {
+        return geneticDiseaseDesc;
+    }
+
+    public void setGeneticDiseaseDesc(String geneticDiseaseDesc) {
+        this.geneticDiseaseDesc = geneticDiseaseDesc;
+    }
+
+    public List<String> getDiseaseImageList() {
+        return diseaseImageList;
+    }
+
+    public void setDiseaseImageList(List<String> diseaseImageList) {
+        this.diseaseImageList = diseaseImageList;
     }
 }

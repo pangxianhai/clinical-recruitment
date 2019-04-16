@@ -38,6 +38,10 @@ public class RecruitmentApplicationInfo implements Serializable {
      */
     private String diseaseDesc;
     /**
+     * 遗传病描述
+     */
+    private String geneticDiseaseDesc;
+    /**
      * 病例图片
      */
     private List<String> diseaseImageList;
@@ -120,6 +124,14 @@ public class RecruitmentApplicationInfo implements Serializable {
 
     public void setDiseaseImageList(List<String> diseaseImageList) {
         this.diseaseImageList = diseaseImageList;
+    }
+
+    public String getGeneticDiseaseDesc() {
+        return geneticDiseaseDesc;
+    }
+
+    public void setGeneticDiseaseDesc(String geneticDiseaseDesc) {
+        this.geneticDiseaseDesc = geneticDiseaseDesc;
     }
 
     @Override
