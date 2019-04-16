@@ -124,6 +124,7 @@
   import RecruitmentApi from "@/api/RecruitmentApi";
   import PatientApi from "@/api/PatientApi";
   import UserApi from "@/api/UserApi";
+  import FileApi from "@/api/FileApi";
 
   export default {
     components: {
@@ -233,6 +234,11 @@
         this.showGenderPopup = false;
       },
       onUploaderRead: function (file) {
+        FileApi.uploadFile({
+          data: file.content
+        }).then((data) => {
+          window.console.log(data);
+        });
         window.console.log(file);
       },
       onLoadRecruitmentInfo: function () {

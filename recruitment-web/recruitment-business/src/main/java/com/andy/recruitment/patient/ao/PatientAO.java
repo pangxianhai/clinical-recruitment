@@ -1,4 +1,4 @@
-package com.andy.recruitment.patient;
+package com.andy.recruitment.patient.ao;
 
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;

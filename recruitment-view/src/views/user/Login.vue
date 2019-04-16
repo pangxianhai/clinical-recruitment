@@ -26,22 +26,24 @@
       }
       Toast.clear();
     },
-    onGoBack: function () {
-      let redirectURL = this.$route.query.redirectURL;
-      if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
-        redirectURL = '/recruitment/list';
+    methods: {
+      onGoBack: function () {
+        let redirectURL = this.$route.query.redirectURL;
+        if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
+          redirectURL = '/recruitment/list';
+        }
+        this.$router.push({path: redirectURL});
+      },
+      onToLogin: function () {
+        let query = [];
+        for (let q in this.$route.query) {
+          query.push(q + '=' + this.$route.query[q]);
+        }
+        let redirectURL = process.env.VUE_APP_HOST + "/user/wxlogin?" + query.join('&');
+        UserApi.getWxLoginUrl(redirectURL).then(data => {
+          window.location.href = data;
+        });
       }
-      this.$router.push({path: redirectURL});
-    },
-    onToLogin: function () {
-      let query = [];
-      for (let q in this.$route.query) {
-        query.push(q + '=' + this.$route.query[q]);
-      }
-      let redirectURL = process.env.VUE_APP_HOST + "/user/wxlogin?" + query.join('&');
-      UserApi.getWxLoginUrl(redirectURL).then(data => {
-        window.location.href = data;
-      });
     }
   }
 </script>

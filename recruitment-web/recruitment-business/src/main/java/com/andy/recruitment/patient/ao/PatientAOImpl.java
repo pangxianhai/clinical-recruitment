@@ -1,4 +1,4 @@
-package com.andy.recruitment.patient;
+package com.andy.recruitment.patient.ao;
 
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
