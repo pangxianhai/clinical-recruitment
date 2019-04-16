@@ -1,6 +1,6 @@
 package com.andy.recruitment.web.controller.patient.webservice;
 
-import com.andy.recruitment.patient.PatientAO;
+import com.andy.recruitment.patient.ao.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.patient.model.PatientQueryParam;
 import com.andy.recruitment.region.ao.RegionAO;

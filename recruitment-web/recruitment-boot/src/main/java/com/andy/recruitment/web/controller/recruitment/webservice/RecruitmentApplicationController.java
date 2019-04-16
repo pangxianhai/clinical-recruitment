@@ -4,7 +4,7 @@ import com.andy.recruitment.doctor.ao.DoctorAO;
 import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
-import com.andy.recruitment.patient.PatientAO;
+import com.andy.recruitment.patient.ao.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.recruitment.ao.RecruitmentAO;
 import com.andy.recruitment.recruitment.ao.RecruitmentApplicationAO;

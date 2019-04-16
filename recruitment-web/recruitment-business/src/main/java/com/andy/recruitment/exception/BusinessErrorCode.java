@@ -77,6 +77,11 @@ public enum BusinessErrorCode {
      * 您没有权限查看该报名记录
      */
     RECRUITMENT_APPLICATION_NOT_AUTH(102201),
+
+    /**
+     * 文件格式错误
+     */
+    FILE_FORMATE_ERROR(102300),
     ;
 
     private int code;
