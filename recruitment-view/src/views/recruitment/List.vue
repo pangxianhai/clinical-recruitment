@@ -9,7 +9,7 @@
                 <img width="100%" src="../../assets/banner2.png"/>
             </van-swipe-item>
         </van-swipe>
-        <van-search placeholder="输入标题，登记编号，适应症状等搜索" v-model="searchParam.queryText"
+        <van-search placeholder="输入标题，登记编号，适应症等搜索" v-model="searchParam.queryText"
                     @search="recruitmentOnSearch"></van-search>
         <van-row style="padding-bottom: 10px;background-color: #FFF">
             <van-col class="title" span="6">智能推荐</van-col>
@@ -52,7 +52,7 @@
                     <van-col span="3">{{item.status.desc}}</van-col>
                 </van-row>
                 <van-row type="flex">
-                    <van-col span="5">适应症状:</van-col>
+                    <van-col span="5">适应症:</van-col>
                     <van-col span="19">{{item.indication}}</van-col>
                 </van-row>
                 <van-row type="flex" justify="end">
