@@ -44,18 +44,21 @@ public class RecruitmentApplicationAOImpl implements RecruitmentApplicationAO {
 
     @Override
     public void addRecruitmentApplication(RecruitmentApplicationInfo applicationInfo, String operator) {
-        RecruitmentInfo recruitmentInfo = this.recruitmentService.getRecruitmentInfoById(
-            applicationInfo.getRecruitmentId());
-        AssertUtil.assertNull(recruitmentInfo, () -> {
-            throw new BusinessException(BusinessErrorCode.RECRUITMENT_ADD_FAILED);
-        });
-        AssertUtil.assertBoolean(! RecruitmentStatus.NOT_BEGIN.equals(recruitmentInfo.getStatus()), () -> {
-            throw new BusinessException(BusinessErrorCode.RECRUITMENT_NOT_BEGIN);
-        });
-        AssertUtil.assertBoolean(! RecruitmentStatus.FINISHED.equals(recruitmentInfo.getStatus()), () -> {
-            throw new BusinessException(BusinessErrorCode.RECRUITMENT_HAS_FINISHED);
-        });
-        applicationInfo.setRecruitmentRegisterCode(recruitmentInfo.getRegisterCode());
+        if (null != applicationInfo.getRecruitmentId()) {
+            RecruitmentInfo recruitmentInfo = this.recruitmentService.getRecruitmentInfoById(
+                applicationInfo.getRecruitmentId());
+            AssertUtil.assertNull(recruitmentInfo, () -> {
+                throw new BusinessException(BusinessErrorCode.RECRUITMENT_ADD_FAILED);
+            });
+
+            AssertUtil.assertBoolean(! RecruitmentStatus.NOT_BEGIN.equals(recruitmentInfo.getStatus()), () -> {
+                throw new BusinessException(BusinessErrorCode.RECRUITMENT_NOT_BEGIN);
+            });
+            AssertUtil.assertBoolean(! RecruitmentStatus.FINISHED.equals(recruitmentInfo.getStatus()), () -> {
+                throw new BusinessException(BusinessErrorCode.RECRUITMENT_HAS_FINISHED);
+            });
+            applicationInfo.setRecruitmentRegisterCode(recruitmentInfo.getRegisterCode());
+        }
         this.recruitmentApplicationService.addRecruitmentApplication(applicationInfo, operator);
     }
 

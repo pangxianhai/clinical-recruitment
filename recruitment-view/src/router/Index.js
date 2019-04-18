@@ -22,6 +22,10 @@ export default new Router({
         {
           path: 'application',
           component: () => import("@/views/recruitment/Application"),
+        },
+        {
+          path: 'diseaseApplication',
+          component: () => import("@/views/recruitment/DiseaseApplication"),
         }
       ]
     },

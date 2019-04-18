@@ -35,6 +35,11 @@
               text: '申请记录'
             },
             {
+              path: '/recruitment/diseaseApplication',
+              icon: 'medel-o',
+              text: '罕见病'
+            },
+            {
               path: '/patient/info',
               icon: 'user-o',
               text: '我'

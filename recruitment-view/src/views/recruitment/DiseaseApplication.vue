@@ -1,12 +1,8 @@
 <template>
     <div>
-        <van-nav-bar title="招募报名" left-arrow @click-left="onApplicationCancelAction"></van-nav-bar>
+        <van-nav-bar title="罕见病报名"></van-nav-bar>
+        <my-footer></my-footer>
         <van-cell-group>
-            <van-field
-                v-model="recruitment.title"
-                label="招募项目"
-                disabled
-            ></van-field>
             <van-field
                 v-model="applicationInfo.name"
                 label="患者姓名"
@@ -64,46 +60,58 @@
             ></van-field>
             <van-field
                 v-model="applicationInfo.diseaseDesc"
-                label="病例描述"
+                label="病史表述"
                 type="textarea"
-                placeholder="病例描述"
+                placeholder="病史表述"
+                rows="2"
+                autosize
+            ></van-field>
+            <van-field
+                v-model="applicationInfo.geneticDiseaseDesc"
+                label="遗传病表述"
+                type="textarea"
+                placeholder="家族遗传病表述"
                 rows="2"
                 autosize
             ></van-field>
             <van-field
                 label="病例图片"
+                disabled
                 center>
                 <van-uploader slot="button" :after-read="onUploaderRead">
                     <van-icon name="photograph"></van-icon>
                 </van-uploader>
             </van-field>
-            <van-row gutter="20" style="text-align: center;min-height: 80px">
-                <van-col span="8" v-for="(image,index) in uploadImageList" :key="index">
-                    <img width="80" height="80" :src="image.thumbnailUrl"
+            <div style="min-height: 80px">
+                <div style="width: 33.3%;text-align: center;float: left"
+                     v-for="(image,index) in uploadImageList"
+                     :key="index">
+                    <img width="80" height="80"
+                         :src="image.thumbnailUrl"
                          @click="previewImage(index)"/>
-                </van-col>
-            </van-row>
+                </div>
+            </div>
             <van-checkbox class="service-agreement" v-model="agreementService">
                 我同意服务协议
                 <a @click="onToServiceAgreement">（服务协议）</a>
             </van-checkbox>
-        </van-cell-group>
-        <van-row class="submit-panel">
-            <van-col span="11">
-                <van-button size="small" block plain hairline type="primary"
+            <div style="margin-bottom: 50px;overflow: hidden">
+                <van-button style="width: 45%;margin-left:10px;float: left" size="small" block plain
+                            hairline
+                            type="primary"
                             @click="onApplicationCancelAction">取消
                 </van-button>
-            </van-col>
-            <van-col span="11" offset="2">
-                <van-button size="small" block type="primary" @click="onApplicationAction">提交报名
+                <van-button style="width: 45%;margin-right:10px;float: right" size="small" block
+                            type="primary"
+                            @click="onApplicationAction">提交报名
                 </van-button>
-            </van-col>
-        </van-row>
+            </div>
+        </van-cell-group>
     </div>
 </template>
 <style>
     .submit-panel {
-        margin: 15px auto 10px auto;
+        padding-top: 15px;
         width: 95%;
     }
 
@@ -143,7 +151,8 @@
   import PatientApi from "@/api/PatientApi";
   import UserApi from "@/api/UserApi";
   import FileApi from "@/api/FileApi";
-  import Vue from "vue"
+  import Vue from "vue";
+  import Footer from '@/components/Footer';
 
   export default {
     components: {
@@ -163,12 +172,10 @@
       [CheckboxGroup.name]: CheckboxGroup,
       [ImagePreview.name]: ImagePreview,
       [Notify.name]: Notify,
+      [Footer.name]: Footer,
     },
     data: function () {
       return {
-        recruitment: {
-          title: '',
-        },
         applicationInfo: {
           name: '',
           diseaseImageList: []
@@ -183,11 +190,7 @@
       }
     },
     created: function () {
-      this.applicationInfo.nickname = this.$route.query.nickname;
-      this.applicationInfo.openId = this.$route.query.openId;
-      this.applicationInfo.doctorUserId = this.$route.query.doctorUserId;
       this.onLoadRecruitmentInfo();
-      this.onLoadPatientInfo();
     },
     methods: {
       onApplicationAction: function () {
@@ -286,16 +289,6 @@
         });
       },
       onLoadRecruitmentInfo: function () {
-        let recruitmentId = this.$route.query.recruitmentId;
-        if (typeof recruitmentId === 'undefined') {
-          return;
-        }
-        RecruitmentApi.getRecruitmentById(recruitmentId).then(recruitmentInfo => {
-          this.recruitment = recruitmentInfo;
-          this.applicationInfo.recruitmentId = recruitmentInfo.recruitmentId;
-        });
-      },
-      onLoadPatientInfo: function () {
         PatientApi.getCurrentPatientInfo().then(patientInfo => {
           if (!patientInfo.patientId) {
             return;
@@ -307,6 +300,8 @@
           this.applicationInfo.address = patientInfo.address;
           this.applicationInfo.age = patientInfo.age;
         });
+        this.applicationInfo.nickname = this.$route.query.nickname;
+        this.applicationInfo.openId = this.$route.query.openId;
       },
       onToServiceAgreement: function () {
         this.$router.push({

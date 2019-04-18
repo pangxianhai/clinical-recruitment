@@ -20,7 +20,24 @@
         message: '自动登录中...'
       });
       if (UserApi.isLogin()) {
-        this.onGoBack();
+        UserApi.getLogInfo().then((userInfo) => {
+          let thisUserType = this.$route.query.userType;
+          if (userInfo.userType.code !== thisUserType) {
+            Toast.loading({
+              duration: 0,
+              mask: true,
+              loadingType: 'spinner',
+              forbidClick: true,
+              message: '您没有权限访问该页面，即将为您跳转到项目列表页...'
+            });
+            setTimeout(() => {
+              this.onGoBack();
+              Toast.clear();
+            }, 2000);
+          } else {
+            this.onGoBack();
+          }
+        });
       } else {
         this.onToLogin();
       }

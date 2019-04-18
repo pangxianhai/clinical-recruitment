@@ -26,6 +26,7 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplic
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationVO;
+import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
 import com.andy.recruitment.web.controller.recruitment.response.ResearchCenterVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
@@ -193,8 +194,6 @@ public class RecruitmentApplicationWebservice {
 
 
     private void buildApplicationVO(RecruitmentApplicationVO applicationVO) {
-        RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(applicationVO.getRecruitmentId());
-        applicationVO.setRecruitmentVO(RecruitmentUtil.transformRecruitmentVO(recruitmentInfo));
         DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoById(applicationVO.getDoctorId());
         DoctorInfoVO doctorInfoVO = DoctorUtil.transformDoctorInfoVO(doctorInfo);
         if (null != doctorInfoVO) {
@@ -211,9 +210,21 @@ public class RecruitmentApplicationWebservice {
             patientVO.setUserInfoVO(userInfoVO);
             applicationVO.setPatientVO(patientVO);
         }
-        List<ResearchCenterInfo> centerInfoList = researchCenterAO.getResearchCenterByRecruitmentId(
-            recruitmentInfo.getRecruitmentId());
-        List<ResearchCenterVO> centerVOList = RecruitmentUtil.transformResearchCenterVO(regionAO, centerInfoList);
-        applicationVO.getRecruitmentVO().setResearchCenterVOList(centerVOList);
+        this.buildRecruitmentInfo(applicationVO);
+    }
+
+    private void buildRecruitmentInfo(RecruitmentApplicationVO applicationVO) {
+        RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(applicationVO.getRecruitmentId());
+        if (null == recruitmentInfo) {
+            RecruitmentVO recruitmentVO = new RecruitmentVO();
+            recruitmentVO.setTitle("罕见病病例");
+            applicationVO.setRecruitmentVO(recruitmentVO);
+        } else {
+            applicationVO.setRecruitmentVO(RecruitmentUtil.transformRecruitmentVO(recruitmentInfo));
+            List<ResearchCenterInfo> centerInfoList = researchCenterAO.getResearchCenterByRecruitmentId(
+                recruitmentInfo.getRecruitmentId());
+            List<ResearchCenterVO> centerVOList = RecruitmentUtil.transformResearchCenterVO(regionAO, centerInfoList);
+            applicationVO.getRecruitmentVO().setResearchCenterVOList(centerVOList);
+        }
     }
 }

@@ -103,10 +103,13 @@ create table research_center_info(
 drop table if exists medical_clinical_recruitment_application;
 create table medical_clinical_recruitment_application(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  recruitment_id bigint(20) NOT NULL COMMENT '招募ID',
-  recruitment_register_code varchar(32) NOT NULL COLLATE utf8_bin COMMENT '登记编号',
+  recruitment_id bigint(20) COMMENT '招募ID',
+  recruitment_register_code varchar(32) COLLATE utf8_bin COMMENT '登记编号',
   patient_id bigint(20) NOT NULL COMMENT '患者ID',
   doctor_id bigint(20) COMMENT '医生ID',
+  disease_desc varchar(2048) COLLATE utf8_bin COMMENT '病症描述',
+  genetic_disease_desc varchar(2048) COLLATE utf8_bin COMMENT '遗传病描述',
+  disease_image varchar(2048) COLLATE utf8_bin COMMENT '病例图片',
   status TINYINT  NOT NULL COMMENT '患者状态',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',

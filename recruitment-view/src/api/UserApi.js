@@ -1,8 +1,20 @@
 import {ApiUtil, CookieUtil} from '@/util/Util';
 
-export default {
+let UserApi = {
+
+  data: {
+    userInfo: undefined
+  },
+
   getLogInfo: async () => {
-    return await ApiUtil.get('/user', {});
+    if (typeof  UserApi.data.userInfo === 'undefined') {
+      return await ApiUtil.get('/user', {}).then((userInfo) => {
+        UserApi.data.userInfo = userInfo;
+        return UserApi.data;
+      });
+    } else {
+      return UserApi.data.userInfo;
+    }
   },
   getWxLoginUrl: async (redirectURL) => {
     return await ApiUtil.get('/user/login/wx', {
@@ -16,9 +28,12 @@ export default {
   },
   isLogin: function () {
     let userId = CookieUtil.getCookie('userId');
-    return typeof userId !== 'undefined' && null != userId && userId.length > 0;
+    return typeof userId !== 'undefined' && null != userId && userId.length
+        > 0;
   },
   saveUserId: function (userId) {
     CookieUtil.setCookie('userId', userId + "");
   }
 }
+
+export default UserApi;

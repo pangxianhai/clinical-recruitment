@@ -60,7 +60,22 @@
         } else {
           //已登陆的用户
           UserApi.saveUserId(userInfo.userId);
-          this.$router.push({path: '/recruitment/list'});
+          let thisUserType = this.$route.query.userType;
+          if (userInfo.userType.code !== thisUserType) {
+            Toast.loading({
+              duration: 0,
+              mask: true,
+              loadingType: 'spinner',
+              forbidClick: true,
+              message: '您没有权限访问该页面，即将为您跳转到项目列表页...'
+            });
+            setTimeout(() => {
+              this.$router.push({path: '/recruitment/list'});
+              Toast.clear();
+            }, 2000);
+          } else {
+            this.$router.push({path: '/recruitment/list'});
+          }
         }
       })
     }
