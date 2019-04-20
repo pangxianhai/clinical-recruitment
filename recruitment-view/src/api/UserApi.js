@@ -8,13 +8,12 @@ let UserApi = {
 
   getLogInfo: async () => {
     if (typeof  UserApi.data.userInfo === 'undefined') {
-      return await ApiUtil.get('/user', {}).then((userInfo) => {
+      await ApiUtil.get('/user', {}).then((userInfo) => {
         UserApi.data.userInfo = userInfo;
         return UserApi.data;
       });
-    } else {
-      return UserApi.data.userInfo;
     }
+    return UserApi.data.userInfo;
   },
   getWxLoginUrl: async (redirectURL) => {
     return await ApiUtil.get('/user/login/wx', {

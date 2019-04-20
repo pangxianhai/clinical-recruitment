@@ -35,36 +35,45 @@
             <van-panel class="recruitment-panel" v-for="(item, index) in recruitmentInfList"
                        :title="item.title"
                        :key="index">
-                <van-row type="flex">
-                    <van-col span="5">登记编号:</van-col>
-                    <van-col span="8">{{item.registerCode}}</van-col>
-                    <van-col span="5">实验分期:</van-col>
-                    <van-col span="3">{{item.practiceStages}}</van-col>
-                </van-row>
-                <van-row type="flex">
-                    <van-col span="5">药物名称:</van-col>
-                    <van-col span="19">{{item.drugName}}</van-col>
-                </van-row>
-                <van-row type="flex">
-                    <van-col span="5">招募人数:</van-col>
-                    <van-col span="8">{{item.recruitmentNumber}}人</van-col>
-                    <van-col span="5">招募状态:</van-col>
-                    <van-col span="3">{{item.status.desc}}</van-col>
-                </van-row>
-                <van-row type="flex">
-                    <van-col span="5">适应症:</van-col>
-                    <van-col span="19">{{item.indication}}</van-col>
-                </van-row>
+                <router-link :to="'/recruitment/detail/' + item.recruitmentId">
+                    <van-row type="flex">
+                        <van-col span="5">登记编号:</van-col>
+                        <van-col span="8">{{item.registerCode}}</van-col>
+                        <van-col span="5">实验分期:</van-col>
+                        <van-col span="3">{{item.practiceStages}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
+                        <van-col span="5">药物类型:</van-col>
+                        <van-col span="19">{{item.drugType}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
+                        <van-col span="5">药物名称:</van-col>
+                        <van-col span="19">{{item.drugName}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
+                        <van-col span="5">招募人数:</van-col>
+                        <van-col span="8">{{item.recruitmentNumber}}人</van-col>
+                        <van-col span="5">招募状态:</van-col>
+                        <van-col span="3">{{item.status.desc}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
+                        <van-col span="5">适应症:</van-col>
+                        <van-col span="19">{{item.indication}}</van-col>
+                    </van-row>
+                </router-link>
                 <van-row type="flex" justify="end">
                     <van-col>
                         <van-button type="info" size="small"
-                                    @click="onContactUs">联系我们
+                                    @click="onContactUs">
+                            <van-icon name="service-o"></van-icon>
+                            联系我们
                         </van-button>
                     </van-col>
                     <van-col v-if="userInfo.userType.code === UserConstants.PATIENT"
                              style="margin-left: 15px">
                         <van-button type="warning" size="small"
                                     @click="onRecruitmentApplication(item)">
+                            <van-icon name="edit"></van-icon>
                             我要参加
                         </van-button>
                     </van-col>
@@ -72,6 +81,7 @@
                              style="margin-left: 15px">
                         <van-button type="warning" size="small"
                                     @click="onRecruitmentApplication(item)">
+                            <van-icon name="share"></van-icon>
                             我要推荐
                         </van-button>
                     </van-col>
@@ -79,6 +89,7 @@
                              style="margin-left: 15px">
                         <van-button type="danger" size="small"
                                     @click="onRecommendQrcode(item)">
+                            <van-icon name="qr"></van-icon>
                             推荐二维码
                         </van-button>
                     </van-col>

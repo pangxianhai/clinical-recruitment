@@ -16,6 +16,10 @@ export default new Router({
           component: () => import("@/views/recruitment/List"),
         },
         {
+          path: 'detail/:recruitmentId',
+          component: () => import("@/views/recruitment/Detail"),
+        },
+        {
           path: 'applicationList',
           component: () => import("@/views/recruitment/ApplicationList"),
         },

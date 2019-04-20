@@ -10,14 +10,13 @@ let DoctorApi = {
   },
   getCurrentDoctorInfo: async () => {
     if (typeof  DoctorApi.data.doctorInfo === 'undefined') {
-      return await ApiUtil.get('/doctor/currentInfo', {})
+      await ApiUtil.get('/doctor/currentInfo', {})
       .then((doctorInfo) => {
         DoctorApi.data.doctorInfo = doctorInfo;
         return doctorInfo;
       });
-    } else {
-      return DoctorApi.data.doctorInfo;
     }
+    return DoctorApi.data.doctorInfo;
   },
 }
 

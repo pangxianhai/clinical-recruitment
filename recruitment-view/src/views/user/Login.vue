@@ -22,7 +22,7 @@
       if (UserApi.isLogin()) {
         UserApi.getLogInfo().then((userInfo) => {
           let thisUserType = this.$route.query.userType;
-          if (userInfo.userType.code !== thisUserType) {
+          if (userInfo.userType.code !== parseInt(thisUserType)) {
             Toast.loading({
               duration: 0,
               mask: true,

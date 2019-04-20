@@ -1,6 +1,11 @@
 <template>
     <div class="application-list">
         <van-nav-bar title="申请记录"></van-nav-bar>
+        <van-swipe :autoplay="5000">
+            <van-swipe-item>
+                <img width="100%" src="../../assets/banner3.png"/>
+            </van-swipe-item>
+        </van-swipe>
         <van-list
             v-model="applicationLoading"
             :finished="applicationFinished"
@@ -9,6 +14,14 @@
             <van-panel class="recruitment-panel" v-for="(item, index) in applicationList"
                        :title="item.recruitmentVO.title"
                        :key="index">
+                <van-row type="flex">
+                    <van-col span="5">适应症:</van-col>
+                    <van-col span="19">{{item.recruitmentVO.indication}}</van-col>
+                </van-row>
+                <van-row type="flex">
+                    <van-col span="5">药物名称:</van-col>
+                    <van-col span="19">{{item.recruitmentVO.drugName}}</van-col>
+                </van-row>
                 <van-row type="flex">
                     <van-col span="5">患者姓名:</van-col>
                     <van-col span="8">
@@ -51,7 +64,7 @@
 </style>
 
 <script>
-  import {NavBar, List, Icon, Panel, Row, Col} from 'vant';
+  import {NavBar, List, Icon, Panel, Row, Col,Swipe, SwipeItem,} from 'vant';
   import Footer from '@/components/Footer';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import UserApi from '@/api/UserApi';
@@ -66,6 +79,8 @@
       [Panel.name]: Panel,
       [Row.name]: Row,
       [Col.name]: Col,
+      [Swipe.name]: Swipe,
+      [SwipeItem.name]: SwipeItem,
     },
     data: function () {
       return {

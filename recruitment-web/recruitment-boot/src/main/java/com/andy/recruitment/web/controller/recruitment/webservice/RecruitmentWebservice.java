@@ -12,6 +12,7 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryRQ;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentUpdateRQ;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentVO;
+import com.andy.recruitment.web.controller.recruitment.response.ResearchCenterVO;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.page.PageResult;
@@ -105,6 +106,13 @@ public class RecruitmentWebservice {
     public RecruitmentVO getRecruitment(@PathVariable Long recruitmentId) {
         RecruitmentInfo recruitmentInfo = this.recruitmentAO.getRecruitmentInfoById(recruitmentId);
         return RecruitmentUtil.transformRecruitmentVO(recruitmentInfo);
+    }
+
+    @RequestMapping(value = "/{recruitmentId:\\d+}/center", method = RequestMethod.GET)
+    public List<ResearchCenterVO> getRecruitmentCenter(@PathVariable Long recruitmentId) {
+        List<ResearchCenterInfo> researchCenterInfoList = this.researchCenterAO.getResearchCenterByRecruitmentId(
+            recruitmentId);
+        return RecruitmentUtil.transformResearchCenterVO(regionAO, researchCenterInfoList);
     }
 
 
