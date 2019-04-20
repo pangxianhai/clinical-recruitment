@@ -51,14 +51,18 @@
                         <van-col span="19">{{item.drugName}}</van-col>
                     </van-row>
                     <van-row type="flex">
+                        <van-col span="5">适应症:</van-col>
+                        <van-col span="19">{{item.indication}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
                         <van-col span="5">招募人数:</van-col>
                         <van-col span="8">{{item.recruitmentNumber}}人</van-col>
                         <van-col span="5">招募状态:</van-col>
                         <van-col span="3">{{item.status.desc}}</van-col>
                     </van-row>
                     <van-row type="flex">
-                        <van-col span="5">适应症:</van-col>
-                        <van-col span="19">{{item.indication}}</van-col>
+                        <van-col span="5">起至时间:</van-col>
+                        <van-col span="19">{{item.startTime}}~{{item.stopTime}}</van-col>
                     </van-row>
                 </router-link>
                 <van-row type="flex" justify="end">

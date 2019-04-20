@@ -23,14 +23,18 @@
                 <van-col span="19">{{recruitmentInfo.drugName}}</van-col>
             </van-row>
             <van-row type="flex">
+                <van-col span="5">适应症:</van-col>
+                <van-col span="19">{{recruitmentInfo.indication}}</van-col>
+            </van-row>
+            <van-row type="flex">
                 <van-col span="5">招募人数:</van-col>
                 <van-col span="8">{{recruitmentInfo.recruitmentNumber}}人</van-col>
                 <van-col span="5">招募状态:</van-col>
                 <van-col span="3">{{recruitmentInfo.status.desc}}</van-col>
             </van-row>
             <van-row type="flex">
-                <van-col span="5">适应症:</van-col>
-                <van-col span="19">{{recruitmentInfo.indication}}</van-col>
+                <van-col span="5">起至时间:</van-col>
+                <van-col span="19">{{recruitmentInfo.startTime}}~{{recruitmentInfo.stopTime}}</van-col>
             </van-row>
         </van-panel>
         <div class="introduction">
@@ -53,8 +57,7 @@
                     <van-cell
                         v-for="(center,index) in researchCenterList"
                         :key="index"
-                        :title="center.name">
-                        <span class="tabs-value">{{center.name}}&nbsp;{{center.address}}</span>
+                        :title="center.name" :value="center.address">
                     </van-cell>
                 </van-list>
             </van-tab>
@@ -149,7 +152,7 @@
 
 </style>
 <script>
-  import {NavBar, Panel, Row, Col, Tab, Tabs, List, Button, Popup, Icon} from 'vant';
+  import {NavBar, Panel, Row, Col, Tab, Tabs, List, Cell, Button, Popup, Icon} from 'vant';
   import RecruitmentApi from "@/api/RecruitmentApi";
   import {UserConstants} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
@@ -167,6 +170,7 @@
       [Button.name]: Button,
       [Popup.name]: Popup,
       [Icon.name]: Icon,
+      [Cell.name]: Cell,
     },
     data: function () {
       return {
