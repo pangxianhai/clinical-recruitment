@@ -36,7 +36,7 @@
             },
             {
               path: '/recruitment/diseaseApplication',
-              icon: 'medel-o',
+              icon: 'notes-o',
               text: '罕见病'
             },
             {

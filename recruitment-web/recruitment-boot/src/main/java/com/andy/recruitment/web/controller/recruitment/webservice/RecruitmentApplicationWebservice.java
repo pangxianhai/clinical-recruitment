@@ -4,6 +4,7 @@ import com.andy.recruitment.doctor.ao.DoctorAO;
 import com.andy.recruitment.doctor.model.DoctorInfo;
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
+import com.andy.recruitment.oss.ao.OssAO;
 import com.andy.recruitment.patient.ao.PatientAO;
 import com.andy.recruitment.patient.model.PatientInfo;
 import com.andy.recruitment.recruitment.ao.RecruitmentAO;
@@ -20,6 +21,7 @@ import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.doctor.response.DoctorInfoVO;
 import com.andy.recruitment.web.controller.doctor.util.DoctorUtil;
+import com.andy.recruitment.web.controller.oss.response.UploadImageVO;
 import com.andy.recruitment.web.controller.patient.response.PatientVO;
 import com.andy.recruitment.web.controller.patient.util.PatientUtil;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryRQ;
@@ -39,6 +41,7 @@ import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
 import com.xgimi.converter.MyParameter;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,13 +73,16 @@ public class RecruitmentApplicationWebservice {
 
     private final RecruitmentAO recruitmentAO;
 
+    private final OssAO ossAO;
+
     @Value("${recruitment.address}")
     private String serverAddress;
 
     @Autowired
     public RecruitmentApplicationWebservice(RecruitmentApplicationAO recruitmentApplicationAO, PatientAO patientAO,
                                             UserAO userAO, RegionAO regionAO, DoctorAO doctorAO,
-                                            ResearchCenterAO researchCenterAO, RecruitmentAO recruitmentAO) {
+                                            ResearchCenterAO researchCenterAO, RecruitmentAO recruitmentAO,
+                                            OssAO ossAO) {
         this.recruitmentApplicationAO = recruitmentApplicationAO;
         this.patientAO = patientAO;
         this.userAO = userAO;
@@ -84,6 +90,7 @@ public class RecruitmentApplicationWebservice {
         this.doctorAO = doctorAO;
         this.researchCenterAO = researchCenterAO;
         this.recruitmentAO = recruitmentAO;
+        this.ossAO = ossAO;
     }
 
     /**
@@ -140,7 +147,7 @@ public class RecruitmentApplicationWebservice {
 
 
     @Login
-    @RequestMapping(value = "/{applicationId:\\d+}/accede.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/{applicationId:\\d+}/accede", method = RequestMethod.POST)
     public boolean accedeApplicationInfo(@PathVariable Long applicationId) {
         RecruitmentApplicationInfo applicationInfo = new RecruitmentApplicationInfo();
         applicationInfo.setApplicationId(applicationId);
@@ -150,7 +157,7 @@ public class RecruitmentApplicationWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/{applicationId:\\d+}/cancelAccede.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/{applicationId:\\d+}/cancelAccede", method = RequestMethod.POST)
     public boolean cancelAccedeApplicationInfo(@PathVariable Long applicationId) {
         RecruitmentApplicationInfo applicationInfo = new RecruitmentApplicationInfo();
         applicationInfo.setApplicationId(applicationId);
@@ -158,6 +165,40 @@ public class RecruitmentApplicationWebservice {
         this.recruitmentApplicationAO.updateRecruitmentApplication(applicationInfo, ServletContext.getLoginUname());
         return true;
     }
+
+    @Login
+    @RequestMapping(value = "/{applicationId:\\d+}", method = RequestMethod.GET)
+    public RecruitmentApplicationVO recruitmentDetail(@PathVariable Long applicationId) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        RecruitmentApplicationInfo applicationInfo = this.recruitmentApplicationAO.getRecruitmentApplicationInfo(
+            applicationId);
+        if (UserType.PATIENT.equals(userInfo.getUserType())) {
+            PatientInfo patientInfo = this.patientAO.getPatientInfoByUserId(userInfo.getUserId());
+            AssertUtil.assertNull(patientInfo, () -> {
+                throw new BusinessException(BusinessErrorCode.USER_ACCOUNT_ERROR);
+            });
+            AssertUtil.assertBoolean(applicationInfo.getPatientId().equals(patientInfo.getPatientId()), () -> {
+                throw new BusinessException(BusinessErrorCode.RECRUITMENT_APPLICATION_NOT_AUTH);
+            });
+        }
+        if (UserType.DOCTOR.equals(userInfo.getUserType())) {
+            DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoByUserId(userInfo.getUserId());
+            AssertUtil.assertNull(doctorInfo, () -> {
+                throw new BusinessException(BusinessErrorCode.USER_ACCOUNT_ERROR);
+            });
+            AssertUtil.assertBoolean(applicationInfo.getDoctorId().equals(doctorInfo.getDoctorId()), () -> {
+                throw new BusinessException(BusinessErrorCode.RECRUITMENT_APPLICATION_NOT_AUTH);
+            });
+        }
+        RecruitmentApplicationVO applicationVO = RecruitmentUtil.transformApplicationVO(applicationInfo);
+        this.buildApplicationVO(applicationVO);
+        this.buildPatientAddressInfo(applicationVO);
+        this.buildDoctorInfoAddressInfo(applicationVO);
+        applicationVO.setDiseaseImageList(this.buildImageVO(applicationInfo.getDiseaseImageList()));
+        return applicationVO;
+    }
+
 
     private PageResult<RecruitmentApplicationVO> queryApplication(RecruitmentApplicationQueryRQ queryRQ) {
         RecruitmentApplicationQueryParam queryParam = RecruitmentUtil.transformApplicationQueryParam(queryRQ);
@@ -226,5 +267,40 @@ public class RecruitmentApplicationWebservice {
             List<ResearchCenterVO> centerVOList = RecruitmentUtil.transformResearchCenterVO(regionAO, centerInfoList);
             applicationVO.getRecruitmentVO().setResearchCenterVOList(centerVOList);
         }
+    }
+
+    private void buildPatientAddressInfo(RecruitmentApplicationVO applicationVO) {
+        if (null == applicationVO) {
+            return;
+        }
+        PatientVO patientVO = applicationVO.getPatientVO();
+        if (null == patientVO) {
+            return;
+        }
+        patientVO.setAddress(this.regionAO.parseAddressName(patientVO.getProvinceId(), patientVO.getCityId(),
+                                                            patientVO.getDistrictId()));
+    }
+
+    private void buildDoctorInfoAddressInfo(RecruitmentApplicationVO applicationVO) {
+        if (null == applicationVO) {
+            return;
+        }
+        DoctorInfoVO doctorInfoVO = applicationVO.getDoctorInfoVO();
+        if (null == doctorInfoVO) {
+            return;
+        }
+        doctorInfoVO.setAddress(this.regionAO.parseAddressName(doctorInfoVO.getProvinceId(), doctorInfoVO.getCityId(),
+                                                               doctorInfoVO.getDistrictId()));
+    }
+
+    private List<UploadImageVO> buildImageVO(List<String> imageList) {
+        if (CollectionUtil.isEmpty(imageList)) {
+            return null;
+        }
+        return imageList.stream().map(image -> {
+            String imageUrl = ossAO.generateUrl(image);
+            String thumbnailUrl = ossAO.generateUrl(image, 80, 80);
+            return new UploadImageVO(null, imageUrl, thumbnailUrl);
+        }).collect(Collectors.toList());
     }
 }

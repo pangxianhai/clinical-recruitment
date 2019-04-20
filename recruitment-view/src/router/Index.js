@@ -30,6 +30,10 @@ export default new Router({
         {
           path: 'diseaseApplication',
           component: () => import("@/views/recruitment/DiseaseApplication"),
+        },
+        {
+          path: 'application/detail/:applicationId',
+          component: () => import("@/views/recruitment/ApplicationDetail"),
         }
       ]
     },

@@ -14,30 +14,37 @@
             <van-panel class="recruitment-panel" v-for="(item, index) in applicationList"
                        :title="item.recruitmentVO.title"
                        :key="index">
-                <van-row type="flex">
-                    <van-col span="5">适应症:</van-col>
-                    <van-col span="19">{{item.recruitmentVO.indication}}</van-col>
-                </van-row>
-                <van-row type="flex">
-                    <van-col span="5">药物名称:</van-col>
-                    <van-col span="19">{{item.recruitmentVO.drugName}}</van-col>
-                </van-row>
-                <van-row type="flex">
-                    <van-col span="5">患者姓名:</van-col>
-                    <van-col span="8">
-                        <span v-if="item.patientVO">{{item.patientVO.userInfoVO.realName}}</span>
-                    </van-col>
-                    <van-col span="5">状态:</van-col>
-                    <van-col span="3">{{item.status.desc}}</van-col>
-                </van-row>
-                <van-row type="flex">
-                    <van-col span="5">报名时间:</van-col>
-                    <van-col span="8">{{item.applicationTime}}</van-col>
-                    <van-col span="5" v-if="showRecommendDoctor">推荐医生:</van-col>
-                    <van-col span="3" v-if="showRecommendDoctor && item.doctorInfoVO">
-                        {{item.doctorInfoVO.userInfoVO.realName}}
-                    </van-col>
-                </van-row>
+                <router-link :to="'/recruitment/application/detail/' + item.applicationId">
+                    <van-row type="flex" v-if="item.recruitmentVO.recruitmentId">
+                        <van-col span="5">适应症:</van-col>
+                        <van-col span="19">{{item.recruitmentVO.indication}}</van-col>
+                    </van-row>
+                    <van-row type="flex" v-if="item.recruitmentVO.recruitmentId">
+                        <van-col span="5">药物类型:</van-col>
+                        <van-col span="19">{{item.recruitmentVO.drugType}}</van-col>
+                    </van-row>
+                    <van-row type="flex" v-if="item.recruitmentVO.recruitmentId">
+                        <van-col span="5">药物名称:</van-col>
+                        <van-col span="19">{{item.recruitmentVO.drugName}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
+                        <van-col span="5">患者姓名:</van-col>
+                        <van-col span="8">
+                            <span
+                                v-if="item.patientVO">{{item.patientVO.userInfoVO.realName}}</span>
+                        </van-col>
+                        <van-col span="5">状态:</van-col>
+                        <van-col span="3">{{item.status.desc}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
+                        <van-col span="5">报名时间:</van-col>
+                        <van-col span="8">{{item.applicationTime}}</van-col>
+                        <van-col span="5" v-if="showRecommendDoctor">推荐医生:</van-col>
+                        <van-col span="3" v-if="showRecommendDoctor && item.doctorInfoVO">
+                            {{item.doctorInfoVO.userInfoVO.realName}}
+                        </van-col>
+                    </van-row>
+                </router-link>
             </van-panel>
         </van-list>
         <my-footer></my-footer>
@@ -64,7 +71,7 @@
 </style>
 
 <script>
-  import {NavBar, List, Icon, Panel, Row, Col,Swipe, SwipeItem,} from 'vant';
+  import {NavBar, List, Icon, Panel, Row, Col, Swipe, SwipeItem,} from 'vant';
   import Footer from '@/components/Footer';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import UserApi from '@/api/UserApi';
