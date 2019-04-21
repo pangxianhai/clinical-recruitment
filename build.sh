@@ -58,6 +58,19 @@ function build_view_product() {
     ssh root@59.110.230.31 "/home/bin/build-view.sh"
 }
 
+function build_manager_product() {
+    cd /Users/pangxianhai/code/java/clinical-recruitment/recruitment-manager
+    rm -rf ./dist/*
+    npm run build
+    cd dist
+    tar -czf manager.tar.gz ./*
+    cd ..
+    tar_file=`find . -name '*.tar.gz'`
+    scp $tar_file root@59.110.230.31:/home/release
+    ssh root@59.110.230.31 "/home/bin/build-manager.sh"
+}
+
+
 if [ "$1" == "web" ];then
     work_build_web
 elif [ "$1" == "pro" ];then
@@ -66,7 +79,9 @@ elif [ "$1" == "view" ];then
     build_view
 elif [ "$1" == "pro-view" ];then
     build_view_product
+elif [ "$1" == "pro-manager" ];then
+    build_manager_product
 else
-    echo $0 "[web|pro|view|pro-view]"
+    echo $0 "[web|pro|view|pro-view|pro-manager]"
 fi
 

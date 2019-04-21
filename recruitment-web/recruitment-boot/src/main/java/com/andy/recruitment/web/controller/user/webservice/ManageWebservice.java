@@ -3,6 +3,8 @@ package com.andy.recruitment.web.controller.user.webservice;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.model.UserInfo;
 import com.andy.recruitment.web.controller.user.request.ManageAddRQ;
+import com.andy.recruitment.web.controller.user.request.MangeLoginRQ;
+import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.context.ServletContext;
@@ -36,4 +38,12 @@ public class ManageWebservice {
         return true;
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public UserInfoVO manageLogin(@RequestBody MangeLoginRQ loginRQ) {
+        UserInfo userInfo = this.userAO.loginByPhone(loginRQ.getPhone(), loginRQ.getPassword());
+        if (null == userInfo) {
+            return null;
+        }
+        return UserUtil.transformUserInfoVO(userInfo);
+    }
 }

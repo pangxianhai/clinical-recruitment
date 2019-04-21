@@ -1,30 +1,37 @@
 <template>
-    <div class="login-panel">
-        <el-form class="login-form" :model="loginForm" ref="loginForm" :rules="loginRules"
-                 label-width="80px"
-                 size="mini">
-            <div class="title-panel">
-                <div class="title-box">
-                    <img width="50" src="@/assets/logo.jpeg"/>
-                    <span class="title">爱之募后台管理系统</span>
+    <div class="login-page">
+        <div class="login-panel">
+            <el-form class="login-form" :model="loginForm" ref="loginForm" :rules="loginRules"
+                     label-width="80px"
+                     size="mini">
+                <div class="title-panel">
+                    <div class="title-box">
+                        <img width="50" src="@/assets/logo.png"/>
+                        <span class="title">爱之募后台管理系统</span>
+                    </div>
                 </div>
-            </div>
-            <el-form-item label="手机号:" prop="phone">
-                <el-input size="small" type="text" v-model="loginForm.phone"></el-input>
-            </el-form-item>
-            <el-form-item label="密码:" prop="password">
-                <el-input size="small" type="password" v-model="loginForm.password"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onLoginAction('loginForm')">登陆</el-button>
-            </el-form-item>
-        </el-form>
+                <el-form-item label="手机号:" prop="phone">
+                    <el-input size="small" type="text" v-model="loginForm.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="密码:" prop="password">
+                    <el-input size="small" type="password" v-model="loginForm.password"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onLoginAction('loginForm')">登陆</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
     </div>
 </template>
 
 <style>
-    body {
-        background-image: url("../../assets/login-background.png");
+    .login-page {
+        background-image: url("http://image.aiteruiyiyao.cn/web/login-background.png");
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%
     }
 
     .login-panel .title-panel {
@@ -63,7 +70,8 @@
 </style>
 
 <script>
-  import {Button, Form, FormItem, Input} from 'element-ui'
+  import {Button, Form, FormItem, Input, Message} from 'element-ui';
+  import UserApi from '@/api/UserApi';
 
   export default {
     components: {
@@ -95,7 +103,20 @@
       onLoginAction: function (loginForm) {
         this.$refs[loginForm].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            UserApi.manageLogin(this.loginForm).then(userInfo => {
+              UserApi.saveUserId(userInfo.userId);
+              Message({
+                message: '登录成功，即将跳转',
+                type: 'success'
+              });
+              setTimeout(() => {
+                let redirectURL = this.$route.query.redirectURL;
+                if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
+                  redirectURL = '/recruitment/list';
+                }
+                this.$router.push({path: redirectURL});
+              }, 2000);
+            });
           } else {
             window.console.log('error submit!!');
             return false;
