@@ -4,17 +4,19 @@
             <el-aside width="150px">
                 <div class="menu-title">
                     <img height="50" src="@/assets/logo.png"/>
-                    <span>爱之募</span>
+                    <!--<span>爱之募</span>-->
                 </div>
-                <el-menu>
-                    <el-submenu index="1">
+                <el-menu :router="true" :default-active="defaultActive">
+                    <el-submenu v-for="(menu,index) in menuList" :key="index" :index="menu.index">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>导航一</span>
+                            <i :class="menu.icon"></i>
+                            <span>{{menu.title}}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="1-1">选项1</el-menu-item>
-                            <el-menu-item index="1-2">选项2</el-menu-item>
+                            <el-menu-item v-for="(item,index) in menu.itemList" :index="item.index"
+                                          :key="index" :route="item.path">
+                                {{item.title}}
+                            </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -110,7 +112,8 @@
     RadioGroup,
     RadioButton,
     Button
-  } from 'element-ui'
+  } from 'element-ui';
+  import Router from '@/router/Index';
 
   export default {
     components: {
@@ -127,6 +130,61 @@
       [RadioGroup.name]: RadioGroup,
       [RadioButton.name]: RadioButton,
       [Button.name]: Button,
+    },
+    data: function () {
+      return {
+        defaultActive: '1-1',
+        menuList: []
+      }
+    },
+    created: function () {
+      this.initMenuList();
+      this.initDefaultActive();
+    },
+    methods: {
+      initMenuList: function () {
+        let routes = Router.options.routes;
+        let menuList = [];
+        for (let i = 0; i < routes.length; ++i) {
+          let route = routes[i];
+          if (!route.menu) {
+            continue;
+          }
+          let menu = {};
+          menuList.push(menu);
+          menu.icon = route.icon;
+          menu.index = (i + 1) + "";
+          menu.title = route.name;
+
+          if (typeof route.children === 'undefined') {
+            continue;
+          }
+          let itemList = [];
+          menu.itemList = itemList;
+          for (let j = 0; j < route.children.length; ++j) {
+            let child = route.children[j];
+            if (!child.menu) {
+              continue;
+            }
+            let item = {};
+            itemList.push(item);
+            item.title = child.name;
+            item.path = route.path + "/" + child.path;
+            item.index = menu.index + "-" + (j + 1);
+          }
+        }
+        this.menuList = menuList;
+      },
+      initDefaultActive: function () {
+        let path = this.$route.path;
+        this.menuList.forEach(menu => {
+          menu.itemList.forEach(item => {
+            if (path === item.path) {
+              this.defaultActive = item.index;
+            }
+          });
+        });
+      }
     }
   }
 </script>

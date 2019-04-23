@@ -10,15 +10,20 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/recruitment/list'
+      redirect: '/recruitment/list',
+      menu: false
     },
     {
       path: '/login',
       component: () => import("@/views/manager/Login"),
+      menu: false
     },
     {
       path: '/recruitment',
       component: () => import("@/views/Layout"),
+      icon: 'el-icon-document',
+      menu: true,
+      name: '项目管理',
       children: [
         {
           path: 'list',
@@ -26,8 +31,18 @@ const router = new Router({
           meta: {
             needLogin: true
           },
+          menu: true,
           component: () => import("@/views/recruitment/List"),
-        }
+        },
+        {
+          path: 'add',
+          name: '添加项目',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          component: () => import("@/views/recruitment/Add"),
+        },
       ]
     },
   ]
