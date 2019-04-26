@@ -22,6 +22,11 @@ let UserApi = {
   saveUserId: function (userId) {
     CookieUtil.setCookie('userId', userId + "");
   },
+  logOut: function () {
+    window.console.log('delete ....')
+    CookieUtil.deleteCookie('userId');
+    window.console.log('delete done')
+  },
   manageLogin: async (params) => {
     return await ApiUtil.post('/user/manager/login', params);
   }

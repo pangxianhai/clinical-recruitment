@@ -52,24 +52,44 @@ router.beforeEach((to, from, next) => {
   let needLogin = to.meta.needLogin;
   let isLogin = UserApi.isLogin();
   let isLoginPage = '/login' === to.path;
-  if (isLoginPage && isLogin) {
-    let redirectURL = to.query.redirectURL;
-    if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
-      redirectURL = '/recruitment/list';
-    }
-    next(redirectURL);
-  } else {
-    if ((needLogin && isLogin) || isLoginPage) {
-      next();
+  if (!needLogin) {
+    if (isLogin && isLoginPage) {
+      toRedirectURL(to, next);
     } else {
-      next({
-        path: '/login',
-        query: {
-          redirectURL: to.fullPath
-        }
-      });
+      next();
+    }
+  } else {
+    if (isLogin) {
+      if (isLoginPage) {
+        toRedirectURL(to, next);
+      } else {
+        next();
+      }
+    } else {
+      if (isLoginPage) {
+        next();
+      } else {
+        toLogin(to, next);
+      }
     }
   }
 });
+
+function toRedirectURL(to, next) {
+  let redirectURL = to.query.redirectURL;
+  if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
+    redirectURL = '/recruitment/list';
+  }
+  next(redirectURL);
+}
+
+function toLogin(to, next) {
+  next({
+    path: '/login',
+    query: {
+      redirectURL: to.fullPath
+    }
+  });
+}
 
 export default router;

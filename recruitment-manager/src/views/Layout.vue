@@ -24,8 +24,13 @@
             <el-container>
                 <el-header>
                     <div class="user-info">
-                        <span>庞先海</span>
-                        <el-button type="text">退出</el-button>
+                        <span>{{userName}}</span>
+                        <el-tooltip v-if="userName" effect="dark" content="退出登陆"
+                                    placement="bottom">
+                            <el-button @click="onLogOutAction" type="primary"
+                                       icon="iconfont icon-dengchu">
+                            </el-button>
+                        </el-tooltip>
                     </div>
                 </el-header>
                 <el-main>
@@ -111,9 +116,12 @@
     Radio,
     RadioGroup,
     RadioButton,
-    Button
+    Button,
+    Loading,
+    Tooltip
   } from 'element-ui';
   import Router from '@/router/Index';
+  import UserApi from '@/api/UserApi';
 
   export default {
     components: {
@@ -130,16 +138,20 @@
       [RadioGroup.name]: RadioGroup,
       [RadioButton.name]: RadioButton,
       [Button.name]: Button,
+      [Tooltip.name]: Tooltip,
     },
+
     data: function () {
       return {
         defaultActive: '1-1',
-        menuList: []
+        menuList: [],
+        userName: ''
       }
     },
     created: function () {
       this.initMenuList();
       this.initDefaultActive();
+      this.initCurrentUserInfo();
     },
     methods: {
       initMenuList: function () {
@@ -184,6 +196,30 @@
             }
           });
         });
+      },
+      initCurrentUserInfo: function () {
+        UserApi.getLogInfo().then(userInfo => {
+          if (!userInfo) {
+            return;
+          }
+          this.userName = userInfo.realName;
+        });
+      },
+      onLogOutAction: function () {
+        const loading = Loading.service({
+          lock: true,
+          text: '正在退出登陆',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        UserApi.logOut();
+        loading.close();
+        this.$router.push({
+          path: '/login',
+          query: {
+            redirectURL: this.$route.fullPath
+          }
+        })
       }
     }
   }

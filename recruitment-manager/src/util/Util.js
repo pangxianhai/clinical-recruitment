@@ -19,7 +19,10 @@ const Cookie = {
         + window.location.hostname;
   },
   deleteCookie: function (name) {
-    document.cookie = name + "=" + this.getCookie(name) + ";expires=0";
+    document.cookie = name + "=" + this.getCookie(name) + ";expires="
+        + new Date().toGMTString()
+        + ";path=/;domain="
+        + window.location.hostname;
   }
 };
 

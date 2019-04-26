@@ -58,37 +58,44 @@
                 <template slot-scope="scope">
                     <div class="operator-panel">
                         <el-row type="flex">
+                            <el-tooltip effect="dark" content="详情" placement="bottom">
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-more"
+                                        type="primary"
+                                        size="mini" circle>
+                                    </el-button>
+                                </el-col>
+                            </el-tooltip>
+                            <el-tooltip effect="dark" content="编辑" placement="bottom">
                             <el-col>
                                 <el-button
-                                    type="primary"
-                                    size="mini">
-                                    详情
+                                    icon="el-icon-edit"
+                                    size="mini"
+                                    type="success" circle>
                                 </el-button>
                             </el-col>
+                            </el-tooltip>
                         </el-row>
                         <el-row type="flex">
+                            <el-tooltip effect="dark" content="冻结" placement="bottom">
                             <el-col>
                                 <el-button
+                                    icon="el-icon-goods"
                                     size="mini"
-                                    type="success">编辑
+                                    type="warning" circle>
                                 </el-button>
                             </el-col>
-                        </el-row>
-                        <el-row type="flex">
+                            </el-tooltip>
+                            <el-tooltip effect="dark" content="删除" placement="bottom">
                             <el-col>
                                 <el-button
+                                    icon="el-icon-delete"
                                     size="mini"
-                                    type="warning">冻结
+                                    type="danger" circle>
                                 </el-button>
                             </el-col>
-                        </el-row>
-                        <el-row type="flex">
-                            <el-col>
-                                <el-button
-                                    size="mini"
-                                    type="danger">删除
-                                </el-button>
-                            </el-col>
+                            </el-tooltip>
                         </el-row>
                     </div>
                 </template>
@@ -137,6 +144,7 @@
     Pagination,
     Row,
     Col,
+    Tooltip,
   } from 'element-ui';
   import RecruitmentApi from '@/api/RecruitmentApi';
 
@@ -150,6 +158,8 @@
       [Pagination.name]: Pagination,
       [Row.name]: Row,
       [Col.name]: Col,
+      [Tooltip.name]: Tooltip,
+
     },
     data: function () {
       return {
