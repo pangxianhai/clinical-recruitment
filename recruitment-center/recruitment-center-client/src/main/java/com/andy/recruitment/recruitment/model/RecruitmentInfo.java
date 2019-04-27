@@ -83,6 +83,11 @@ public class RecruitmentInfo implements Serializable {
      */
     private List<ResearchCenterInfo> researchCenterInfoList;
 
+    /**
+     * 创建时间
+     */
+    private Date createdTime;
+
     public Long getRecruitmentId() {
         return recruitmentId;
     }
@@ -217,6 +222,14 @@ public class RecruitmentInfo implements Serializable {
 
     public void setResearchCenterInfoList(List<ResearchCenterInfo> researchCenterInfoList) {
         this.researchCenterInfoList = researchCenterInfoList;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     @Override

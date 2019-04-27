@@ -60,6 +60,7 @@ public class RecruitmentUtil {
         BeanUtil.copyProperties(recruitmentInfo, recruitmentVO);
         recruitmentVO.setStartTime(DateUtil.format(recruitmentInfo.getStartTime(), "yyyy-MM-dd"));
         recruitmentVO.setStopTime(DateUtil.format(recruitmentInfo.getStopTime(), "yyyy-MM-dd"));
+        recruitmentVO.setCreatedTime(DateUtil.format(recruitmentInfo.getCreatedTime()));
         return recruitmentVO;
     }
 
@@ -146,7 +147,8 @@ public class RecruitmentUtil {
         return researchCenterInfo;
     }
 
-    public static List<ResearchCenterInfo> transformResearchCenterInfoByUpdate(List<ResearchCenterUpdateRQ> updateRQList) {
+    public static List<ResearchCenterInfo> transformResearchCenterInfoByUpdate(
+        List<ResearchCenterUpdateRQ> updateRQList) {
         if (CollectionUtil.isEmpty(updateRQList)) {
             return null;
         }

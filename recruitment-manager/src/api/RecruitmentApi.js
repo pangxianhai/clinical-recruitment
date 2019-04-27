@@ -7,6 +7,9 @@ export default {
   getRecruitmentById: async (recruitmentId) => {
     return await ApiUtil.get('/recruitment/' + recruitmentId, {});
   },
+  addRecruitment: async (params) => {
+    return await ApiUtil.post('/recruitment', params);
+  },
   getRecruitmentCenterById: async (recruitmentId) => {
     return await ApiUtil.get('/recruitment/' + recruitmentId + "/center", {});
   },

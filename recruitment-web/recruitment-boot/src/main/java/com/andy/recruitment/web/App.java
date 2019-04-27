@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableDataSource(mapperBasePackage = "com.andy.recruitment.*.mapper")
 @SpringBootApplication
 public class App extends WebMvcConfigurerAdapter {
+
+    private static ApplicationContext context;
 
     @Bean
     public RecruitmentSystemInfo recruitmentSystemInfo() {
@@ -53,6 +56,10 @@ public class App extends WebMvcConfigurerAdapter {
     }
 
     public static void main(String... args) {
-        SpringApplication.run(App.class, args);
+        context = SpringApplication.run(App.class, args);
+    }
+
+    public static ApplicationContext getContext() {
+        return context;
     }
 }

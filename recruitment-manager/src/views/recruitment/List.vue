@@ -52,6 +52,11 @@
                 </template>
             </el-table-column>
             <el-table-column
+                width="162"
+                prop="createdTime"
+                label="添加时间">
+            </el-table-column>
+            <el-table-column
                 width="100"
                 fixed="right"
                 label="操作">
@@ -68,33 +73,33 @@
                                 </el-col>
                             </el-tooltip>
                             <el-tooltip effect="dark" content="编辑" placement="bottom">
-                            <el-col>
-                                <el-button
-                                    icon="el-icon-edit"
-                                    size="mini"
-                                    type="success" circle>
-                                </el-button>
-                            </el-col>
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-edit"
+                                        size="mini"
+                                        type="success" circle>
+                                    </el-button>
+                                </el-col>
                             </el-tooltip>
                         </el-row>
                         <el-row type="flex">
                             <el-tooltip effect="dark" content="冻结" placement="bottom">
-                            <el-col>
-                                <el-button
-                                    icon="el-icon-goods"
-                                    size="mini"
-                                    type="warning" circle>
-                                </el-button>
-                            </el-col>
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-goods"
+                                        size="mini"
+                                        type="warning" circle>
+                                    </el-button>
+                                </el-col>
                             </el-tooltip>
                             <el-tooltip effect="dark" content="删除" placement="bottom">
-                            <el-col>
-                                <el-button
-                                    icon="el-icon-delete"
-                                    size="mini"
-                                    type="danger" circle>
-                                </el-button>
-                            </el-col>
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-delete"
+                                        size="mini"
+                                        type="danger" circle>
+                                    </el-button>
+                                </el-col>
                             </el-tooltip>
                         </el-row>
                     </div>

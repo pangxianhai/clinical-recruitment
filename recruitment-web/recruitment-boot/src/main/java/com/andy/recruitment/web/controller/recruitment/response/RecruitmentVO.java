@@ -81,6 +81,11 @@ public class RecruitmentVO implements Serializable {
      */
     private List<ResearchCenterVO> researchCenterVOList;
 
+    /**
+     * 创建时间
+     */
+    private String createdTime;
+
     public Long getRecruitmentId() {
         return recruitmentId;
     }
@@ -215,5 +220,13 @@ public class RecruitmentVO implements Serializable {
 
     public void setResearchCenterVOList(List<ResearchCenterVO> researchCenterVOList) {
         this.researchCenterVOList = researchCenterVOList;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
     }
 }

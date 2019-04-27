@@ -7,7 +7,6 @@ import com.andy.recruitment.region.service.RegionService;
 import com.xgimi.commons.util.HttpClientUtil;
 import com.xgimi.commons.util.JsonUtil;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,41 +140,5 @@ public class RegionAOImpl implements RegionAO {
         }
         Region district = this.regionService.getRegionByParent(city.getRegionId(), addressArr[1]);
         addressInfo.setDistrict(district);
-    }
-
-    private void buildAreaJs() {
-        Map<String, String> provinceMap = new LinkedHashMap<>();
-        Map<String, String> cityMap = new LinkedHashMap<>();
-        Map<String, String> countyMap = new LinkedHashMap<>();
-
-        List<Region> provinceList = this.getRegionByParentId(null);
-        for (int j = 0; j < provinceList.size(); ++ j) {
-            Region province = provinceList.get(j);
-            String pid = String.valueOf(j + 10);
-            provinceMap.put(pid + "0000", province.getRegionName());
-            List<Region> cityList = this.getRegionByParentId(province.getRegionId());
-            for (int i = 0; i < cityList.size(); ++ i) {
-                int ii = i + 10;
-                String cid = pid + ii;
-                Region city = cityList.get(i);
-                cityMap.put(cid + "00", city.getRegionName());
-
-                List<Region> countyList = this.getRegionByParentId(city.getRegionId());
-                if (null == countyList) {
-                    continue;
-                }
-                for (int t = 0; t < countyList.size(); ++ t) {
-                    int tt = t + 10;
-                    String aid = cid + tt;
-                    Region county = countyList.get(t);
-                    countyMap.put(aid, county.getRegionName());
-                }
-            }
-        }
-        Map<String, Object> m = new LinkedHashMap<>();
-        m.put("province_list", provinceMap);
-        m.put("city_list", cityMap);
-        m.put("county_list", countyMap);
-        System.out.println(JsonUtil.toJson(m));
     }
 }
