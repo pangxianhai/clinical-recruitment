@@ -79,6 +79,7 @@
                                     <el-button
                                         icon="el-icon-more"
                                         type="primary"
+                                        @click="onRecruitmentDetail(scope.row)"
                                         size="mini" circle>
                                     </el-button>
                                 </el-col>
@@ -178,7 +179,6 @@
   } from 'element-ui';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RecruitmentStatus} from '@/constants/Global';
-  import {RouterUtil} from '@/util/Util';
 
   export default {
     components: {
@@ -192,7 +192,6 @@
       [Col.name]: Col,
       [Tooltip.name]: Tooltip,
       [Tag.name]: Tag,
-
     },
     data: function () {
       return {
@@ -257,6 +256,11 @@
           });
         }).catch(() => {
 
+        });
+      },
+      onRecruitmentDetail: function (recruitmentInfo) {
+        this.$router.push({
+          path: '/recruitment/detail/' + recruitmentInfo.recruitmentId
         });
       }
     }

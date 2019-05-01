@@ -55,11 +55,6 @@
         overflow: hidden;
     }
 
-    /*.el-menu {*/
-        /*width: 100%;*/
-        /*overflow: hidden;*/
-    /*}*/
-
     .menu-title {
         width: 100%;
         text-align: center;

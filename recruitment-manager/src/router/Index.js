@@ -43,6 +43,15 @@ const router = new Router({
           menu: true,
           component: () => import("@/views/recruitment/Add"),
         },
+        {
+          path: 'detail/:recruitmentId',
+          name: '项目详情',
+          meta: {
+            needLogin: true
+          },
+          menu: false,
+          component: () => import("@/views/recruitment/Detail"),
+        },
       ]
     },
   ]
