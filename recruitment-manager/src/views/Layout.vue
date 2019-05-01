@@ -155,7 +155,7 @@
     },
     created: function () {
       this.initMenuList();
-      this.initDefaultActive();
+      // this.initDefaultActive();
       this.initCurrentUserInfo();
     },
     methods: {
@@ -170,7 +170,7 @@
           let menu = {};
           menuList.push(menu);
           menu.icon = route.icon;
-          menu.index = (i + 1) + "";
+          menu.index = route.index;
           menu.title = route.name;
 
           if (typeof route.children === 'undefined') {
@@ -180,14 +180,17 @@
           menu.itemList = itemList;
           for (let j = 0; j < route.children.length; ++j) {
             let child = route.children[j];
-            if (!child.menu) {
-              continue;
-            }
+
             let item = {};
-            itemList.push(item);
             item.title = child.name;
             item.path = route.path + "/" + child.path;
-            item.index = menu.index + "-" + (j + 1);
+            item.index = child.index;
+            if (child.menu) {
+              itemList.push(item);
+            }
+            if (child.name === this.$route.name) {
+              this.defaultActive = child.index;
+            }
           }
         }
         this.menuList = menuList;

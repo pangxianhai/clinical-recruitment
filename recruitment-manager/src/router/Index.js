@@ -11,12 +11,14 @@ const router = new Router({
     {
       path: '/',
       redirect: '/recruitment/list',
-      menu: false
+      menu: false,
+      index:"0"
     },
     {
       path: '/login',
       component: () => import("@/views/manager/Login"),
-      menu: false
+      menu: false,
+      index:"1"
     },
     {
       path: '/recruitment',
@@ -24,6 +26,7 @@ const router = new Router({
       icon: 'el-icon-document',
       menu: true,
       name: '项目管理',
+      index:"2",
       children: [
         {
           path: 'list',
@@ -32,6 +35,7 @@ const router = new Router({
             needLogin: true
           },
           menu: true,
+          index:"2-1",
           component: () => import("@/views/recruitment/List"),
         },
         {
@@ -41,6 +45,7 @@ const router = new Router({
             needLogin: true
           },
           menu: true,
+          index:"2-2",
           component: () => import("@/views/recruitment/Add"),
         },
         {
@@ -50,6 +55,7 @@ const router = new Router({
             needLogin: true
           },
           menu: false,
+          index:"2-1",
           component: () => import("@/views/recruitment/Detail"),
         },
       ]

@@ -134,7 +134,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .el-table {
         margin-top: 20px;
     }
@@ -260,7 +260,7 @@
       },
       onRecruitmentDetail: function (recruitmentInfo) {
         this.$router.push({
-          path: '/recruitment/detail/' + recruitmentInfo.recruitmentId
+          path: `/recruitment/detail/${recruitmentInfo.recruitmentId}`
         });
       }
     }

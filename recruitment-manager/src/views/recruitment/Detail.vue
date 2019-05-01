@@ -79,10 +79,10 @@
             <el-row v-for="(center, index) in researchCenterList" :key="index"
                     style="width: 400px"
                     type="flex" justify="space-between">
-                <el-col :span="11">
+                <el-col :span="10">
                     {{center.address}}
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="14">
                     {{center.name}}
                 </el-col>
             </el-row>
@@ -120,7 +120,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .el-table {
         margin-top: 20px;
     }
