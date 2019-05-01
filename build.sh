@@ -34,8 +34,8 @@ function build_view() {
 }
 
 function work_build_web() {
-    source_dir=/home/xavier.pang/work/clinical-recruitment/recruitment-web
-    build $source_dir recruitment-web /home/www
+    source_dir=/Users/pangxianhai/code/java/clinical-recruitment/recruitment-web
+    build $source_dir recruitment-web /Users/pangxianhai/www
 
 }
 

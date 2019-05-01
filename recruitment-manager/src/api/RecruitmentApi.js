@@ -18,5 +18,11 @@ export default {
   },
   getRecruitmentApplicationById: async (applicationId) => {
     return await ApiUtil.get('/recruitmentapplication/' + applicationId, {});
+  },
+  recruitmentBegin: async (recruitmentId) => {
+    return await ApiUtil.post('/recruitment/' + recruitmentId + "/begin", {});
+  },
+  recruitmentEnd: async (recruitmentId) => {
+    return await ApiUtil.post('/recruitment/' + recruitmentId + "/end", {});
   }
 }

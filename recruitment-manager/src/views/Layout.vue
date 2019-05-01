@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-container>
-            <el-aside width="150px">
+            <el-aside class="aside-left">
                 <div class="menu-title">
                     <img height="50" src="@/assets/logo.png"/>
                     <!--<span>爱之募</span>-->
@@ -49,6 +49,16 @@
     .el-aside {
         min-height: 620px;
     }
+
+    .aside-left {
+        width: 150px !important;
+        overflow: hidden;
+    }
+
+    /*.el-menu {*/
+        /*width: 100%;*/
+        /*overflow: hidden;*/
+    /*}*/
 
     .menu-title {
         width: 100%;

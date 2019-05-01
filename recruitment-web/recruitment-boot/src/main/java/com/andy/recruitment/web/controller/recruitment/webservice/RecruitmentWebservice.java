@@ -82,7 +82,6 @@ public class RecruitmentWebservice {
         return true;
     }
 
-    @Login
     @RequestMapping(value = "/{recruitmentId:\\d+}/begin", method = RequestMethod.POST)
     public boolean recruitmentBegin(@PathVariable Long recruitmentId) {
         RecruitmentInfo recruitmentInfo = new RecruitmentInfo();
@@ -92,7 +91,6 @@ public class RecruitmentWebservice {
         return true;
     }
 
-    @Login
     @RequestMapping(value = "/{recruitmentId:\\d+}/end", method = RequestMethod.POST)
     public boolean recruitmentEnd(@PathVariable Long recruitmentId) {
         RecruitmentInfo recruitmentInfo = new RecruitmentInfo();

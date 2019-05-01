@@ -43,11 +43,6 @@ public class App extends WebMvcConfigurerAdapter {
         return new MyHttpMessageConverter(systemInfo.getCharsetName());
     }
 
-    @Bean
-    public HttpMessageConverters messageWebMessageConverters(MyHttpMessageConverter httpMessageConverter) {
-        return new HttpMessageConverters(httpMessageConverter);
-    }
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         super.addArgumentResolvers(argumentResolvers);

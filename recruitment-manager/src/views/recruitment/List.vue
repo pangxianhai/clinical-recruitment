@@ -41,8 +41,19 @@
                 label="招募人数">
             </el-table-column>
             <el-table-column
-                prop="status.desc"
                 label="招募状态">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.status.code===RecruitmentStatus.FINISHED" type="info">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                    <el-tag v-if="scope.row.status.code===RecruitmentStatus.NOT_BEGIN"
+                            type="warning">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                    <el-tag v-if="scope.row.status.code===RecruitmentStatus.IN_PROCESS">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                </template>
             </el-table-column>
             <el-table-column
                 width="200"
@@ -52,12 +63,12 @@
                 </template>
             </el-table-column>
             <el-table-column
-                width="162"
+                width="163"
                 prop="createdTime"
                 label="添加时间">
             </el-table-column>
             <el-table-column
-                width="100"
+                width="60"
                 fixed="right"
                 label="操作">
                 <template slot-scope="scope">
@@ -72,6 +83,8 @@
                                     </el-button>
                                 </el-col>
                             </el-tooltip>
+                        </el-row>
+                        <el-row type="flex">
                             <el-tooltip effect="dark" content="编辑" placement="bottom">
                                 <el-col>
                                     <el-button
@@ -83,21 +96,25 @@
                             </el-tooltip>
                         </el-row>
                         <el-row type="flex">
-                            <el-tooltip effect="dark" content="冻结" placement="bottom">
+                            <el-tooltip v-if="scope.row.status.code===RecruitmentStatus.IN_PROCESS"
+                                        effect="dark" content="结束" placement="bottom">
                                 <el-col>
                                     <el-button
                                         icon="el-icon-goods"
                                         size="mini"
-                                        type="warning" circle>
+                                        type="danger" circle
+                                        @click="onEndRecruitment(scope.row)">
                                     </el-button>
                                 </el-col>
                             </el-tooltip>
-                            <el-tooltip effect="dark" content="删除" placement="bottom">
+                            <el-tooltip v-if="scope.row.status.code!==RecruitmentStatus.IN_PROCESS"
+                                        effect="dark" content="开始" placement="bottom">
                                 <el-col>
                                     <el-button
-                                        icon="el-icon-delete"
+                                        icon="el-icon-sold-out"
                                         size="mini"
-                                        type="danger" circle>
+                                        type="warning" circle
+                                        @click="onBeginRecruitment(scope.row)">
                                     </el-button>
                                 </el-col>
                             </el-tooltip>
@@ -132,6 +149,11 @@
 
     .el-pagination {
         float: right;
+
+    }
+
+    .operator-panel {
+        text-align: center;
     }
 
     .operator-panel .el-row {
@@ -150,8 +172,13 @@
     Row,
     Col,
     Tooltip,
+    Tag,
+    MessageBox,
+    Message
   } from 'element-ui';
   import RecruitmentApi from '@/api/RecruitmentApi';
+  import {RecruitmentStatus} from '@/constants/Global';
+  import {RouterUtil} from '@/util/Util';
 
   export default {
     components: {
@@ -164,10 +191,12 @@
       [Row.name]: Row,
       [Col.name]: Col,
       [Tooltip.name]: Tooltip,
+      [Tag.name]: Tag,
 
     },
     data: function () {
       return {
+        RecruitmentStatus: RecruitmentStatus,
         recruitmentList: [],
         currentPage: 1,
         totalRecord: 0,
@@ -185,6 +214,49 @@
         }).then(data => {
           this.recruitmentList = data.data;
           this.totalRecord = data.paginator.totalRecord;
+        });
+      },
+      onBeginRecruitment: function (recruitmentInfo) {
+        if (recruitmentInfo.status.code === RecruitmentStatus.FINISHED) {
+          MessageBox.confirm('请注意结束时间，系统会根据结束时间自动结束项目！', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.beginRecruitment(recruitmentInfo);
+          }).catch(() => {
+
+          });
+        } else {
+          this.beginRecruitment(recruitmentInfo);
+        }
+      },
+      beginRecruitment: function (recruitmentInfo) {
+        RecruitmentApi.recruitmentBegin(recruitmentInfo.recruitmentId).then((success) => {
+          if (success) {
+            Message.success('操作成功!');
+            this.loadRecruitmentInfo();
+          } else {
+            Message.error('操作失败');
+          }
+        });
+      },
+      onEndRecruitment: function (recruitmentInfo) {
+        MessageBox.confirm('您确定要执行该操作吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          RecruitmentApi.recruitmentEnd(recruitmentInfo.recruitmentId).then((success) => {
+            if (success) {
+              Message.success('操作成功!');
+              this.loadRecruitmentInfo();
+            } else {
+              Message.error('操作失败');
+            }
+          });
+        }).catch(() => {
+
         });
       }
     }
