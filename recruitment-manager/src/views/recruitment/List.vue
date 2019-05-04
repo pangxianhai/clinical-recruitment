@@ -91,6 +91,7 @@
                                     <el-button
                                         icon="el-icon-edit"
                                         size="mini"
+                                        @click="onRecruitmentUpdate(scope.row)"
                                         type="success" circle>
                                     </el-button>
                                 </el-col>
@@ -261,6 +262,11 @@
       onRecruitmentDetail: function (recruitmentInfo) {
         this.$router.push({
           path: `/recruitment/detail/${recruitmentInfo.recruitmentId}`
+        });
+      },
+      onRecruitmentUpdate: function (recruitmentInfo) {
+        this.$router.push({
+          path: `/recruitment/update/${recruitmentInfo.recruitmentId}`
         });
       }
     }

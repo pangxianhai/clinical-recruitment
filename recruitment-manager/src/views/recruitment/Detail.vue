@@ -93,6 +93,7 @@
                     <el-button
                         icon="el-icon-edit"
                         size="mini"
+                        @click="onRecruitmentUpdate()"
                         type="success">
                         编辑
                     </el-button>
@@ -249,6 +250,11 @@
 
         });
       },
+      onRecruitmentUpdate: function () {
+        this.$router.push({
+          path: `/recruitment/update/${this.recruitmentInfo.recruitmentId}`
+        });
+      }
     }
   }
 </script>

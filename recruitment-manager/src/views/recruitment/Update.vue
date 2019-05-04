@@ -3,7 +3,8 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>项目管理</el-breadcrumb-item>
-            <el-breadcrumb-item>添加项目</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/recruitment/list' }">项目列表</el-breadcrumb-item>
+            <el-breadcrumb-item>编辑项目</el-breadcrumb-item>
         </el-breadcrumb>
         <div style="text-align: center;margin-top: 25px">
             <el-form :model="recruitmentInfo" :rules="recruitmentInfoRules"
@@ -92,7 +93,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary"
-                               @click="onAddRecruitmentAction('recruitmentInfoForm')">提交
+                               @click="onUpdateRecruitmentAction('recruitmentInfoForm')">提交
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -102,6 +103,8 @@
 
 <script>
   import {
+    Breadcrumb,
+    BreadcrumbItem,
     Form,
     FormItem,
     Input,
@@ -110,11 +113,8 @@
     Button,
     Col,
     Row,
-    Icon,
     Cascader,
-    Message,
-    Breadcrumb,
-    BreadcrumbItem,
+    Message
   } from 'element-ui';
 
   import AreaData from '@/util/AreaData';
@@ -123,6 +123,8 @@
 
   export default {
     components: {
+      [Breadcrumb.name]: Breadcrumb,
+      [BreadcrumbItem.name]: BreadcrumbItem,
       [Form.name]: Form,
       [FormItem.name]: FormItem,
       [Input.name]: Input,
@@ -131,16 +133,30 @@
       [Button.name]: Button,
       [Col.name]: Col,
       [Row.name]: Row,
-      [Icon.name]: Icon,
       [Cascader.name]: Cascader,
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
     },
     data: function () {
       return {
         recruitmentInfo: {
+          title: '',
+          registerCode: '',
+          createdTime: "",
+          drugName: "",
+          drugType: "",
+          entryCriteria: "",
+          indication: "",
+          introduction: "",
+          patientRights: "",
+          practiceStages: "",
+          recruitmentNumber: 0,
+          startTime: "",
+          status: {},
+          stopTime: "",
+          treatmentPlan: "",
+          startEndTime: [],
           researchCenterList: [{}]
         },
+        areaData: AreaData,
         recruitmentInfoRules: {
           title: [
             {required: true, message: '请输入项目标题', trigger: 'blur'},
@@ -203,26 +219,29 @@
           }
           callback();
         },
-        areaData: AreaData,
       }
-
+    },
+    created: function () {
+      let recruitmentId = this.$route.params.recruitmentId;
+      this.loadRecruitmentInfo(recruitmentId);
+      this.loadRecruitmentCenter(recruitmentId);
     },
     methods: {
-      removeResearchCenter(index) {
-        if (this.recruitmentInfo.researchCenterList.length === 1) {
-          Message.error("请至少保留一个研究中心");
-          return;
-        }
-        if (index !== -1) {
-          this.recruitmentInfo.researchCenterList.splice(index, 1)
-        }
-      },
-      addResearchCenter() {
-        this.recruitmentInfo.researchCenterList.push({
-          key: Date.now()
+      loadRecruitmentInfo: function (recruitmentId) {
+        RecruitmentApi.getRecruitmentById(recruitmentId).then((recruitmentInfo) => {
+          Object.assign(this.recruitmentInfo, recruitmentInfo);
+          this.recruitmentInfo.startEndTime = [recruitmentInfo.startTime, recruitmentInfo.stopTime];
         });
       },
-      onAddRecruitmentAction: function (recruitmentInfoForm) {
+      loadRecruitmentCenter: function (recruitmentId) {
+        RecruitmentApi.getRecruitmentCenterById(recruitmentId).then((researchCenterList) => {
+          this.recruitmentInfo.researchCenterList = researchCenterList;
+          this.recruitmentInfo.researchCenterList.forEach(center => {
+            center.areaIds = [center.provinceId, center.cityId, center.districtId]
+          });
+        })
+      },
+      onUpdateRecruitmentAction: function (recruitmentInfoForm) {
         if (typeof this.recruitmentInfo.startEndTime !== 'undefined'
             && this.recruitmentInfo.startEndTime.length >= 2) {
           this.recruitmentInfo.startTime = this.recruitmentInfo.startEndTime[0];
@@ -237,17 +256,31 @@
         });
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
-            RecruitmentApi.addRecruitment(this.recruitmentInfo).then(success => {
+            RecruitmentApi.updateRecruitment(this.recruitmentInfo).then(success => {
               if (success) {
-                Message.success('添加成功，即将跳转');
+                Message.success('修改成功，即将跳转');
                 RouterUtil.goToBack(this.$route, this.$router);
               }
-            })
+            });
           } else {
             return false;
           }
         });
-      }
+      },
+      removeResearchCenter(index) {
+        if (this.recruitmentInfo.researchCenterList.length === 1) {
+          Message.error("请至少保留一个研究中心");
+          return;
+        }
+        if (index !== -1) {
+          this.recruitmentInfo.researchCenterList.splice(index, 1)
+        }
+      },
+      addResearchCenter() {
+        this.recruitmentInfo.researchCenterList.push({
+          key: Date.now()
+        });
+      },
     }
   }
 </script>
