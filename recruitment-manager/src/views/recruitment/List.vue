@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="recruitment-list">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>项目管理</el-breadcrumb-item>
@@ -135,30 +135,28 @@
     </div>
 </template>
 
-<style scoped>
-    .el-table {
+<style>
+    .recruitment-list .el-table {
         margin-top: 20px;
     }
 
-    .el-table th.is-leaf {
-        background: #858585;
-        color: #FFF;
+    .recruitment-list .el-table th.is-leaf {
+        color: #858585;
     }
 
-    .el-table thead .cell {
+    .recruitment-list .el-table thead .cell {
         text-align: center;
     }
 
-    .el-pagination {
+    .recruitment-list .el-pagination {
         float: right;
-
     }
 
-    .operator-panel {
+    .recruitment-list .operator-panel {
         text-align: center;
     }
 
-    .operator-panel .el-row {
+    .recruitment-list .operator-panel .el-row {
         margin-top: 5px;
     }
 </style>

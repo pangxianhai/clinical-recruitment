@@ -9,7 +9,7 @@
                 <el-menu :router="true" :default-active="defaultActive">
                     <el-submenu v-for="(menu,index) in menuList" :key="index" :index="menu.index">
                         <template slot="title">
-                            <i :class="menu.icon"></i>
+                            <i :class="menu.icon" style="margin-right: 8px"></i>
                             <span>{{menu.title}}</span>
                         </template>
                         <el-menu-item-group>

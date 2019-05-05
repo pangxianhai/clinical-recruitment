@@ -65,6 +65,9 @@ public class DoctorWebservice {
         for (DoctorInfoVO doctorInfoVO : doctorInfoVOList) {
             UserInfo userInfo = this.userAO.getUserInfoByUserId(doctorInfoVO.getUserId());
             doctorInfoVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
+            doctorInfoVO.setAddress(
+                this.regionAO.parseAddressName(doctorInfoVO.getProvinceId(), doctorInfoVO.getCityId(),
+                                               doctorInfoVO.getDistrictId()));
         }
         return new PageResult<>(doctorInfoVOList, pageResult.getPaginator());
     }

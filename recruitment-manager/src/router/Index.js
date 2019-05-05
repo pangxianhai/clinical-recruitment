@@ -23,7 +23,7 @@ const router = new Router({
     {
       path: '/recruitment',
       component: () => import("@/views/Layout"),
-      icon: 'el-icon-document',
+      icon: 'iconfont icon-xiangmuguanli',
       menu: true,
       name: '项目管理',
       index: "2",
@@ -70,6 +70,26 @@ const router = new Router({
         },
       ]
     },
+    {
+      path: '/doctor',
+      component: () => import("@/views/Layout"),
+      icon: 'iconfont icon-yisheng',
+      menu: true,
+      name: '医生管理',
+      index: "3",
+      children: [
+        {
+          path: 'list',
+          name: '医生列表',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "3-1",
+          component: () => import("@/views/doctor/List"),
+        },
+      ]
+    }
   ]
 });
 
