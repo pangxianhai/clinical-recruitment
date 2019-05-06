@@ -89,6 +89,26 @@ const router = new Router({
           component: () => import("@/views/doctor/List"),
         },
       ]
+    },
+    {
+      path: '/patient',
+      component: () => import("@/views/Layout"),
+      icon: 'iconfont icon-huanzhe',
+      menu: true,
+      name: '患者管理',
+      index: "4",
+      children: [
+        {
+          path: 'list',
+          name: '患者列表',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "4-1",
+          component: () => import("@/views/patient/List"),
+        },
+      ]
     }
   ]
 });

@@ -63,6 +63,8 @@ public class PatientWebservice {
         for (PatientVO patientVO : patientVOList) {
             UserInfo userInfo = this.userAO.getUserInfoByUserId(patientVO.getUserId());
             patientVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
+            patientVO.setAddress(this.regionAO.parseAddressName(patientVO.getProvinceId(), patientVO.getCityId(),
+                                                                patientVO.getDistrictId()));
         }
         return new PageResult<>(patientVOList, pageResult.getPaginator());
     }

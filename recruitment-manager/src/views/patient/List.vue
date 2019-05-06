@@ -1,12 +1,12 @@
 <template>
-    <div class="doctor-list">
+    <div class="patient-list">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>医生管理</el-breadcrumb-item>
-            <el-breadcrumb-item>医生列表</el-breadcrumb-item>
+            <el-breadcrumb-item>患者管理</el-breadcrumb-item>
+            <el-breadcrumb-item>患者列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-table
-            :data="doctorList"
+            :data="patientList"
             border
             height="500"
             style="width: 100%">
@@ -36,16 +36,12 @@
                 label="地址">
             </el-table-column>
             <el-table-column
-                prop="medicalInstitution"
-                label="执业机构">
-            </el-table-column>
-            <el-table-column
-                prop="medicalCategory"
-                label="执业类别">
+                prop="age"
+                label="年龄">
             </el-table-column>
         </el-table>
         <el-pagination
-            @current-change="loadDoctorInfo"
+            @current-change="loadPatientInfo"
             :current-page.sync="currentPage"
             :page-size="pageSize"
             layout="total, prev, pager, next"
@@ -53,24 +49,27 @@
         </el-pagination>
     </div>
 </template>
+
+
 <style>
-    .doctor-list .el-table {
+    .patient-list .el-table {
         margin-top: 20px;
     }
 
-    .doctor-list .el-table th.is-leaf {
+    .patient-list .el-table th.is-leaf {
         color: #858585;
     }
 
-    .doctor-list .el-table thead .cell {
+    .patient-list .el-table  .cell {
         text-align: center;
     }
 
-    .doctor-list .el-pagination {
+    .patient-list .el-pagination {
         float: right;
     }
 
 </style>
+
 <script>
   import {
     Breadcrumb,
@@ -79,7 +78,7 @@
     TableColumn,
     Pagination,
   } from 'element-ui';
-  import DoctorApi from '@/api/DoctorApi'
+  import PatientApi from '@/api/PatientApi'
 
   export default {
     components: {
@@ -91,22 +90,22 @@
     },
     data: function () {
       return {
-        doctorList: [],
+        patientList: [],
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
       }
     },
     created: function () {
-      this.loadDoctorInfo();
+      this.loadPatientInfo();
     },
     methods: {
-      loadDoctorInfo: function () {
-        DoctorApi.getDoctor({
+      loadPatientInfo: function () {
+        PatientApi.getPatient({
           currentPage: this.currentPage,
           pageSize: this.pageSize
         }).then(data => {
-          this.doctorList = data.data;
+          this.patientList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
       }
