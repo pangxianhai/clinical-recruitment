@@ -15,9 +15,9 @@
                 <el-form-item label="登记编号：" prop="registerCode">
                     <el-input v-model="recruitmentInfo.registerCode" placeholder="登记编号"></el-input>
                 </el-form-item>
-                <el-form-item label="实验分期：" prop="practiceStages">
+                <el-form-item label="试验分期：" prop="practiceStages">
                     <el-input v-model="recruitmentInfo.practiceStages"
-                              placeholder="实验分期"></el-input>
+                              placeholder="试验分期"></el-input>
                 </el-form-item>
                 <el-form-item label="适应症：" prop="indication">
                     <el-input v-model="recruitmentInfo.indication" placeholder="适应症"></el-input>
@@ -151,7 +151,7 @@
             {min: 1, max: 32, message: '最大只能输入32个字符', trigger: 'blur'}
           ],
           practiceStages: [
-            {required: true, message: '请输入实验分期', trigger: 'blur'},
+            {required: true, message: '请输入试验分期', trigger: 'blur'},
             {min: 1, max: 32, message: '最大只能输入32个字符', trigger: 'blur'}
           ],
           indication: [
@@ -160,11 +160,11 @@
           ],
           drugName: [
             {required: true, message: '请输入药物名称', trigger: 'blur'},
-            {min: 1, max: 32, message: '最大只能输入32个字符', trigger: 'blur'}
+            {min: 1, max: 1024, message: '最大只能输入1024个字符', trigger: 'blur'}
           ],
           drugType: [
             {required: true, message: '请输入药物类型', trigger: 'blur'},
-            {min: 1, max: 32, message: '最大只能输入32个字符', trigger: 'blur'}
+            {min: 1, max: 512, message: '最大只能输入512个字符', trigger: 'blur'}
           ],
           recruitmentNumber: [
             {required: true, message: '请输入招募人数', trigger: 'blur'},
@@ -172,19 +172,19 @@
           ],
           introduction: [
             {required: true, message: '请输入简介', trigger: 'blur'},
-            {min: 1, max: 256, message: '最大只能输入256个字符', trigger: 'blur'}
+            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
           ],
           treatmentPlan: [
             {required: true, message: '请输入治疗方案', trigger: 'blur'},
-            {min: 1, max: 256, message: '最大只能输入256个字符', trigger: 'blur'}
+            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
           ],
           entryCriteria: [
             {required: true, message: '请输入入排标准', trigger: 'blur'},
-            {min: 1, max: 256, message: '最大只能输入256个字符', trigger: 'blur'}
+            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
           ],
           patientRights: [
             {required: true, message: '请输入患者权益', trigger: 'blur'},
-            {min: 1, max: 256, message: '最大只能输入256个字符', trigger: 'blur'}
+            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
           ],
           startEndTime: [
             {required: true, message: '请选择启止日期', trigger: 'blur'},

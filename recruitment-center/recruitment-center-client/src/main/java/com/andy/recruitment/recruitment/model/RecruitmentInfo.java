@@ -27,7 +27,7 @@ public class RecruitmentInfo implements Serializable {
      */
     private String title;
     /**
-     * 实验分期
+     * 试验分期
      */
     private String practiceStages;
     /**

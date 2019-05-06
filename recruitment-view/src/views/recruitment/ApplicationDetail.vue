@@ -6,7 +6,7 @@
             <van-row type="flex" v-if="recruitmentInfo.recruitmentId">
                 <van-col span="5">登记编号:</van-col>
                 <van-col span="8">{{recruitmentInfo.registerCode}}</van-col>
-                <van-col span="5">实验分期:</van-col>
+                <van-col span="5">试验分期:</van-col>
                 <van-col span="3">{{recruitmentInfo.practiceStages}}</van-col>
             </van-row>
             <van-row type="flex" v-if="recruitmentInfo.recruitmentId">

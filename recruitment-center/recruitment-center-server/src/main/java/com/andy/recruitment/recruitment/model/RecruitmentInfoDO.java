@@ -21,7 +21,7 @@ public class RecruitmentInfoDO extends BaseDO {
      */
     private String title;
     /**
-     * 实验分期
+     * 试验分期
      */
     private String practiceStages;
     /**

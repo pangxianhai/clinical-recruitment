@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column
                 prop="practiceStages"
-                label="实验分期">
+                label="试验分期">
             </el-table-column>
             <el-table-column
                 prop="indication"
