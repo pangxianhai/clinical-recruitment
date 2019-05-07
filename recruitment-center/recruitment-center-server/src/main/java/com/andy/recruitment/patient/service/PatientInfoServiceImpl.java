@@ -87,6 +87,6 @@ public class PatientInfoServiceImpl implements PatientInfoService {
         Page page = PageUtil.transformToPage(paginator);
         List<PatientInfoDO> patientInfoDOList = this.patientInfoMapper.select(queryParam, page);
         List<PatientInfo> patientInfoList = PatientUtil.transformPatientInfo(patientInfoDOList);
-        return new PageResult<>(patientInfoList, paginator);
+        return new PageResult<>(patientInfoList, PageUtil.transformToPaginator(page));
     }
 }
