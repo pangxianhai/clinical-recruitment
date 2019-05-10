@@ -34,6 +34,28 @@
                 prop="applicationTime"
                 label="申请时间">
             </el-table-column>
+            <el-table-column
+                width="60"
+                fixed="right"
+                label="操作">
+                <template slot-scope="scope">
+                    <div class="operator-panel">
+                        <el-row type="flex">
+                            <el-tooltip effect="dark" content="详情" :hide-after="500"
+                                        placement="bottom">
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-more"
+                                        type="primary"
+                                        @click="onRecruitmentApplicationDetail(scope.row)"
+                                        size="mini" circle>
+                                    </el-button>
+                                </el-col>
+                            </el-tooltip>
+                        </el-row>
+                    </div>
+                </template>
+            </el-table-column>
         </el-table>
         <el-pagination
             @current-change="loadRecruitmentInfo"
@@ -68,6 +90,11 @@
     Table,
     TableColumn,
     Pagination,
+    Row,
+    Col,
+    Tooltip,
+    Tag,
+    Button,
   } from 'element-ui';
   import RecruitmentApplicationApi from '@/api/RecruitmentApplicationApi';
 
@@ -78,6 +105,11 @@
       [Table.name]: Table,
       [TableColumn.name]: TableColumn,
       [Pagination.name]: Pagination,
+      [Row.name]: Row,
+      [Col.name]: Col,
+      [Tooltip.name]: Tooltip,
+      [Tag.name]: Tag,
+      [Button.name]: Button,
     },
     data: function () {
       return {
@@ -100,6 +132,11 @@
           this.totalRecord = data.paginator.totalRecord;
         });
       },
+      onRecruitmentApplicationDetail: function (recruitmentApplication) {
+        this.$router.push({
+          path: `/recruitment/applicationDetail/${recruitmentApplication.applicationId}`
+        });
+      }
     }
   }
 </script>

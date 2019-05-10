@@ -66,27 +66,24 @@
                 label="添加时间">
             </el-table-column>
         </el-table>
-        <div class="tips">简介</div>
-        <div class="tips-value">{{recruitmentInfo.introduction}}</div>
-        <div class="tips">治疗方案</div>
-        <div class="tips-value">{{recruitmentInfo.treatmentPlan}}</div>
-        <div class="tips">入排标准</div>
-        <div class="tips-value">{{recruitmentInfo.entryCriteria}}</div>
-        <div class="tips">患者权益</div>
-        <div class="tips-value">{{recruitmentInfo.patientRights}}</div>
-        <div class="tips">研究中心</div>
-        <div class="tips-value">
-            <el-row v-for="(center, index) in researchCenterList" :key="index"
-                    style="width: 400px"
-                    type="flex" justify="space-between">
-                <el-col :span="10">
-                    {{center.address}}
-                </el-col>
-                <el-col :span="14">
-                    {{center.name}}
-                </el-col>
-            </el-row>
-        </div>
+        <el-tabs type="border-card" style="margin-top: 30px">
+            <el-tab-pane label="简介">{{recruitmentInfo.introduction}}</el-tab-pane>
+            <el-tab-pane label="治疗方案">{{recruitmentInfo.treatmentPlan}}</el-tab-pane>
+            <el-tab-pane label="入排标准">{{recruitmentInfo.entryCriteria}}</el-tab-pane>
+            <el-tab-pane label="患者权益">{{recruitmentInfo.patientRights}}</el-tab-pane>
+            <el-tab-pane label="研究中心">
+                <el-row v-for="(center, index) in researchCenterList" :key="index"
+                        style="width: 400px"
+                        type="flex" justify="space-between">
+                    <el-col :span="10">
+                        {{center.address}}
+                    </el-col>
+                    <el-col :span="14">
+                        {{center.name}}
+                    </el-col>
+                </el-row>
+            </el-tab-pane>
+        </el-tabs>
         <div class="button-panel">
             <el-row type="flex" style="width: 200px;margin: auto">
                 <el-col>
@@ -140,10 +137,9 @@
         font-weight: 500;
     }
 
-    .recruitment-detail .tips-value {
+    .recruitment-detail .el-tabs__content {
         color: #606266;
         font-size: 14px;
-        margin-left: 10px;
     }
 
     .recruitment-detail .button-panel {
@@ -163,6 +159,8 @@
     Row,
     Col,
     Button,
+    Tabs,
+    TabPane,
     MessageBox,
     Message
   } from 'element-ui';
@@ -180,6 +178,8 @@
       [Row.name]: Row,
       [Col.name]: Col,
       [Button.name]: Button,
+      [Tabs.name]: Tabs,
+      [TabPane.name]: TabPane,
 
     },
     data: function () {

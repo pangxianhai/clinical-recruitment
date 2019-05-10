@@ -37,6 +37,7 @@ import com.xgimi.auth.Login;
 import com.xgimi.auth.LoginInfo;
 import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.util.CollectionUtil;
+import com.xgimi.commons.util.StringUtil;
 import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
 import com.xgimi.converter.MyParameter;
@@ -202,6 +203,9 @@ public class RecruitmentApplicationWebservice {
 
     private PageResult<RecruitmentApplicationVO> queryApplication(RecruitmentApplicationQueryRQ queryRQ) {
         RecruitmentApplicationQueryParam queryParam = RecruitmentUtil.transformApplicationQueryParam(queryRQ);
+        if (StringUtil.isEmpty(queryRQ.getOrderSegment())) {
+            queryRQ.setOrderSegment("created_time.desc");
+        }
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
         if (UserType.PATIENT.equals(userInfo.getUserType())) {

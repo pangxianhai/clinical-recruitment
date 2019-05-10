@@ -13,6 +13,7 @@
         <result column="status" property="status"
           typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
         <result column="disease_desc" property="diseaseDesc" jdbcType="VARCHAR"/>
+        <result column="genetic_disease_desc" property="geneticDiseaseDesc" jdbcType="VARCHAR"/>
         <result column="disease_image" property="diseaseImage" jdbcType="VARCHAR"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
@@ -28,6 +29,7 @@
         doctor_id,
         status,
         disease_desc,
+        genetic_disease_desc,
         disease_image,
         created_by,
         created_time,
@@ -73,6 +75,7 @@
         #{doctorId, jdbcType=BIGINT},
         #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
         #{diseaseDesc, jdbcType=VARCHAR},
+        #{geneticDiseaseDesc, jdbcType=VARCHAR},
         #{diseaseImage, jdbcType=VARCHAR},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},

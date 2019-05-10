@@ -74,7 +74,8 @@
                 <template slot-scope="scope">
                     <div class="operator-panel">
                         <el-row type="flex">
-                            <el-tooltip effect="dark" content="详情" placement="bottom">
+                            <el-tooltip effect="dark" content="详情" placement="bottom"
+                                        :hide-after="500">
                                 <el-col>
                                     <el-button
                                         icon="el-icon-more"
@@ -86,7 +87,8 @@
                             </el-tooltip>
                         </el-row>
                         <el-row type="flex">
-                            <el-tooltip effect="dark" content="编辑" placement="bottom">
+                            <el-tooltip effect="dark" content="编辑" placement="bottom"
+                                        :hide-after="500">
                                 <el-col>
                                     <el-button
                                         icon="el-icon-edit"
@@ -99,7 +101,8 @@
                         </el-row>
                         <el-row type="flex">
                             <el-tooltip v-if="scope.row.status.code===RecruitmentStatus.IN_PROCESS"
-                                        effect="dark" content="结束" placement="bottom">
+                                        effect="dark" content="结束" placement="bottom"
+                                        :hide-after="500">
                                 <el-col>
                                     <el-button
                                         icon="el-icon-goods"
@@ -110,7 +113,8 @@
                                 </el-col>
                             </el-tooltip>
                             <el-tooltip v-if="scope.row.status.code!==RecruitmentStatus.IN_PROCESS"
-                                        effect="dark" content="开始" placement="bottom">
+                                        effect="dark" content="开始" placement="bottom"
+                                        :hide-after="500">
                                 <el-col>
                                     <el-button
                                         icon="el-icon-sold-out"

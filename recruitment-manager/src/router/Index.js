@@ -78,6 +78,16 @@ const router = new Router({
           index: "2-3",
           component: () => import("@/views/recruitment/ApplicationList"),
         },
+        {
+          path: 'applicationDetail/:recruitmentApplicationId',
+          name: '申请记录',
+          meta: {
+            needLogin: true
+          },
+          menu: false,
+          index: "2-3",
+          component: () => import("@/views/recruitment/ApplicationDetail"),
+        },
       ]
     },
     {
