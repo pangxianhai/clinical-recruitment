@@ -48,7 +48,13 @@
             <el-table-column
                 label="状态">
                 <template slot-scope="scope">
-                    <el-tag>
+                    <el-tag v-if="scope.row.status.code===ApplicationStatus.NOT_ACCEDE">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                    <el-tag v-if="scope.row.status.code===ApplicationStatus.ACCEDED" type="success">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                    <el-tag v-if="scope.row.status.code===ApplicationStatus.REFUSED" type="info">
                         {{scope.row.status.desc}}
                     </el-tag>
                 </template>
@@ -127,21 +133,6 @@
                 label="招募人数">
             </el-table-column>
             <el-table-column
-                label="招募状态">
-                <template slot-scope="scope">
-                    <el-tag v-if="scope.row.status.code===RecruitmentStatus.FINISHED" type="info">
-                        {{scope.row.status.desc}}
-                    </el-tag>
-                    <el-tag v-if="scope.row.status.code===RecruitmentStatus.NOT_BEGIN"
-                            type="warning">
-                        {{scope.row.status.desc}}
-                    </el-tag>
-                    <el-tag v-if="scope.row.status.code===RecruitmentStatus.IN_PROCESS">
-                        {{scope.row.status.desc}}
-                    </el-tag>
-                </template>
-            </el-table-column>
-            <el-table-column
                 width="200"
                 label="启截时间">
                 <template slot-scope="scope">
@@ -154,7 +145,7 @@
                 label="添加时间">
             </el-table-column>
         </el-table>
-        <el-tabs v-if="recruitmentApplicationInfo.recruitmentVO.recruitmentId" type="border-card"
+        <el-tabs v-if="recruitmentApplicationInfo.recruitmentVO.recruitmentId"
                  style="margin-top: 30px">
             <el-tab-pane label="简介">{{recruitmentApplicationInfo.recruitmentVO.introduction}}
             </el-tab-pane>
@@ -180,6 +171,38 @@
         <div v-if="!recruitmentApplicationInfo.recruitmentVO.recruitmentId" class="tips-value">
             {{recruitmentApplicationInfo.recruitmentVO.title}}
         </div>
+        <div class="button-panel">
+            <el-row type="flex" style="width: 200px;margin: auto">
+                <el-col
+                    v-if="recruitmentApplicationInfo.status.code===ApplicationStatus.NOT_ACCEDE">
+                    <el-button
+                        icon="el-icon-zoom-in"
+                        type="success"
+                        @click="updateApplicationStatus(ApplicationStatus.ACCEDED)"
+                        size="mini">
+                        入组
+                    </el-button>
+                </el-col>
+                <el-col v-if="recruitmentApplicationInfo.status.code===ApplicationStatus.ACCEDED">
+                    <el-button
+                        icon="el-icon-zoom-out"
+                        type="danger"
+                        @click="updateApplicationStatus(ApplicationStatus.REFUSED)"
+                        size="mini">
+                        取消入组
+                    </el-button>
+                </el-col>
+                <el-col v-if="recruitmentApplicationInfo.status.code===ApplicationStatus.REFUSED">
+                    <el-button
+                        icon="el-icon-circle-plus"
+                        type="info"
+                        @click="updateApplicationStatus(ApplicationStatus.ACCEDED)"
+                        size="mini">
+                        重新入组
+                    </el-button>
+                </el-col>
+            </el-row>
+        </div>
     </div>
 </template>
 <style>
@@ -199,6 +222,11 @@
         color: #606266;
         font-size: 14px;
     }
+
+    .recruitment-application-detail .button-panel {
+        margin-top: 20px;
+        text-align: center;
+    }
 </style>
 <script>
   import {
@@ -212,10 +240,11 @@
     TabPane,
     Row,
     Col,
+    Message
   } from 'element-ui';
   import RecruitmentApplicationApi from '@/api/RecruitmentApplicationApi';
   import RecruitmentApi from '@/api/RecruitmentApi';
-  import {RecruitmentStatus} from '@/constants/Global';
+  import {RecruitmentStatus, ApplicationStatus} from '@/constants/Global';
 
   export default {
     components: {
@@ -233,6 +262,7 @@
     data: function () {
       return {
         RecruitmentStatus: RecruitmentStatus,
+        ApplicationStatus: ApplicationStatus,
         recruitmentApplicationInfo: {
           recruitmentVO: {
             status: {}
@@ -263,6 +293,17 @@
           this.researchCenterList = researchCenterList;
         })
       },
+      updateApplicationStatus: function (status) {
+        RecruitmentApplicationApi.updateApplicationStatus(
+            this.recruitmentApplicationInfo.applicationId, status).then(success => {
+          if (success) {
+            Message.success('操作成功!');
+            this.loadRecruitmentApplication(this.recruitmentApplicationInfo.applicationId);
+          } else {
+            Message.error('操作失败');
+          }
+        });
+      }
     }
   }
 </script>

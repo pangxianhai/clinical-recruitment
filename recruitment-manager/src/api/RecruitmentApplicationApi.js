@@ -7,5 +7,10 @@ export default {
 
   getRecruitmentApplicationDetail: async (applicationId) => {
     return await ApiUtil.get('/recruitmentapplication/' + applicationId, {});
+  },
+
+  updateApplicationStatus: async (applicationId, status) => {
+    return await ApiUtil.patch('/recruitmentapplication/status/' + applicationId,
+        {status: status});
   }
 }

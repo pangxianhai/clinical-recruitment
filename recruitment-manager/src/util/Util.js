@@ -92,6 +92,22 @@ export const ApiUtil = {
     } catch (e) {
       window.console.error(e);
     }
+  },
+
+  patch: async (url, params) => {
+    try {
+      const response = await ajax.request({
+        method: 'patch',
+        url: url,
+        data: params
+      });
+      const data = await response.data;
+      return {
+        data
+      }
+    } catch (e) {
+      window.console.error(e);
+    }
   }
 };
 

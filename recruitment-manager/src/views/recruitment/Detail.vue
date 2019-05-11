@@ -66,7 +66,7 @@
                 label="添加时间">
             </el-table-column>
         </el-table>
-        <el-tabs type="border-card" style="margin-top: 30px">
+        <el-tabs style="margin-top: 30px">
             <el-tab-pane label="简介">{{recruitmentInfo.introduction}}</el-tab-pane>
             <el-tab-pane label="治疗方案">{{recruitmentInfo.treatmentPlan}}</el-tab-pane>
             <el-tab-pane label="入排标准">{{recruitmentInfo.entryCriteria}}</el-tab-pane>

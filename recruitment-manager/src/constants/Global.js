@@ -9,3 +9,10 @@ export const RecruitmentStatus = {
   IN_PROCESS: 1,
   FINISHED: 2
 };
+
+export const ApplicationStatus = {
+  NOT_ACCEDE: 1,
+  ACCEDED: 2,
+  REFUSED: 3
+};
+

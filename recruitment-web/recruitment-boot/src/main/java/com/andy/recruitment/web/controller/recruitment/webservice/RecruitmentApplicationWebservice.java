@@ -148,21 +148,12 @@ public class RecruitmentApplicationWebservice {
 
 
     @Login
-    @RequestMapping(value = "/{applicationId:\\d+}/accede", method = RequestMethod.POST)
-    public boolean accedeApplicationInfo(@PathVariable Long applicationId) {
+    @RequestMapping(value = "/status/{applicationId:\\d+}", method = RequestMethod.PATCH)
+    public boolean accedeApplicationInfo(@PathVariable Long applicationId,
+                                         @RequestBody RecruitmentApplicationUpdateRQ updateRQ) {
         RecruitmentApplicationInfo applicationInfo = new RecruitmentApplicationInfo();
         applicationInfo.setApplicationId(applicationId);
-        applicationInfo.setStatus(RecruitmentApplicationStatus.ACCEDE_SUCCESS);
-        this.recruitmentApplicationAO.updateRecruitmentApplication(applicationInfo, ServletContext.getLoginUname());
-        return true;
-    }
-
-    @Login
-    @RequestMapping(value = "/{applicationId:\\d+}/cancelAccede", method = RequestMethod.POST)
-    public boolean cancelAccedeApplicationInfo(@PathVariable Long applicationId) {
-        RecruitmentApplicationInfo applicationInfo = new RecruitmentApplicationInfo();
-        applicationInfo.setApplicationId(applicationId);
-        applicationInfo.setStatus(RecruitmentApplicationStatus.NOT_ACCEDE);
+        applicationInfo.setStatus(RecruitmentApplicationStatus.parse(updateRQ.getStatus()));
         this.recruitmentApplicationAO.updateRecruitmentApplication(applicationInfo, ServletContext.getLoginUname());
         return true;
     }

@@ -29,6 +29,17 @@
             <el-table-column
                 prop="status.desc"
                 label="状态">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.status.code===ApplicationStatus.NOT_ACCEDE">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                    <el-tag v-if="scope.row.status.code===ApplicationStatus.ACCEDED" type="success">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                    <el-tag v-if="scope.row.status.code===ApplicationStatus.REFUSED" type="info">
+                        {{scope.row.status.desc}}
+                    </el-tag>
+                </template>
             </el-table-column>
             <el-table-column
                 prop="applicationTime"
@@ -53,12 +64,60 @@
                                 </el-col>
                             </el-tooltip>
                         </el-row>
+                        <el-row type="flex">
+                            <el-tooltip effect="dark"
+                                        content="入组"
+                                        :hide-after="500"
+                                        placement="bottom"
+                                        v-if="scope.row.status.code===ApplicationStatus.NOT_ACCEDE">
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-zoom-in"
+                                        type="success"
+                                        @click="updateApplicationStatus(scope.row.applicationId, ApplicationStatus.ACCEDED)"
+                                        size="mini" circle>
+                                    </el-button>
+                                </el-col>
+                            </el-tooltip>
+                        </el-row>
+                        <el-row type="flex">
+                            <el-tooltip effect="dark"
+                                        content="取消入组"
+                                        :hide-after="500"
+                                        placement="bottom"
+                                        v-if="scope.row.status.code===ApplicationStatus.ACCEDED">
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-zoom-out"
+                                        type="danger"
+                                        @click="updateApplicationStatus(scope.row.applicationId, ApplicationStatus.REFUSED)"
+                                        size="mini" circle>
+                                    </el-button>
+                                </el-col>
+                            </el-tooltip>
+                        </el-row>
+                        <el-row type="flex">
+                            <el-tooltip effect="dark"
+                                        content="重新入组"
+                                        :hide-after="500"
+                                        placement="bottom"
+                                        v-if="scope.row.status.code===ApplicationStatus.REFUSED">
+                                <el-col>
+                                    <el-button
+                                        icon="el-icon-circle-plus"
+                                        type="info"
+                                        @click="updateApplicationStatus(scope.row.applicationId, ApplicationStatus.ACCEDED)"
+                                        size="mini" circle>
+                                    </el-button>
+                                </el-col>
+                            </el-tooltip>
+                        </el-row>
                     </div>
                 </template>
             </el-table-column>
         </el-table>
         <el-pagination
-            @current-change="loadRecruitmentInfo"
+            @current-change="loadApplicationInfo"
             :current-page.sync="currentPage"
             :page-size="pageSize"
             layout="total, prev, pager, next"
@@ -82,6 +141,14 @@
     .recruitment-application-list .el-pagination {
         float: right;
     }
+
+    .recruitment-application-list .operator-panel {
+        text-align: center;
+    }
+
+    .recruitment-application-list .operator-panel .el-row {
+        margin-top: 5px;
+    }
 </style>
 <script>
   import {
@@ -95,8 +162,11 @@
     Tooltip,
     Tag,
     Button,
+    MessageBox,
+    Message
   } from 'element-ui';
   import RecruitmentApplicationApi from '@/api/RecruitmentApplicationApi';
+  import {ApplicationStatus} from '@/constants/Global';
 
   export default {
     components: {
@@ -113,6 +183,7 @@
     },
     data: function () {
       return {
+        ApplicationStatus: ApplicationStatus,
         recruitmentApplicationList: [],
         currentPage: 1,
         totalRecord: 0,
@@ -120,10 +191,10 @@
       }
     },
     created: function () {
-      this.loadRecruitmentInfo();
+      this.loadApplicationInfo();
     },
     methods: {
-      loadRecruitmentInfo: function () {
+      loadApplicationInfo: function () {
         RecruitmentApplicationApi.getRecruitmentApplication({
           currentPage: this.currentPage,
           pageSize: this.pageSize
@@ -135,6 +206,16 @@
       onRecruitmentApplicationDetail: function (recruitmentApplication) {
         this.$router.push({
           path: `/recruitment/applicationDetail/${recruitmentApplication.applicationId}`
+        });
+      },
+      updateApplicationStatus: function (applicationId, status) {
+        RecruitmentApplicationApi.updateApplicationStatus(applicationId, status).then(success => {
+          if (success) {
+            Message.success('操作成功!');
+            this.loadApplicationInfo();
+          } else {
+            Message.error('操作失败');
+          }
         });
       }
     }

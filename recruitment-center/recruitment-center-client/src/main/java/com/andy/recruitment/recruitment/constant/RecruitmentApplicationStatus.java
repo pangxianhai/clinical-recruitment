@@ -12,9 +12,9 @@ public class RecruitmentApplicationStatus extends BaseType {
 
     public static final RecruitmentApplicationStatus NOT_ACCEDE = new RecruitmentApplicationStatus(1, "未入组");
 
-    public static final RecruitmentApplicationStatus ACCEDE_SUCCESS = new RecruitmentApplicationStatus(2, "入组成功");
+    public static final RecruitmentApplicationStatus ACCEDED = new RecruitmentApplicationStatus(2, "已入组");
 
-    public static final RecruitmentApplicationStatus ACCEDE_FAILED = new RecruitmentApplicationStatus(3, "入组失败");
+    public static final RecruitmentApplicationStatus REFUSED = new RecruitmentApplicationStatus(3, "已拒接");
 
     public RecruitmentApplicationStatus(int code, String desc) {
         super(code, desc);
