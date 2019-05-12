@@ -4,6 +4,11 @@ export const UserConstants = {
   PATIENT: 3
 };
 
+export const UserStatus = {
+  NORMAL: 1,
+  FREEZE: 2
+};
+
 export const RecruitmentStatus = {
   NOT_BEGIN: 0,
   IN_PROCESS: 1,
@@ -15,4 +20,6 @@ export const ApplicationStatus = {
   ACCEDED: 2,
   REFUSED: 3
 };
+
+
 

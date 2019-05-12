@@ -47,7 +47,7 @@ public class UserWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/{userId:\\d+}/freeze.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/status/{userId:\\d+}/freeze", method = RequestMethod.POST)
     public Boolean manageFreeze(@PathVariable Long userId) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         this.userAO.updateUserStatus(userId, UserStatus.FREEZE, loginInfo.getRealName());
@@ -55,7 +55,7 @@ public class UserWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/{userId:\\d+}/unfreeze.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/status/{userId:\\d+}/unfreeze", method = RequestMethod.POST)
     public Boolean manageUnfreeze(@PathVariable Long userId) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         this.userAO.updateUserStatus(userId, UserStatus.NORMAL, loginInfo.getRealName());

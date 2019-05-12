@@ -27,10 +27,7 @@
                 prop="userInfoVO.gender.desc"
                 label="性别">
             </el-table-column>
-            <el-table-column
-                prop="userInfoVO.status.desc"
-                label="状态">
-            </el-table-column>
+
             <el-table-column
                 prop="address"
                 label="地址">
@@ -42,6 +39,38 @@
             <el-table-column
                 prop="medicalCategory"
                 label="执业类别">
+            </el-table-column>
+            <el-table-column
+                label="状态">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.userInfoVO.status.code===UserStatus.NORMAL">
+                        {{scope.row.userInfoVO.status.desc}}
+                    </el-tag>
+                    <el-tag v-if="scope.row.userInfoVO.status.code===UserStatus.FREEZE" type="info">
+                        {{scope.row.userInfoVO.status.desc}}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column
+                width="80"
+                fixed="right"
+                label="操作">
+                <template slot-scope="scope">
+                    <el-button
+                        v-if="scope.row.userInfoVO.status.code===UserStatus.NORMAL"
+                        type="danger"
+                        @click="freezeUser(scope.row.userInfoVO)"
+                        size="mini">
+                        冻结
+                    </el-button>
+                    <el-button
+                        v-if="scope.row.userInfoVO.status.code===UserStatus.FREEZE"
+                        type="primary"
+                        @click="unfreezeUser(scope.row.userInfoVO)"
+                        size="mini">
+                        解冻
+                    </el-button>
+                </template>
             </el-table-column>
         </el-table>
         <el-pagination
@@ -78,8 +107,13 @@
     Table,
     TableColumn,
     Pagination,
+    Button,
+    Tag,
+    Message
   } from 'element-ui';
-  import DoctorApi from '@/api/DoctorApi'
+  import DoctorApi from '@/api/DoctorApi';
+  import {UserStatus} from '@/constants/Global';
+  import UserApi from '@/api/UserApi';
 
   export default {
     components: {
@@ -88,9 +122,12 @@
       [Table.name]: Table,
       [TableColumn.name]: TableColumn,
       [Pagination.name]: Pagination,
+      [Button.name]: Button,
+      [Tag.name]: Tag,
     },
     data: function () {
       return {
+        UserStatus: UserStatus,
         doctorList: [],
         currentPage: 1,
         totalRecord: 0,
@@ -108,6 +145,26 @@
         }).then(data => {
           this.doctorList = data.data;
           this.totalRecord = data.paginator.totalRecord;
+        });
+      },
+      freezeUser: function (userInfo) {
+        UserApi.freezeUser(userInfo.userId).then(success => {
+          if (success) {
+            Message.success('操作成功!');
+            this.loadDoctorInfo();
+          } else {
+            Message.error('操作失败');
+          }
+        });
+      },
+      unfreezeUser: function (userInfo) {
+        UserApi.unfreezeUser(userInfo.userId).then(success => {
+          if (success) {
+            Message.success('操作成功!');
+            this.loadDoctorInfo();
+          } else {
+            Message.error('操作失败');
+          }
         });
       }
     }
