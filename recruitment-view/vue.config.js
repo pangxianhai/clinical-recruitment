@@ -6,7 +6,13 @@ module.exports = {
     port: 8089,
     https: false,
     hotOnly: false,
-    proxy: null,
+    proxy: {
+      '/apis/oss': {
+        target: 'https://www.baidu.com',
+        changeOrigin: true,
+        pathRewrite: {'^/apis/oss': ''},
+      }
+    },
     disableHostCheck: true
   },
   chainWebpack: config => {
