@@ -286,7 +286,6 @@
           });
           let i = this.uploadImageList.length - 1;
           Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
-          window.console.log(result);
         });
       },
       onLoadRecruitmentInfo: function () {

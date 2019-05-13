@@ -143,7 +143,8 @@
   import PatientApi from "@/api/PatientApi";
   import UserApi from "@/api/UserApi";
   import FileApi from "@/api/FileApi";
-  import Vue from "vue"
+  import Vue from "vue";
+  import md5 from 'js-md5';
 
   export default {
     components: {
@@ -273,13 +274,12 @@
         this.showGenderPopup = false;
       },
       onUploaderRead: function (file) {
-        FileApi.uploadFile({
-          data: file.content
-        }).then((imageInfo) => {
+        let fileName = md5(file.content) + "." + file.file.name.split('.')[1];
+        FileApi.uploadDirectOss(fileName, file.content, process.env).then(result => {
           this.uploadImageList.push({
-            imageId: imageInfo.imageId,
-            thumbnailUrl: imageInfo.thumbnailUrl,
-            imageUrl: imageInfo.imageUrl,
+            imageId: result.name,
+            thumbnailUrl: result.url + "?x-oss-process=image/resize,m_fixed,w_80,h_80",
+            imageUrl: result.url,
           });
           let i = this.uploadImageList.length - 1;
           Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
