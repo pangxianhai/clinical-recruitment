@@ -153,6 +153,7 @@
   import FileApi from "@/api/FileApi";
   import Vue from "vue";
   import Footer from '@/components/Footer';
+  import md5 from 'js-md5';
 
   export default {
     components: {
@@ -276,17 +277,30 @@
         this.showGenderPopup = false;
       },
       onUploaderRead: function (file) {
-        FileApi.uploadFile({
-          data: file.content
-        }).then((imageInfo) => {
-          this.uploadImageList.push({
-            imageId: imageInfo.imageId,
-            thumbnailUrl: imageInfo.thumbnailUrl,
-            imageUrl: imageInfo.imageUrl,
-          });
-          let i = this.uploadImageList.length - 1;
-          Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
+        let fileName = md5(file.content) + "." + file.file.name.split('.')[1];
+        FileApi.uploadDirectOss(fileName, file.content, process.env).then(result => {
+          window.console.log(result);
         });
+
+        //
+        // FileApi.getUploadUrl(fileName).then((uri) => {
+        //   FileApi.uploadDirectOss(uri, file.content).then(data => {
+        //     window.console.log(data);
+        //   })
+        //   window.console.log(uri);
+        // });
+
+        // FileApi.uploadFile({
+        //   data: file.content
+        // }).then((imageInfo) => {
+        //   this.uploadImageList.push({
+        //     imageId: imageInfo.imageId,
+        //     thumbnailUrl: imageInfo.thumbnailUrl,
+        //     imageUrl: imageInfo.imageUrl,
+        //   });
+        //   let i = this.uploadImageList.length - 1;
+        //   Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
+        // });
       },
       onLoadRecruitmentInfo: function () {
         PatientApi.getCurrentPatientInfo().then(patientInfo => {
