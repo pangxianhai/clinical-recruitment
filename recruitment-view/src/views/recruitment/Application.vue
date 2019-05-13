@@ -274,6 +274,14 @@
         this.showGenderPopup = false;
       },
       onUploaderRead: function (file) {
+        this.$toast({
+          type: 'loading',
+          mask: true,
+          duration: 0,
+          forbidClick: true,
+          loadingType: 'spinner',
+          message: '图片上传中...'
+        });
         let fileName = md5(file.content) + "." + file.file.name.split('.')[1];
         FileApi.uploadDirectOss(fileName, file.content, process.env).then(result => {
           this.uploadImageList.push({
@@ -283,6 +291,7 @@
           });
           let i = this.uploadImageList.length - 1;
           Vue.set(this.uploadImageList, i, this.uploadImageList[i]);
+          this.$toast.clear();
         });
       },
       onLoadRecruitmentInfo: function () {
