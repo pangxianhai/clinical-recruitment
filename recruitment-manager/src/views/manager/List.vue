@@ -1,52 +1,33 @@
 <template>
-    <div class="doctor-list">
+    <div class="manager-list">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>医生管理</el-breadcrumb-item>
-            <el-breadcrumb-item>医生列表</el-breadcrumb-item>
+            <el-breadcrumb-item>管理员列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-table
-            :data="doctorList"
+            :data="managerList"
             border
             style="width: 100%">
             <el-table-column
-                fixed
-                prop="userInfoVO.realName"
+                prop="realName"
                 label="姓名">
             </el-table-column>
             <el-table-column
-                prop="userInfoVO.phone"
+                prop="phone"
                 label="手机号">
             </el-table-column>
             <el-table-column
-                prop="userInfoVO.nickname"
-                label="微信昵称">
-            </el-table-column>
-            <el-table-column
-                prop="userInfoVO.gender.desc"
+                prop="gender.desc"
                 label="性别">
-            </el-table-column>
-
-            <el-table-column
-                prop="address"
-                label="地址">
-            </el-table-column>
-            <el-table-column
-                prop="medicalInstitution"
-                label="执业机构">
-            </el-table-column>
-            <el-table-column
-                prop="medicalCategory"
-                label="执业类别">
             </el-table-column>
             <el-table-column
                 label="状态">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.userInfoVO.status.code===UserStatus.NORMAL">
-                        {{scope.row.userInfoVO.status.desc}}
+                    <el-tag v-if="scope.row.status.code===UserStatus.NORMAL">
+                        {{scope.row.status.desc}}
                     </el-tag>
-                    <el-tag v-if="scope.row.userInfoVO.status.code===UserStatus.FREEZE" type="info">
-                        {{scope.row.userInfoVO.status.desc}}
+                    <el-tag v-if="scope.row.status.code===UserStatus.FREEZE" type="info">
+                        {{scope.row.status.desc}}
                     </el-tag>
                 </template>
             </el-table-column>
@@ -56,16 +37,16 @@
                 label="操作">
                 <template slot-scope="scope">
                     <el-button
-                        v-if="scope.row.userInfoVO.status.code===UserStatus.NORMAL"
+                        v-if="scope.row.status.code===UserStatus.NORMAL"
                         type="danger"
-                        @click="freezeUser(scope.row.userInfoVO)"
+                        @click="freezeUser(scope.row)"
                         size="mini">
                         冻结
                     </el-button>
                     <el-button
-                        v-if="scope.row.userInfoVO.status.code===UserStatus.FREEZE"
+                        v-if="scope.row.status.code===UserStatus.FREEZE"
                         type="primary"
-                        @click="unfreezeUser(scope.row.userInfoVO)"
+                        @click="unfreezeUser(scope.row)"
                         size="mini">
                         解冻
                     </el-button>
@@ -73,7 +54,7 @@
             </el-table-column>
         </el-table>
         <el-pagination
-            @current-change="loadDoctorInfo"
+            @current-change="loadManagerInfo"
             :current-page.sync="currentPage"
             :page-size="pageSize"
             layout="total, prev, pager, next"
@@ -81,24 +62,27 @@
         </el-pagination>
     </div>
 </template>
+
 <style>
-    .doctor-list .el-table {
+    .manager-list .el-table {
         margin-top: 20px;
-    }
-
-    .doctor-list .el-table th.is-leaf {
-        color: #858585;
-    }
-
-    .doctor-list .el-table thead .cell {
         text-align: center;
     }
 
-    .doctor-list .el-pagination {
-        float: right;
+    .manager-list .el-table th.is-leaf {
+        color: #858585;
+
     }
 
+    .manager-list .el-table .cell {
+        text-align: center;
+    }
+
+    .manager-list .el-pagination {
+        float: right;
+    }
 </style>
+
 <script>
   import {
     Breadcrumb,
@@ -110,7 +94,6 @@
     Tag,
     Message
   } from 'element-ui';
-  import DoctorApi from '@/api/DoctorApi';
   import {UserStatus} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
 
@@ -127,22 +110,22 @@
     data: function () {
       return {
         UserStatus: UserStatus,
-        doctorList: [],
+        managerList: [],
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
       }
     },
     created: function () {
-      this.loadDoctorInfo();
+      this.loadManagerInfo();
     },
     methods: {
-      loadDoctorInfo: function () {
-        DoctorApi.getDoctor({
+      loadManagerInfo: function () {
+        UserApi.getManager({
           currentPage: this.currentPage,
           pageSize: this.pageSize
         }).then(data => {
-          this.doctorList = data.data;
+          this.managerList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
       },
@@ -150,7 +133,7 @@
         UserApi.freezeUser(userInfo.userId).then(success => {
           if (success) {
             Message.success('操作成功!');
-            this.loadDoctorInfo();
+            this.loadManagerInfo();
           } else {
             Message.error('操作失败');
           }
@@ -160,7 +143,7 @@
         UserApi.unfreezeUser(userInfo.userId).then(success => {
           if (success) {
             Message.success('操作成功!');
-            this.loadDoctorInfo();
+            this.loadManagerInfo();
           } else {
             Message.error('操作失败');
           }

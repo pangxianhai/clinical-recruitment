@@ -129,6 +129,26 @@ const router = new Router({
           component: () => import("@/views/patient/List"),
         },
       ]
+    },
+    {
+      path: '/manager',
+      component: () => import("@/views/Layout"),
+      icon: 'iconfont icon-shezhi',
+      menu: true,
+      name: '管理员',
+      index: "5",
+      children: [
+        {
+          path: 'list',
+          name: '管理员列表',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "5-1",
+          component: () => import("@/views/manager/List"),
+        }
+      ]
     }
   ]
 });

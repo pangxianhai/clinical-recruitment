@@ -8,7 +8,6 @@
         <el-table
             :data="patientList"
             border
-            height="500"
             style="width: 100%">
             <el-table-column
                 fixed

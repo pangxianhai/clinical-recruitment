@@ -1,13 +1,19 @@
 package com.andy.recruitment.web.controller.user.webservice;
 
 import com.andy.recruitment.user.ao.UserAO;
+import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
+import com.andy.recruitment.user.model.UserQueryParam;
 import com.andy.recruitment.web.controller.user.request.ManageAddRQ;
 import com.andy.recruitment.web.controller.user.request.MangeLoginRQ;
+import com.andy.recruitment.web.controller.user.request.UserQueryRQ;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
+import com.xgimi.commons.page.PageResult;
 import com.xgimi.context.ServletContext;
+import com.xgimi.converter.MyParameter;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,5 +51,15 @@ public class ManageWebservice {
             return null;
         }
         return UserUtil.transformUserInfoVO(userInfo);
+    }
+
+    @Login
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public PageResult<UserInfoVO> getManage(@MyParameter UserQueryRQ queryRQ) {
+        UserQueryParam queryParam = UserUtil.transformUserQueryParam(queryRQ);
+        queryParam.setUserType(UserType.ADMIN);
+        PageResult<UserInfo> pageResult = this.userAO.getUserInfo(queryParam, queryRQ.getPaginator());
+        List<UserInfoVO> userInfoVOList = UserUtil.transformUserInfoVO(pageResult.getData());
+        return new PageResult<>(userInfoVOList, pageResult.getPaginator());
     }
 }

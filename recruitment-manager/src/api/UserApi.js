@@ -28,12 +28,16 @@ let UserApi = {
   manageLogin: async (params) => {
     return await ApiUtil.post('/user/manager/login', params);
   },
+  getManager: async (params) => {
+    return await ApiUtil.get('/user/manager', params);
+  },
   freezeUser: async (userId) => {
     return await ApiUtil.post('/user/status/' + userId + "/freeze");
   },
   unfreezeUser: async (userId) => {
     return await ApiUtil.post('/user/status/' + userId + "/unfreeze");
-  }
+  },
+
 }
 
 export default UserApi;
