@@ -60,6 +60,18 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="tips" style="margin-top: 30px"
+             v-if="recruitmentApplicationInfo.diseaseImageList">病例图片
+        </div>
+        <div class="image-panel">
+            <div @click="onClickImage(url.imageUrl)" class="image-item"
+                 v-for="(url,index) in recruitmentApplicationInfo.diseaseImageList"
+                 :key="index">
+                <el-image
+                    style="width: 100px; height: 100px"
+                    :src="url.thumbnailUrl"></el-image>
+            </div>
+        </div>
         <div class="tips" style="margin-top: 30px" v-if="recruitmentApplicationInfo.doctorInfoVO">
             推荐医生
         </div>
@@ -218,6 +230,16 @@
         margin-left: 10px;
     }
 
+    .recruitment-application-detail .image-panel {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .recruitment-application-detail .image-panel .image-item {
+        float: left;
+        margin-right: 20px;
+    }
+
     .recruitment-application-detail .el-tabs__content {
         color: #606266;
         font-size: 14px;
@@ -240,7 +262,8 @@
     TabPane,
     Row,
     Col,
-    Message
+    Message,
+    Image,
   } from 'element-ui';
   import RecruitmentApplicationApi from '@/api/RecruitmentApplicationApi';
   import RecruitmentApi from '@/api/RecruitmentApi';
@@ -258,6 +281,7 @@
       [TabPane.name]: TabPane,
       [Row.name]: Row,
       [Col.name]: Col,
+      [Image.name]: Image,
     },
     data: function () {
       return {
@@ -271,7 +295,8 @@
           status: {},
           doctorInfoVO: {}
         },
-        researchCenterList: []
+        researchCenterList: [],
+        dialogDiseaseImageVisible: false
       }
     },
     created: function () {
@@ -301,6 +326,9 @@
             this.loadRecruitmentApplication(this.recruitmentApplicationInfo.applicationId);
           }
         });
+      },
+      onClickImage: function (url) {
+        window.open(url, "_blank");
       }
     }
   }
