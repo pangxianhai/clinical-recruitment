@@ -162,7 +162,6 @@
     Tooltip,
     Tag,
     Button,
-    MessageBox,
     Message
   } from 'element-ui';
   import RecruitmentApplicationApi from '@/api/RecruitmentApplicationApi';
@@ -213,8 +212,6 @@
           if (success) {
             Message.success('操作成功!');
             this.loadApplicationInfo();
-          } else {
-            Message.error('操作失败');
           }
         });
       }

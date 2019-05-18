@@ -31,6 +31,9 @@ let UserApi = {
   getManager: async (params) => {
     return await ApiUtil.get('/user/manager', params);
   },
+  addManager: async (params) => {
+    return await ApiUtil.post('/user/manager', params);
+  },
   freezeUser: async (userId) => {
     return await ApiUtil.post('/user/status/' + userId + "/freeze");
   },

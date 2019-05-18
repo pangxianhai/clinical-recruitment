@@ -134,8 +134,6 @@
           if (success) {
             Message.success('操作成功!');
             this.loadManagerInfo();
-          } else {
-            Message.error('操作失败');
           }
         });
       },
@@ -144,8 +142,6 @@
           if (success) {
             Message.success('操作成功!');
             this.loadManagerInfo();
-          } else {
-            Message.error('操作失败');
           }
         });
       }

@@ -1,5 +1,7 @@
 package com.andy.recruitment.web.controller.user.webservice;
 
+import com.andy.recruitment.exception.BusinessErrorCode;
+import com.andy.recruitment.exception.BusinessException;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserType;
 import com.andy.recruitment.user.model.UserInfo;
@@ -11,6 +13,7 @@ import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
 import com.xgimi.auth.Login;
 import com.xgimi.commons.page.PageResult;
+import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
 import com.xgimi.converter.MyParameter;
 import java.util.List;
@@ -40,6 +43,10 @@ public class ManageWebservice {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Boolean manageAdd(@RequestBody ManageAddRQ addRQ) {
         UserInfo userInfo = UserUtil.transformUserInfo(addRQ);
+        UserInfo existUserInfo = this.userAO.getUserInfoByPhone(addRQ.getPhone());
+        AssertUtil.assertBoolean(null == existUserInfo, () -> {
+            throw new BusinessException(BusinessErrorCode.USER_PHONE_HAS_REGISTER);
+        });
         this.userAO.registerUser(userInfo, ServletContext.getLoginUname());
         return true;
     }

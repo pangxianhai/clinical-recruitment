@@ -2,6 +2,8 @@ package com.andy.recruitment.user.ao;
 
 import com.andy.recruitment.exception.BusinessErrorCode;
 import com.andy.recruitment.exception.BusinessException;
+import com.andy.recruitment.exception.RecruitmentErrorCode;
+import com.andy.recruitment.exception.RecruitmentException;
 import com.andy.recruitment.sms.service.SmsService;
 import com.andy.recruitment.user.constant.Gender;
 import com.andy.recruitment.user.constant.UserStatus;
@@ -137,6 +139,9 @@ public class UserAOImpl implements UserAO {
 
     @Override
     public void updateUserStatus(Long userId, UserStatus status, String operator) {
+        if (UserStatus.FREEZE.equals(status)) {
+            this.checkFreezeManager(userId);
+        }
         this.userInfoService.updateUserStatus(userId, status, operator);
     }
 
@@ -180,5 +185,27 @@ public class UserAOImpl implements UserAO {
     @Override
     public void delete(Long userId) {
         this.userInfoService.delete(userId);
+    }
+
+    private void checkFreezeManager(Long userId) {
+        UserInfo userInfo = this.userInfoService.getUserInfoByUserId(userId);
+        AssertUtil.assertNull(userInfo, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.USER_ID_EMPTY);
+        });
+        if (! UserType.ADMIN.equals(userInfo.getUserType())) {
+            return;
+        }
+        UserQueryParam queryParam = new UserQueryParam();
+        queryParam.setUserType(UserType.ADMIN);
+        queryParam.setStatus(UserStatus.NORMAL);
+        Paginator paginator = new Paginator(1, 1);
+        PageResult<UserInfo> pageResult = this.userInfoService.getUserInfo(queryParam, paginator);
+        if (pageResult.getPaginator().getTotalRecord() != 1) {
+            return;
+        }
+        UserInfo normalUser = pageResult.getData().get(0);
+        if (normalUser.getUserId().equals(userId)) {
+            throw new RecruitmentException(RecruitmentErrorCode.USER_MANAGER_MUST_ONE);
+        }
     }
 }

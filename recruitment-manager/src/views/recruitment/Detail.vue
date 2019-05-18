@@ -227,8 +227,6 @@
           if (success) {
             Message.success('操作成功!');
             this.loadRecruitmentInfo(recruitmentInfo.recruitmentId);
-          } else {
-            Message.error('操作失败');
           }
         });
       },
@@ -242,8 +240,6 @@
             if (success) {
               Message.success('操作成功!');
               this.loadRecruitmentInfo(this.recruitmentInfo.recruitmentId);
-            } else {
-              Message.error('操作失败');
             }
           });
         }).catch(() => {

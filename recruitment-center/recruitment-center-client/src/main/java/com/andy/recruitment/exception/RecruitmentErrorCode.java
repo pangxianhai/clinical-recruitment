@@ -44,6 +44,10 @@ public enum RecruitmentErrorCode {
      * 更新用户失败
      */
     USER_UPDATE_FAILED(101302),
+    /**
+     * 请保证一个管理员
+     */
+    USER_MANAGER_MUST_ONE(101303),
 
     /**
      * 招募信息添加失败

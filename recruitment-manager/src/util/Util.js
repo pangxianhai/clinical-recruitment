@@ -47,6 +47,7 @@ ajax.interceptors.response.use(({data}) => {
   if (data.ret) {
     return data.data;
   } else if (typeof data.message === 'string' && data.message.length > 0) {
+
     Message.error(data.message);
   }
 });

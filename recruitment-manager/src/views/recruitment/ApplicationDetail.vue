@@ -299,8 +299,6 @@
           if (success) {
             Message.success('操作成功!');
             this.loadRecruitmentApplication(this.recruitmentApplicationInfo.applicationId);
-          } else {
-            Message.error('操作失败');
           }
         });
       }

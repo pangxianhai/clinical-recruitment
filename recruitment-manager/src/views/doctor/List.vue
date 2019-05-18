@@ -151,8 +151,6 @@
           if (success) {
             Message.success('操作成功!');
             this.loadDoctorInfo();
-          } else {
-            Message.error('操作失败');
           }
         });
       },
@@ -161,8 +159,6 @@
           if (success) {
             Message.success('操作成功!');
             this.loadDoctorInfo();
-          } else {
-            Message.error('操作失败');
           }
         });
       }

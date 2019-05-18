@@ -147,6 +147,16 @@ const router = new Router({
           menu: true,
           index: "5-1",
           component: () => import("@/views/manager/List"),
+        },
+        {
+          path: 'add',
+          name: '添加管理员',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "5-2",
+          component: () => import("@/views/manager/Add"),
         }
       ]
     }
