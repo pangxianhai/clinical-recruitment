@@ -2,21 +2,21 @@
     <div class="doctor-list">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/doctor/list' }">医生管理</el-breadcrumb-item>
-            <el-breadcrumb-item>添加医生</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/patient/list' }">患者管理</el-breadcrumb-item>
+            <el-breadcrumb-item>添加患者</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form status-icon style="margin-top: 25px;width: 30%" :rules="doctorRules"
-                 ref="doctorInfo"
-                 :model="doctorInfo"
+        <el-form status-icon style="margin-top: 25px;width: 30%" :rules="patientRules"
+                 ref="patientInfo"
+                 :model="patientInfo"
                  label-width="80px">
             <el-form-item label="姓名" prop="name">
-                <el-input v-model="doctorInfo.name"></el-input>
+                <el-input v-model="patientInfo.name"></el-input>
             </el-form-item>
             <el-form-item label="手机号码" prop="phone">
-                <el-input v-model.number="doctorInfo.phone"></el-input>
+                <el-input v-model.number="patientInfo.phone"></el-input>
             </el-form-item>
             <el-form-item label="性别" prop="gender">
-                <el-radio-group v-model="doctorInfo.gender">
+                <el-radio-group v-model="patientInfo.gender">
                     <el-radio label="1">
                         <i class="el-icon-male"></i>男
                     </el-radio>
@@ -28,19 +28,16 @@
             <el-form-item label="地址" prop="addressIds">
                 <el-cascader
                     :options="areaData"
-                    v-model="doctorInfo.addressIds"
+                    v-model="patientInfo.addressIds"
                     placeholder="请选择地址">
                 </el-cascader>
             </el-form-item>
-            <el-form-item label="执业机构" prop="medicalInstitution">
-                <el-input v-model="doctorInfo.medicalInstitution"></el-input>
-            </el-form-item>
-            <el-form-item label="执业类别" prop="medicalCategory">
-                <el-input v-model="doctorInfo.medicalCategory"></el-input>
+            <el-form-item label="年龄" prop="age">
+                <el-input v-model.number="patientInfo.age"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-circle-plus-outline"
-                           @click="onAddDoctorAction('doctorInfo')">添加
+                           @click="onAddPatientAction('patientInfo')">添加
                 </el-button>
             </el-form-item>
         </el-form>
@@ -62,7 +59,7 @@
     Cascader,
   } from 'element-ui';
   import UserApi from '@/api/UserApi';
-  import DoctorApi from '@/api/DoctorApi';
+  import PatientApi from '@/api/PatientApi';
   import {RouterUtil} from '@/util/Util';
   import AreaData from '@/util/AreaData';
 
@@ -82,8 +79,8 @@
     data: function () {
       return {
         areaData: AreaData,
-        doctorInfo: {},
-        doctorRules: {
+        patientInfo: {},
+        patientRules: {
           name: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
             {min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur'}
@@ -99,31 +96,27 @@
           addressIds: [
             {required: true, message: '请选择地址', trigger: 'blur'},
           ],
-          medicalInstitution: [
-            {required: true, message: '请输入执业机构', trigger: 'blur'},
-            {min: 1, max: 64, message: '长度不能超过64个字符', trigger: 'blur'}
-          ],
-          medicalCategory: [
-            {required: true, message: '请输入姓名', trigger: 'blur'},
-            {min: 1, max: 64, message: '长度不能超过64个字符', trigger: 'blur'}
+          age: [
+            {required: true, message: '请输入年龄', trigger: 'blur'},
+            {type: 'number', message: '年龄必须为数字值'}
           ],
         }
       }
     },
     methods: {
-      onAddDoctorAction: function (formName) {
+      onAddPatientAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (typeof this.doctorInfo.addressIds !== 'undefined'
-                && this.doctorInfo.addressIds.length >= 3) {
-              this.doctorInfo.provinceId = this.doctorInfo.addressIds[0];
-              this.doctorInfo.cityId = this.doctorInfo.addressIds[1];
-              this.doctorInfo.districtId = this.doctorInfo.addressIds[2];
+            if (typeof this.patientInfo.addressIds !== 'undefined'
+                && this.patientInfo.addressIds.length >= 3) {
+              this.patientInfo.provinceId = this.patientInfo.addressIds[0];
+              this.patientInfo.cityId = this.patientInfo.addressIds[1];
+              this.patientInfo.districtId = this.patientInfo.addressIds[2];
             }
-            DoctorApi.addDoctor(this.doctorInfo).then(success => {
+            PatientApi.addPatient(this.patientInfo).then(success => {
               if (success) {
                 Message.success('添加成功即将跳转!');
-                RouterUtil.goToBack(this.$route, this.$router, '/doctor/list');
+                RouterUtil.goToBack(this.$route, this.$router, '/patient/list');
               }
             });
           } else {
