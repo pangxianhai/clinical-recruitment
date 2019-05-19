@@ -1,28 +1,22 @@
 <template>
-    <div class="manager-list">
+    <div class="doctor-list">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/manager/list'}">管理员列表</el-breadcrumb-item>
-            <el-breadcrumb-item>添加管理员列表</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/doctor/list' }">医生管理</el-breadcrumb-item>
+            <el-breadcrumb-item>添加医生</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form status-icon style="margin-top: 25px;width: 30%" :rules="managerRules"
-                 ref="managerInfo"
-                 :model="managerInfo"
+        <el-form status-icon style="margin-top: 25px;width: 30%" :rules="doctorRules"
+                 ref="doctorInfo"
+                 :model="doctorInfo"
                  label-width="80px">
-            <el-form-item label="姓名" prop="realName">
-                <el-input v-model="managerInfo.realName"  autocomplete="off"></el-input>
+            <el-form-item label="姓名" prop="name">
+                <el-input v-model="doctorInfo.name"></el-input>
             </el-form-item>
             <el-form-item label="手机号码" prop="phone">
-                <el-input v-model.number="managerInfo.phone"  autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password">
-                <el-input v-model="managerInfo.password" show-password  autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="checkPass">
-                <el-input v-model="managerInfo.checkPass" show-password  autocomplete="off"></el-input>
+                <el-input v-model.number="doctorInfo.phone"></el-input>
             </el-form-item>
             <el-form-item label="性别" prop="gender">
-                <el-radio-group v-model="managerInfo.gender">
+                <el-radio-group v-model="doctorInfo.gender">
                     <el-radio label="1">
                         <i class="el-icon-male"></i>男
                     </el-radio>
@@ -31,13 +25,25 @@
                     </el-radio>
                 </el-radio-group>
             </el-form-item>
+            <el-form-item label="地址" prop="addressIds">
+                <el-cascader
+                    :options="areaData"
+                    v-model="doctorInfo.addressIds"
+                    placeholder="请选择地址">
+                </el-cascader>
+            </el-form-item>
+            <el-form-item label="执业机构" prop="medicalInstitution">
+                <el-input v-model.number="doctorInfo.medicalInstitution"></el-input>
+            </el-form-item>
+            <el-form-item label="执业类别" prop="medicalCategory">
+                <el-input v-model.number="doctorInfo.medicalCategory"></el-input>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-circle-plus-outline"
-                           @click="onAddManagerAction('managerInfo')">添加
+                           @click="onAddDoctorAction('doctorInfo')">添加
                 </el-button>
             </el-form-item>
         </el-form>
-
     </div>
 </template>
 
@@ -52,10 +58,13 @@
     Radio,
     Button,
     Icon,
-    Message
+    Message,
+    Cascader,
   } from 'element-ui';
   import UserApi from '@/api/UserApi';
+  import DoctorApi from '@/api/DoctorApi';
   import {RouterUtil} from '@/util/Util';
+  import AreaData from '@/util/AreaData';
 
   export default {
     components: {
@@ -68,12 +77,14 @@
       [Radio.name]: Radio,
       [Button.name]: Button,
       [Icon.name]: Icon,
+      [Cascader.name]: Cascader,
     },
     data: function () {
       return {
-        managerInfo: {},
-        managerRules: {
-          realName: [
+        areaData: AreaData,
+        doctorInfo: {},
+        doctorRules: {
+          name: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
             {min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur'}
           ],
@@ -82,45 +93,43 @@
             {pattern: /\d{11}/, message: '手机号码格式不正确'},
             {validator: this.validatePhone, trigger: 'blur'}
           ],
-          password: [
-            {required: true, message: '请输入密码', trigger: 'blur'},
-            {min: 8, max: 20, message: '密码必须在8到20位之间', trigger: 'blur'}
-          ],
           gender: [
             {required: true, message: '请选择性别', trigger: 'blur'},
           ],
-          checkPass: [
-            {validator: this.validatePassAgain, trigger: 'blur'}
+          addressIds: [
+            {required: true, message: '请选择地址', trigger: 'blur'},
+          ],
+          medicalInstitution: [
+            {required: true, message: '请输入执业机构', trigger: 'blur'},
+            {min: 1, max: 64, message: '长度不能超过64个字符', trigger: 'blur'}
+          ],
+          medicalCategory: [
+            {required: true, message: '请输入姓名', trigger: 'blur'},
+            {min: 1, max: 64, message: '长度不能超过64个字符', trigger: 'blur'}
           ],
         }
       }
     },
-    created: function () {
-
-    },
     methods: {
-      onAddManagerAction: function (formName) {
+      onAddDoctorAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            UserApi.addManager(this.managerInfo).then(success => {
+            if (typeof this.doctorInfo.addressIds !== 'undefined'
+                && this.doctorInfo.addressIds.length >= 3) {
+              this.doctorInfo.provinceId = this.doctorInfo.addressIds[0];
+              this.doctorInfo.cityId = this.doctorInfo.addressIds[1];
+              this.doctorInfo.districtId = this.doctorInfo.addressIds[2];
+            }
+            DoctorApi.addDoctor(this.doctorInfo).then(success => {
               if (success) {
                 Message.success('注册成功即将跳转!');
-                RouterUtil.goToBack(this.$route, this.$router, '/manager/list');
+                RouterUtil.goToBack(this.$route, this.$router, '/doctor/list');
               }
             });
           } else {
             return false;
           }
         });
-      },
-      validatePassAgain: function (rule, value, callback) {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.managerInfo.password) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
       },
       validatePhone: function (rule, value, callback) {
         if (value === '') {

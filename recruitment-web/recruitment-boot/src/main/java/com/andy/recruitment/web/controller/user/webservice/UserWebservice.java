@@ -76,4 +76,10 @@ public class UserWebservice {
         UserInfo userInfo = this.userAO.loginByWeixin(wxLoginRQ.getCode());
         return UserUtil.transformUserInfoVO(userInfo);
     }
+
+    @RequestMapping(value = "/phone", method = RequestMethod.GET)
+    public UserInfoVO getUserInfoByPhone(String phone) {
+        UserInfo userInfo = this.userAO.getUserInfoByPhone(phone);
+        return UserUtil.transformUserInfoVO(userInfo);
+    }
 }

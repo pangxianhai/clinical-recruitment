@@ -40,7 +40,11 @@ let UserApi = {
   unfreezeUser: async (userId) => {
     return await ApiUtil.post('/user/status/' + userId + "/unfreeze");
   },
-
+  getUserByPhone: async (phone) => {
+    return await ApiUtil.get('/user/phone/', {
+      phone: phone
+    });
+  }
 }
 
 export default UserApi;
