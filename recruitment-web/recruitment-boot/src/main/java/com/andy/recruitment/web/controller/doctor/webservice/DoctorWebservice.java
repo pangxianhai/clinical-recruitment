@@ -20,6 +20,7 @@ import com.xgimi.commons.util.asserts.AssertUtil;
 import com.xgimi.context.ServletContext;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -86,5 +87,33 @@ public class DoctorWebservice {
         doctorInfoVO.setAddress(this.regionAO.parseAddressName(doctorInfoVO.getProvinceId(), doctorInfoVO.getCityId(),
                                                                doctorInfoVO.getDistrictId()));
         return doctorInfoVO;
+    }
+
+    @RequestMapping(value = "/{doctorId:\\d+}", method = RequestMethod.GET)
+    public DoctorInfoVO getDoctorInfoById(@PathVariable Long doctorId) {
+        DoctorInfo doctorInfo = this.doctorAO.getDoctorInfoById(doctorId);
+        if (null == doctorInfo) {
+            return null;
+        }
+        DoctorInfoVO doctorInfoVO = DoctorUtil.transformDoctorInfoVO(doctorInfo);
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(doctorInfo.getUserId());
+        doctorInfoVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
+        doctorInfoVO.setAddress(this.regionAO.parseAddressName(doctorInfoVO.getProvinceId(), doctorInfoVO.getCityId(),
+                                                               doctorInfoVO.getDistrictId()));
+        return doctorInfoVO;
+    }
+
+    @RequestMapping(value = "/{doctorId:\\d+}", method = RequestMethod.PUT)
+    public boolean updateDoctorInfo(@PathVariable Long doctorId, @RequestBody DoctorAddRQ doctorAddRQ) {
+        String operator = UserUtil.getOperator(doctorAddRQ.getName());
+        DoctorInfo doctorInfo = DoctorUtil.transformDoctorInfo(doctorAddRQ, regionAO);
+        doctorInfo.setDoctorId(doctorId);
+        this.doctorAO.updateDoctorInfo(doctorInfo, operator);
+
+        DoctorInfo doctorFullInfo = this.doctorAO.getDoctorInfoById(doctorId);
+        UserInfo userInfo = DoctorUtil.transformUserInfo(doctorAddRQ);
+        userInfo.setUserId(doctorFullInfo.getUserId());
+        this.userAO.updateUserInfo(userInfo, operator);
+        return true;
     }
 }

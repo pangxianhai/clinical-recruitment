@@ -1,9 +1,9 @@
 <template>
-    <div class="doctor-add">
+    <div class="doctor-update">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/doctor/list' }">医生管理</el-breadcrumb-item>
-            <el-breadcrumb-item>添加医生</el-breadcrumb-item>
+            <el-breadcrumb-item>修改医生信息</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form status-icon style="margin-top: 25px;width: 30%" :rules="doctorRules"
                  ref="doctorInfo"
@@ -39,8 +39,8 @@
                 <el-input v-model="doctorInfo.medicalCategory"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-circle-plus-outline"
-                           @click="onAddDoctorAction('doctorInfo')">添加
+                <el-button type="primary" icon="el-icon-edit"
+                           @click="onUpdateDoctorAction('doctorInfo')">更新
                 </el-button>
             </el-form-item>
         </el-form>
@@ -54,17 +54,17 @@
     Form,
     FormItem,
     Input,
+    Cascader,
     RadioGroup,
     Radio,
     Button,
     Icon,
     Message,
-    Cascader,
   } from 'element-ui';
-  import UserApi from '@/api/UserApi';
-  import DoctorApi from '@/api/DoctorApi';
-  import {RouterUtil} from '@/util/Util';
   import AreaData from '@/util/AreaData';
+  import DoctorApi from '@/api/DoctorApi';
+  import UserApi from '@/api/UserApi';
+  import {RouterUtil} from '@/util/Util';
 
   export default {
     components: {
@@ -73,16 +73,23 @@
       [Form.name]: Form,
       [FormItem.name]: FormItem,
       [Input.name]: Input,
+      [Cascader.name]: Cascader,
       [RadioGroup.name]: RadioGroup,
       [Radio.name]: Radio,
       [Button.name]: Button,
       [Icon.name]: Icon,
-      [Cascader.name]: Cascader,
     },
     data: function () {
       return {
         areaData: AreaData,
-        doctorInfo: {},
+        doctorInfo: {
+          medicalInstitution: '',
+          medicalCategory: '',
+          name: '',
+          phone: '',
+          gender: '',
+          addressIds: []
+        },
         doctorRules: {
           name: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
@@ -110,8 +117,38 @@
         }
       }
     },
+    created: function () {
+      let doctorId = this.$route.params.doctorId;
+      this.loadDoctorInfo(doctorId);
+    },
     methods: {
-      onAddDoctorAction: function (formName) {
+      loadDoctorInfo: function (doctorId) {
+        DoctorApi.getDoctorById(doctorId).then(doctorInfo => {
+          this.doctorInfo.medicalInstitution = doctorInfo.medicalInstitution;
+          this.doctorInfo.medicalCategory = doctorInfo.medicalCategory;
+          this.doctorInfo.name = doctorInfo.userInfoVO.realName;
+          this.doctorInfo.phone = doctorInfo.userInfoVO.phone;
+          this.doctorInfo.gender = doctorInfo.userInfoVO.gender.code + "";
+          this.doctorInfo.userId = doctorInfo.userInfoVO.userId;
+          this.doctorInfo.doctorId = doctorInfo.doctorId;
+          this.doctorInfo.addressIds = [doctorInfo.provinceId, doctorInfo.cityId,
+            doctorInfo.districtId];
+        })
+      },
+      validatePhone: function (rule, value, callback) {
+        if (value === '') {
+          callback(new Error('请输入手机号码'));
+        } else {
+          UserApi.getUserByPhone(value).then(userInfo => {
+            if (userInfo.userId && this.doctorInfo.userId !== userInfo.userId) {
+              callback(new Error('手机号码已经被注册了'));
+            } else {
+              callback();
+            }
+          });
+        }
+      },
+      onUpdateDoctorAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (typeof this.doctorInfo.addressIds !== 'undefined'
@@ -120,9 +157,9 @@
               this.doctorInfo.cityId = this.doctorInfo.addressIds[1];
               this.doctorInfo.districtId = this.doctorInfo.addressIds[2];
             }
-            DoctorApi.addDoctor(this.doctorInfo).then(success => {
+            DoctorApi.updateDoctor(this.doctorInfo.doctorId, this.doctorInfo).then(success => {
               if (success) {
-                Message.success('添加成功即将跳转!');
+                Message.success('更新成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/doctor/list');
               }
             });
@@ -130,19 +167,6 @@
             return false;
           }
         });
-      },
-      validatePhone: function (rule, value, callback) {
-        if (value === '') {
-          callback(new Error('请输入手机号码'));
-        } else {
-          UserApi.getUserByPhone(value).then(userInfo => {
-            if (userInfo.userId) {
-              callback(new Error('手机号码已经被注册了'));
-            } else {
-              callback();
-            }
-          });
-        }
       }
     }
   }

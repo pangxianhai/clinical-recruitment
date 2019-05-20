@@ -118,6 +118,16 @@ const router = new Router({
           index: "3-2",
           component: () => import("@/views/doctor/Add"),
         },
+        {
+          path: 'update/:doctorId',
+          name: '添加医生',
+          meta: {
+            needLogin: true
+          },
+          menu: false,
+          index: "3-1",
+          component: () => import("@/views/doctor/Update"),
+        },
       ]
     },
     {
