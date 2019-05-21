@@ -1,9 +1,9 @@
 <template>
-    <div class="patient-list">
+    <div class="patient-update">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/patient/list' }">患者管理</el-breadcrumb-item>
-            <el-breadcrumb-item>添加患者</el-breadcrumb-item>
+            <el-breadcrumb-item>更新患者</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form status-icon style="margin-top: 25px;width: 30%" :rules="patientRules"
                  ref="patientInfo"
@@ -37,7 +37,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-circle-plus-outline"
-                           @click="onAddPatientAction('patientInfo')">添加
+                           @click="onAddPatientAction('patientInfo')">更新
                 </el-button>
             </el-form-item>
         </el-form>
@@ -79,7 +79,13 @@
     data: function () {
       return {
         areaData: AreaData,
-        patientInfo: {},
+        patientInfo: {
+          name: '',
+          phone: '',
+          gender: '',
+          addressIds: '',
+          age: ''
+        },
         patientRules: {
           name: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
@@ -103,7 +109,21 @@
         }
       }
     },
+    created: function () {
+      let patientId = this.$route.params.patientId;
+      this.loadPatientInfo(patientId)
+    },
     methods: {
+      loadPatientInfo: function (patientId) {
+        PatientApi.getPatientById(patientId).then(patientInfo => {
+          this.patientInfo.name = patientInfo.userInfoVO.realName;
+          this.patientInfo.phone = patientInfo.userInfoVO.phone;
+          this.patientInfo.gender = patientInfo.userInfoVO.gender.code + "";
+          this.patientInfo.addressIds = [patientInfo.provinceId, patientInfo.cityId,
+            patientInfo.districtId];
+          this.patientInfo.age = patientInfo.age;
+        });
+      },
       onAddPatientAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -115,7 +135,7 @@
             }
             PatientApi.addPatient(this.patientInfo).then(success => {
               if (success) {
-                Message.success('添加成功即将跳转!');
+                Message.success('修改成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/patient/list');
               }
             });

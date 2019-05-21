@@ -90,7 +90,7 @@
           ],
           phone: [
             {required: true, message: '请输入手机号码', trigger: 'blur'},
-            {pattern: /\d{11}/, message: '手机号码格式不正确'},
+            {pattern: /^\d{11}$/, message: '手机号码格式不正确'},
             {validator: this.validatePhone, trigger: 'blur'}
           ],
           gender: [

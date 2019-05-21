@@ -6,6 +6,9 @@ let PatientApi = {
   },
   addPatient: async (params) => {
     return await ApiUtil.post('/patient', params);
+  },
+  getPatientById: async (patientId) => {
+    return await ApiUtil.get('/patient/' + patientId);
   }
 };
 export default PatientApi;

@@ -18,6 +18,7 @@ import com.xgimi.context.ServletContext;
 import com.xgimi.converter.MyParameter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,6 +82,20 @@ public class PatientWebservice {
         }
         PatientVO patientVO = PatientUtil.transformPatientVO(patientInfo);
         UserInfo userInfo = this.userAO.getUserInfoByUserId(loginInfo.getUserId());
+        patientVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
+        patientVO.setAddress(this.regionAO.parseAddressName(patientVO.getProvinceId(), patientVO.getCityId(),
+                                                            patientVO.getDistrictId()));
+        return patientVO;
+    }
+
+    @RequestMapping(value = "/{patientId:\\d+}", method = RequestMethod.GET)
+    public PatientVO getPatientInfo(@PathVariable Long patientId) {
+        PatientInfo patientInfo = this.patientAO.getPatientInfoById(patientId);
+        if (null == patientInfo) {
+            return null;
+        }
+        PatientVO patientVO = PatientUtil.transformPatientVO(patientInfo);
+        UserInfo userInfo = this.userAO.getUserInfoByUserId(patientInfo.getUserId());
         patientVO.setUserInfoVO(UserUtil.transformUserInfoVO(userInfo));
         patientVO.setAddress(this.regionAO.parseAddressName(patientVO.getProvinceId(), patientVO.getCityId(),
                                                             patientVO.getDistrictId()));

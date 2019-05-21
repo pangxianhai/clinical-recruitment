@@ -89,8 +89,7 @@
         loginRules: {
           phone: [
             {required: true, message: '手机号不能为空', trigger: 'blur'},
-            {validator: 'digits', message: '手机号码格式不正确', trigger: 'blur'},
-            {min: 11, max: 11, message: '手机号码格式不正确', trigger: 'blur'}
+            {pattern: /^\d{11}$/, message: '手机号码格式不正确'},
           ],
           password: [
             {required: true, message: '密码不能不能为空', trigger: 'blur'},
