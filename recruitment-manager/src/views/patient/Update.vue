@@ -37,7 +37,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-circle-plus-outline"
-                           @click="onAddPatientAction('patientInfo')">更新
+                           @click="onUpdatePatientAction('patientInfo')">更新
                 </el-button>
             </el-form-item>
         </el-form>
@@ -83,7 +83,7 @@
           name: '',
           phone: '',
           gender: '',
-          addressIds: '',
+          addressIds: [],
           age: ''
         },
         patientRules: {
@@ -122,9 +122,11 @@
           this.patientInfo.addressIds = [patientInfo.provinceId, patientInfo.cityId,
             patientInfo.districtId];
           this.patientInfo.age = patientInfo.age;
+          this.patientInfo.patientId = patientInfo.patientId;
+          this.patientInfo.userId = patientInfo.userInfoVO.userId;
         });
       },
-      onAddPatientAction: function (formName) {
+      onUpdatePatientAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (typeof this.patientInfo.addressIds !== 'undefined'
@@ -133,7 +135,7 @@
               this.patientInfo.cityId = this.patientInfo.addressIds[1];
               this.patientInfo.districtId = this.patientInfo.addressIds[2];
             }
-            PatientApi.addPatient(this.patientInfo).then(success => {
+            PatientApi.updatePatient(this.patientInfo.patientId, this.patientInfo).then(success => {
               if (success) {
                 Message.success('修改成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/patient/list');
@@ -149,7 +151,7 @@
           callback(new Error('请输入手机号码'));
         } else {
           UserApi.getUserByPhone(value).then(userInfo => {
-            if (userInfo.userId) {
+            if (userInfo.userId && this.patientInfo.userId !== userInfo.userId) {
               callback(new Error('手机号码已经被注册了'));
             } else {
               callback();

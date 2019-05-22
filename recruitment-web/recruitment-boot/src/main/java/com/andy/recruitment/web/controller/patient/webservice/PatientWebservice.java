@@ -101,4 +101,18 @@ public class PatientWebservice {
                                                             patientVO.getDistrictId()));
         return patientVO;
     }
+
+    @RequestMapping(value = "/{patientId:\\d+}", method = RequestMethod.PUT)
+    public boolean updatePatientInfo(@PathVariable Long patientId, @RequestBody PatientAddRQ patientAddRQ) {
+        String operator = UserUtil.getOperator(patientAddRQ.getName());
+        PatientInfo patientInfo = PatientUtil.transformPatientInfo(patientAddRQ, regionAO);
+        patientInfo.setPatientId(patientId);
+        this.patientAO.updatePatientInfo(patientInfo, operator);
+
+        PatientInfo sourcePatientInfo = this.patientAO.getPatientInfoById(patientId);
+        UserInfo userInfo = PatientUtil.transformUserInfo(patientAddRQ);
+        userInfo.setUserId(sourcePatientInfo.getUserId());
+        this.userAO.updateUserInfo(userInfo, operator);
+        return true;
+    }
 }
