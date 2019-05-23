@@ -36,7 +36,7 @@
                 <el-input v-model.number="patientInfo.age"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-circle-plus-outline"
+                <el-button type="primary" icon="el-icon-edit"
                            @click="onUpdatePatientAction('patientInfo')">更新
                 </el-button>
             </el-form-item>

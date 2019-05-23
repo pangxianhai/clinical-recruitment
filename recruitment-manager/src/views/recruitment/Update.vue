@@ -92,7 +92,7 @@
                     </el-row>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary"
+                    <el-button type="primary" icon="el-icon-edit"
                                @click="onUpdateRecruitmentAction('recruitmentInfoForm')">提交
                     </el-button>
                 </el-form-item>

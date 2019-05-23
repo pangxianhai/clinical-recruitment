@@ -32,24 +32,45 @@
                 </template>
             </el-table-column>
             <el-table-column
-                width="80"
+                width="100"
                 fixed="right"
                 label="操作">
                 <template slot-scope="scope">
-                    <el-button
-                        v-if="scope.row.status.code===UserStatus.NORMAL"
-                        type="danger"
-                        @click="freezeUser(scope.row)"
-                        size="mini">
-                        冻结
-                    </el-button>
-                    <el-button
-                        v-if="scope.row.status.code===UserStatus.FREEZE"
-                        type="primary"
-                        @click="unfreezeUser(scope.row)"
-                        size="mini">
-                        解冻
-                    </el-button>
+                    <el-row type="flex">
+                        <el-col>
+                            <el-button
+                                v-if="scope.row.status.code===UserStatus.NORMAL"
+                                type="danger"
+                                icon="el-icon-goods"
+                                @click="freezeUser(scope.row)"
+                                size="mini">
+                                冻结
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row type="flex">
+                        <el-col>
+                            <el-button
+                                v-if="scope.row.status.code===UserStatus.FREEZE"
+                                type="primary"
+                                icon="el-icon-sold-out"
+                                @click="unfreezeUser(scope.row)"
+                                size="mini">
+                                解冻
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row type="flex">
+                        <el-col>
+                            <el-button
+                                type="success"
+                                icon="el-icon-edit"
+                                @click="onUpdateAction(scope.row)"
+                                size="mini">
+                                编辑
+                            </el-button>
+                        </el-col>
+                    </el-row>
                 </template>
             </el-table-column>
         </el-table>
@@ -81,6 +102,10 @@
     .manager-list .el-pagination {
         float: right;
     }
+
+    .manager-list .el-row {
+        margin-top: 5px;
+    }
 </style>
 
 <script>
@@ -92,7 +117,9 @@
     Pagination,
     Button,
     Tag,
-    Message
+    Message,
+    Row,
+    Col
   } from 'element-ui';
   import {UserStatus} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
@@ -106,6 +133,8 @@
       [Pagination.name]: Pagination,
       [Button.name]: Button,
       [Tag.name]: Tag,
+      [Row.name]: Row,
+      [Col.name]: Col,
     },
     data: function () {
       return {
@@ -143,6 +172,11 @@
             Message.success('操作成功!');
             this.loadManagerInfo();
           }
+        });
+      },
+      onUpdateAction: function (userInfo) {
+        this.$router.push({
+          path: `/manager/update/${userInfo.userId}`
         });
       }
     }

@@ -197,6 +197,16 @@ const router = new Router({
           menu: true,
           index: "5-2",
           component: () => import("@/views/manager/Add"),
+        },
+        {
+          path: 'update/:userId',
+          name: '更新管理员',
+          meta: {
+            needLogin: true
+          },
+          menu: false,
+          index: "5-1",
+          component: () => import("@/views/manager/Update"),
         }
       ]
     }

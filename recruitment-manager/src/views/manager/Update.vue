@@ -3,23 +3,18 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/manager/list'}">管理员列表</el-breadcrumb-item>
-            <el-breadcrumb-item>添加管理员</el-breadcrumb-item>
+            <el-breadcrumb-item>更新管理员</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form status-icon style="margin-top: 25px;width: 30%" :rules="managerRules"
                  ref="managerInfo"
                  :model="managerInfo"
                  label-width="80px">
-            <el-form-item label="姓名" prop="realName">
-                <el-input v-model="managerInfo.realName"  autocomplete="off"></el-input>
-            </el-form-item>
             <el-form-item label="手机号码" prop="phone">
-                <el-input v-model.number="managerInfo.phone"  autocomplete="off"></el-input>
+                <el-input v-model.number="managerInfo.phone" :disabled="true"
+                          autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password">
-                <el-input v-model="managerInfo.password" show-password  autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="checkPass">
-                <el-input v-model="managerInfo.checkPass" show-password  autocomplete="off"></el-input>
+            <el-form-item label="姓名" prop="realName">
+                <el-input v-model="managerInfo.realName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="性别" prop="gender">
                 <el-radio-group v-model="managerInfo.gender">
@@ -32,8 +27,8 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-circle-plus-outline"
-                           @click="onAddManagerAction('managerInfo')">添加
+                <el-button type="primary" icon="el-icon-edit"
+                           @click="onUpdateManagerAction('managerInfo')">更新
                 </el-button>
             </el-form-item>
         </el-form>
@@ -71,40 +66,41 @@
     },
     data: function () {
       return {
-        managerInfo: {},
+        managerInfo: {
+          phone: '',
+          realName: '',
+          gender: ''
+        },
         managerRules: {
           realName: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
             {min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur'}
           ],
-          phone: [
-            {required: true, message: '请输入手机号码', trigger: 'blur'},
-            {pattern: /^\d{11}$/, message: '手机号码格式不正确'},
-            {validator: this.validatePhone, trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '请输入密码', trigger: 'blur'},
-            {min: 8, max: 20, message: '密码必须在8到20位之间', trigger: 'blur'}
-          ],
           gender: [
             {required: true, message: '请选择性别', trigger: 'blur'},
-          ],
-          checkPass: [
-            {validator: this.validatePassAgain, trigger: 'blur'}
-          ],
+          ]
         }
       }
     },
     created: function () {
-
+      let userId = this.$route.params.userId;
+      this.loadManagerInfo(userId);
     },
     methods: {
-      onAddManagerAction: function (formName) {
+      loadManagerInfo: function (userId) {
+        UserApi.getManagerByUserId(userId).then(managerInfo => {
+          this.managerInfo.phone = managerInfo.phone;
+          this.managerInfo.realName = managerInfo.realName;
+          this.managerInfo.gender = managerInfo.gender.code + "";
+          this.managerInfo.userId = managerInfo.userId;
+        });
+      },
+      onUpdateManagerAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            UserApi.addManager(this.managerInfo).then(success => {
+            UserApi.updateManager(this.managerInfo.userId, this.managerInfo).then(success => {
               if (success) {
-                Message.success('注册成功即将跳转!');
+                Message.success('更新成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/manager/list');
               }
             });
@@ -112,28 +108,6 @@
             return false;
           }
         });
-      },
-      validatePassAgain: function (rule, value, callback) {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.managerInfo.password) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      },
-      validatePhone: function (rule, value, callback) {
-        if (value === '') {
-          callback(new Error('请输入手机号码'));
-        } else {
-          UserApi.getUserByPhone(value).then(userInfo => {
-            if (userInfo.userId) {
-              callback(new Error('手机号码已经被注册了'));
-            } else {
-              callback();
-            }
-          });
-        }
       }
     }
   }
