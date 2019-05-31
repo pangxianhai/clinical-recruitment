@@ -128,6 +128,12 @@
             <if test="userType != null ">
                 user_type = #{userType, typeHandler=com.xgimi.base.MyBaseTypeHandler},
             </if>
+            <if test="updatedBy != null and updatedBy != ''">
+                updated_by = #{updatedBy, jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null ">
+                updated_time = #{updatedTime, jdbcType=TIMESTAMP},
+            </if>
         </set>
         <where>
             <if test="id != null">

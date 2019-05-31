@@ -4,6 +4,7 @@ import com.andy.recruitment.region.model.Region;
 import com.andy.recruitment.web.App;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.JsonUtil;
+import com.xgimi.commons.util.encrypt.HmacHashUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,9 +18,9 @@ public class RegionAOImplTest extends TestCase {
     private RegionAO regionAO;
 
     public void setUp() {
-        App.main("");
-        ApplicationContext context = App.getContext();
-        this.regionAO = context.getBean(RegionAO.class);
+//        App.main("");
+//        ApplicationContext context = App.getContext();
+//        this.regionAO = context.getBean(RegionAO.class);
     }
 
     public void testBuildAreaJs1() {
@@ -89,5 +90,11 @@ public class RegionAOImplTest extends TestCase {
         m.put("city_list", cityMap);
         m.put("county_list", countyMap);
         System.out.println(JsonUtil.toJson(m));
+    }
+
+    public void test() {
+        String pas = HmacHashUtil.hmacSHAHash("12345678", "17780583960");
+        System.out.println(pas);
+
     }
 }
