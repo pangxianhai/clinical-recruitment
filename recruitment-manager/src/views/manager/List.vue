@@ -4,6 +4,25 @@
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>管理员列表</el-breadcrumb-item>
         </el-breadcrumb>
+        <el-form ref="queryInfo" :model="queryInfo" :inline="true">
+            <el-form-item label="姓名:" prop="realName">
+                <el-input v-model="queryInfo.realName" size="mini"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号:" prop="phoneLike">
+                <el-input v-model="queryInfo.phoneLike" size="mini"></el-input>
+            </el-form-item>
+            <el-form-item label="状态:" prop="status">
+                <el-select v-model="queryInfo.status" size="mini" placeholder="状态">
+                    <el-option label="正常" value="1"></el-option>
+                    <el-option label="冻结" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button size="mini" type="primary" @click="loadManagerInfo()"
+                           icon="el-icon-search">查询
+                </el-button>
+            </el-form-item>
+        </el-form>
         <el-table
             :data="managerList"
             border
@@ -85,6 +104,13 @@
 </template>
 
 <style>
+    .manager-list .el-form {
+        margin-top: 10px;
+        padding: 10px 8px 10px 8px;
+        background: #dddef5;
+        border-radius: 4px;
+    }
+
     .manager-list .el-table {
         margin-top: 20px;
         text-align: center;
@@ -119,7 +145,13 @@
     Tag,
     Message,
     Row,
-    Col
+    Col,
+    Form,
+    FormItem,
+    Input,
+    InputNumber,
+    Select,
+    Option,
   } from 'element-ui';
   import {UserStatus} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
@@ -135,6 +167,12 @@
       [Tag.name]: Tag,
       [Row.name]: Row,
       [Col.name]: Col,
+      [Form.name]: Form,
+      [FormItem.name]: FormItem,
+      [Input.name]: Input,
+      [InputNumber.name]: InputNumber,
+      [Select.name]: Select,
+      [Option.name]: Option,
     },
     data: function () {
       return {
@@ -143,17 +181,26 @@
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
+        queryInfo: {}
       }
     },
     created: function () {
+      Object.assign(this.queryInfo, this.$route.query);
       this.loadManagerInfo();
     },
     methods: {
       loadManagerInfo: function () {
-        UserApi.getManager({
+        this.$router.replace({
+          query: Object.assign(this.queryInfo, {
+            currentPage: this.currentPage,
+            pageSize: this.pageSize
+          })
+        });
+        window.console.log(this.queryInfo);
+        UserApi.getManager(Object.assign(this.queryInfo, {
           currentPage: this.currentPage,
           pageSize: this.pageSize
-        }).then(data => {
+        })).then(data => {
           this.managerList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
