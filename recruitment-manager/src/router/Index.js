@@ -207,6 +207,16 @@ const router = new Router({
           menu: false,
           index: "5-1",
           component: () => import("@/views/manager/Update"),
+        },
+        {
+          path: 'updatePassword',
+          name: '修改密码',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "5-3",
+          component: () => import("@/views/manager/UpdatePassword"),
         }
       ]
     }

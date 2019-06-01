@@ -89,6 +89,16 @@ public interface UserAO {
     void updateUserStatus(Long userId, UserStatus status, String operator);
 
     /**
+     * 更新密码
+     *
+     * @param userId      用户ID
+     * @param password    原密码
+     * @param newPassword 新密码
+     * @param operator    操作人
+     */
+    void updatePassword(Long userId, String password, String newPassword, String operator);
+
+    /**
      * 通过手机号码登陆
      *
      * @param phone    手机号

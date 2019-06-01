@@ -146,6 +146,22 @@ public class UserAOImpl implements UserAO {
     }
 
     @Override
+    public void updatePassword(Long userId, String password, String newPassword, String operator) {
+        UserInfo userInfo = this.userInfoService.getUserInfoByUserId(userId);
+        AssertUtil.assertNull(userInfo, () -> {
+            throw new BusinessException(BusinessErrorCode.USER_NOT_EXIST);
+        });
+        String pas = HmacHashUtil.hmacSHAHash(password, userInfo.getPhone());
+        AssertUtil.assertBoolean(pas.equals(userInfo.getPassword()), () -> {
+            throw new BusinessException(BusinessErrorCode.USER_PASSWORD_ERROR);
+        });
+        UserInfo updateUserInfo = new UserInfo();
+        updateUserInfo.setUserId(userId);
+        updateUserInfo.setPassword(HmacHashUtil.hmacSHAHash(newPassword, userInfo.getPhone()));
+        this.userInfoService.updateUserInfo(updateUserInfo, operator);
+    }
+
+    @Override
     public UserInfo loginByPhone(String phone, String password) {
         UserInfo userInfo = this.userInfoService.getUserInfoByPhone(phone);
         AssertUtil.assertNull(userInfo, () -> {

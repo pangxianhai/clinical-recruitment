@@ -2,7 +2,7 @@
     <div class="manager-list">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/manager/list'}">管理员列表</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/manager/list'}">管理员管理</el-breadcrumb-item>
             <el-breadcrumb-item>更新管理员</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form status-icon style="margin-top: 25px;width: 30%" :rules="managerRules"

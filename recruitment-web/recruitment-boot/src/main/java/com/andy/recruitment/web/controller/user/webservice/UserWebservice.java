@@ -3,6 +3,7 @@ package com.andy.recruitment.web.controller.user.webservice;
 import com.andy.recruitment.user.ao.UserAO;
 import com.andy.recruitment.user.constant.UserStatus;
 import com.andy.recruitment.user.model.UserInfo;
+import com.andy.recruitment.web.controller.user.request.UpdatePasswordRQ;
 import com.andy.recruitment.web.controller.user.request.WxLoginRQ;
 import com.andy.recruitment.web.controller.user.response.UserInfoVO;
 import com.andy.recruitment.web.controller.user.util.UserUtil;
@@ -47,7 +48,7 @@ public class UserWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/status/{userId:\\d+}/freeze", method = RequestMethod.POST)
+    @RequestMapping(value = "/status/{userId:\\d+}/freeze", method = RequestMethod.PUT)
     public Boolean manageFreeze(@PathVariable Long userId) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         this.userAO.updateUserStatus(userId, UserStatus.FREEZE, loginInfo.getRealName());
@@ -55,12 +56,22 @@ public class UserWebservice {
     }
 
     @Login
-    @RequestMapping(value = "/status/{userId:\\d+}/unfreeze", method = RequestMethod.POST)
+    @RequestMapping(value = "/status/{userId:\\d+}/unfreeze", method = RequestMethod.PUT)
     public Boolean manageUnfreeze(@PathVariable Long userId) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         this.userAO.updateUserStatus(userId, UserStatus.NORMAL, loginInfo.getRealName());
         return true;
     }
+
+    @Login
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
+    public Boolean updatePassword(@RequestBody UpdatePasswordRQ updatePasswordRQ) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        this.userAO.updatePassword(loginInfo.getUserId(), updatePasswordRQ.getPassword(),
+                                   updatePasswordRQ.getNewPassword(), loginInfo.getRealName());
+        return true;
+    }
+
 
     //医生登陆页面 http://www.aiteruiyiyao.cn/user/login?userType=2
     //患者登陆页面 http://www.aiteruiyiyao.cn/user/login?userType=3

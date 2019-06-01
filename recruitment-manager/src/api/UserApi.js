@@ -40,11 +40,14 @@ let UserApi = {
   updateManager: async (userId, manageInfo) => {
     return await ApiUtil.put('/user/manager/' + userId, manageInfo);
   },
+  updateManagerPassword: async (userInfo) => {
+    return await ApiUtil.put('/user/password', userInfo);
+  },
   freezeUser: async (userId) => {
-    return await ApiUtil.post('/user/status/' + userId + "/freeze");
+    return await ApiUtil.put('/user/status/' + userId + "/freeze");
   },
   unfreezeUser: async (userId) => {
-    return await ApiUtil.post('/user/status/' + userId + "/unfreeze");
+    return await ApiUtil.put('/user/status/' + userId + "/unfreeze");
   },
   getUserByPhone: async (phone) => {
     return await ApiUtil.get('/user/phone/', {
