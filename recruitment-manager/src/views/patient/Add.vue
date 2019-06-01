@@ -1,5 +1,5 @@
 <template>
-    <div class="patient-list">
+    <div class="patient-add">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/patient/list' }">患者管理</el-breadcrumb-item>

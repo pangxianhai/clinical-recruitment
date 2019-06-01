@@ -5,6 +5,35 @@
             <el-breadcrumb-item>患者管理</el-breadcrumb-item>
             <el-breadcrumb-item>患者列表</el-breadcrumb-item>
         </el-breadcrumb>
+        <el-form ref="queryInfo" :model="queryInfo" :inline="true">
+            <el-form-item label="姓名:" prop="realName">
+                <el-input v-model="queryInfo.realName" size="mini" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="手机号:" prop="phoneLike">
+                <el-input v-model="queryInfo.phoneLike" size="mini" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="地区:" prop="addressIds">
+                <el-cascader
+                    size="mini"
+                    :options="areaData"
+                    v-model="queryInfo.addressIds"
+                    clearable
+                    placeholder="地区">
+                </el-cascader>
+            </el-form-item>
+            <el-form-item label="状态:" prop="status">
+                <el-select v-model="queryInfo.status" size="mini" clearable placeholder="状态">
+                    <el-option label="全部" value=""></el-option>
+                    <el-option label="正常" value="1"></el-option>
+                    <el-option label="冻结" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button size="mini" type="primary" @click="loadPatientInfo()"
+                           icon="el-icon-search">查询
+                </el-button>
+            </el-form-item>
+        </el-form>
         <el-table
             :data="patientList"
             border
@@ -100,6 +129,13 @@
 
 
 <style>
+    .patient-list .el-form {
+        margin-top: 10px;
+        padding: 10px 8px 10px 8px;
+        background: #dddef5;
+        border-radius: 4px;
+    }
+
     .patient-list .el-table {
         margin-top: 20px;
     }
@@ -133,11 +169,19 @@
     Tag,
     Message,
     Row,
-    Col
+    Col,
+    Form,
+    FormItem,
+    Input,
+    InputNumber,
+    Select,
+    Option,
+    Cascader,
   } from 'element-ui';
   import PatientApi from '@/api/PatientApi';
   import {UserStatus} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
+  import AreaData from '@/util/AreaData';
 
   export default {
     components: {
@@ -150,25 +194,52 @@
       [Tag.name]: Tag,
       [Row.name]: Row,
       [Col.name]: Col,
+      [Form.name]: Form,
+      [FormItem.name]: FormItem,
+      [Input.name]: Input,
+      [InputNumber.name]: InputNumber,
+      [Select.name]: Select,
+      [Option.name]: Option,
+      [Cascader.name]: Cascader,
     },
     data: function () {
       return {
+        areaData: AreaData,
         UserStatus: UserStatus,
         patientList: [],
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
+        queryInfo: {
+          addressIds: [],
+        }
       }
     },
     created: function () {
+      Object.assign(this.queryInfo, this.$route.query);
+      let addressIds = this.queryInfo.addressIds;
+      if (typeof addressIds !== 'undefined' && addressIds.length > 0) {
+        let addIds = [];
+        for (let i in addressIds) {
+          addIds.push(parseInt(addressIds[i]));
+        }
+        this.queryInfo.addressIds = addIds;
+      }
       this.loadPatientInfo();
     },
     methods: {
       loadPatientInfo: function () {
-        PatientApi.getPatient({
-          currentPage: this.currentPage,
-          pageSize: this.pageSize
-        }).then(data => {
+        this.$router.replace({
+          query: Object.assign(this.queryInfo, {
+            currentPage: this.currentPage,
+            pageSize: this.pageSize
+          })
+        });
+        PatientApi.getPatient(Object.assign({
+          provinceId: this.queryInfo.addressIds[0],
+          cityId: this.queryInfo.addressIds[1],
+          districtId: this.queryInfo.addressIds[2],
+        }, this.queryInfo)).then(data => {
           this.patientList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });

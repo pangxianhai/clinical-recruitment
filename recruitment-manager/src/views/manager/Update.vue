@@ -1,5 +1,5 @@
 <template>
-    <div class="manager-list">
+    <div class="manager-update">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/manager/list'}">管理员管理</el-breadcrumb-item>

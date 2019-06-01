@@ -6,13 +6,13 @@
         </el-breadcrumb>
         <el-form ref="queryInfo" :model="queryInfo" :inline="true">
             <el-form-item label="姓名:" prop="realName">
-                <el-input v-model="queryInfo.realName" size="mini"></el-input>
+                <el-input v-model="queryInfo.realName" size="mini" clearable></el-input>
             </el-form-item>
             <el-form-item label="手机号:" prop="phoneLike">
-                <el-input v-model="queryInfo.phoneLike" size="mini"></el-input>
+                <el-input v-model="queryInfo.phoneLike" size="mini" clearable></el-input>
             </el-form-item>
             <el-form-item label="状态:" prop="status">
-                <el-select v-model="queryInfo.status" size="mini" placeholder="状态">
+                <el-select v-model="queryInfo.status" size="mini" clearable placeholder="状态">
                     <el-option label="正常" value="1"></el-option>
                     <el-option label="冻结" value="2"></el-option>
                 </el-select>
@@ -196,7 +196,6 @@
             pageSize: this.pageSize
           })
         });
-        window.console.log(this.queryInfo);
         UserApi.getManager(Object.assign(this.queryInfo, {
           currentPage: this.currentPage,
           pageSize: this.pageSize
