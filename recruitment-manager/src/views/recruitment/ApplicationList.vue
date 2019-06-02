@@ -5,6 +5,75 @@
             <el-breadcrumb-item :to="{ path: '/recruitment/list' }">项目管理</el-breadcrumb-item>
             <el-breadcrumb-item>申请记录</el-breadcrumb-item>
         </el-breadcrumb>
+        <el-form ref="queryInfo" :model="queryInfo" :inline="true">
+            <el-form-item label="项目:" prop="recruitmentId">
+                <el-select
+                    v-model="queryInfo.recruitmentId"
+                    filterable
+                    remote
+                    reserve-keyword
+                    placeholder="请输入项目名称"
+                    :remote-method="loadRecruitmentInfo"
+                    size="mini"
+                    :loading="recruitmentLoading">
+                    <el-option
+                        v-for="item in recruitmentList"
+                        :key="item.recruitmentId"
+                        :label="item.title"
+                        :value="item.recruitmentId">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="患者:" prop="patientId">
+                <el-select
+                    v-model="queryInfo.patientId"
+                    filterable
+                    remote
+                    reserve-keyword
+                    placeholder="请输入患者姓名"
+                    :remote-method="loadPatientInfo"
+                    size="mini"
+                    :loading="patientLoading">
+                    <el-option
+                        v-for="item in patientList"
+                        :key="item.patientId"
+                        :label="item.userInfoVO.realName"
+                        :value="item.patientId">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="推荐医生:" prop="doctorId">
+                <el-select
+                    v-model="queryInfo.doctorId"
+                    filterable
+                    remote
+                    reserve-keyword
+                    placeholder="请输入推荐医生姓名"
+                    :remote-method="loadDoctorInfo"
+                    size="mini"
+                    :loading="doctorLoading">
+                    <el-option
+                        v-for="item in doctorList"
+                        :key="item.doctorId"
+                        :label="item.userInfoVO.realName"
+                        :value="item.doctorId">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="状态:" prop="status">
+                <el-select v-model="queryInfo.status" size="mini" clearable placeholder="状态">
+                    <el-option label="全部" value=""></el-option>
+                    <el-option label="未入组" value="1"></el-option>
+                    <el-option label="已入组" value="2"></el-option>
+                    <el-option label="已拒接" value="3"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button size="mini" type="primary" @click="loadApplicationInfo()"
+                           icon="el-icon-search">查询
+                </el-button>
+            </el-form-item>
+        </el-form>
         <el-table
             :data="recruitmentApplicationList"
             border
@@ -126,6 +195,13 @@
     </div>
 </template>
 <style>
+    .recruitment-application-list .el-form {
+        margin-top: 10px;
+        padding: 10px 8px 1px 8px;
+        background: #dddef5;
+        border-radius: 4px;
+    }
+
     .recruitment-application-list .el-table {
         margin-top: 20px;
     }
@@ -162,10 +238,17 @@
     Tooltip,
     Tag,
     Button,
-    Message
+    Message,
+    Form,
+    FormItem,
+    Select,
+    Option,
   } from 'element-ui';
   import RecruitmentApplicationApi from '@/api/RecruitmentApplicationApi';
   import {ApplicationStatus} from '@/constants/Global';
+  import RecruitmentApi from '@/api/RecruitmentApi';
+  import PatientApi from '@/api/PatientApi';
+  import DoctorApi from '@/api/DoctorApi';
 
   export default {
     components: {
@@ -179,6 +262,10 @@
       [Tooltip.name]: Tooltip,
       [Tag.name]: Tag,
       [Button.name]: Button,
+      [Form.name]: Form,
+      [FormItem.name]: FormItem,
+      [Select.name]: Select,
+      [Option.name]: Option,
     },
     data: function () {
       return {
@@ -187,17 +274,28 @@
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
+        queryInfo: {},
+        recruitmentList: [],
+        recruitmentLoading: false,
+        patientList: [],
+        patientLoading: false,
+        doctorList: [],
+        doctorLoading: false,
       }
     },
     created: function () {
+      Object.assign(this.queryInfo, this.$route.query);
       this.loadApplicationInfo();
     },
     methods: {
       loadApplicationInfo: function () {
-        RecruitmentApplicationApi.getRecruitmentApplication({
-          currentPage: this.currentPage,
-          pageSize: this.pageSize
-        }).then(data => {
+        this.$router.replace({
+          query: Object.assign(this.queryInfo, {
+            currentPage: this.currentPage,
+            pageSize: this.pageSize
+          })
+        });
+        RecruitmentApplicationApi.getRecruitmentApplication(this.queryInfo).then(data => {
           this.recruitmentApplicationList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
@@ -213,6 +311,39 @@
             Message.success('操作成功!');
             this.loadApplicationInfo();
           }
+        });
+      },
+      loadRecruitmentInfo: function (query) {
+        this.recruitmentLoading = true;
+        RecruitmentApi.getRecruitment({
+          queryText: query,
+          currentPage: 1,
+          pageSize: 15
+        }).then(data => {
+          this.recruitmentList = data.data;
+          this.recruitmentLoading = false;
+        });
+      },
+      loadPatientInfo: function (query) {
+        this.patientLoading = true;
+        PatientApi.getPatient({
+          realName: query,
+          currentPage: 1,
+          pageSize: 15
+        }).then(data => {
+          this.patientList = data.data;
+          this.patientLoading = false;
+        });
+      },
+      loadDoctorInfo: function (query) {
+        this.doctorLoading = true;
+        DoctorApi.getDoctor({
+          realName: query,
+          currentPage: 1,
+          pageSize: 15
+        }).then(data => {
+          this.doctorList = data.data;
+          this.doctorLoading = false;
         });
       }
     }

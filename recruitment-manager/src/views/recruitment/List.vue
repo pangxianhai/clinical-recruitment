@@ -5,6 +5,50 @@
             <el-breadcrumb-item>项目管理</el-breadcrumb-item>
             <el-breadcrumb-item>项目列表</el-breadcrumb-item>
         </el-breadcrumb>
+        <el-form ref="queryInfo" :model="queryInfo" :inline="true">
+            <el-form-item label="搜索文本:" prop="queryText">
+                <el-input v-model="queryInfo.queryText" size="mini" placeholder="搜索标题、登记编号、适应症"
+                          clearable></el-input>
+            </el-form-item>
+            <el-form-item label="状态:" prop="status">
+                <el-select v-model="queryInfo.status" size="mini" clearable placeholder="状态">
+                    <el-option label="未开始" value="0"></el-option>
+                    <el-option label="进行中" value="1"></el-option>
+                    <el-option label="已结束" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="开始时间段:" prop="startTime">
+                <el-date-picker
+                    size="mini"
+                    v-model="queryInfo.startTime"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    value-format="yyyy-MM-dd"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间段:" prop="stopTime">
+                <el-date-picker
+                    size="mini"
+                    v-model="queryInfo.stopTime"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    value-format="yyyy-MM-dd"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item>
+                <el-button size="mini" type="primary" @click="loadRecruitmentInfo()"
+                           icon="el-icon-search">查询
+                </el-button>
+            </el-form-item>
+        </el-form>
         <el-table
             :data="recruitmentList"
             border
@@ -139,6 +183,13 @@
 </template>
 
 <style>
+    .recruitment-list .el-form {
+        margin-top: 10px;
+        padding: 10px 8px 10px 8px;
+        background: #dddef5;
+        border-radius: 4px;
+    }
+
     .recruitment-list .el-table {
         margin-top: 20px;
     }
@@ -177,7 +228,13 @@
     Tooltip,
     Tag,
     MessageBox,
-    Message
+    Message,
+    Form,
+    FormItem,
+    Input,
+    Select,
+    Option,
+    DatePicker
   } from 'element-ui';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RecruitmentStatus} from '@/constants/Global';
@@ -194,6 +251,12 @@
       [Col.name]: Col,
       [Tooltip.name]: Tooltip,
       [Tag.name]: Tag,
+      [Form.name]: Form,
+      [FormItem.name]: FormItem,
+      [Input.name]: Input,
+      [Select.name]: Select,
+      [Option.name]: Option,
+      [DatePicker.name]: DatePicker,
     },
     data: function () {
       return {
@@ -202,17 +265,30 @@
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
+        queryInfo: {
+          startTime: [],
+          stopTime: []
+        }
       }
     },
     created: function () {
+      Object.assign(this.queryInfo, this.$route.query);
       this.loadRecruitmentInfo();
     },
     methods: {
       loadRecruitmentInfo: function () {
-        RecruitmentApi.getRecruitment({
-          currentPage: this.currentPage,
-          pageSize: this.pageSize
-        }).then(data => {
+        this.$router.replace({
+          query: Object.assign(this.queryInfo, {
+            currentPage: this.currentPage,
+            pageSize: this.pageSize
+          })
+        });
+        RecruitmentApi.getRecruitment(Object.assign({
+          startTimeBegin: this.queryInfo.startTime[0],
+          startTimeEnd: this.queryInfo.startTime[1],
+          stopTimeBegin: this.queryInfo.stopTime[0],
+          stopTimeEnd: this.queryInfo.stopTime[1],
+        }, this.queryInfo)).then(data => {
           this.recruitmentList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });

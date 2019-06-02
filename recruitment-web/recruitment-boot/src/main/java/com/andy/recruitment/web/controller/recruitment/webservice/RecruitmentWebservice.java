@@ -19,6 +19,7 @@ import com.xgimi.commons.page.PageResult;
 import com.xgimi.commons.util.CollectionUtil;
 import com.xgimi.commons.util.StringUtil;
 import com.xgimi.context.ServletContext;
+import com.xgimi.converter.MyParameter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,7 +62,7 @@ public class RecruitmentWebservice {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public PageResult<RecruitmentVO> recruitmentListPcResult(RecruitmentQueryRQ recruitmentQueryRQ) {
+    public PageResult<RecruitmentVO> recruitmentListPcResult(@MyParameter RecruitmentQueryRQ recruitmentQueryRQ) {
         PageResult<RecruitmentInfo> pageResult = this.queryRecruitmentInfo(recruitmentQueryRQ);
         List<RecruitmentVO> recruitmentVOList = RecruitmentUtil.transformRecruitmentVO(pageResult.getData());
         return new PageResult<>(recruitmentVOList, pageResult.getPaginator());
