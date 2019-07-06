@@ -34,7 +34,8 @@
             </van-row>
             <van-row type="flex">
                 <van-col span="5">起至时间:</van-col>
-                <van-col span="19">{{recruitmentInfo.startTime}}~{{recruitmentInfo.stopTime}}</van-col>
+                <van-col span="19">{{recruitmentInfo.startTime}}~{{recruitmentInfo.stopTime}}
+                </van-col>
             </van-row>
         </van-panel>
         <div class="introduction">
@@ -70,24 +71,27 @@
                     联系我们
                 </van-button>
             </van-col>
-            <van-col v-if="userInfo.userType.code === UserConstants.PATIENT"
-                     style="margin-left: 15px">
+            <van-col
+                v-if="userInfo.userType.code === UserConstants.PATIENT && recruitmentInfo.status.code === RecruitmentStatus.IN_PROCESS"
+                style="margin-left: 15px">
                 <van-button type="warning" size="small"
                             @click="onRecruitmentApplication()">
                     <van-icon name="edit"></van-icon>
                     我要参加
                 </van-button>
             </van-col>
-            <van-col v-if="userInfo.userType.code === UserConstants.DOCTOR"
-                     style="margin-left: 15px">
+            <van-col
+                v-if="userInfo.userType.code === UserConstants.DOCTOR && recruitmentInfo.status.code === RecruitmentStatus.IN_PROCESS"
+                style="margin-left: 15px">
                 <van-button type="warning" size="small"
                             @click="onRecruitmentApplication()">
                     <van-icon name="share"></van-icon>
                     我要推荐
                 </van-button>
             </van-col>
-            <van-col v-if="userInfo.userType.code === UserConstants.DOCTOR"
-                     style="margin-left: 15px">
+            <van-col
+                v-if="userInfo.userType.code === UserConstants.DOCTOR && recruitmentInfo.status.code === RecruitmentStatus.IN_PROCESS"
+                style="margin-left: 15px">
                 <van-button type="danger" size="small"
                             @click="onRecommendQrcode()">
                     <van-icon name="qr"></van-icon>
@@ -155,6 +159,7 @@
   import {NavBar, Panel, Row, Col, Tab, Tabs, List, Cell, Button, Popup, Icon} from 'vant';
   import RecruitmentApi from "@/api/RecruitmentApi";
   import {UserConstants} from '@/constants/Global';
+  import {RecruitmentStatus} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
   import QRCode from 'qrcode';
 
@@ -181,6 +186,7 @@
         recruitmentCenterFinished: false,
         researchCenterList: [],
         UserConstants: UserConstants,
+        RecruitmentStatus: RecruitmentStatus,
         userInfo: {
           userType: {
             code: UserConstants.PATIENT,

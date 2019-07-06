@@ -73,24 +73,27 @@
                             联系我们
                         </van-button>
                     </van-col>
-                    <van-col v-if="userInfo.userType.code === UserConstants.PATIENT"
-                             style="margin-left: 15px">
+                    <van-col
+                        v-if="userInfo.userType.code === UserConstants.PATIENT && item.status.code === RecruitmentStatus.IN_PROCESS"
+                        style="margin-left: 15px">
                         <van-button type="warning" size="small"
                                     @click="onRecruitmentApplication(item)">
                             <van-icon name="edit"></van-icon>
                             我要参加
                         </van-button>
                     </van-col>
-                    <van-col v-if="userInfo.userType.code === UserConstants.DOCTOR"
-                             style="margin-left: 15px">
+                    <van-col
+                        v-if="userInfo.userType.code === UserConstants.DOCTOR && item.status.code === RecruitmentStatus.IN_PROCESS"
+                        style="margin-left: 15px">
                         <van-button type="warning" size="small"
                                     @click="onRecruitmentApplication(item)">
                             <van-icon name="share"></van-icon>
                             我要推荐
                         </van-button>
                     </van-col>
-                    <van-col v-if="userInfo.userType.code === UserConstants.DOCTOR"
-                             style="margin-left: 15px">
+                    <van-col
+                        v-if="userInfo.userType.code === UserConstants.DOCTOR && item.status.code === RecruitmentStatus.IN_PROCESS"
+                        style="margin-left: 15px">
                         <van-button type="danger" size="small"
                                     @click="onRecommendQrcode(item)">
                             <van-icon name="qr"></van-icon>
@@ -188,6 +191,7 @@
   import RecruitmentApi from '@/api/RecruitmentApi';
   import UserApi from '@/api/UserApi';
   import {UserConstants} from '@/constants/Global';
+  import {RecruitmentStatus} from '@/constants/Global';
   import Footer from '@/components/Footer';
 
   export default {
@@ -215,6 +219,7 @@
           }
         },
         UserConstants: UserConstants,
+        RecruitmentStatus: RecruitmentStatus,
         showAddress: false,
         showRecommend: false,
         recommendQrcode: false,

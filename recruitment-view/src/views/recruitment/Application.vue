@@ -277,7 +277,7 @@
         this.$toast({
           type: 'loading',
           mask: true,
-          duration: 0,
+          duration: 10000,
           forbidClick: true,
           loadingType: 'spinner',
           message: '图片上传中...'
