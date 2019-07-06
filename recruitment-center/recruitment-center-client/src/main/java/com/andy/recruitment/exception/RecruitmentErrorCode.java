@@ -48,15 +48,19 @@ public enum RecruitmentErrorCode {
      * 请保证一个管理员
      */
     USER_MANAGER_MUST_ONE(101303),
+    /**
+     * 手机号已经被使用
+     */
+    USER_PHONE_HAS_USED(101304),
 
     /**
      * 招募信息添加失败
      */
-    RECRUITMENT_ADD_FAILE(101400),
+    RECRUITMENT_ADD_FAILED(101400),
     /**
      * 招募信息更新失败
      */
-    RECRUITMENT_UPDATE_FAILE(101401),
+    RECRUITMENT_UPDATE_FAILED(101401),
     /**
      * 招募信息ID为空
      */

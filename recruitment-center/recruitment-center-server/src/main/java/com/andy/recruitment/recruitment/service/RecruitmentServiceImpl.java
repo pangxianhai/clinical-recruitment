@@ -43,7 +43,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         recruitmentInfoDO.setCreatedTime(new Timestamp(DateUtil.currentMilliseconds()));
         int count = this.recruitmentMapper.insert(recruitmentInfoDO);
         AssertUtil.assertBoolean(count > 0, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_ADD_FAILE);
+            throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_ADD_FAILED);
         });
         return recruitmentInfoDO.getId();
     }
@@ -58,7 +58,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         recruitmentInfoDO.setUpdatedTime(new Timestamp(DateUtil.currentMilliseconds()));
         int count = this.recruitmentMapper.update(recruitmentInfoDO);
         AssertUtil.assertBoolean(count > 0, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_UPDATE_FAILE);
+            throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_UPDATE_FAILED);
         });
     }
 

@@ -47,6 +47,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             return this.addUserInfo0(userInfo, operator);
         } else {
+            if (! userInfo.getUserType().equals(existUserInfo.getUserType())) {
+                throw new RecruitmentException(RecruitmentErrorCode.USER_PHONE_HAS_USED);
+            }
             userInfo.setUserId(existUserInfo.getUserId());
             this.updateUserInfo(userInfo, operator);
             return existUserInfo.getUserId();
