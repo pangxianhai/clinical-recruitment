@@ -8,7 +8,6 @@ import com.xgimi.logger.EnableLog;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = {"com.andy.recruitment"})
 @EnableLog
 @EnableExecutor
-@EnableDataSource(mapperBasePackage = "com.andy.recruitment.*.mapper")
+@EnableDataSource(autoMapperPackage = "com.andy.recruitment.*.mapper")
 @SpringBootApplication
 public class App extends WebMvcConfigurerAdapter {
 

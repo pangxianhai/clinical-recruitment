@@ -1,14 +1,8 @@
 package com.andy.recruitment.web;
 
+import com.xgimi.commons.constant.Constant;
 import com.xgimi.commons.message.MessageHandler;
-import com.xgimi.commons.util.DateUtil;
 import com.xgimi.commons.util.RandomUtil;
-import com.xgimi.commons.util.encrypt.AESCBCUtil;
-import com.xgimi.commons.util.encrypt.AESUtil;
-import com.xgimi.commons.util.encrypt.EncodeUtil;
-import com.xgimi.commons.util.encrypt.HashUtil;
-import com.xgimi.commons.util.encrypt.HmacHashUtil;
-import com.xgimi.commons.util.encrypt.RSAUtil;
 import com.xgimi.logger.log4j.Logger;
 import com.xgimi.logger.log4j.MyLogger;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,14 +64,8 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
     }
 
     private void defaultInit() {
-        DateUtil.setDefaultPattern(RecruitmentSystemInfo.DATE_PATTERN);
-        HashUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
-        AESUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
-        AESUtil.setDefaultEncryptKey("g4pG79CAQ73l2xQZzABnFw==");
-        AESCBCUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
-        EncodeUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
-        RSAUtil.setCharsetName(RecruitmentSystemInfo.CHARSET_NAME);
-        HmacHashUtil.setCharsetName(CHARSET_NAME);
+        Constant.setDefaultPattern(CHARSET_NAME);
+        Constant.DEFAULT_PATTERN = DATE_PATTERN;
     }
 
     /**

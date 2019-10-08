@@ -5,7 +5,7 @@ import com.xgimi.interceptor.MyHandlerInterceptor;
 import com.xgimi.logger.log4j.Logger;
 import com.xgimi.logger.log4j.MyLogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;

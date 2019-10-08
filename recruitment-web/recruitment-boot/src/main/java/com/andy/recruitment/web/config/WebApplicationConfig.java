@@ -36,4 +36,5 @@ public class WebApplicationConfig extends WebSecurityConfigurerAdapter implement
         String value = environment.getProperty(key);
         return null == value ? defaultValue : value;
     }
+
 }
