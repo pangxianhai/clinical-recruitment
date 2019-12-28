@@ -8,6 +8,12 @@ export default new Router({
   base: __dirname,
   routes: [
     {
+      path: '/',
+      redirect: '/recruitment/list',
+      menu: false,
+      index: "0"
+    },
+    {
       path: '/recruitment',
       component: () => import("@/views/recruitment/Layout"),
       children: [

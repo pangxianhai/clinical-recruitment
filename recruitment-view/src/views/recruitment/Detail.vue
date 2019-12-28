@@ -38,20 +38,23 @@
                 </van-col>
             </van-row>
         </van-panel>
-        <div class="introduction">
-            {{recruitmentInfo.introduction}}
+        <div class="introduction" v-html="recruitmentInfo.introduction">
         </div>
-        <van-tabs :v-model="1">
+        <van-tabs :v-model="1" scrollspy sticky>
             <van-tab title="治疗方案">
-                <div class="tabs-value">{{recruitmentInfo.treatmentPlan}}</div>
+                <van-divider>治疗方案</van-divider>
+                <div class="tabs-value" v-html="recruitmentInfo.treatmentPlan"></div>
             </van-tab>
             <van-tab title="入排标准">
-                <div class="tabs-value">{{recruitmentInfo.entryCriteria}}</div>
+                <van-divider>入排标准:</van-divider>
+                <div class="tabs-value" v-html="recruitmentInfo.entryCriteria"></div>
             </van-tab>
             <van-tab title="患者权益">
-                <div class="tabs-value">{{recruitmentInfo.patientRights}}</div>
+                <van-divider>患者权益:</van-divider>
+                <div class="tabs-value" v-html="recruitmentInfo.patientRights"></div>
             </van-tab>
             <van-tab title="研究中心">
+                <van-divider>研究中心:</van-divider>
                 <van-list
                     :v-model="false"
                     :finished="true">
@@ -63,7 +66,7 @@
                 </van-list>
             </van-tab>
         </van-tabs>
-        <van-row style="margin-top:15px" type="flex" justify="center">
+        <van-row style="margin-top:15px;margin-bottom:4px " type="flex" justify="center">
             <van-col>
                 <van-button type="info" size="small"
                             @click="onContactUs">
@@ -156,7 +159,7 @@
 
 </style>
 <script>
-  import {NavBar, Panel, Row, Col, Tab, Tabs, List, Cell, Button, Popup, Icon} from 'vant';
+  import {NavBar, Panel, Row, Col, Tab, Tabs, List, Cell, Button, Popup, Icon,Divider} from 'vant';
   import RecruitmentApi from "@/api/RecruitmentApi";
   import {UserConstants} from '@/constants/Global';
   import {RecruitmentStatus} from '@/constants/Global';
@@ -176,6 +179,7 @@
       [Popup.name]: Popup,
       [Icon.name]: Icon,
       [Cell.name]: Cell,
+      [Divider.name]: Divider,
     },
     data: function () {
       return {

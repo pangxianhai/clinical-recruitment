@@ -206,10 +206,6 @@
         margin-top: 20px;
     }
 
-    .recruitment-application-list .el-table th.is-leaf {
-        color: #858585;
-    }
-
     .recruitment-application-list .el-table .cell {
         text-align: center;
     }
