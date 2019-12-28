@@ -116,11 +116,6 @@
         text-align: center;
     }
 
-    .manager-list .el-table th.is-leaf {
-        color: #858585;
-
-    }
-
     .manager-list .el-table .cell {
         text-align: center;
     }

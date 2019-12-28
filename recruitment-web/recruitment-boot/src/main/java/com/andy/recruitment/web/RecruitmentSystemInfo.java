@@ -64,8 +64,8 @@ public class RecruitmentSystemInfo implements CommandLineRunner {
     }
 
     private void defaultInit() {
-        Constant.setDefaultPattern(CHARSET_NAME);
-        Constant.DEFAULT_PATTERN = DATE_PATTERN;
+        Constant.setDefaultPattern(DATE_PATTERN);
+        Constant.CHARSET_NAME = CHARSET_NAME;
     }
 
     /**

@@ -62,6 +62,7 @@ export const ApiUtil = {
       });
       return response;
     } catch (e) {
+      Message.error('操作失败');
       window.console.error(e);
     }
   },
@@ -75,6 +76,7 @@ export const ApiUtil = {
       });
       return response;
     } catch (e) {
+      Message.error('操作失败');
       window.console.error(e);
     }
   },
@@ -91,6 +93,7 @@ export const ApiUtil = {
         data
       }
     } catch (e) {
+      Message.error('操作失败');
       window.console.error(e);
     }
   },
@@ -107,6 +110,7 @@ export const ApiUtil = {
         data
       }
     } catch (e) {
+      Message.error('操作失败');
       window.console.error(e);
     }
   }

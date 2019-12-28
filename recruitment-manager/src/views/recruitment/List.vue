@@ -194,10 +194,6 @@
         margin-top: 20px;
     }
 
-    .recruitment-list .el-table th.is-leaf {
-        color: #858585;
-    }
-
     .recruitment-list .el-table thead .cell {
         text-align: center;
     }

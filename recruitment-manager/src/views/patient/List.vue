@@ -140,10 +140,6 @@
         margin-top: 20px;
     }
 
-    .patient-list .el-table th.is-leaf {
-        color: #858585;
-    }
-
     .patient-list .el-table .cell {
         text-align: center;
     }

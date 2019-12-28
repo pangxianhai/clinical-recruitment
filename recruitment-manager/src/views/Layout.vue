@@ -25,7 +25,7 @@
                 <el-header>
                     <div class="user-info">
                         <span>{{userName}}</span>
-                        <el-tooltip v-if="userName" effect="dark" content="退出登陆"
+                        <el-tooltip v-if="userName" effect="dark" content="退出登录"
                                     placement="bottom">
                             <el-button @click="onLogOutAction" type="primary"
                                        icon="iconfont icon-dengchu">

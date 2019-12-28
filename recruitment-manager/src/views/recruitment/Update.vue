@@ -9,7 +9,7 @@
         <div style="text-align: center;margin-top: 25px">
             <el-form :model="recruitmentInfo" :rules="recruitmentInfoRules"
                      ref="recruitmentInfoForm"
-                     style="width: 60%;margin: auto" label-width="100px">
+                     style="width: 90%;margin: auto" label-width="100px">
                 <el-form-item label="标题：" prop="title">
                     <el-input v-model="recruitmentInfo.title" placeholder="标题"></el-input>
                 </el-form-item>
@@ -45,20 +45,28 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="简介：" prop="introduction">
-                    <el-input v-model="recruitmentInfo.introduction" type="textarea"
-                              placeholder="简介"></el-input>
+                    <quill-editor
+                        v-model="recruitmentInfo.introduction"
+                        :options="editorOption">
+                    </quill-editor>
                 </el-form-item>
                 <el-form-item label="治疗方案：" prop="treatmentPlan">
-                    <el-input v-model="recruitmentInfo.treatmentPlan" type="textarea"
-                              placeholder="治疗方案"></el-input>
+                    <quill-editor
+                        v-model="recruitmentInfo.treatmentPlan"
+                        :options="editorOption">
+                    </quill-editor>
                 </el-form-item>
                 <el-form-item label="入排标准：" prop="entryCriteria">
-                    <el-input v-model="recruitmentInfo.entryCriteria" type="textarea"
-                              placeholder="入排标准"></el-input>
+                    <quill-editor
+                        v-model="recruitmentInfo.entryCriteria"
+                        :options="editorOption">
+                    </quill-editor>
                 </el-form-item>
                 <el-form-item label="患者权益：" prop="patientRights">
-                    <el-input v-model="recruitmentInfo.patientRights" type="textarea"
-                              placeholder="患者权益"></el-input>
+                    <quill-editor
+                        v-model="recruitmentInfo.patientRights"
+                        :options="editorOption">
+                    </quill-editor>
                 </el-form-item>
                 <el-form-item
                     v-for="(center, index) in recruitmentInfo.researchCenterList"
@@ -137,6 +145,23 @@
     },
     data: function () {
       return {
+        editorOption: {
+          modules: {
+            toolbar: [
+              ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
+
+              [{'list': 'ordered'}, {'list': 'bullet'}],
+              [{'indent': '-1'}, {'indent': '+1'}],
+
+              [{'size': ['small', false, 'large', 'huge']}],
+              [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+              [{'color': []}, {'background': []}],
+              [{'font': []}],
+              [{'align': []}],
+            ]
+          },
+        },
         recruitmentInfo: {
           title: '',
           registerCode: '',
@@ -188,19 +213,19 @@
           ],
           introduction: [
             {required: true, message: '请输入简介', trigger: 'blur'},
-            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
+            {min: 1, max: 5000, message: '最大只能输入5000个字符', trigger: 'blur'}
           ],
           treatmentPlan: [
             {required: true, message: '请输入治疗方案', trigger: 'blur'},
-            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
+            {min: 1, max: 5000, message: '最大只能输入5000个字符', trigger: 'blur'}
           ],
           entryCriteria: [
             {required: true, message: '请输入入排标准', trigger: 'blur'},
-            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
+            {min: 1, max: 5000, message: '最大只能输入5000个字符', trigger: 'blur'}
           ],
           patientRights: [
             {required: true, message: '请输入患者权益', trigger: 'blur'},
-            {min: 1, max: 1500, message: '最大只能输入1500个字符', trigger: 'blur'}
+            {min: 1, max: 5000, message: '最大只能输入5000个字符', trigger: 'blur'}
           ],
           startEndTime: [
             {required: true, message: '请选择启止日期', trigger: 'blur'},

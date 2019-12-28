@@ -67,10 +67,11 @@
             </el-table-column>
         </el-table>
         <el-tabs style="margin-top: 30px">
-            <el-tab-pane label="简介">{{recruitmentInfo.introduction}}</el-tab-pane>
-            <el-tab-pane label="治疗方案">{{recruitmentInfo.treatmentPlan}}</el-tab-pane>
-            <el-tab-pane label="入排标准">{{recruitmentInfo.entryCriteria}}</el-tab-pane>
-            <el-tab-pane label="患者权益">{{recruitmentInfo.patientRights}}</el-tab-pane>
+            <el-tab-pane label="简介" v-html="recruitmentInfo.introduction">
+            </el-tab-pane>
+            <el-tab-pane label="治疗方案" v-html="recruitmentInfo.treatmentPlan"></el-tab-pane>
+            <el-tab-pane label="入排标准" v-html="recruitmentInfo.entryCriteria"></el-tab-pane>
+            <el-tab-pane label="患者权益" v-html="recruitmentInfo.patientRights"></el-tab-pane>
             <el-tab-pane label="研究中心">
                 <el-row v-for="(center, index) in researchCenterList" :key="index"
                         style="width: 400px"
@@ -121,10 +122,6 @@
 <style>
     .recruitment-detail .el-table {
         margin-top: 20px;
-    }
-
-    .recruitment-detail .el-table th.is-leaf {
-        color: #858585;
     }
 
     .recruitment-detail .el-table thead .cell {

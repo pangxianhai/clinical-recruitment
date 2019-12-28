@@ -17,7 +17,7 @@
                     <el-input size="small" type="password" v-model="loginForm.password"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onLoginAction('loginForm')">登陆</el-button>
+                    <el-button type="primary" @click="onLoginAction('loginForm')">登录</el-button>
                 </el-form-item>
             </el-form>
         </div>
