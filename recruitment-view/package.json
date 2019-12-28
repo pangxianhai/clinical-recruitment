@@ -33,7 +33,7 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.21",
-    "webpack-bundle-analyzer": "^3.3.0"
+    "webpack-bundle-analyzer": "^3.3.2"
   },
   "eslintConfig": {
     "root": true,
