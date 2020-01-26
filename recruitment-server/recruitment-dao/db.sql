@@ -150,7 +150,7 @@ create table administrator_info(
   user_name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '用户名',
   password varchar(10240)  NOT NULL COLLATE utf8_bin COMMENT '密码',
   name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '姓名',
-  type TINYINT  NOT NULL COMMENT '管理员类型 1-总管 2-业务管理员',
+  type TINYINT  NOT NULL COMMENT '管理员类型 1-系统管理员 2-业务管理员',
   status TINYINT  NOT NULL COMMENT '管理员状态 1-正常 2-冻结',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',

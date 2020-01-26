@@ -13,6 +13,8 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    implementation 'com.baomidou:mybatis-plus-generator:3.3.0'
+    compile group: 'org.freemarker', name: 'freemarker', version: '2.3.29'
 }
 
 dependencyManagement {

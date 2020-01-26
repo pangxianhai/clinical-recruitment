@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andy.recruitment.dao.admin.mapper.AdministratorInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap"
+      type="com.andy.recruitment.dao.admin.entity.AdministratorInfoDO">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type"
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+        <result column="status" property="status"
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_name, password, `name`, `type`, status, created_by, created_time, updated_by, updated_time
+    </sql>
+
+    <select id="select" resultMap="BaseResultMap"
+      parameterType="com.andy.recruitment.dao.admin.entity.AdministratorQuery">
+        select
+        <include refid="Base_Column_List"/>
+        from administrator_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="type != null">
+                and `type` = #{type,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
+            <if test="status != null">
+                and `status` =
+                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+      parameterType="">
+        insert into administrator_info (
+        <include refid="Base_Column_List"/>
+        )
+        values(
+        #{id, jdbcType=BIGINT},
+        #{userName, jdbcType=VARCHAR}
+        #{password, jdbcType=VARCHAR}
+        #{name, jdbcType=VARCHAR}
+        #{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+        #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+        #{createdBy, jdbcType=VARCHAR}
+        #{createdTime, jdbcType=TIMESTAMP}
+        #{updatedBy, jdbcType=VARCHAR}
+        #{updatedTime, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update"
+      parameterType="com.soyoung.commerce.ad.recall.dao.ade.strategy.strategy.entity.AdministratorInfo">
+        update administrator_info
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name=#{userName, jdbcType=VARCHAR}
+            </if>
+            <if test="password != null and password != ''">
+                password=#{password, jdbcType=VARCHAR}
+            </if>
+            <if test="name != null and name != ''">
+                `name`=#{name, jdbcType=VARCHAR}
+            </if>
+            <if test="type != null and type != ''">
+                `type`=#{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
+            <if test="status != null and status != ''">
+                status=#{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
+            <if test="updatedBy != null and updatedBy != ''">
+                updated_by=#{updatedBy, jdbcType=VARCHAR}
+            </if>
+            <if test="updatedTime != null and updatedTime != ''">
+                updated_time=#{updatedTime, jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where id =#{id, jdbcType=BIGINT}
+    </update>
+
+</mapper>
