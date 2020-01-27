@@ -33,18 +33,24 @@ public class AdministratorDAOImpl implements AdministratorDAO {
     }
 
     @Override
-    public void addAdministrator(AdministratorInfoDO administratorInfoDo) {
+    public void addAdministrator(AdministratorInfoDO administratorInfoDo, String operator) {
+        administratorInfoDo.setCreatedBy(operator);
+        administratorInfoDo.setCreatedTime(LocalDateTime.now());
         int count = this.administratorInfoMapper.insert(administratorInfoDo);
-        AssertUtil.assertTrue(count == 1, () -> {
+        AssertUtil.assertTrue(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.ADMINISTRATOR_ADD_FAILED);
         });
     }
 
     @Override
-    public void updateAdministrator(AdministratorInfoDO administratorInfoDo) {
+    public void updateAdministrator(AdministratorInfoDO administratorInfoDo, String operator) {
+        AssertUtil.assertNull(administratorInfoDo.getId(), () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.ADMINISTRATOR_ID_EMPTY);
+        });
+        administratorInfoDo.setUpdatedBy(operator);
         administratorInfoDo.setUpdatedTime(LocalDateTime.now());
         int count = this.administratorInfoMapper.update(administratorInfoDo);
-        AssertUtil.assertTrue(count == 1, () -> {
+        AssertUtil.assertTrue(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.ADMINISTRATOR_UPDATE_FAILED);
         });
     }

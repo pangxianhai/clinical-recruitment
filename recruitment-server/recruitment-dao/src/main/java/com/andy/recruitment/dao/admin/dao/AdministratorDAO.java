@@ -16,15 +16,17 @@ public interface AdministratorDAO {
      * 添加管理员
      *
      * @param administratorInfoDo 管理员信息
+     * @param operator            操作人
      */
-    void addAdministrator(AdministratorInfoDO administratorInfoDo);
+    void addAdministrator(AdministratorInfoDO administratorInfoDo, String operator);
 
     /**
      * 更新管理员信息
      *
      * @param administratorInfoDo 管理员信息
+     * @param operator            操作人
      */
-    void updateAdministrator(AdministratorInfoDO administratorInfoDo);
+    void updateAdministrator(AdministratorInfoDO administratorInfoDo, String operator);
 
     /**
      * 通过用户名查询管理员信息

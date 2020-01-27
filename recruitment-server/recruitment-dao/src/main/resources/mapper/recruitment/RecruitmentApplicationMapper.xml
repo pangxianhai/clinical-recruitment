@@ -12,7 +12,7 @@
         <result column="reference_user_id" property="referenceUserId" jdbcType="BIGINT"/>
         <result column="organization_id" property="organizationId" jdbcType="BIGINT"/>
         <result column="status" property="status"
-          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="disease_desc" property="diseaseDesc" jdbcType="VARCHAR"/>
         <result column="genetic_disease_desc" property="geneticDiseaseDesc" jdbcType="VARCHAR"/>
         <result column="disease_image" property="diseaseImage" jdbcType="VARCHAR"/>
@@ -61,7 +61,7 @@
                 and organization_id = #{organizationId, jdbcType=BIGINT}
             </if>
             <if test="status != null">
-                and status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+                and status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="recruitmentRegisterCode != null and recruitmentRegisterCode != ''">
                 and recruitment_register_code = #{recruitmentRegisterCode, jdbcType=VARCHAR}
@@ -79,7 +79,7 @@
         #{patientUserId, jdbcType=BIGINT},
         #{referenceUserId, jdbcType=BIGINT},
         #{organizationId, jdbcType=BIGINT},
-        #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+        #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
         #{diseaseDesc, jdbcType=VARCHAR},
         #{geneticDiseaseDesc, jdbcType=VARCHAR},
         #{diseaseImage, jdbcType=VARCHAR},
@@ -95,7 +95,7 @@
         update medical_clinical_recruitment_application
         <set>
             <if test="status != null ">
-                status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+                status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

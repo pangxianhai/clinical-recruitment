@@ -7,17 +7,17 @@ package com.andy.recruitment.common.exception;
  */
 public enum RecruitmentErrorCode {
     /**
-     * 注册医生失败
+     * 推荐人注册失败
      */
-    DOCTOR_ADD_FAILED(101100),
+    REFERENCE_ADD_FAILED(101100),
     /**
-     * 医生ID为空
+     * 推荐人ID为空
      */
-    DOCTOR_ID_EMPTY(101101),
+    REFERENCE_ID_EMPTY(101101),
     /**
-     * 更新医生失败
+     * 更新推荐人信息失败
      */
-    DOCTOR_UPDATE_FAILED(101102),
+    REFERENCE_UPDATE_FAILED(101102),
 
     /**
      * 注册患者失败
@@ -67,21 +67,17 @@ public enum RecruitmentErrorCode {
     RECRUITMENT_ID_EMPTY(101402),
 
     /**
-     * 研究中心添加失败
+     * 机构信息添加失败
      */
-    RESEARCH_CENTER_ADD_FAILED(101500),
+    ORGANIZATION_ADD_FAILED(101500),
     /**
-     * 研究中心更新失败
+     * 管理员更新失败
      */
-    RESEARCH_CENTER_UPDATE_FAILED(101501),
+    ORGANIZATION_UPDATE_FAILED(101501),
     /**
-     * 研究中心ID为空
+     * 招募申请信息ID为空
      */
-    RESEARCH_CENTER_ID_EMPTY(101502),
-    /**
-     * 研究中心删除失败
-     */
-    RESEARCH_CENTER_DELETE_FAILED(101503),
+    ORGANIZATION_ID_EMPTY(101502),
 
     /**
      * 招募信息申请失败
@@ -108,6 +104,23 @@ public enum RecruitmentErrorCode {
      * 管理员更新失败
      */
     ADMINISTRATOR_UPDATE_FAILED(101701),
+    /**
+     * 管理员ID为空
+     */
+    ADMINISTRATOR_ID_EMPTY(101702),
+
+    /**
+     * 研究员添加失败
+     */
+    RESEARCHER_ADD_FAILED(101800),
+    /**
+     * 研究员更新失败
+     */
+    RESEARCHER_UPDATE_FAILED(101800),
+    /**
+     * 研究员ID为空
+     */
+    RESEARCHER_ID_EMPTY(101800),
 
     ;
 

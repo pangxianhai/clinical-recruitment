@@ -11,9 +11,9 @@
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="gender" property="gender"
-          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="status" property="status"
-          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -63,10 +63,10 @@
                 and password = #{password, jdbcType=VARCHAR}
             </if>
             <if test="gender != null">
-                and gender = #{gender,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+                and gender = #{gender,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="status != null">
-                and status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+                and status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandlerr}
             </if>
         </where>
     </select>
@@ -82,8 +82,8 @@
         #{realName, jdbcType=VARCHAR},
         #{phone, jdbcType=VARCHAR},
         #{password, jdbcType=VARCHAR},
-        #{gender,typeHandler=com.xgimi.base.MyBaseTypeHandler},
-        #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler},
+        #{gender,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -110,13 +110,13 @@
                 phone = #{phone, jdbcType=VARCHAR},
             </if>
             <if test="gender != null ">
-                gender = #{gender, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+                gender = #{gender, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="status != null ">
-                status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+                status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="userType != null ">
-                user_type = #{userType, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+                user_type = #{userType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},
@@ -131,3 +131,5 @@
         delete from user_info where id = #{userId,jdbcType=BIGINT}
     </delete>
 </mapper>
+
+

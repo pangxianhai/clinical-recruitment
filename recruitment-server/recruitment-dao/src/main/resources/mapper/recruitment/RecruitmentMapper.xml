@@ -20,7 +20,7 @@
         <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
         <result column="stop_time" property="stopTime" jdbcType="TIMESTAMP"/>
         <result column="status" property="status"
-          typeHandler="com.xgimi.base.MyBaseTypeHandler"/>
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -89,7 +89,7 @@
                 and indication = #{indication, jdbcType=VARCHAR}
             </if>
             <if test="status != null">
-                and status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+                and status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="startTimeBegin != null">
                 <![CDATA[
@@ -132,7 +132,7 @@
         #{patientRights, jdbcType=VARCHAR},
         #{startTime, jdbcType=TIMESTAMP},
         #{stopTime, jdbcType=TIMESTAMP},
-        #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+        #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -186,7 +186,7 @@
                 stop_time = #{stopTime, jdbcType=TIMESTAMP},
             </if>
             <if test="status != null ">
-                status = #{status, typeHandler=com.xgimi.base.MyBaseTypeHandler},
+                status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

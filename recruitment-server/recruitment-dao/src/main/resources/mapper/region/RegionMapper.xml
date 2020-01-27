@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.andy.recruitment.region.mapper.RegionMapper">
+    <resultMap id="baseResultMap" type="com.andy.recruitment.region.model.RegionDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
+        <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
+        <result column="region_type" property="regionType"
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+        <result column="status" property="regionStatus"
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="baseColumnList">
+        parent_id,region_name,region_type,status,created_by,created_time,updated_by,updated_time
+    </sql>
+    <select id="select" resultMap="baseResultMap"
+      parameterType="com.andy.recruitment.region.model.RegionDO">
+        select id ,
+        <include refid="baseColumnList"/>
+        from region_dict
+        <where>
+            <if test="id != null">
+                and id = #{id, jdbcType=BIGINT}
+            </if>
+            <if test="parentId != null">
+                and parent_id = #{parentId, jdbcType=BIGINT}
+            </if>
+            <if test="regionType != null">
+                and region_type =
+                #{regionType,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
+        </where>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+      parameterType="com.andy.recruitment.region.model.RegionDO">
+        insert into region_dict (<include refid="baseColumnList"/>)
+        values(
+        #{parentId, jdbcType=BIGINT},
+        #{regionName, jdbcType=VARCHAR},
+        #{regionType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{regionStatus, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{createdBy, jdbcType=VARCHAR},
+        #{createdTime, jdbcType=TIMESTAMP},
+        #{updatedBy, jdbcType=VARCHAR},
+        #{updatedTime, jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="update" parameterType="com.andy.recruitment.region.model.RegionDO">
+        update region_dict
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId, jdbcType=BIGINT},
+            </if>
+            <if test="regionName != null and regionName != ''">
+                regionName = #{regionName, jdbcType=VARCHAR},
+            </if>
+            <if test="regionType != null ">
+                region_type =
+                #{regionType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+            </if>
+            <if test="regionStatus != null ">
+                status =
+                #{regionStatus, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+            </if>
+            <if test="updatedBy != null and updatedBy != ''">
+                updated_by = #{updatedBy, jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null ">
+                updated_time = #{updatedTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
