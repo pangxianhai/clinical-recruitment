@@ -26,7 +26,7 @@ let UserApi = {
     CookieUtil.deleteCookie('userId');
   },
   manageLogin: async (params) => {
-    return await ApiUtil.post('/user/manager/login', params);
+    return await ApiUtil.post('/administrator/login', params);
   },
   getManager: async (params) => {
     return await ApiUtil.get('/user/manager', params);

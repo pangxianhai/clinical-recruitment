@@ -108,6 +108,22 @@ public enum RecruitmentErrorCode {
      * 管理员ID为空
      */
     ADMINISTRATOR_ID_EMPTY(101702),
+    /**
+     * 用户不存在
+     */
+    ADMINISTRATOR_USER_NOT_EXIST(101703),
+    /**
+     * 密码不正确
+     */
+    ADMINISTRATOR_PASSWORD_ERROR(101704),
+    /**
+     * 该用户被冻结
+     */
+    ADMINISTRATOR_FREEZE(101705),
+    /**
+     * 管理员账户异常
+     */
+    ADMINISTRATOR_ACCOUNT_ERROR(101706),
 
     /**
      * 研究员添加失败

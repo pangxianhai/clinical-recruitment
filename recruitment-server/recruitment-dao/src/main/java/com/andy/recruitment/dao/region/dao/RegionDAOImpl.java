@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.region.dao;
 
 import com.andy.recruitment.dao.region.mapper.RegionMapper;
-import com.andy.recruitment.dao.region.model.RegionDO;
+import com.andy.recruitment.dao.region.entity.RegionDO;
 import com.soyoung.base.util.CollectionUtil;
 import java.util.List;
 import java.util.concurrent.CancellationException;

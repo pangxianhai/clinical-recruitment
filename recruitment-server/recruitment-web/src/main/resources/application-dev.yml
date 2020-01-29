@@ -1,0 +1,17 @@
+spring:
+    jdbc:
+        dataSourceList:
+            -   driverClassName: com.mysql.jdbc.Driver
+                jdbcUrl: jdbc:mysql://127.0.0.1:3306/medical_recruitment?useUnicode=true&characterEncoding=utf8
+                username: medical_recruitment-user
+                password: mmmm8888
+                dbAlias: recruitment
+                mapperScan: com.andy.recruitment.dao.*.mapper
+                mapperLocations: classpath:mapper/*/*.xml
+
+executor:
+    corePoolSize: 20
+    maximumPoolSize: 40
+    keepAliveTime: 60000
+    queueSize: 1024
+    threadName: recruitment-server-thread

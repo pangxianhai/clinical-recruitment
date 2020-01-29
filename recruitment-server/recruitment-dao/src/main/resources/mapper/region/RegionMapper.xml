@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.andy.recruitment.region.mapper.RegionMapper">
-    <resultMap id="baseResultMap" type="com.andy.recruitment.region.model.RegionDO">
+<mapper namespace="com.andy.recruitment.dao.region.mapper.RegionMapper">
+    <resultMap id="baseResultMap" type="com.andy.recruitment.dao.region.entity.RegionDO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
         <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
@@ -19,7 +19,7 @@
         parent_id,region_name,region_type,status,created_by,created_time,updated_by,updated_time
     </sql>
     <select id="select" resultMap="baseResultMap"
-      parameterType="com.andy.recruitment.region.model.RegionDO">
+      parameterType="com.andy.recruitment.dao.region.entity.RegionDO">
         select id ,
         <include refid="baseColumnList"/>
         from region_dict
@@ -37,7 +37,7 @@
         </where>
     </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-      parameterType="com.andy.recruitment.region.model.RegionDO">
+      parameterType="com.andy.recruitment.dao.region.entity.RegionDO">
         insert into region_dict (<include refid="baseColumnList"/>)
         values(
         #{parentId, jdbcType=BIGINT},
@@ -50,7 +50,7 @@
         #{updatedTime, jdbcType=TIMESTAMP}
         )
     </insert>
-    <update id="update" parameterType="com.andy.recruitment.region.model.RegionDO">
+    <update id="update" parameterType="com.andy.recruitment.dao.region.entity.RegionDO">
         update region_dict
         <set>
             <if test="parentId != null">

@@ -10,8 +10,8 @@
                         <span class="title">爱之募后台管理系统</span>
                     </div>
                 </div>
-                <el-form-item label="手机号:" prop="phone">
-                    <el-input size="small" type="text" v-model="loginForm.phone"></el-input>
+                <el-form-item label="用户名:" prop="userName">
+                    <el-input size="small" type="text" v-model="loginForm.userName"></el-input>
                 </el-form-item>
                 <el-form-item label="密码:" prop="password">
                     <el-input size="small" type="password" v-model="loginForm.password"></el-input>
@@ -83,13 +83,13 @@
     data: function () {
       return {
         loginForm: {
-          phone: '',
+          userName: '',
           password: ''
         },
         loginRules: {
           phone: [
-            {required: true, message: '手机号不能为空', trigger: 'blur'},
-            {pattern: /^\d{11}$/, message: '手机号码格式不正确'},
+            {required: true, message: '用户名', trigger: 'blur'},
+            {max: 64, message: '您的输入太长', trigger: 'blur'}
           ],
           password: [
             {required: true, message: '密码不能不能为空', trigger: 'blur'},

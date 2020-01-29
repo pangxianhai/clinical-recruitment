@@ -7,6 +7,8 @@ subprojects {
         set('springCloudVersion', "Finchley.SR2")
         set('springBootpluginVersion', '2.0.6.RELEASE')
         set('springDependencypluginVersion', '1.0.5.RELEASE')
+        set('shiroVersion', '1.5.0')
+        set('servletVersion', '4.0.1')
     }
     apply plugin: 'java'
     apply plugin: 'idea'
@@ -43,6 +45,7 @@ subprojects {
         compileOnly("com.soyoung.commerce:soyoung-base:${soyoungBaseVersion}") {
             exclude group: 'com.soyoung.zk.config', module: 'soyoung-zk-config'
         }
+        compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
     }
 
     task sourceJar(type: Jar) {

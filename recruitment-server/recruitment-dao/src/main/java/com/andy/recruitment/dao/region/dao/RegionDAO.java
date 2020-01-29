@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.region.dao;
 
-import com.andy.recruitment.dao.region.model.RegionDO;
+import com.andy.recruitment.dao.region.entity.RegionDO;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.andy.recruitment.dao.region.model;
+package com.andy.recruitment.dao.region.entity;
 
 import com.andy.recruitment.dao.region.constant.RegionStatus;
 import com.andy.recruitment.dao.region.constant.RegionType;

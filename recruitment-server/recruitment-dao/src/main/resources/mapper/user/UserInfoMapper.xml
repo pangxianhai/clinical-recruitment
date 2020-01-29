@@ -36,7 +36,7 @@
     </sql>
 
     <select id="select" resultMap="baseResultMap"
-      parameterType="com.andy.recruitment.user.model.UserQueryParam">
+      parameterType="com.andy.recruitment.dao.user.entity.UserQuery">
         select
         <include refid="baseColumnList"/>
         from user_info
@@ -63,16 +63,18 @@
                 and password = #{password, jdbcType=VARCHAR}
             </if>
             <if test="gender != null">
-                and gender = #{gender,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                and gender =
+                #{gender,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="status != null">
-                and status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandlerr}
+                and status =
+                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandlerr}
             </if>
         </where>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-      parameterType="com.andy.recruitment.user.model.UserInfoDO">
+      parameterType="com.andy.recruitment.dao.user.entity.UserInfoDO">
         insert into user_info (<include refid="baseColumnList"/>)
         values(
         #{id,jdbcType=BIGINT},
@@ -91,7 +93,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.andy.recruitment.user.model.UserInfoDO">
+    <update id="update" parameterType="com.andy.recruitment.dao.user.entity.UserInfoDO">
         update user_info
         <set>
             <if test="openId != null and openId != ''">
@@ -116,7 +118,8 @@
                 status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="userType != null ">
-                user_type = #{userType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                user_type =
+                #{userType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

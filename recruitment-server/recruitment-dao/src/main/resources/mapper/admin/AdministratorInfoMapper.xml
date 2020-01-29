@@ -48,7 +48,7 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-      parameterType="">
+      parameterType="com.andy.recruitment.dao.admin.entity.AdministratorInfoDO">
         insert into administrator_info (
         <include refid="Base_Column_List"/>
         )
@@ -67,7 +67,7 @@
     </insert>
 
     <update id="update"
-      parameterType="com.soyoung.commerce.ad.recall.dao.ade.strategy.strategy.entity.AdministratorInfo">
+      parameterType="com.andy.recruitment.dao.admin.entity.AdministratorInfoDO">
         update administrator_info
         <set>
             <if test="userName != null and userName != ''">

@@ -44,7 +44,7 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-      parameterType="">
+      parameterType="com.andy.recruitment.dao.organization.entity.OrganizationDO">
         insert into organization_info (
         <include refid="Base_Column_List"/>
         )
@@ -62,7 +62,7 @@
     </insert>
 
     <update id="update"
-      parameterType="com.andy.recruitment.dao.test.strategy.entity.OrganizationInfo">
+      parameterType="com.andy.recruitment.dao.organization.entity.OrganizationDO">
         update organization_info
         <set>
             <if test="name != null and name != ''">
