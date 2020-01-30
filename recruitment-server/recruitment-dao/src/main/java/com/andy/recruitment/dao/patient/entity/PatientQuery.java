@@ -11,8 +11,7 @@ import lombok.Data;
 @Data
 public class PatientQuery implements Serializable {
 
-    private static final long serialVersionUID = - 9159406254116615754L;
-
+    private static final long serialVersionUID = - 3410326219398167056L;
     /**
      * 患者ID
      */

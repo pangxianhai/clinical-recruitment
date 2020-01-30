@@ -5,6 +5,7 @@ import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationQuery;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public PageResult<OrganizationDO> getOrganization(OrganizationQuery query, Paginator paginator) {
+        if (StringUtils.isEmpty(paginator.getOrderSegment())) {
+            paginator.setOrderSegment("created_time.desc");
+        }
         return this.organizationDAO.getOrganization(query, paginator);
     }
 }

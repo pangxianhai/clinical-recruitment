@@ -47,11 +47,13 @@ public class RecruitmentWebAppInterceptor implements WebMvcConfigurer {
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
             super.preHandle(request, response, handler);
-            String token = EncodeUtil.urlDecode(request.getHeader("token"));
-            String userName = EncodeUtil.urlDecode(request.getHeader("userName"));
+            String token = request.getHeader("token");
+            String userName = request.getHeader("userName");
             if (StringUtils.isEmpty(token) || StringUtils.isEmpty(userName)) {
                 return true;
             }
+            userName = EncodeUtil.urlDecode(userName);
+            token = EncodeUtil.urlDecode(token);
             UsernamePasswordToken passwordToken = new UsernamePasswordToken(userName, token);
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.login(passwordToken);

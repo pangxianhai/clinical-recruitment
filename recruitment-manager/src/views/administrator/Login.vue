@@ -16,7 +16,8 @@
                     </el-form-item>
                     <el-form-item label="密码:" prop="password">
                         <el-input size="small" type="password"
-                                  v-model="loginForm.password"></el-input>
+                                  v-model="loginForm.password"
+                                  @keyup.enter.native="onLoginAction('loginForm')"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onLoginAction('loginForm')">登录</el-button>

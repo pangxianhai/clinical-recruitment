@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.region.dao;
 
-import com.andy.recruitment.dao.region.mapper.RegionMapper;
 import com.andy.recruitment.dao.region.entity.RegionDO;
+import com.andy.recruitment.dao.region.mapper.RegionMapper;
 import com.soyoung.base.util.CollectionUtil;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
  * @author 庞先海 2018-12-26
  */
 @Service
+@Slf4j
 public class RegionDAOImpl implements RegionDAO {
 
     private final static ConcurrentMap<Long, Future<RegionDO>> REGION_CACHE_ID = new ConcurrentHashMap<>();
@@ -58,7 +60,9 @@ public class RegionDAOImpl implements RegionDAO {
                 return cacheRegionFuture.get();
             } catch (CancellationException e) {
                 REGION_CACHE_ID.remove(regionId, cacheRegionFuture);
+                log.error("getRegionById error", e);
             } catch (ExecutionException | InterruptedException e) {
+                log.error("getRegionById error", e);
                 return null;
             }
         }
@@ -84,7 +88,9 @@ public class RegionDAOImpl implements RegionDAO {
                 return cacheParentFuture.get();
             } catch (CancellationException e) {
                 PARENT_CACHE.remove(parentId, cacheParentFuture);
+                log.error("getRegionByParentId error", e);
             } catch (ExecutionException | InterruptedException e) {
+                log.error("getRegionByParentId error", e);
                 return null;
             }
         }

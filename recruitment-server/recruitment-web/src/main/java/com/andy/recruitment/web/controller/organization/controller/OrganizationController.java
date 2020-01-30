@@ -1,10 +1,12 @@
 package com.andy.recruitment.web.controller.organization.controller;
 
 import com.andy.recruitment.biz.organization.service.OrganizationService;
+import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationQuery;
 import com.andy.recruitment.web.controller.organization.request.OrganizationAddReq;
 import com.andy.recruitment.web.controller.organization.request.OrganizationQueryReq;
+import com.andy.recruitment.web.controller.organization.response.OrganizationRes;
 import com.andy.recruitment.web.controller.organization.util.OrganizationUtil;
 import com.soyoung.base.auth.RoleType;
 import com.soyoung.base.context.ServletContext;
@@ -30,15 +32,21 @@ public class OrganizationController {
 
     private final OrganizationService organizationService;
 
+    private final RegionService regionService;
+
     @Autowired
-    public OrganizationController(OrganizationService organizationService) {
+    public OrganizationController(OrganizationService organizationService, RegionService regionService) {
         this.organizationService = organizationService;
+        this.regionService = regionService;
     }
 
     @GetMapping
-    public PageResult<OrganizationDO> listOrganization(@MyParameter OrganizationQueryReq queryReq) {
+    public PageResult<OrganizationRes> listOrganization(@MyParameter OrganizationQueryReq queryReq) {
         OrganizationQuery query = OrganizationUtil.transformOrganizationQuery(queryReq);
-        return this.organizationService.getOrganization(query, queryReq.getPaginator());
+        PageResult<OrganizationDO> pageResult = this.organizationService.getOrganization(query,
+            queryReq.getPaginator());
+        return new PageResult<>(OrganizationUtil.transformOrganizationRes(pageResult.getData(), regionService),
+            pageResult.getPaginator());
     }
 
     @RequiresUser
