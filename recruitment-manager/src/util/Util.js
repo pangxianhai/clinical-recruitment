@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import {Message} from 'element-ui';
+import el from "element-ui/src/locale/lang/el";
 
 export const CookieUtil = {
   getCookie: function (name) {
@@ -33,22 +34,28 @@ const ajax = axios.create({
 });
 
 ajax.interceptors.request.use((config) => {
-  let token = CookieUtil.getCookie('user_id');
+  let userName = CookieUtil.getCookie('userName');
+  let token = CookieUtil.getCookie('token');
+  if (typeof userName === 'undefined' || userName == null) {
+    userName = '';
+  }
   if (typeof token === 'undefined' || token == null) {
     token = '';
   }
   config.headers = Object.assign({
-    token: token
+    token: token,
+    userName: userName
   }, config.headers);
   return config;
 });
 
 ajax.interceptors.response.use(({data}) => {
-  if (data.ret) {
+  if (data.code === 0) {
     return data.data;
-  } else if (typeof data.message === 'string' && data.message.length > 0) {
-
-    Message.error(data.message);
+  } else if (typeof data.msg === 'string' && data.msg.length > 0) {
+    Message.error(data.msg);
+  } else {
+    Message.error("操作失败!");
   }
 });
 

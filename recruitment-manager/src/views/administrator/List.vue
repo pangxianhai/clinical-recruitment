@@ -149,7 +149,7 @@
     Option,
   } from 'element-ui';
   import {UserStatus} from '@/constants/Global';
-  import UserApi from '@/api/UserApi';
+  import AdminApi from '@/api/AdminApi';
 
   export default {
     components: {

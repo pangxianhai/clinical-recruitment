@@ -2,7 +2,7 @@
     <div class="update-password">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/manager/list'}">管理员管理</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/administrator/list'}">管理员管理</el-breadcrumb-item>
             <el-breadcrumb-item>修改密码</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form status-icon style="margin-top: 25px;width: 30%"
@@ -41,7 +41,7 @@
     Input,
     Message
   } from 'element-ui';
-  import UserApi from '@/api/UserApi';
+  import AdminApi from '@/api/AdminApi';
   import {RouterUtil} from '@/util/Util';
 
   export default {

@@ -61,7 +61,7 @@
     Message,
     Cascader,
   } from 'element-ui';
-  import UserApi from '@/api/UserApi';
+  import AdminApi from '@/api/AdminApi';
   import DoctorApi from '@/api/DoctorApi';
   import {RouterUtil} from '@/util/Util';
   import AreaData from '@/util/AreaData';

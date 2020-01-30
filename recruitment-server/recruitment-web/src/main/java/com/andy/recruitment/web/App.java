@@ -72,12 +72,12 @@ public class App {
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        //拦截器.
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        //        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/**", "anon");
-        //        filterChainDefinitionMap.put("/**", "authc");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+//        //拦截器.
+//        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+//                filterChainDefinitionMap.put("/administrator/login", "anon");
+////        filterChainDefinitionMap.put("/**", "anon");
+//        filterChainDefinitionMap.put("/**", "authc");
+//        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
         filters.put("authc", new RecruitmentShiroUserFilter());

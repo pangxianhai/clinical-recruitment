@@ -54,14 +54,14 @@
         )
         values(
         #{id, jdbcType=BIGINT},
-        #{userName, jdbcType=VARCHAR}
-        #{password, jdbcType=VARCHAR}
-        #{name, jdbcType=VARCHAR}
-        #{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
-        #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
-        #{createdBy, jdbcType=VARCHAR}
-        #{createdTime, jdbcType=TIMESTAMP}
-        #{updatedBy, jdbcType=VARCHAR}
+        #{userName, jdbcType=VARCHAR},
+        #{password, jdbcType=VARCHAR},
+        #{name, jdbcType=VARCHAR},
+        #{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{createdBy, jdbcType=VARCHAR},
+        #{createdTime, jdbcType=TIMESTAMP},
+        #{updatedBy, jdbcType=VARCHAR},
         #{updatedTime, jdbcType=TIMESTAMP}
         )
     </insert>

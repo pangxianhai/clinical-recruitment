@@ -25,10 +25,9 @@ public class RecruitmentShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRole("adminff");
-        simpleAuthorizationInfo.addStringPermission("adssd");
-
+        simpleAuthorizationInfo.addRole(String.valueOf(loginInfo.getRoleType().getCode()));
         return simpleAuthorizationInfo;
     }
 

@@ -4,7 +4,7 @@
             <el-aside class="aside-left">
                 <div class="menu-title">
                     <img height="50" src="@/assets/logo.png"/>
-                    <!--<span>爱之募</span>-->
+                    <span>爱之募</span>
                 </div>
                 <el-menu :router="true" :default-active="defaultActive">
                     <el-submenu v-for="(menu,index) in menuList" :key="index" :index="menu.index">
@@ -126,7 +126,7 @@
     Tooltip
   } from 'element-ui';
   import Router from '@/router/Index';
-  import UserApi from '@/api/UserApi';
+  import AdminApi from '@/api/AdminApi';
 
   export default {
     components: {
@@ -206,11 +206,11 @@
         });
       },
       initCurrentUserInfo: function () {
-        UserApi.getLogInfo().then(userInfo => {
-          if (!userInfo) {
+        AdminApi.getLogInfo().then(loginInfo => {
+          if (!loginInfo) {
             return;
           }
-          this.userName = userInfo.realName;
+          this.userName = loginInfo.realName;
         });
       },
       onLogOutAction: function () {
@@ -220,7 +220,7 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-        UserApi.logOut();
+        AdminApi.logOut();
         loading.close();
         this.$router.push({
           path: '/login',

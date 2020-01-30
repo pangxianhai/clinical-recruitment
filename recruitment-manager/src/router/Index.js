@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import UserApi from '@/api/UserApi'
+import UserApi from '@/api/AdminApi'
 
 Vue.use(Router);
 
@@ -16,7 +16,7 @@ const router = new Router({
     },
     {
       path: '/login',
-      component: () => import("@/views/manager/Login"),
+      component: () => import("@/views/administrator/Login"),
       menu: false,
       index: "1"
     },
@@ -88,6 +88,36 @@ const router = new Router({
           index: "2-3",
           component: () => import("@/views/recruitment/ApplicationDetail"),
         },
+      ]
+    },
+    {
+      path: '/organization',
+      component: () => import("@/views/Layout"),
+      icon: 'iconfont icon-yisheng',
+      menu: true,
+      name: '机构管理',
+      index: "6",
+      children: [
+        {
+          path: 'list',
+          name: '机构列表',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "6-1",
+          component: () => import("@/views/organization/List"),
+        },
+        {
+          path: 'add',
+          name: '添加机构',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "6-2",
+          component: () => import("@/views/organization/Add"),
+        }
       ]
     },
     {
@@ -171,7 +201,7 @@ const router = new Router({
       ]
     },
     {
-      path: '/manager',
+      path: '/administrator',
       component: () => import("@/views/Layout"),
       icon: 'iconfont icon-shezhi',
       menu: true,
@@ -186,7 +216,7 @@ const router = new Router({
           },
           menu: true,
           index: "5-1",
-          component: () => import("@/views/manager/List"),
+          component: () => import("@/views/administrator/List"),
         },
         {
           path: 'add',
@@ -196,7 +226,7 @@ const router = new Router({
           },
           menu: true,
           index: "5-2",
-          component: () => import("@/views/manager/Add"),
+          component: () => import("@/views/administrator/Add"),
         },
         {
           path: 'update/:userId',
@@ -206,7 +236,7 @@ const router = new Router({
           },
           menu: false,
           index: "5-1",
-          component: () => import("@/views/manager/Update"),
+          component: () => import("@/views/administrator/Update"),
         },
         {
           path: 'updatePassword',
@@ -216,7 +246,7 @@ const router = new Router({
           },
           menu: true,
           index: "5-3",
-          component: () => import("@/views/manager/UpdatePassword"),
+          component: () => import("@/views/administrator/UpdatePassword"),
         }
       ]
     }

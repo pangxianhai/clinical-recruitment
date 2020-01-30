@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.recruitment.entity;
 
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
@@ -50,19 +50,19 @@ public class RecruitmentQuery implements Serializable {
     /**
      * 启始时间开始
      */
-    private Date startTimeBegin;
+    private LocalDateTime startTimeBegin;
     /**
      * 启始时间结束
      */
-    private Date startTimeEnd;
+    private LocalDateTime startTimeEnd;
     /**
      * 截至时间开始
      */
-    private Date stopTimeBegin;
+    private LocalDateTime stopTimeBegin;
     /**
      * 截至时间结束
      */
-    private Date stopTimeEnd;
+    private LocalDateTime stopTimeEnd;
     /**
      * 招募状态
      */

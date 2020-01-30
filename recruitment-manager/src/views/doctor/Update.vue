@@ -63,7 +63,7 @@
   } from 'element-ui';
   import AreaData from '@/util/AreaData';
   import DoctorApi from '@/api/DoctorApi';
-  import UserApi from '@/api/UserApi';
+  import AdminApi from '@/api/AdminApi';
   import {RouterUtil} from '@/util/Util';
 
   export default {

@@ -13,5 +13,13 @@ public class AdminLoginRes implements Serializable {
 
     private static final long serialVersionUID = - 1803514298465841448L;
 
+    /**
+     * 登录令牌
+     */
     private String token;
+
+    /**
+     * 用户名
+     */
+    private String userName;
 }

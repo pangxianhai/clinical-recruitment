@@ -176,7 +176,7 @@
   } from 'element-ui';
   import PatientApi from '@/api/PatientApi';
   import {UserStatus} from '@/constants/Global';
-  import UserApi from '@/api/UserApi';
+  import AdminApi from '@/api/AdminApi';
   import AreaData from '@/util/AreaData';
 
   export default {
@@ -241,7 +241,7 @@
         });
       },
       freezeUser: function (userInfo) {
-        UserApi.freezeUser(userInfo.userId).then(success => {
+        AdminApi.freezeUser(userInfo.userId).then(success => {
           if (success) {
             Message.success('操作成功!');
             this.loadPatientInfo();
@@ -249,7 +249,7 @@
         });
       },
       unfreezeUser: function (userInfo) {
-        UserApi.unfreezeUser(userInfo.userId).then(success => {
+        AdminApi.unfreezeUser(userInfo.userId).then(success => {
           if (success) {
             Message.success('操作成功!');
             this.loadPatientInfo();

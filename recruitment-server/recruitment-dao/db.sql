@@ -141,7 +141,7 @@ create table medical_clinical_recruitment_application(
   updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
   updated_time datetime COMMENT '更新时间',
   PRIMARY KEY (id),
-  UNIQUE(recruitment_id,patient_id)
+  UNIQUE(recruitment_id,patient_user_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='招募申报信息';
 
 drop table if exists administrator_info;
@@ -159,7 +159,7 @@ create table administrator_info(
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='管理员信息';
 
-INSERT INTO `administrator_info`(user_name,password,name,type,status,created_by,created_time) VALUES ('pxh','B014C176A075F6D789A4D8D349D8E679FE587CFD','庞先海',1,1,'系统','2019-02-15 21:56:34');
+INSERT INTO `administrator_info`(user_name,password,name,type,status,created_by,created_time) VALUES ('pxh','D49320AA983DBCB0696E023FF16103BD67D9864BCA6EFF8AFCBBF2B2B65B7D7E','庞先海',1,1,'系统','2019-02-15 21:56:34');
 
 
 drop table if exists business_administrator_auth;

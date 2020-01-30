@@ -178,7 +178,7 @@
   } from 'element-ui';
   import DoctorApi from '@/api/DoctorApi';
   import {UserStatus} from '@/constants/Global';
-  import UserApi from '@/api/UserApi';
+  import AdminApi from '@/api/AdminApi';
   import AreaData from '@/util/AreaData';
 
   export default {

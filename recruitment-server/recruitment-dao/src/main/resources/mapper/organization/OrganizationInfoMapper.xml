@@ -49,14 +49,14 @@
         <include refid="Base_Column_List"/>
         )
         values(
-        #{id, jdbcType=BIGINT}
-        #{name, jdbcType=VARCHAR}
-        #{provinceId, jdbcType=BIGINT}
-        #{cityId, jdbcType=BIGINT}
-        #{districtId, jdbcType=BIGINT}
-        #{createdBy, jdbcType=VARCHAR}
-        #{createdTime, jdbcType=TIMESTAMP}
-        #{updatedBy, jdbcType=VARCHAR}
+        #{id, jdbcType=BIGINT},
+        #{name, jdbcType=VARCHAR},
+        #{provinceId, jdbcType=BIGINT},
+        #{cityId, jdbcType=BIGINT},
+        #{districtId, jdbcType=BIGINT},
+        #{createdBy, jdbcType=VARCHAR},
+        #{createdTime, jdbcType=TIMESTAMP},
+        #{updatedBy, jdbcType=VARCHAR},
         #{updatedTime, jdbcType=TIMESTAMP}
         )
     </insert>
