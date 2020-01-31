@@ -165,7 +165,7 @@
     Pagination,
     Button,
     Tag,
-    Message,
+    // Message,
     Row,
     Col,
     Form,
@@ -178,7 +178,7 @@
   } from 'element-ui';
   import DoctorApi from '@/api/DoctorApi';
   import {UserStatus} from '@/constants/Global';
-  import AdminApi from '@/api/AdminApi';
+  // import AdminApi from '@/api/AdminApi';
   import AreaData from '@/util/AreaData';
 
   export default {
@@ -244,20 +244,22 @@
         });
       },
       freezeUser: function (userInfo) {
-        UserApi.freezeUser(userInfo.userId).then(success => {
-          if (success) {
-            Message.success('操作成功!');
-            this.loadDoctorInfo();
-          }
-        });
+        window.console.log(userInfo);
+        // UserApi.freezeUser(userInfo.userId).then(success => {
+        //   if (success) {
+        //     Message.success('操作成功!');
+        //     this.loadDoctorInfo();
+        //   }
+        // });
       },
       unfreezeUser: function (userInfo) {
-        UserApi.unfreezeUser(userInfo.userId).then(success => {
-          if (success) {
-            Message.success('操作成功!');
-            this.loadDoctorInfo();
-          }
-        });
+        window.console.log(userInfo);
+        // UserApi.unfreezeUser(userInfo.userId).then(success => {
+        //   if (success) {
+        //     Message.success('操作成功!');
+        //     this.loadDoctorInfo();
+        //   }
+        // });
       },
       onUpdateAction: function (doctorInfo) {
         this.$router.push({

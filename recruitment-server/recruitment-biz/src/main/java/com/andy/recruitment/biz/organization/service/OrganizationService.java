@@ -4,6 +4,7 @@ import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationQuery;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
+import java.util.List;
 
 /**
  * 机构服务
@@ -36,4 +37,12 @@ public interface OrganizationService {
      * @return 机构信息分页查询结果
      */
     PageResult<OrganizationDO> getOrganization(OrganizationQuery query, Paginator paginator);
+
+    /**
+     * 通过机构ID列表批量查询机构信息
+     *
+     * @param organizationIdList 机构ID列表
+     * @return 机构信息
+     */
+    List<OrganizationDO> getOrganization(List<Long> organizationIdList);
 }

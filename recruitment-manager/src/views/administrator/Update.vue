@@ -46,11 +46,10 @@
     RadioGroup,
     Radio,
     Button,
-    Icon,
-    Message
+    Icon
   } from 'element-ui';
-  import AdminApi from '@/api/AdminApi';
-  import {RouterUtil} from '@/util/Util';
+  // import AdminApi from '@/api/AdminApi';
+  // import {RouterUtil} from '@/util/Util';
 
   export default {
     components: {
@@ -88,22 +87,23 @@
     },
     methods: {
       loadManagerInfo: function (userId) {
-        UserApi.getManagerByUserId(userId).then(managerInfo => {
-          this.managerInfo.phone = managerInfo.phone;
-          this.managerInfo.realName = managerInfo.realName;
-          this.managerInfo.gender = managerInfo.gender.code + "";
-          this.managerInfo.userId = managerInfo.userId;
-        });
+        // UserApi.getManagerByUserId(userId).then(managerInfo => {
+        //   this.managerInfo.phone = managerInfo.phone;
+        //   this.managerInfo.realName = managerInfo.realName;
+        //   this.managerInfo.gender = managerInfo.gender.code + "";
+        //   this.managerInfo.userId = managerInfo.userId;
+        // });
+        window.console.log(userId);
       },
       onUpdateManagerAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            UserApi.updateManager(this.managerInfo.userId, this.managerInfo).then(success => {
-              if (success) {
-                Message.success('更新成功即将跳转!');
-                RouterUtil.goToBack(this.$route, this.$router, '/administrator/list');
-              }
-            });
+            // UserApi.updateManager(this.managerInfo.userId, this.managerInfo).then(success => {
+            //   if (success) {
+            //     Message.success('更新成功即将跳转!');
+            //     RouterUtil.goToBack(this.$route, this.$router, '/administrator/list');
+            //   }
+            // });
           } else {
             return false;
           }

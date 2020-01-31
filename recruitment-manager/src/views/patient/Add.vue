@@ -58,7 +58,7 @@
     Message,
     Cascader,
   } from 'element-ui';
-  import AdminApi from '@/api/AdminApi';
+  // import AdminApi from '@/api/AdminApi';
   import PatientApi from '@/api/PatientApi';
   import {RouterUtil} from '@/util/Util';
   import AreaData from '@/util/AreaData';
@@ -128,13 +128,13 @@
         if (value === '') {
           callback(new Error('请输入手机号码'));
         } else {
-          UserApi.getUserByPhone(value).then(userInfo => {
-            if (userInfo.userId) {
-              callback(new Error('手机号码已经被注册了'));
-            } else {
-              callback();
-            }
-          });
+          // UserApi.getUserByPhone(value).then(userInfo => {
+          //   if (userInfo.userId) {
+          //     callback(new Error('手机号码已经被注册了'));
+          //   } else {
+          //     callback();
+          //   }
+          // });
         }
       }
     }

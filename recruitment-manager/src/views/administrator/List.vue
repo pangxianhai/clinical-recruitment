@@ -149,7 +149,7 @@
     Option,
   } from 'element-ui';
   import {UserStatus} from '@/constants/Global';
-  import AdminApi from '@/api/AdminApi';
+  // import AdminApi from '@/api/AdminApi';
 
   export default {
     components: {
@@ -191,29 +191,32 @@
             pageSize: this.pageSize
           })
         });
-        UserApi.getManager(Object.assign(this.queryInfo, {
-          currentPage: this.currentPage,
-          pageSize: this.pageSize
-        })).then(data => {
-          this.managerList = data.data;
-          this.totalRecord = data.paginator.totalRecord;
-        });
+        // UserApi.getManager(Object.assign(this.queryInfo, {
+        //   currentPage: this.currentPage,
+        //   pageSize: this.pageSize
+        // })).then(data => {
+        //   this.managerList = data.data;
+        //   this.totalRecord = data.paginator.totalRecord;
+        // });
       },
       freezeUser: function (userInfo) {
-        UserApi.freezeUser(userInfo.userId).then(success => {
-          if (success) {
-            Message.success('操作成功!');
-            this.loadManagerInfo();
-          }
-        });
+        Message.success('操作成功!');
+        // UserApi.freezeUser(userInfo.userId).then(success => {
+        //   if (success) {
+        //     Message.success('操作成功!');
+        //     this.loadManagerInfo();
+        //   }
+        // });
+        window.console.log(userInfo);
       },
       unfreezeUser: function (userInfo) {
-        UserApi.unfreezeUser(userInfo.userId).then(success => {
-          if (success) {
-            Message.success('操作成功!');
-            this.loadManagerInfo();
-          }
-        });
+        window.console.log(userInfo);
+        // UserApi.unfreezeUser(userInfo.userId).then(success => {
+        //   if (success) {
+        //     Message.success('操作成功!');
+        //     this.loadManagerInfo();
+        //   }
+        // });
       },
       onUpdateAction: function (userInfo) {
         this.$router.push({

@@ -38,11 +38,24 @@ create table organization_info(
  PRIMARY KEY (id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='机构信息';
 
+drop table  if exists organization_department_info;
+create table organization_department_info(
+ id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+ name varchar(128)  NOT NULL COLLATE utf8_bin COMMENT '科室名称',
+ organization_id bigint(20) NOT NULL COMMENT '所属机构id',
+ created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
+ created_time datetime NOT NULL COMMENT '创建时间',
+ updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
+ updated_time datetime COMMENT '更新时间',
+ PRIMARY KEY (id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='机构的科室信息';
+
 drop table if exists researcher_info;
 create table researcher_info(
  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
  user_id bigint(20) NOT NULL COMMENT '用户ID',
  organization_id bigint(20) NOT NULL COMMENT '所属机构id',
+ department_id bigint(20) NOT NULL COMMENT '所属科室id',
  medical_institution varchar(1024) COMMENT '执业机构',
  medical_category varchar(1024) COMMENT '执业类别',
  created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
@@ -118,6 +131,7 @@ create table recruitment_organization_info(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   recruitment_id bigint(20) NOT NULL COMMENT '招募ID',
   organization_id bigint(20) NOT NULL COMMENT '机构ID',
+  department_id bigint(20) NOT NULL COMMENT '所属科室id',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',
   updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',

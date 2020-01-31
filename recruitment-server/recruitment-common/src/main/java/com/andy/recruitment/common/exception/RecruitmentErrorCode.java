@@ -83,13 +83,25 @@ public enum RecruitmentErrorCode {
      */
     ORGANIZATION_ADD_FAILED(101500),
     /**
-     * 管理员更新失败
+     * 机构信息更新失败
      */
     ORGANIZATION_UPDATE_FAILED(101501),
     /**
-     * 招募申请信息ID为空
+     * 机构ID为空
      */
     ORGANIZATION_ID_EMPTY(101502),
+    /**
+     * 机构科室添加失败
+     */
+    ORGANIZATION_DEPARTMENT_ADD_FAILED(101510),
+    /**
+     * 机构科室更新失败
+     */
+    ORGANIZATION_DEPARTMENT_UPDATE_FAILED(101511),
+    /**
+     * 机构科室ID为空
+     */
+    ORGANIZATION_DEPARTMENT_ID_EMPTY(101512),
 
     /**
      * 招募信息申请失败

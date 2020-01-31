@@ -117,7 +117,27 @@ const router = new Router({
           menu: true,
           index: "6-2",
           component: () => import("@/views/organization/Add"),
-        }
+        },
+        {
+          path: 'department/list',
+          name: '科室列表',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "6-3",
+          component: () => import("@/views/organization/department/List"),
+        },
+        {
+          path: 'department/add',
+          name: '添加科室',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "6-4",
+          component: () => import("@/views/organization/department/Add"),
+        },
       ]
     },
     {

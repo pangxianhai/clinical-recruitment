@@ -38,11 +38,10 @@
     Form,
     FormItem,
     Button,
-    Input,
-    Message
+    Input
   } from 'element-ui';
-  import AdminApi from '@/api/AdminApi';
-  import {RouterUtil} from '@/util/Util';
+  // import AdminApi from '@/api/AdminApi';
+  // import {RouterUtil} from '@/util/Util';
 
   export default {
     components: {
@@ -87,13 +86,13 @@
       onUpdatePasswordAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            UserApi.updateManagerPassword(this.managerInfo).then(success => {
-              if (success) {
-                Message.success('修改密码成功！即将重新登录');
-                UserApi.logOut();
-                RouterUtil.goToBack(this.$route, this.$router, '/login');
-              }
-            });
+            // UserApi.updateManagerPassword(this.managerInfo).then(success => {
+            //   if (success) {
+            //     Message.success('修改密码成功！即将重新登录');
+            //     UserApi.logOut();
+            //     RouterUtil.goToBack(this.$route, this.$router, '/login');
+            //   }
+            // });
           } else {
             return false;
           }

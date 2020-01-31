@@ -22,6 +22,14 @@ public interface ResearcherDAO {
     PageResult<ResearcherInfoDO> getResearcherInfo(ResearcherQuery query, Paginator paginator);
 
     /**
+     * 通过用户ID查询研究员信息
+     *
+     * @param userId 用户ID
+     * @return 研究员信息
+     */
+    ResearcherInfoDO getResearcherInfoByUserId(Long userId);
+
+    /**
      * 更新研究员信息
      *
      * @param researcherInfoDo 研究员信息

@@ -63,7 +63,7 @@
   } from 'element-ui';
   import AreaData from '@/util/AreaData';
   import DoctorApi from '@/api/DoctorApi';
-  import AdminApi from '@/api/AdminApi';
+  // import AdminApi from '@/api/AdminApi';
   import {RouterUtil} from '@/util/Util';
 
   export default {
@@ -139,13 +139,13 @@
         if (value === '') {
           callback(new Error('请输入手机号码'));
         } else {
-          UserApi.getUserByPhone(value).then(userInfo => {
-            if (userInfo.userId && this.doctorInfo.userId !== userInfo.userId) {
-              callback(new Error('手机号码已经被注册了'));
-            } else {
-              callback();
-            }
-          });
+          // UserApi.getUserByPhone(value).then(userInfo => {
+          //   if (userInfo.userId && this.doctorInfo.userId !== userInfo.userId) {
+          //     callback(new Error('手机号码已经被注册了'));
+          //   } else {
+          //     callback();
+          //   }
+          // });
         }
       },
       onUpdateDoctorAction: function (formName) {

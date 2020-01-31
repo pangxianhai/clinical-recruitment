@@ -9,9 +9,11 @@ import com.soyoung.base.mybatis.paginator.Page;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.PageUtil;
 import com.soyoung.base.page.Paginator;
+import com.soyoung.base.util.CollectionUtil;
 import com.soyoung.base.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,17 @@ public class ResearcherDAOImpl implements ResearcherDAO {
         Page page = PageUtil.transformToPage(paginator);
         List<ResearcherInfoDO> researcherInfoDoList = this.researcherInfoMapper.select(query, page);
         return new PageResult<>(researcherInfoDoList, PageUtil.transformToPaginator(page));
+    }
+
+    @Override
+    public ResearcherInfoDO getResearcherInfoByUserId(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        ResearcherQuery query = new ResearcherQuery();
+        query.setUserId(userId);
+        List<ResearcherInfoDO> researcherInfoDoList = this.researcherInfoMapper.select(query);
+        return CollectionUtil.parseOne(researcherInfoDoList, Function.identity());
     }
 
     @Override

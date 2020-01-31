@@ -75,7 +75,6 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     public void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList,
         String operator) {
-        this.recruitmentDAO.updateRecruitmentInfo(recruitmentInfoDo, operator);
         List<Long> sourceOrganizationIdList = recruitmentOrganizationDAO.listOrganizationByRecruitment(
             recruitmentInfoDo.getId());
         if (sourceOrganizationIdList == null) {
@@ -88,14 +87,18 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         needAddOrganizationIdList.removeAll(sourceOrganizationIdList);
         List<Long> needDeleteOrganizationIdList = new ArrayList<>(sourceOrganizationIdList);
         needDeleteOrganizationIdList.removeAll(organizationIdList);
-        for (Long organizationId : needAddOrganizationIdList) {
-            this.recruitmentOrganizationDAO.addRecruitmentOrganization(recruitmentInfoDo.getId(), organizationId,
-                operator);
-        }
-        for (Long organizationId : needDeleteOrganizationIdList) {
-
-            this.recruitmentOrganizationDAO.deleteRecruitmentOrganization(recruitmentInfoDo.getId(), organizationId);
-        }
+        transactionTemplate.execute((status) -> {
+            this.recruitmentDAO.updateRecruitmentInfo(recruitmentInfoDo, operator);
+            for (Long organizationId : needAddOrganizationIdList) {
+                this.recruitmentOrganizationDAO.addRecruitmentOrganization(recruitmentInfoDo.getId(), organizationId,
+                    operator);
+            }
+            for (Long organizationId : needDeleteOrganizationIdList) {
+                this.recruitmentOrganizationDAO.deleteRecruitmentOrganization(recruitmentInfoDo.getId(),
+                    organizationId);
+            }
+            return null;
+        });
     }
 
     @Override

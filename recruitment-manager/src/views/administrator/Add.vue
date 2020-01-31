@@ -52,10 +52,10 @@
     Radio,
     Button,
     Icon,
-    Message
+    // Message
   } from 'element-ui';
-  import AdminApi from '@/api/AdminApi';
-  import {RouterUtil} from '@/util/Util';
+  // import AdminApi from '@/api/AdminApi';
+  // import {RouterUtil} from '@/util/Util';
 
   export default {
     components: {
@@ -102,12 +102,12 @@
       onAddManagerAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            UserApi.addManager(this.managerInfo).then(success => {
-              if (success) {
-                Message.success('注册成功即将跳转!');
-                RouterUtil.goToBack(this.$route, this.$router, '/administrator/list');
-              }
-            });
+            // UserApi.addManager(this.managerInfo).then(success => {
+            //   if (success) {
+            //     Message.success('注册成功即将跳转!');
+            //     RouterUtil.goToBack(this.$route, this.$router, '/administrator/list');
+            //   }
+            // });
           } else {
             return false;
           }
@@ -126,13 +126,13 @@
         if (value === '') {
           callback(new Error('请输入手机号码'));
         } else {
-          UserApi.getUserByPhone(value).then(userInfo => {
-            if (userInfo.userId) {
-              callback(new Error('手机号码已经被注册了'));
-            } else {
-              callback();
-            }
-          });
+          // UserApi.getUserByPhone(value).then(userInfo => {
+          //   if (userInfo.userId) {
+          //     callback(new Error('手机号码已经被注册了'));
+          //   } else {
+          //     callback();
+          //   }
+          // });
         }
       }
     }
