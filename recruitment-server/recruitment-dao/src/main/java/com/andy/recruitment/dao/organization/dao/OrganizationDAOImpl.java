@@ -12,6 +12,9 @@ import com.soyoung.base.page.Paginator;
 import com.soyoung.base.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +61,19 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         Page page = PageUtil.transformToPage(paginator);
         List<OrganizationDO> organizationDoList = this.organizationInfoMapper.select(query, page);
         return new PageResult<>(organizationDoList, PageUtil.transformToPaginator(page));
+    }
+
+    @Override
+    public List<OrganizationDO> getOrganization(List<Long> organizationIdList) {
+        if (CollectionUtils.isEmpty(organizationIdList)) {
+            return null;
+        }
+        organizationIdList = organizationIdList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(organizationIdList)) {
+            return null;
+        }
+        OrganizationQuery query = new OrganizationQuery();
+        query.setOrganizationIdList(organizationIdList);
+        return this.organizationInfoMapper.select(query);
     }
 }

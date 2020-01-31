@@ -1,7 +1,6 @@
 package com.andy.recruitment.web.controller.organization.controller;
 
 import com.andy.recruitment.biz.organization.service.OrganizationService;
-import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationQuery;
 import com.andy.recruitment.web.controller.organization.request.OrganizationAddReq;
@@ -32,12 +31,10 @@ public class OrganizationController {
 
     private final OrganizationService organizationService;
 
-    private final RegionService regionService;
-
     @Autowired
-    public OrganizationController(OrganizationService organizationService, RegionService regionService) {
+    public OrganizationController(OrganizationService organizationService) {
         this.organizationService = organizationService;
-        this.regionService = regionService;
+
     }
 
     @GetMapping
@@ -45,7 +42,7 @@ public class OrganizationController {
         OrganizationQuery query = OrganizationUtil.transformOrganizationQuery(queryReq);
         PageResult<OrganizationDO> pageResult = this.organizationService.getOrganization(query,
             queryReq.getPaginator());
-        return new PageResult<>(OrganizationUtil.transformOrganizationRes(pageResult.getData(), regionService),
+        return new PageResult<>(OrganizationUtil.transformOrganizationRes(pageResult.getData()),
             pageResult.getPaginator());
     }
 

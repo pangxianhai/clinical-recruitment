@@ -1,5 +1,7 @@
 package com.andy.recruitment.biz.recruitment.service;
 
+import com.andy.recruitment.dao.organization.entity.OrganizationDO;
+import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.soyoung.base.page.PageResult;
@@ -23,6 +25,22 @@ public interface RecruitmentService {
     PageResult<RecruitmentInfoDO> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator);
 
     /**
+     * 通过招募项目ID查询招募信息
+     *
+     * @param recruitmentId 招募项目ID
+     * @return 招募信息
+     */
+    RecruitmentInfoDO getRecruitmentInfo(Long recruitmentId);
+
+    /**
+     * 查询招募项目下所有机构列表
+     *
+     * @param recruitmentId 招募项目ID
+     * @return 机构信息
+     */
+    List<OrganizationDO> getOrganizationByRecruitment(Long recruitmentId);
+
+    /**
      * 添加招募项目
      *
      * @param recruitmentInfoDo  招募项目信息
@@ -30,4 +48,22 @@ public interface RecruitmentService {
      * @param operator           添加人
      */
     void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList, String operator);
+
+    /**
+     * 更新招募项目
+     *
+     * @param recruitmentInfoDo  招募项目信息
+     * @param organizationIdList 研究机构列表
+     * @param operator           更新人
+     */
+    void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList, String operator);
+
+    /**
+     * 更新项目状态
+     *
+     * @param recruitmentId 招募项目ID
+     * @param status        更新后状态
+     * @param operator      操作人
+     */
+    void updateRecruitmentInfoStatus(Long recruitmentId, RecruitmentStatus status, String operator);
 }

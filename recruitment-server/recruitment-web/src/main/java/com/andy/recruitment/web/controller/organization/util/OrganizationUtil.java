@@ -12,13 +12,23 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 功能描述
  *
  * @author 庞先海 2020-01-30
  */
+@Component
 public class OrganizationUtil {
+
+    private static RegionService regionService;
+
+    @Autowired
+    public OrganizationUtil(RegionService regionService) {
+        OrganizationUtil.regionService = regionService;
+    }
 
     public static OrganizationQuery transformOrganizationQuery(OrganizationQueryReq queryReq) {
         if (queryReq == null) {
@@ -38,7 +48,7 @@ public class OrganizationUtil {
         return organizationDo;
     }
 
-    public static OrganizationRes transformOrganizationRes(OrganizationDO organizationDo, RegionService regionService) {
+    public static OrganizationRes transformOrganizationRes(OrganizationDO organizationDo) {
         if (organizationDo == null) {
             return null;
         }
@@ -54,12 +64,11 @@ public class OrganizationUtil {
         return organizationRes;
     }
 
-    public static List<OrganizationRes> transformOrganizationRes(List<OrganizationDO> organizationDoList,
-        RegionService regionService) {
+    public static List<OrganizationRes> transformOrganizationRes(List<OrganizationDO> organizationDoList) {
         if (CollectionUtils.isEmpty(organizationDoList)) {
             return new ArrayList<>(0);
         }
-        return organizationDoList.stream().map(o -> OrganizationUtil.transformOrganizationRes(o, regionService)).filter(
+        return organizationDoList.stream().map(OrganizationUtil::transformOrganizationRes).filter(
             Objects::nonNull).collect(Collectors.toList());
     }
 }

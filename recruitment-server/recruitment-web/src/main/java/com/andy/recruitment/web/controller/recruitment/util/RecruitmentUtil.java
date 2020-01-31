@@ -5,7 +5,13 @@ import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
+import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoRes;
 import com.soyoung.base.util.DateUtil;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
@@ -49,5 +55,26 @@ public class RecruitmentUtil {
             recruitmentInfoDo.setStopTime(DateUtil.parse(stopTime));
         }
         return recruitmentInfoDo;
+    }
+
+    public static RecruitmentInfoRes transformRecruitmentInfoRes(RecruitmentInfoDO recruitmentInfoDo) {
+        if (recruitmentInfoDo == null) {
+            return null;
+        }
+        RecruitmentInfoRes recruitmentInfoRes = new RecruitmentInfoRes();
+        BeanUtils.copyProperties(recruitmentInfoDo, recruitmentInfoRes);
+        recruitmentInfoRes.setStartTime(DateUtil.format(recruitmentInfoDo.getStartTime(), "yyyy-MM-dd"));
+        recruitmentInfoRes.setStopTime(DateUtil.format(recruitmentInfoDo.getStopTime(), "yyyy-MM-dd"));
+        recruitmentInfoRes.setCreatedTime(DateUtil.format(recruitmentInfoDo.getCreatedTime(), "yyyy-MM-dd"));
+        recruitmentInfoRes.setRecruitmentId(recruitmentInfoDo.getId());
+        return recruitmentInfoRes;
+    }
+
+    public static List<RecruitmentInfoRes> transformRecruitmentInfoRes(List<RecruitmentInfoDO> recruitmentInfoDoList) {
+        if (CollectionUtils.isEmpty(recruitmentInfoDoList)) {
+            return new ArrayList<>(0);
+        }
+        return recruitmentInfoDoList.stream().map(RecruitmentUtil::transformRecruitmentInfoRes).filter(
+            Objects::nonNull).collect(Collectors.toList());
     }
 }

@@ -40,6 +40,14 @@
             <if test="districtId != null">
                 and district_id =#{districtId,jdbcType=BIGINT}
             </if>
+            <if test="organizationIdList != null">
+                and id in
+                <foreach collection="organizationIdList" item="organizationId" index="index"
+                  open="(" close=")"
+                  separator=",">
+                    #{organizationId,jdbcType=BIGINT}
+                </foreach>
+            </if>
         </where>
     </select>
 

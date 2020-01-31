@@ -68,36 +68,21 @@
                         :options="editorOption">
                     </quill-editor>
                 </el-form-item>
-                <el-form-item
-                    v-for="(center, index) in recruitmentInfo.researchCenterList"
-                    :label="'研究中心' + (index + 1) +':'"
-                    :prop="'researchCenterList.' + index + '.name'"
-                    :rules="{
-                     validator: validateCenter, trigger: 'blur'
-                 }"
-                    :key="index">
-                    <el-row type="flex" justify="space-between">
-                        <el-col :span="11">
-                            <el-cascader
-                                :options="areaData"
-                                v-model="center.areaIds"
-                                placeholder="请选择地址">
-                            </el-cascader>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-input
-                                v-model="center.name" placeholder="研究中心名称"></el-input>
-                        </el-col>
-
-                        <el-col :span="2">
-                            <el-button type="primary" size="mini" icon="el-icon-plus"
-                                       @click="addResearchCenter"></el-button>
-                        </el-col>
-                        <el-col :span="2">
-                            <el-button type="danger" size="mini" icon="el-icon-delete"
-                                       @click.prevent="removeResearchCenter(index)"></el-button>
-                        </el-col>
-                    </el-row>
+                <el-form-item label="研究机构：" prop="organizationList" style="text-align: left">
+                    <el-select v-model="recruitmentInfo.organizationList" multiple filterable
+                               style="width: 50%"
+                               placeholder="请选择研究机构">
+                        <el-option
+                            v-for="organization in organizationList"
+                            :key="organization.organizationId"
+                            :label="organization.name"
+                            :value="organization.organizationId">
+                            <span
+                                style="float: left;margin-right:10px">{{ organization.name }}</span>
+                            <span
+                                style="float: right; color: #8492a6; font-size: 13px">{{ organization.address }}</span>
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-edit"
@@ -122,12 +107,13 @@
     Col,
     Row,
     Cascader,
-    Message
+    Message, Select, Option
   } from 'element-ui';
 
   import AreaData from '@/util/AreaData';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RouterUtil} from '@/util/Util';
+  import OrganizationApi from '@/api/OrganizationApi';
 
   export default {
     components: {
@@ -142,6 +128,8 @@
       [Col.name]: Col,
       [Row.name]: Row,
       [Cascader.name]: Cascader,
+      [Select.name]: Select,
+      [Option.name]: Option
     },
     data: function () {
       return {
@@ -179,8 +167,9 @@
           stopTime: "",
           treatmentPlan: "",
           startEndTime: [],
-          researchCenterList: [{}]
+          organizationList: []
         },
+        organizationList: [],
         areaData: AreaData,
         recruitmentInfoRules: {
           title: [
@@ -229,42 +218,38 @@
           ],
           startEndTime: [
             {required: true, message: '请选择启止日期', trigger: 'blur'},
+          ],
+          organizationList: [
+            {required: true, message: '请选择研究机构', trigger: 'blur'},
           ]
-        },
-        validateCenter: (rule, value, callback) => {
-          let index = parseInt(rule.field.split('.')[1]);
-          let centerInfo = this.recruitmentInfo.researchCenterList[index];
-          if (typeof centerInfo.areaIds === 'undefined' || centerInfo.areaIds.length === 0) {
-            callback(new Error('请选择研究中心地址'));
-            return;
-          }
-          if (typeof centerInfo.name === 'undefined' || centerInfo.name.length === 0) {
-            callback(new Error('请填入研究中心名称'));
-            return;
-          }
-          callback();
-        },
+        }
       }
     },
     created: function () {
       let recruitmentId = this.$route.params.recruitmentId;
       this.loadRecruitmentInfo(recruitmentId);
-      this.loadRecruitmentCenter(recruitmentId);
+      this.loadOrganization();
     },
     methods: {
       loadRecruitmentInfo: function (recruitmentId) {
         RecruitmentApi.getRecruitmentById(recruitmentId).then((recruitmentInfo) => {
           Object.assign(this.recruitmentInfo, recruitmentInfo);
           this.recruitmentInfo.startEndTime = [recruitmentInfo.startTime, recruitmentInfo.stopTime];
+          let organizationList = [];
+          recruitmentInfo.organizationResList.forEach(organization => {
+            organizationList.push(organization.organizationId);
+          });
+          this.recruitmentInfo.organizationList = organizationList;
+          delete this.recruitmentInfo.organizationResList;
         });
       },
-      loadRecruitmentCenter: function (recruitmentId) {
-        RecruitmentApi.getRecruitmentCenterById(recruitmentId).then((researchCenterList) => {
-          this.recruitmentInfo.researchCenterList = researchCenterList;
-          this.recruitmentInfo.researchCenterList.forEach(center => {
-            center.areaIds = [center.provinceId, center.cityId, center.districtId]
-          });
-        })
+      loadOrganization: function () {
+        OrganizationApi.getOrganization({
+          currentPage: 1,
+          pageSize: 1000
+        }).then(data => {
+          this.organizationList = data.data;
+        });
       },
       onUpdateRecruitmentAction: function (recruitmentInfoForm) {
         if (typeof this.recruitmentInfo.startEndTime !== 'undefined'
@@ -272,40 +257,20 @@
           this.recruitmentInfo.startTime = this.recruitmentInfo.startEndTime[0];
           this.recruitmentInfo.stopTime = this.recruitmentInfo.startEndTime[1];
         }
-        this.recruitmentInfo.researchCenterList.forEach(center => {
-          if (typeof center.areaIds !== 'undefined' && center.areaIds.length >= 3) {
-            center.provinceId = center.areaIds[0];
-            center.cityId = center.areaIds[1];
-            center.districtId = center.areaIds[2];
-          }
-        });
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
-            RecruitmentApi.updateRecruitment(this.recruitmentInfo).then(success => {
-              if (success) {
-                Message.success('修改成功，即将跳转');
-                RouterUtil.goToBack(this.$route, this.$router);
-              }
-            });
+            RecruitmentApi.updateRecruitment(this.recruitmentInfo.recruitmentId, this.recruitmentInfo).then(
+                success => {
+                  if (success) {
+                    Message.success('修改成功，即将跳转');
+                    RouterUtil.goToBack(this.$route, this.$router);
+                  }
+                });
           } else {
             return false;
           }
         });
-      },
-      removeResearchCenter(index) {
-        if (this.recruitmentInfo.researchCenterList.length === 1) {
-          Message.error("请至少保留一个研究中心");
-          return;
-        }
-        if (index !== -1) {
-          this.recruitmentInfo.researchCenterList.splice(index, 1)
-        }
-      },
-      addResearchCenter() {
-        this.recruitmentInfo.researchCenterList.push({
-          key: Date.now()
-        });
-      },
+      }
     }
   }
 </script>

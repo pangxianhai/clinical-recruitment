@@ -73,14 +73,15 @@
             <el-tab-pane label="入排标准" v-html="recruitmentInfo.entryCriteria"></el-tab-pane>
             <el-tab-pane label="患者权益" v-html="recruitmentInfo.patientRights"></el-tab-pane>
             <el-tab-pane label="研究中心">
-                <el-row v-for="(center, index) in researchCenterList" :key="index"
+                <el-row v-for="(organization, index) in recruitmentInfo.organizationResList"
+                        :key="index"
                         style="width: 400px"
                         type="flex" justify="space-between">
                     <el-col :span="10">
-                        {{center.address}}
+                        {{organization.address}}
                     </el-col>
                     <el-col :span="14">
-                        {{center.name}}
+                        {{organization.name}}
                     </el-col>
                 </el-row>
             </el-tab-pane>
@@ -184,25 +185,18 @@
         recruitmentInfo: {
           status: {}
         },
-        researchCenterList: [],
         RecruitmentStatus: RecruitmentStatus
       }
     },
     created: function () {
       let recruitmentId = this.$route.params.recruitmentId;
       this.loadRecruitmentInfo(recruitmentId);
-      this.loadRecruitmentCenter(recruitmentId);
     },
     methods: {
       loadRecruitmentInfo: function (recruitmentId) {
         RecruitmentApi.getRecruitmentById(recruitmentId).then((recruitmentInfo) => {
           this.recruitmentInfo = recruitmentInfo;
         });
-      },
-      loadRecruitmentCenter: function (recruitmentId) {
-        RecruitmentApi.getRecruitmentCenterById(recruitmentId).then((researchCenterList) => {
-          this.researchCenterList = researchCenterList;
-        })
       },
       onBeginRecruitment: function () {
         if (this.recruitmentInfo.status.code === RecruitmentStatus.FINISHED) {

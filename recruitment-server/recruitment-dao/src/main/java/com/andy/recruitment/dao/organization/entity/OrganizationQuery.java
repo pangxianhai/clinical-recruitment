@@ -1,6 +1,7 @@
 package com.andy.recruitment.dao.organization.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -32,4 +33,9 @@ public class OrganizationQuery implements Serializable {
      * 区ID
      */
     private Long districtId;
+
+    /**
+     * 机构ID列表
+     */
+    private List<Long> organizationIdList;
 }

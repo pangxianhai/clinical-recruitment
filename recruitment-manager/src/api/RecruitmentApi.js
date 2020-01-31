@@ -10,8 +10,8 @@ export default {
   addRecruitment: async (params) => {
     return await ApiUtil.post('/recruitment', params);
   },
-  updateRecruitment: async (params) => {
-    return await ApiUtil.put('/recruitment', params);
+  updateRecruitment: async (recruitmentId, params) => {
+    return await ApiUtil.put('/recruitment/' + recruitmentId, params);
   },
   getRecruitmentCenterById: async (recruitmentId) => {
     return await ApiUtil.get('/recruitment/' + recruitmentId + "/center", {});
@@ -23,9 +23,9 @@ export default {
     return await ApiUtil.get('/recruitmentapplication/' + applicationId, {});
   },
   recruitmentBegin: async (recruitmentId) => {
-    return await ApiUtil.post('/recruitment/' + recruitmentId + "/begin", {});
+    return await ApiUtil.put('/recruitment/' + recruitmentId + "/begin", {});
   },
   recruitmentEnd: async (recruitmentId) => {
-    return await ApiUtil.post('/recruitment/' + recruitmentId + "/end", {});
+    return await ApiUtil.put('/recruitment/' + recruitmentId + "/end", {});
   }
 }
