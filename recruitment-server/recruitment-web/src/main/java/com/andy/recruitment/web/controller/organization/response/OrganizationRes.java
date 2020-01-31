@@ -14,6 +14,11 @@ public class OrganizationRes implements Serializable {
     private static final long serialVersionUID = - 3426651232075244635L;
 
     /**
+     * 机构ID
+     */
+    private Long organizationId;
+
+    /**
      * 机构名称
      */
     private String name;
@@ -32,4 +37,9 @@ public class OrganizationRes implements Serializable {
      * 区名
      */
     private String districtName;
+
+    /**
+     * 地址
+     */
+    private String address;
 }

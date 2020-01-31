@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="recruitment-add">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>项目管理</el-breadcrumb-item>
@@ -67,36 +67,21 @@
                         :options="editorOption">
                     </quill-editor>
                 </el-form-item>
-                <el-form-item
-                    v-for="(center, index) in recruitmentInfo.researchCenterList"
-                    :label="'研究中心' + (index + 1) +':'"
-                    :prop="'researchCenterList.' + index + '.name'"
-                    :rules="{
-                     validator: validateCenter, trigger: 'blur'
-                 }"
-                    :key="index">
-                    <el-row type="flex" justify="space-between">
-                        <el-col :span="11">
-                            <el-cascader
-                                :options="areaData"
-                                v-model="center.areaIds"
-                                placeholder="请选择地址">
-                            </el-cascader>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-input
-                                v-model="center.name" placeholder="研究中心名称"></el-input>
-                        </el-col>
-
-                        <el-col :span="2">
-                            <el-button type="primary" size="mini" icon="el-icon-plus"
-                                       @click="addResearchCenter"></el-button>
-                        </el-col>
-                        <el-col :span="2">
-                            <el-button type="danger" size="mini" icon="el-icon-delete"
-                                       @click.prevent="removeResearchCenter(index)"></el-button>
-                        </el-col>
-                    </el-row>
+                <el-form-item label="研究机构：" prop="organizationList" style="text-align: left">
+                    <el-select v-model="recruitmentInfo.organizationList" multiple filterable
+                               style="width: 50%"
+                               placeholder="请选择研究机构">
+                        <el-option
+                            v-for="organization in organizationList"
+                            :key="organization.organizationId"
+                            :label="organization.name"
+                            :value="organization.organizationId">
+                            <span
+                                style="float: left;margin-right:10px">{{ organization.name }}</span>
+                            <span
+                                style="float: right; color: #8492a6; font-size: 13px">{{ organization.address }}</span>
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary"
@@ -116,18 +101,19 @@
     InputNumber,
     DatePicker,
     Button,
-    Col,
-    Row,
     Icon,
     Cascader,
     Message,
     Breadcrumb,
     BreadcrumbItem,
+    Select,
+    Option,
   } from 'element-ui';
 
   import AreaData from '@/util/AreaData';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RouterUtil} from '@/util/Util';
+  import OrganizationApi from '@/api/OrganizationApi';
 
   export default {
     components: {
@@ -137,12 +123,12 @@
       [InputNumber.name]: InputNumber,
       [DatePicker.name]: DatePicker,
       [Button.name]: Button,
-      [Col.name]: Col,
-      [Row.name]: Row,
       [Icon.name]: Icon,
       [Cascader.name]: Cascader,
       [Breadcrumb.name]: Breadcrumb,
       [BreadcrumbItem.name]: BreadcrumbItem,
+      [Select.name]: Select,
+      [Option.name]: Option
     },
 
     data: function () {
@@ -165,12 +151,12 @@
           },
         },
         recruitmentInfo: {
-          researchCenterList: [{}],
           introduction: '项目简介',
           treatmentPlan: '项目治疗方案',
           entryCriteria: '入排标准',
           patientRights: '患者权益'
         },
+        organizationList: [],
         recruitmentInfoRules: {
           title: [
             {required: true, message: '请输入项目标题', trigger: 'blur'},
@@ -218,39 +204,25 @@
           ],
           startEndTime: [
             {required: true, message: '请选择启止日期', trigger: 'blur'},
+          ],
+          organizationList: [
+            {required: true, message: '请选择研究机构', trigger: 'blur'},
           ]
-        },
-        validateCenter: (rule, value, callback) => {
-          let index = parseInt(rule.field.split('.')[1]);
-          let centerInfo = this.recruitmentInfo.researchCenterList[index];
-          if (typeof centerInfo.areaIds === 'undefined' || centerInfo.areaIds.length === 0) {
-            callback(new Error('请选择研究中心地址'));
-            return;
-          }
-          if (typeof centerInfo.name === 'undefined' || centerInfo.name.length === 0) {
-            callback(new Error('请填入研究中心名称'));
-            return;
-          }
-          callback();
         },
         areaData: AreaData,
       }
 
     },
-
+    created: function () {
+      this.loadOrganization();
+    },
     methods: {
-      removeResearchCenter(index) {
-        if (this.recruitmentInfo.researchCenterList.length === 1) {
-          Message.error("请至少保留一个研究中心");
-          return;
-        }
-        if (index !== -1) {
-          this.recruitmentInfo.researchCenterList.splice(index, 1)
-        }
-      },
-      addResearchCenter() {
-        this.recruitmentInfo.researchCenterList.push({
-          key: Date.now()
+      loadOrganization: function () {
+        OrganizationApi.getOrganization({
+          currentPage: 1,
+          pageSize: 1000
+        }).then(data => {
+          this.organizationList = data.data;
         });
       },
       onAddRecruitmentAction: function (recruitmentInfoForm) {
@@ -259,13 +231,7 @@
           this.recruitmentInfo.startTime = this.recruitmentInfo.startEndTime[0];
           this.recruitmentInfo.stopTime = this.recruitmentInfo.startEndTime[1];
         }
-        this.recruitmentInfo.researchCenterList.forEach(center => {
-          if (typeof center.areaIds !== 'undefined' && center.areaIds.length >= 3) {
-            center.provinceId = center.areaIds[0];
-            center.cityId = center.areaIds[1];
-            center.districtId = center.areaIds[2];
-          }
-        });
+        window.console.log(this.recruitmentInfo);
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
             RecruitmentApi.addRecruitment(this.recruitmentInfo).then(success => {

@@ -47,6 +47,10 @@ public class OrganizationUtil {
         organizationRes.setProvinceName(regionService.getRegionNameById(organizationDo.getProvinceId()));
         organizationRes.setCityName(regionService.getRegionNameById(organizationDo.getCityId()));
         organizationRes.setDistrictName(regionService.getRegionNameById(organizationDo.getDistrictId()));
+        organizationRes.setAddress(
+            regionService.parseAddressName(organizationDo.getProvinceId(), organizationDo.getCityId(),
+                organizationDo.getDistrictId()));
+        organizationRes.setOrganizationId(organizationDo.getId());
         return organizationRes;
     }
 

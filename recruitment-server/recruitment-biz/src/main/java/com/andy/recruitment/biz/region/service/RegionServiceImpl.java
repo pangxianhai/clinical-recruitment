@@ -44,4 +44,23 @@ public class RegionServiceImpl implements RegionService {
     public RegionDO getRegionByParent(Long parentId, String regionName) {
         return this.regionDAO.getRegionByParent(parentId, regionName);
     }
+
+    @Override
+    public String parseAddressName(Long provinceId, Long cityId, Long districtId) {
+        StringBuilder buffer = new StringBuilder();
+        RegionDO province = this.getRegionById(provinceId);
+        RegionDO city = this.getRegionById(cityId);
+        RegionDO district = this.getRegionById(districtId);
+        if (null != province) {
+            buffer.append(province.getRegionName());
+        }
+        boolean cityAndProvinceSame = null != province && city.getRegionName().equals(province.getRegionName());
+        if (null != city && ! cityAndProvinceSame) {
+            buffer.append(city.getRegionName());
+        }
+        if (null != district) {
+            buffer.append(district.getRegionName());
+        }
+        return buffer.toString();
+    }
 }

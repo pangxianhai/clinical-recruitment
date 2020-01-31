@@ -44,4 +44,13 @@ public interface RegionService {
     RegionDO getRegionByParent(Long parentId, String regionName);
 
 
+    /**
+     * 将地区ID抓换成名称字符串
+     *
+     * @param provinceId 省ID
+     * @param cityId     城市ID
+     * @param districtId 地区ID
+     * @return 名称字符串
+     */
+    String parseAddressName(Long provinceId, Long cityId, Long districtId);
 }
