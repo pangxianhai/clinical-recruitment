@@ -65,6 +65,18 @@ public enum RecruitmentErrorCode {
      * 招募信息ID为空
      */
     RECRUITMENT_ID_EMPTY(101402),
+    /**
+     * 招募项目添加研究机构失败
+     */
+    RECRUITMENT_ORGANIZATION_ADD_FAILED(101420),
+    /**
+     * 招募项目删除研究机构ID为空
+     */
+    RECRUITMENT_ORGANIZATION_DELETE_ID_EMPTY(101421),
+    /**
+     * 招募项目删除研究机构失败
+     */
+    RECRUITMENT_ORGANIZATION_DELETE_FAILED(101422),
 
     /**
      * 机构信息添加失败

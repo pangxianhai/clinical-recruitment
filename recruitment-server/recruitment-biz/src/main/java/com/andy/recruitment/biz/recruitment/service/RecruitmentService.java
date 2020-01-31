@@ -4,6 +4,7 @@ import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
+import java.util.List;
 
 /**
  * 招募项目服务接口
@@ -20,4 +21,13 @@ public interface RecruitmentService {
      * @return 招募信息
      */
     PageResult<RecruitmentInfoDO> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator);
+
+    /**
+     * 添加招募项目
+     *
+     * @param recruitmentInfoDo  招募项目信息
+     * @param organizationIdList 研究机构列表
+     * @param operator           添加人
+     */
+    void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList, String operator);
 }

@@ -1,7 +1,9 @@
 package com.andy.recruitment.web.controller.recruitment.util;
 
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
 import com.soyoung.base.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -30,5 +32,22 @@ public class RecruitmentUtil {
         }
         queryParam.setStatus(RecruitmentStatus.parse(queryReq.getStatus()));
         return queryParam;
+    }
+
+    public static RecruitmentInfoDO transformRecruitmentInfoDo(RecruitmentAddReq recruitmentAddReq) {
+        if (recruitmentAddReq == null) {
+            return null;
+        }
+        RecruitmentInfoDO recruitmentInfoDo = new RecruitmentInfoDO();
+        BeanUtils.copyProperties(recruitmentAddReq, recruitmentInfoDo);
+        if (StringUtils.isNotEmpty(recruitmentAddReq.getStartTime())) {
+            String startTime = recruitmentAddReq.getStartTime() + " 00:00:00";
+            recruitmentInfoDo.setStartTime(DateUtil.parse(startTime));
+        }
+        if (StringUtils.isNotEmpty(recruitmentAddReq.getStopTime())) {
+            String stopTime = recruitmentAddReq.getStopTime() + " 23:59:59";
+            recruitmentInfoDo.setStopTime(DateUtil.parse(stopTime));
+        }
+        return recruitmentInfoDo;
     }
 }

@@ -5,12 +5,14 @@ import com.soyoung.base.message.MessageHandler;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 /**
  * 系统常量
  *
  * @author 庞先海 2018-12-14
  */
+@Component
 public class SystemInfo implements CommandLineRunner {
 
     /**

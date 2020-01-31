@@ -113,15 +113,17 @@ create table medical_clinical_recruitment_info(
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='临床医学招募项目';
 
 drop table if exists research_organization_info;
-create table research_organization_info(
+drop table if exists recruitment_organization_info;
+create table recruitment_organization_info(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   recruitment_id bigint(20) NOT NULL COMMENT '招募ID',
-  organization_id varchar(1024) NOT NULL COMMENT '参与该项目的机构列表',
+  organization_id bigint(20) NOT NULL COMMENT '机构ID',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',
   updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
   updated_time datetime COMMENT '更新时间',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE(recruitment_id,organization_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='招募项目研究机构';
 
 drop table if exists medical_clinical_recruitment_application;
