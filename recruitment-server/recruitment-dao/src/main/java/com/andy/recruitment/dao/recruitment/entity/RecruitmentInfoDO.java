@@ -1,5 +1,6 @@
 package com.andy.recruitment.dao.recruitment.entity;
 
+import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.soyoung.base.base.BaseDO;
 import java.time.LocalDateTime;
@@ -24,6 +25,10 @@ public class RecruitmentInfoDO extends BaseDO {
      */
     private String registerCode;
     /**
+     * 类目
+     */
+    private RecruitmentCategory category;
+    /**
      * 标题
      */
     private String title;
@@ -47,6 +52,10 @@ public class RecruitmentInfoDO extends BaseDO {
      * 招募人数
      */
     private Integer recruitmentNumber;
+    /**
+     * 申办方
+     */
+    private String bidParty;
     /**
      * 简介
      */

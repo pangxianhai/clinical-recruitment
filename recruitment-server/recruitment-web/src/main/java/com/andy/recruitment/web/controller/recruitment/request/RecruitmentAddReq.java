@@ -23,6 +23,10 @@ public class RecruitmentAddReq implements Serializable {
      */
     private String title;
     /**
+     * 类目
+     */
+    private Integer category;
+    /**
      * 试验分期
      */
     private String practiceStages;
@@ -71,6 +75,10 @@ public class RecruitmentAddReq implements Serializable {
      * 截至时间
      */
     private String stopTime;
+    /**
+     * 申办方
+     */
+    private String bidParty;
     /**
      * 研究机构科室列表
      * organizationDepartmentList的每项为列表 第一个机构ID 第二个科室ID

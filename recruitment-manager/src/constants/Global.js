@@ -21,5 +21,10 @@ export const ApplicationStatus = {
   REFUSED: 3
 };
 
+export const RecruitmentCategory = {
+  TUMOUR: 1,
+  NON_TUMOR: 2
+};
+
 
 

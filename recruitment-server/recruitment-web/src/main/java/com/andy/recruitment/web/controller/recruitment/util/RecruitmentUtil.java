@@ -1,5 +1,6 @@
 package com.andy.recruitment.web.controller.recruitment.util;
 
+import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
@@ -37,6 +38,7 @@ public class RecruitmentUtil {
             queryParam.setStopTimeEnd(DateUtil.parse(queryReq.getStopTimeEnd() + " 23:59:59"));
         }
         queryParam.setStatus(RecruitmentStatus.parse(queryReq.getStatus()));
+        queryParam.setCategory(RecruitmentCategory.parse(queryReq.getCategory()));
         return queryParam;
     }
 
@@ -54,6 +56,7 @@ public class RecruitmentUtil {
             String stopTime = recruitmentAddReq.getStopTime() + " 23:59:59";
             recruitmentInfoDo.setStopTime(DateUtil.parse(stopTime));
         }
+        recruitmentInfoDo.setCategory(RecruitmentCategory.parse(recruitmentAddReq.getCategory()));
         return recruitmentInfoDo;
     }
 

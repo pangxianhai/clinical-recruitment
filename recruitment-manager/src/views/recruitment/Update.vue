@@ -13,6 +13,13 @@
                 <el-form-item label="标题：" prop="title">
                     <el-input v-model="recruitmentInfo.title" placeholder="标题"></el-input>
                 </el-form-item>
+                <el-form-item label="类目：" prop="category">
+                    <el-select v-model="recruitmentInfo.category" placeholder="请选择"
+                               style="width: 50%;float: left">
+                        <el-option label="肿瘤" value="1"></el-option>
+                        <el-option label="非肿瘤" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="登记编号：" prop="registerCode">
                     <el-input v-model="recruitmentInfo.registerCode" placeholder="登记编号"></el-input>
                 </el-form-item>
@@ -32,6 +39,9 @@
                 <el-form-item label="招募人数：" prop="recruitmentNumber">
                     <el-input v-model.number="recruitmentInfo.recruitmentNumber"
                               placeholder="招募人数"></el-input>
+                </el-form-item>
+                <el-form-item label="申办方：" prop="bidParty">
+                    <el-input v-model="recruitmentInfo.bidParty" placeholder="申办方"></el-input>
                 </el-form-item>
                 <el-form-item label="启止时间：" style="text-align: left" prop="startEndTime">
                     <el-date-picker
@@ -176,6 +186,9 @@
             {required: true, message: '请输入项目标题', trigger: 'blur'},
             {min: 1, max: 32, message: '最大只能输入32个字符', trigger: 'blur'}
           ],
+          category: [
+            {required: true, message: '请选择类目', trigger: 'blur'},
+          ],
           registerCode: [
             {required: true, message: '请输入登记编号', trigger: 'blur'},
             {min: 1, max: 32, message: '最大只能输入32个字符', trigger: 'blur'}
@@ -199,6 +212,10 @@
           recruitmentNumber: [
             {required: true, message: '请输入招募人数', trigger: 'blur'},
             {type: 'number', message: '招募人数只能是数字值'},
+          ],
+          bidParty: [
+            {required: true, message: '请输入申办方', trigger: 'blur'},
+            {min: 1, max: 52, message: '最大只能输入64个字符', trigger: 'blur'}
           ],
           introduction: [
             {required: true, message: '请输入简介', trigger: 'blur'},
@@ -242,6 +259,7 @@
             this.sourceOrganizationIdList.push(department.organizationId);
           });
           this.recruitmentInfo.organizationDepartmentList = organizationDepartmentList;
+          this.recruitmentInfo.category = String(this.recruitmentInfo.category.code);
           delete this.recruitmentInfo.departmentInfoBoList;
         });
       },

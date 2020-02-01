@@ -1,5 +1,6 @@
 package com.andy.recruitment.web.controller.recruitment.response;
 
+import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import java.io.Serializable;
 import lombok.Data;
@@ -27,6 +28,10 @@ public class RecruitmentInfoRes implements Serializable {
      */
     private String title;
     /**
+     * 类目
+     */
+    private RecruitmentCategory category;
+    /**
      * 试验分期
      */
     private String practiceStages;
@@ -46,6 +51,10 @@ public class RecruitmentInfoRes implements Serializable {
      * 招募人数
      */
     private Integer recruitmentNumber;
+    /**
+     * 申办方
+     */
+    private String bidParty;
     /**
      * 简介
      */

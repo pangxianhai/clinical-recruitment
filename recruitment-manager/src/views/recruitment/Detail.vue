@@ -15,6 +15,10 @@
                 label="标题">
             </el-table-column>
             <el-table-column
+                prop="category.desc"
+                label="类目">
+            </el-table-column>
+            <el-table-column
                 prop="registerCode"
                 label="登记编号">
             </el-table-column>
@@ -37,6 +41,10 @@
             <el-table-column
                 prop="recruitmentNumber"
                 label="招募人数">
+            </el-table-column>
+            <el-table-column
+                prop="bidParty"
+                label="申办方">
             </el-table-column>
             <el-table-column
                 label="招募状态">

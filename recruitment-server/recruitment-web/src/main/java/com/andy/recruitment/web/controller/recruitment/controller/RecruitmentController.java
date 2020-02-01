@@ -41,7 +41,6 @@ public class RecruitmentController {
     @Autowired
     public RecruitmentController(RecruitmentService recruitmentService) {
         this.recruitmentService = recruitmentService;
-
     }
 
     @GetMapping

@@ -18,7 +18,6 @@ public class RecruitmentStatus extends BaseType {
 
     public static final RecruitmentStatus FINISHED = new RecruitmentStatus(2, "已结束");
 
-
     public RecruitmentStatus(int code, String desc) {
         super(code, desc);
     }

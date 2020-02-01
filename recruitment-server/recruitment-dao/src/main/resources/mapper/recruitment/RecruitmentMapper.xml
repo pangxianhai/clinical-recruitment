@@ -7,11 +7,14 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="register_code" property="registerCode" jdbcType="VARCHAR"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="category_id" property="category"
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="practice_stages" property="practiceStages" jdbcType="VARCHAR"/>
         <result column="indication" property="indication" jdbcType="VARCHAR"/>
         <result column="drug_name" property="drugName" jdbcType="VARCHAR"/>
         <result column="drug_type" property="drugType" jdbcType="VARCHAR"/>
         <result column="recruitment_number" property="recruitmentNumber" jdbcType="INTEGER"/>
+        <result column="bid_party" property="bidParty" jdbcType="VARCHAR"/>
         <result column="introduction" property="introduction" jdbcType="VARCHAR"/>
         <result column="treatment_plan" property="treatmentPlan" jdbcType="VARCHAR"/>
         <result column="screening_standard" property="screeningStandard" jdbcType="VARCHAR"/>
@@ -30,11 +33,13 @@
         id,
         register_code,
         title,
+        category_id,
         practice_stages,
         indication,
         drug_name,
         drug_type,
         recruitment_number,
+        bid_party,
         introduction,
         treatment_plan,
         screening_standard,
@@ -89,7 +94,8 @@
                 and indication = #{indication, jdbcType=VARCHAR}
             </if>
             <if test="status != null">
-                and status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                and status =
+                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="startTimeBegin != null">
                 <![CDATA[
@@ -111,6 +117,10 @@
                 and stop_time <= #{stopTimeEnd,jdbcType=TIMESTAMP}
                 ]]>
             </if>
+            <if test="category != null">
+                and category_id =
+                #{category,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
         </where>
     </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
@@ -120,11 +130,13 @@
         #{id,jdbcType=BIGINT},
         #{registerCode, jdbcType=VARCHAR},
         #{title, jdbcType=VARCHAR},
+        #{category, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
         #{practiceStages, jdbcType=VARCHAR},
         #{indication, jdbcType=VARCHAR},
         #{drugName, jdbcType=VARCHAR},
         #{drugType, jdbcType=VARCHAR},
         #{recruitmentNumber, jdbcType=INTEGER},
+        #{bidParty, jdbcType=VARCHAR},
         #{introduction, jdbcType=VARCHAR},
         #{treatmentPlan, jdbcType=VARCHAR},
         #{screeningStandard, jdbcType=VARCHAR},
@@ -149,6 +161,10 @@
             <if test="title != null and title != ''">
                 title = #{title, jdbcType=VARCHAR},
             </if>
+            <if test="category != null">
+                category_id =
+                #{category, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+            </if>
             <if test="drugName != null and drugName != ''">
                 drug_name = #{drugName, jdbcType=VARCHAR},
             </if>
@@ -157,6 +173,9 @@
             </if>
             <if test="recruitmentNumber != null">
                 recruitment_number = #{recruitmentNumber,jdbcType=INTEGER},
+            </if>
+            <if test="bidParty != null and bidParty != ''">
+                bid_party = #{bidParty, jdbcType=VARCHAR},
             </if>
             <if test="introduction != null and introduction != ''">
                 introduction = #{introduction, jdbcType=VARCHAR},

@@ -60,6 +60,10 @@
                 label="标题">
             </el-table-column>
             <el-table-column
+                prop="category.desc"
+                label="类目">
+            </el-table-column>
+            <el-table-column
                 prop="registerCode"
                 label="登记编号">
             </el-table-column>
@@ -82,6 +86,10 @@
             <el-table-column
                 prop="recruitmentNumber"
                 label="招募人数">
+            </el-table-column>
+            <el-table-column
+                prop="bidParty"
+                label="申办方">
             </el-table-column>
             <el-table-column
                 label="招募状态">
@@ -230,7 +238,8 @@
     Input,
     Select,
     Option,
-    DatePicker
+    DatePicker,
+    Loading,
   } from 'element-ui';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RecruitmentStatus} from '@/constants/Global';
@@ -252,7 +261,7 @@
       [Input.name]: Input,
       [Select.name]: Select,
       [Option.name]: Option,
-      [DatePicker.name]: DatePicker,
+      [DatePicker.name]: DatePicker
     },
     data: function () {
       return {
@@ -273,21 +282,53 @@
     },
     methods: {
       loadRecruitmentInfo: function () {
+        let loadingInstance = Loading.service({
+          lock: true,
+          text: '加载中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        let startTime = (new Date()).getTime();
         this.$router.replace({
           query: Object.assign(this.queryInfo, {
             currentPage: this.currentPage,
             pageSize: this.pageSize
           })
         }).catch(e => e);
-        RecruitmentApi.getRecruitment(Object.assign({
-          startTimeBegin: this.queryInfo.startTime[0],
-          startTimeEnd: this.queryInfo.startTime[1],
-          stopTimeBegin: this.queryInfo.stopTime[0],
-          stopTimeEnd: this.queryInfo.stopTime[1],
-        }, this.queryInfo)).then(data => {
+        let queryParam = {};
+        if (typeof this.queryInfo.startTime !== 'undefined' && this.queryInfo.startTime != null) {
+          queryParam.startTimeBegin = this.queryInfo.startTime[0];
+          queryParam.startTimeEnd = this.queryInfo.startTime[1];
+        }
+        if (typeof this.queryInfo.stopTime !== 'undefined' && this.queryInfo.stopTime != null) {
+          queryParam.stopTimeBegin = this.queryInfo.stopTime[0];
+          queryParam.stopTimeEnd = this.queryInfo.stopTime[1];
+        }
+        Object.assign(queryParam, this.queryInfo);
+        delete queryParam.stopTime;
+        delete queryParam.startTime;
+        let success = false;
+        RecruitmentApi.getRecruitment(queryParam).then(data => {
           this.recruitmentList = data.data;
           this.totalRecord = data.paginator.totalRecord;
+          success = true;
+          let endTime = (new Date()).getTime();
+          let dur = endTime - startTime;
+          if (dur > 300) {
+            loadingInstance.close();
+          } else {
+            setTimeout(function () {
+              loadingInstance.close();
+            }, 300 - dur);
+          }
         });
+        //防止太长没反应 关闭loading样式
+        setTimeout(function () {
+          if (!success) {
+            loadingInstance.close();
+            Message.error('查询超时!');
+          }
+        }, 2000);
       },
       onBeginRecruitment: function (recruitmentInfo) {
         if (recruitmentInfo.status.code === RecruitmentStatus.FINISHED) {

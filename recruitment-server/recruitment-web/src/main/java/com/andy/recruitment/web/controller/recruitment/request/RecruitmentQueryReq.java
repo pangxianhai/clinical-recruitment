@@ -24,7 +24,6 @@ public class RecruitmentQueryReq extends BaseQueryReq implements Serializable {
      * 查询文本
      */
     private String queryText;
-
     /**
      * 登记编号
      */
@@ -33,6 +32,10 @@ public class RecruitmentQueryReq extends BaseQueryReq implements Serializable {
      * 标题
      */
     private String title;
+    /**
+     * 类目
+     */
+    private Integer category;
     /**
      * 适应症状
      */
