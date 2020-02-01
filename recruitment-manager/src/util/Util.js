@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import {Message} from 'element-ui';
-import el from "element-ui/src/locale/lang/el";
 
 export const CookieUtil = {
   getCookie: function (name) {

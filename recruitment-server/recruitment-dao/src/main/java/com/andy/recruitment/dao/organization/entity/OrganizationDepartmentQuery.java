@@ -1,6 +1,7 @@
 package com.andy.recruitment.dao.organization.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -22,4 +23,9 @@ public class OrganizationDepartmentQuery implements Serializable {
      * 科室名称模糊查询
      */
     private String nameLike;
+
+    /**
+     * 科室ID列表
+     */
+    private List<Long> departmentIdList;
 }

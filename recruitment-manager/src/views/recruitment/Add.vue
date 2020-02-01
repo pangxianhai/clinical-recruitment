@@ -148,7 +148,7 @@
           treatmentPlan: '项目治疗方案',
           entryCriteria: '入排标准',
           patientRights: '患者权益',
-          organizationDepartmentList: [[1]]
+          organizationDepartmentList: []
         },
         organizationList: [],
         recruitmentInfoRules: {

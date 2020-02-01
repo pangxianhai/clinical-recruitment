@@ -18,10 +18,13 @@ public class DepartmentInfoBO implements Serializable {
      */
     private Long organizationId;
     /**
+     * 机构地址
+     */
+    private String organizationAddress;
+    /**
      * 机构名称
      */
     private String organizationName;
-
     /**
      * 省ID
      */

@@ -61,4 +61,11 @@ public class OrganizationDepartmentDAOImpl implements OrganizationDepartmentDAO 
             page);
         return new PageResult<>(organizationDepartmentDoList, PageUtil.transformToPaginator(page));
     }
+
+    @Override
+    public List<OrganizationDepartmentDO> getOrganizationDepartment(List<Long> departmentIdList) {
+        OrganizationDepartmentQuery query = new OrganizationDepartmentQuery();
+        query.setDepartmentIdList(departmentIdList);
+        return this.organizationDepartmentMapper.select(query);
+    }
 }

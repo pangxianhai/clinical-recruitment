@@ -72,16 +72,19 @@
             <el-tab-pane label="治疗方案" v-html="recruitmentInfo.treatmentPlan"></el-tab-pane>
             <el-tab-pane label="入排标准" v-html="recruitmentInfo.entryCriteria"></el-tab-pane>
             <el-tab-pane label="患者权益" v-html="recruitmentInfo.patientRights"></el-tab-pane>
-            <el-tab-pane label="研究中心">
-                <el-row v-for="(organization, index) in recruitmentInfo.organizationResList"
+            <el-tab-pane label="研究科室">
+                <el-row v-for="(department, index) in recruitmentInfo.departmentInfoBoList"
                         :key="index"
                         style="width: 400px"
                         type="flex" justify="space-between">
                     <el-col :span="10">
-                        {{organization.address}}
+                        {{department.organizationAddress}}
                     </el-col>
                     <el-col :span="14">
-                        {{organization.name}}
+                        {{department.organizationName}}
+                    </el-col>
+                    <el-col :span="12">
+                        {{department.departmentName}}
                     </el-col>
                 </el-row>
             </el-tab-pane>

@@ -3,12 +3,14 @@ package com.andy.recruitment.web.controller.researcher.request;
 import com.andy.recruitment.dao.user.constant.UserStatus;
 import com.soyoung.base.base.BaseQueryReq;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 研究员查询参数
  *
  * @author 庞先海 2020-01-31
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ResearcherQueryReq extends BaseQueryReq {
 

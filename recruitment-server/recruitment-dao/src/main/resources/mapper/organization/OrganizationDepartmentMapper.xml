@@ -32,6 +32,14 @@
             <if test="nameLike != null and nameLike != ''">
                 and `name` like CONCAT('%', #{nameLike,jdbcType=VARCHAR},'%')
             </if>
+            <if test="departmentIdList != null">
+                and id in
+                <foreach collection="departmentIdList" item="departmentId" index="index"
+                  open="(" close=")"
+                  separator=",">
+                    #{departmentId,jdbcType=BIGINT}
+                </foreach>
+            </if>
         </where>
     </select>
 

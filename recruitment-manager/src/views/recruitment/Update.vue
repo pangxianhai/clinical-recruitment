@@ -163,6 +163,7 @@
           organizationDepartmentList: []
         },
         organizationList: [],
+        sourceOrganizationIdList: [],
         areaData: AreaData,
         departmentProps: {
           multiple: true,
@@ -224,10 +225,10 @@
         }
       }
     },
-    created: function () {
+    created: async function () {
       let recruitmentId = this.$route.params.recruitmentId;
       this.loadRecruitmentInfo(recruitmentId);
-      this.loadOrganization();
+      await this.loadOrganization();
     },
     methods: {
       loadRecruitmentInfo: function (recruitmentId) {
@@ -236,27 +237,55 @@
           this.recruitmentInfo.startEndTime = [recruitmentInfo.startTime, recruitmentInfo.stopTime];
           let organizationDepartmentList = [];
           recruitmentInfo.departmentInfoBoList.forEach(department => {
-           let organizationDepartment=[department.organizationId,department.departmentId];
+            let organizationDepartment = [department.organizationId, department.departmentId];
             organizationDepartmentList.push(organizationDepartment);
+            this.sourceOrganizationIdList.push(department.organizationId);
           });
-          window.console.log(organizationDepartmentList);
           this.recruitmentInfo.organizationDepartmentList = organizationDepartmentList;
           delete this.recruitmentInfo.departmentInfoBoList;
         });
       },
-      loadOrganization: function () {
-        OrganizationApi.getOrganization({
+      async loadOrganization() {
+        let organizationListTmp = [];
+        await OrganizationApi.getOrganization({
           currentPage: 1,
           pageSize: 1000
-        }).then(data => {
-          this.organizationList = [];
-          data.data.forEach(o => {
-            this.organizationList.push({
+        }).then((response) => {
+          for (let i = 0; i < response.data.length; ++i) {
+            let o = response.data[i];
+            let node = {
               label: o.name,
               value: o.organizationId,
               disabled: true
-            });
+            };
+            organizationListTmp.push(node);
+          }
+        });
+
+        for (let i = 0; i < organizationListTmp.length; ++i) {
+          let node = organizationListTmp[i];
+          if (this.sourceOrganizationIdList.indexOf(node.value) !== -1) {
+            await this.loadOrganizationDepartment(node);
+          }
+        }
+        this.organizationList = organizationListTmp;
+      },
+      async loadOrganizationDepartment(node) {
+        await OrganizationApi.getOrganizationDepartment({
+          currentPage: 1,
+          pageSize: 10000,
+          organizationId: node.value
+        }).then((response) => {
+          let children = [];
+          response.data.forEach(d => {
+            let di = {
+              label: d.name,
+              value: d.departmentId,
+              leaf: true
+            };
+            children.push(di);
           });
+          node.children = children;
         });
       },
       onUpdateRecruitmentAction: function (recruitmentInfoForm) {
@@ -265,6 +294,7 @@
           this.recruitmentInfo.startTime = this.recruitmentInfo.startEndTime[0];
           this.recruitmentInfo.stopTime = this.recruitmentInfo.startEndTime[1];
         }
+
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
             RecruitmentApi.updateRecruitment(this.recruitmentInfo.recruitmentId,
