@@ -1,6 +1,6 @@
 package com.andy.recruitment.web.controller.recruitment.response;
 
-import com.andy.recruitment.web.controller.organization.response.OrganizationRes;
+import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ public class RecruitmentInfoDetailRes extends RecruitmentInfoRes {
     private static final long serialVersionUID = - 3370225946705834051L;
 
     /**
-     * 机构信息
+     * 科室信息
      */
-    private List<OrganizationRes> organizationResList;
+    private List<DepartmentInfoBO> departmentInfoBoList;
 }

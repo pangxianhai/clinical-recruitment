@@ -29,12 +29,12 @@ public class RecruitmentOrganizationDAOImpl implements RecruitmentOrganizationDA
     }
 
     @Override
-    public List<Long> listRecruitmentByOrganization(Long organizationId) {
-        if (organizationId == null) {
+    public List<Long> listRecruitmentByDepartment(Long departmentId) {
+        if (departmentId == null) {
             return null;
         }
         RecruitmentOrganizationQuery query = new RecruitmentOrganizationQuery();
-        query.setOrganizationId(organizationId);
+        query.setDepartmentId(departmentId);
         List<RecruitmentOrganizationDO> recruitmentOrganizationDoList = this.recruitmentOrganizationMapper.select(
             query);
         if (CollectionUtils.isEmpty(recruitmentOrganizationDoList)) {
@@ -45,7 +45,22 @@ public class RecruitmentOrganizationDAOImpl implements RecruitmentOrganizationDA
     }
 
     @Override
-    public List<Long> listOrganizationByRecruitment(Long recruitmentId) {
+    public void addRecruitmentOrganization(Long recruitmentId, Long organizationId, Long departmentId,
+        String operator) {
+        RecruitmentOrganizationDO recruitmentOrganizationDo = new RecruitmentOrganizationDO();
+        recruitmentOrganizationDo.setOrganizationId(organizationId);
+        recruitmentOrganizationDo.setRecruitmentId(recruitmentId);
+        recruitmentOrganizationDo.setDepartmentId(departmentId);
+        recruitmentOrganizationDo.setCreatedBy(operator);
+        recruitmentOrganizationDo.setCreatedTime(LocalDateTime.now());
+        int count = this.recruitmentOrganizationMapper.insert(recruitmentOrganizationDo);
+        AssertUtil.assertTrue(count > 0, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_ORGANIZATION_ADD_FAILED);
+        });
+    }
+
+    @Override
+    public List<Long> listDepartmentByRecruitment(Long recruitmentId) {
         if (recruitmentId == null) {
             return null;
         }
@@ -56,31 +71,28 @@ public class RecruitmentOrganizationDAOImpl implements RecruitmentOrganizationDA
         if (CollectionUtils.isEmpty(recruitmentOrganizationDoList)) {
             return null;
         }
-        return recruitmentOrganizationDoList.stream().map(RecruitmentOrganizationDO::getOrganizationId).collect(
+        return recruitmentOrganizationDoList.stream().map(RecruitmentOrganizationDO::getDepartmentId).collect(
             Collectors.toList());
     }
 
     @Override
-    public void addRecruitmentOrganization(Long recruitmentId, Long organizationId, String operator) {
-        RecruitmentOrganizationDO recruitmentOrganizationDo = new RecruitmentOrganizationDO();
-        recruitmentOrganizationDo.setOrganizationId(organizationId);
-        recruitmentOrganizationDo.setRecruitmentId(recruitmentId);
-        recruitmentOrganizationDo.setCreatedBy(operator);
-        recruitmentOrganizationDo.setCreatedTime(LocalDateTime.now());
-        int count = this.recruitmentOrganizationMapper.insert(recruitmentOrganizationDo);
-        AssertUtil.assertTrue(count > 0, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_ORGANIZATION_ADD_FAILED);
-        });
+    public List<RecruitmentOrganizationDO> listOrganizationByRecruitment(Long recruitmentId) {
+        if (recruitmentId == null) {
+            return null;
+        }
+        RecruitmentOrganizationQuery query = new RecruitmentOrganizationQuery();
+        query.setRecruitmentId(recruitmentId);
+        return this.recruitmentOrganizationMapper.select(query);
     }
 
     @Override
-    public void deleteRecruitmentOrganization(Long recruitmentId, Long organizationId) {
-        AssertUtil.assertFalse(recruitmentId == null || organizationId == null, () -> {
+    public void deleteRecruitmentOrganization(Long recruitmentId, Long departmentId) {
+        AssertUtil.assertFalse(recruitmentId == null || departmentId == null, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_ORGANIZATION_DELETE_ID_EMPTY);
         });
         RecruitmentOrganizationQuery query = new RecruitmentOrganizationQuery();
         query.setRecruitmentId(recruitmentId);
-        query.setOrganizationId(organizationId);
+        query.setDepartmentId(departmentId);
         int count = this.recruitmentOrganizationMapper.delete(query);
         AssertUtil.assertTrue(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_ORGANIZATION_DELETE_FAILED);

@@ -72,8 +72,9 @@ public class RecruitmentAddReq implements Serializable {
      */
     private String stopTime;
     /**
-     * 研究机构列表
+     * 研究机构科室列表
+     * organizationDepartmentList的每项为列表 第一个机构ID 第二个科室ID
      */
-    private List<Long> organizationList;
+    private List<List<Long>> organizationDepartmentList;
 
 }

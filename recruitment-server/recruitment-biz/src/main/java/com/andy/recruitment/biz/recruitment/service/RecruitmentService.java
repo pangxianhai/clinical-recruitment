@@ -1,5 +1,6 @@
 package com.andy.recruitment.biz.recruitment.service;
 
+import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
@@ -38,25 +39,27 @@ public interface RecruitmentService {
      * @param recruitmentId 招募项目ID
      * @return 机构信息
      */
-    List<OrganizationDO> getOrganizationByRecruitment(Long recruitmentId);
+    List<DepartmentInfoBO> getOrganizationByRecruitment(Long recruitmentId);
 
     /**
      * 添加招募项目
      *
-     * @param recruitmentInfoDo  招募项目信息
-     * @param organizationIdList 研究机构列表
-     * @param operator           添加人
+     * @param recruitmentInfoDo          招募项目信息
+     * @param organizationDepartmentList 研究机构及科室列表
+     * @param operator                   添加人
      */
-    void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList, String operator);
+    void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<List<Long>> organizationDepartmentList,
+        String operator);
 
     /**
      * 更新招募项目
      *
-     * @param recruitmentInfoDo  招募项目信息
-     * @param organizationIdList 研究机构列表
-     * @param operator           更新人
+     * @param recruitmentInfoDo          招募项目信息
+     * @param organizationDepartmentList 研究机构及科室列表
+     * @param operator                   更新人
      */
-    void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList, String operator);
+    void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<List<Long>> organizationDepartmentList,
+        String operator);
 
     /**
      * 更新项目状态

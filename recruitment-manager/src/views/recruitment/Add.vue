@@ -67,21 +67,14 @@
                         :options="editorOption">
                     </quill-editor>
                 </el-form-item>
-                <el-form-item label="研究机构：" prop="organizationList" style="text-align: left">
-                    <el-select v-model="recruitmentInfo.organizationList" multiple filterable
-                               style="width: 50%"
-                               placeholder="请选择研究机构">
-                        <el-option
-                            v-for="organization in organizationList"
-                            :key="organization.organizationId"
-                            :label="organization.name"
-                            :value="organization.organizationId">
-                            <span
-                                style="float: left;margin-right:10px">{{ organization.name }}</span>
-                            <span
-                                style="float: right; color: #8492a6; font-size: 13px">{{ organization.address }}</span>
-                        </el-option>
-                    </el-select>
+                <el-form-item label="研究科室：" prop="organizationDepartmentList"
+                              style="text-align: left">
+                    <el-cascader style="width:50%"
+                                 v-model="recruitmentInfo.organizationDepartmentList"
+                                 :options="organizationList"
+                                 :props="departmentProps"
+                                 clearable filterable>
+                    </el-cascader>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary"
@@ -154,7 +147,8 @@
           introduction: '项目简介',
           treatmentPlan: '项目治疗方案',
           entryCriteria: '入排标准',
-          patientRights: '患者权益'
+          patientRights: '患者权益',
+          organizationDepartmentList: [[1]]
         },
         organizationList: [],
         recruitmentInfoRules: {
@@ -210,8 +204,13 @@
           ]
         },
         areaData: AreaData,
+        departmentProps: {
+          multiple: true,
+          checkStrictly: true,
+          lazy: true,
+          lazyLoad: this.loadDepartment
+        }
       }
-
     },
     created: function () {
       this.loadOrganization();
@@ -222,7 +221,36 @@
           currentPage: 1,
           pageSize: 1000
         }).then(data => {
-          this.organizationList = data.data;
+          this.organizationList = [];
+          data.data.forEach(o => {
+            this.organizationList.push({
+              label: o.name,
+              value: o.organizationId,
+              disabled: true
+            });
+          });
+        });
+      },
+      loadDepartment: function (node, resolve) {
+        const {data} = node;
+        if (typeof data === 'undefined') {
+          return;
+        }
+        OrganizationApi.getOrganizationDepartment({
+          currentPage: 1,
+          pageSize: 10000,
+          organizationId: data.value
+        }).then(data => {
+          let nodes = [];
+          data.data.forEach(d => {
+            let di = {
+              label: d.name,
+              value: d.departmentId,
+              leaf: true
+            };
+            nodes.push(di);
+          });
+          resolve(nodes);
         });
       },
       onAddRecruitmentAction: function (recruitmentInfoForm) {
@@ -231,7 +259,7 @@
           this.recruitmentInfo.startTime = this.recruitmentInfo.startEndTime[0];
           this.recruitmentInfo.stopTime = this.recruitmentInfo.startEndTime[1];
         }
-        window.console.log(this.recruitmentInfo);
+        window.console.log(JSON.stringify(this.recruitmentInfo));
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
             RecruitmentApi.addRecruitment(this.recruitmentInfo).then(success => {

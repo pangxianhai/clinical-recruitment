@@ -278,7 +278,7 @@
             currentPage: this.currentPage,
             pageSize: this.pageSize
           })
-        });
+        }).catch(e => e);
         RecruitmentApi.getRecruitment(Object.assign({
           startTimeBegin: this.queryInfo.startTime[0],
           startTimeEnd: this.queryInfo.startTime[1],
@@ -331,12 +331,12 @@
       onRecruitmentDetail: function (recruitmentInfo) {
         this.$router.push({
           path: `/recruitment/detail/${recruitmentInfo.recruitmentId}`
-        });
+        }).catch(e => e);
       },
       onRecruitmentUpdate: function (recruitmentInfo) {
         this.$router.push({
           path: `/recruitment/update/${recruitmentInfo.recruitmentId}`
-        });
+        }).catch(e => e);
       }
     }
   }

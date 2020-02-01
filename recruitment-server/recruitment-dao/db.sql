@@ -137,8 +137,8 @@ create table recruitment_organization_info(
   updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
   updated_time datetime COMMENT '更新时间',
   PRIMARY KEY (id),
-  UNIQUE(recruitment_id,organization_id)
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='招募项目研究机构';
+  UNIQUE(recruitment_id,department_id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='招募项目研究机构科室';
 
 drop table if exists medical_clinical_recruitment_application;
 create table medical_clinical_recruitment_application(

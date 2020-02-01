@@ -21,4 +21,8 @@ public class RecruitmentOrganizationQuery implements Serializable {
      * 机构ID
      */
     private Long organizationId;
+    /**
+     * 科室ID
+     */
+    private Long departmentId;
 }

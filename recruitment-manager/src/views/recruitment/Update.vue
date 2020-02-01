@@ -68,21 +68,14 @@
                         :options="editorOption">
                     </quill-editor>
                 </el-form-item>
-                <el-form-item label="研究机构：" prop="organizationList" style="text-align: left">
-                    <el-select v-model="recruitmentInfo.organizationList" multiple filterable
-                               style="width: 50%"
-                               placeholder="请选择研究机构">
-                        <el-option
-                            v-for="organization in organizationList"
-                            :key="organization.organizationId"
-                            :label="organization.name"
-                            :value="organization.organizationId">
-                            <span
-                                style="float: left;margin-right:10px">{{ organization.name }}</span>
-                            <span
-                                style="float: right; color: #8492a6; font-size: 13px">{{ organization.address }}</span>
-                        </el-option>
-                    </el-select>
+                <el-form-item label="研究科室：" prop="organizationDepartmentList"
+                              style="text-align: left">
+                    <el-cascader style="width:50%"
+                                 v-model="recruitmentInfo.organizationDepartmentList"
+                                 :options="organizationList"
+                                 :props="departmentProps"
+                                 clearable filterable>
+                    </el-cascader>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-edit"
@@ -167,10 +160,16 @@
           stopTime: "",
           treatmentPlan: "",
           startEndTime: [],
-          organizationList: []
+          organizationDepartmentList: []
         },
         organizationList: [],
         areaData: AreaData,
+        departmentProps: {
+          multiple: true,
+          checkStrictly: true,
+          lazy: true,
+          lazyLoad: this.loadDepartment
+        },
         recruitmentInfoRules: {
           title: [
             {required: true, message: '请输入项目标题', trigger: 'blur'},
@@ -235,12 +234,14 @@
         RecruitmentApi.getRecruitmentById(recruitmentId).then((recruitmentInfo) => {
           Object.assign(this.recruitmentInfo, recruitmentInfo);
           this.recruitmentInfo.startEndTime = [recruitmentInfo.startTime, recruitmentInfo.stopTime];
-          let organizationList = [];
-          recruitmentInfo.organizationResList.forEach(organization => {
-            organizationList.push(organization.organizationId);
+          let organizationDepartmentList = [];
+          recruitmentInfo.departmentInfoBoList.forEach(department => {
+           let organizationDepartment=[department.organizationId,department.departmentId];
+            organizationDepartmentList.push(organizationDepartment);
           });
-          this.recruitmentInfo.organizationList = organizationList;
-          delete this.recruitmentInfo.organizationResList;
+          window.console.log(organizationDepartmentList);
+          this.recruitmentInfo.organizationDepartmentList = organizationDepartmentList;
+          delete this.recruitmentInfo.departmentInfoBoList;
         });
       },
       loadOrganization: function () {
@@ -248,7 +249,14 @@
           currentPage: 1,
           pageSize: 1000
         }).then(data => {
-          this.organizationList = data.data;
+          this.organizationList = [];
+          data.data.forEach(o => {
+            this.organizationList.push({
+              label: o.name,
+              value: o.organizationId,
+              disabled: true
+            });
+          });
         });
       },
       onUpdateRecruitmentAction: function (recruitmentInfoForm) {
@@ -259,7 +267,8 @@
         }
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
-            RecruitmentApi.updateRecruitment(this.recruitmentInfo.recruitmentId, this.recruitmentInfo).then(
+            RecruitmentApi.updateRecruitment(this.recruitmentInfo.recruitmentId,
+                this.recruitmentInfo).then(
                 success => {
                   if (success) {
                     Message.success('修改成功，即将跳转');
@@ -270,7 +279,30 @@
             return false;
           }
         });
-      }
+      },
+
+      loadDepartment: function (node, resolve) {
+        const {data} = node;
+        if (typeof data === 'undefined') {
+          return;
+        }
+        OrganizationApi.getOrganizationDepartment({
+          currentPage: 1,
+          pageSize: 10000,
+          organizationId: data.value
+        }).then(data => {
+          let nodes = [];
+          data.data.forEach(d => {
+            let di = {
+              label: d.name,
+              value: d.departmentId,
+              leaf: true
+            };
+            nodes.push(di);
+          });
+          resolve(nodes);
+        });
+      },
     }
   }
 </script>

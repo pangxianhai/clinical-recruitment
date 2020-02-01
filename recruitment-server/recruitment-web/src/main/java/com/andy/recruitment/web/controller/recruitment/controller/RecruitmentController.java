@@ -1,11 +1,10 @@
 package com.andy.recruitment.web.controller.recruitment.controller;
 
+import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
-import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
-import com.andy.recruitment.web.controller.organization.util.OrganizationUtil;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoDetailRes;
@@ -61,8 +60,9 @@ public class RecruitmentController {
         RecruitmentInfoRes recruitmentInfoRes = RecruitmentUtil.transformRecruitmentInfoRes(recruitmentInfoDo);
         RecruitmentInfoDetailRes recruitmentInfoDetailRes = new RecruitmentInfoDetailRes();
         BeanUtils.copyProperties(recruitmentInfoRes, recruitmentInfoDetailRes);
-        List<OrganizationDO> organizationDoList = this.recruitmentService.getOrganizationByRecruitment(recruitmentId);
-        recruitmentInfoDetailRes.setOrganizationResList(OrganizationUtil.transformOrganizationRes(organizationDoList));
+        List<DepartmentInfoBO> departmentInfoBoList = this.recruitmentService.getOrganizationByRecruitment(
+            recruitmentId);
+        recruitmentInfoDetailRes.setDepartmentInfoBoList(departmentInfoBoList);
         return recruitmentInfoDetailRes;
     }
 
@@ -71,7 +71,7 @@ public class RecruitmentController {
     @PostMapping
     public boolean addRecruitment(@RequestBody RecruitmentAddReq addReq) {
         RecruitmentInfoDO recruitmentInfoDo = RecruitmentUtil.transformRecruitmentInfoDo(addReq);
-        this.recruitmentService.addRecruitmentInfo(recruitmentInfoDo, addReq.getOrganizationList(),
+        this.recruitmentService.addRecruitmentInfo(recruitmentInfoDo, addReq.getOrganizationDepartmentList(),
             ServletContext.getLoginInfo().getRealName());
         return true;
     }
@@ -82,7 +82,7 @@ public class RecruitmentController {
     public boolean updateRecruitment(@PathVariable Long recruitmentId, @RequestBody RecruitmentAddReq updateReq) {
         RecruitmentInfoDO recruitmentInfoDo = RecruitmentUtil.transformRecruitmentInfoDo(updateReq);
         recruitmentInfoDo.setId(recruitmentId);
-        this.recruitmentService.updateRecruitmentInfo(recruitmentInfoDo, updateReq.getOrganizationList(),
+        this.recruitmentService.updateRecruitmentInfo(recruitmentInfoDo, updateReq.getOrganizationDepartmentList(),
             ServletContext.getLoginInfo().getRealName());
         return true;
     }

@@ -1,16 +1,19 @@
 package com.andy.recruitment.biz.recruitment.service;
 
+import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import com.andy.recruitment.dao.organization.dao.OrganizationDAO;
-import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.dao.RecruitmentDAO;
 import com.andy.recruitment.dao.recruitment.dao.RecruitmentOrganizationDAO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
+import com.andy.recruitment.dao.recruitment.entity.RecruitmentOrganizationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,15 +50,16 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     @Override
-    public void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList,
+    public void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<List<Long>> organizationDepartmentList,
         String operator) {
         transactionTemplate.execute((status) -> {
             Long recruitmentId = this.recruitmentDAO.addRecruitmentInfo(recruitmentInfoDo, operator);
-            if (CollectionUtils.isEmpty(organizationIdList)) {
+            if (CollectionUtils.isEmpty(organizationDepartmentList)) {
                 return null;
             }
-            for (Long organizationId : organizationIdList) {
-                this.recruitmentOrganizationDAO.addRecruitmentOrganization(recruitmentId, organizationId, operator);
+            for (List<Long> organizationDepartmentId : organizationDepartmentList) {
+                this.recruitmentOrganizationDAO.addRecruitmentOrganization(recruitmentId,
+                    organizationDepartmentId.get(0), organizationDepartmentId.get(1), operator);
             }
             return null;
         });
@@ -67,35 +71,53 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     @Override
-    public List<OrganizationDO> getOrganizationByRecruitment(Long recruitmentId) {
-        List<Long> organizationIdList = recruitmentOrganizationDAO.listOrganizationByRecruitment(recruitmentId);
-        return this.organizationDAO.getOrganization(organizationIdList);
+    public List<DepartmentInfoBO> getOrganizationByRecruitment(Long recruitmentId) {
+        List<RecruitmentOrganizationDO> recruitmentOrganizationDoList = recruitmentOrganizationDAO.listOrganizationByRecruitment(
+            recruitmentId);
+        if (CollectionUtils.isEmpty(recruitmentOrganizationDoList)) {
+            return null;
+        }
+        List<DepartmentInfoBO> departmentInfoBoList = new ArrayList<>(recruitmentOrganizationDoList.size());
+        for (RecruitmentOrganizationDO recruitmentOrganizationDo : recruitmentOrganizationDoList) {
+            DepartmentInfoBO departmentInfoBo = new DepartmentInfoBO();
+            departmentInfoBo.setOrganizationId(recruitmentOrganizationDo.getOrganizationId());
+            departmentInfoBo.setDepartmentId(recruitmentOrganizationDo.getDepartmentId());
+            departmentInfoBoList.add(departmentInfoBo);
+        }
+        return departmentInfoBoList;
     }
 
     @Override
-    public void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<Long> organizationIdList,
+    public void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<List<Long>> organizationDepartmentList,
         String operator) {
-        List<Long> sourceOrganizationIdList = recruitmentOrganizationDAO.listOrganizationByRecruitment(
+        List<Long> sourceDepartmentIdList = recruitmentOrganizationDAO.listDepartmentByRecruitment(
             recruitmentInfoDo.getId());
-        if (sourceOrganizationIdList == null) {
-            sourceOrganizationIdList = new ArrayList<>(0);
+        if (sourceDepartmentIdList == null) {
+            sourceDepartmentIdList = new ArrayList<>(0);
         }
-        if (organizationIdList == null) {
-            organizationIdList = new ArrayList<>(0);
+        if (organizationDepartmentList == null) {
+            organizationDepartmentList = new ArrayList<>(0);
         }
-        List<Long> needAddOrganizationIdList = new ArrayList<>(organizationIdList);
-        needAddOrganizationIdList.removeAll(sourceOrganizationIdList);
-        List<Long> needDeleteOrganizationIdList = new ArrayList<>(sourceOrganizationIdList);
-        needDeleteOrganizationIdList.removeAll(organizationIdList);
+        List<Long> departmentIdList = new ArrayList<>();
+        //科室ID与机构ID对应 key为科室ID value为机构ID
+        Map<Long, Long> departmentOrganizationMap = new HashMap<>(organizationDepartmentList.size());
+        for (List<Long> organizationDepartmentId : organizationDepartmentList) {
+            departmentIdList.add(organizationDepartmentId.get(1));
+            departmentOrganizationMap.put(organizationDepartmentId.get(1), organizationDepartmentId.get(0));
+        }
+
+        List<Long> needAddDepartmentIdList = new ArrayList<>(departmentIdList);
+        departmentIdList.removeAll(sourceDepartmentIdList);
+        List<Long> needDeleteOrganizationIdList = new ArrayList<>(sourceDepartmentIdList);
+        needDeleteOrganizationIdList.removeAll(departmentIdList);
         transactionTemplate.execute((status) -> {
             this.recruitmentDAO.updateRecruitmentInfo(recruitmentInfoDo, operator);
-            for (Long organizationId : needAddOrganizationIdList) {
-                this.recruitmentOrganizationDAO.addRecruitmentOrganization(recruitmentInfoDo.getId(), organizationId,
-                    operator);
+            for (Long departmentId : needAddDepartmentIdList) {
+                this.recruitmentOrganizationDAO.addRecruitmentOrganization(recruitmentInfoDo.getId(),
+                    departmentOrganizationMap.get(departmentId), departmentId, operator);
             }
-            for (Long organizationId : needDeleteOrganizationIdList) {
-                this.recruitmentOrganizationDAO.deleteRecruitmentOrganization(recruitmentInfoDo.getId(),
-                    organizationId);
+            for (Long departmentId : needDeleteOrganizationIdList) {
+                this.recruitmentOrganizationDAO.deleteRecruitmentOrganization(recruitmentInfoDo.getId(), departmentId);
             }
             return null;
         });

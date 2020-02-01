@@ -7,6 +7,7 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="recruitment_id" property="recruitmentId" jdbcType="BIGINT"/>
         <result column="organization_id" property="organizationId" jdbcType="BIGINT"/>
+        <result column="department_id" property="departmentId" jdbcType="BIGINT"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -17,6 +18,7 @@
         id,
         recruitment_id,
         organization_id,
+        department_id,
         created_by,
         created_time,
         updated_by,
@@ -35,6 +37,9 @@
             <if test="organizationId != null">
                 and organization_id = #{organizationId,jdbcType=BIGINT}
             </if>
+            <if test="departmentId != null">
+                and department_id = #{departmentId,jdbcType=BIGINT}
+            </if>
         </where>
     </select>
 
@@ -45,6 +50,7 @@
         #{id,jdbcType=BIGINT},
         #{recruitmentId,jdbcType=BIGINT},
         #{organizationId,jdbcType=BIGINT},
+        #{departmentId,jdbcType=BIGINT},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -62,12 +68,15 @@
             <if test="organizationId != null">
                 organization_id = #{organizationId,jdbcType=BIGINT},
             </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=BIGINT},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <delete id="delete"
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentOrganizationQuery">
-        delete from recruitment_organization_info where recruitment_id = #{recruitmentId,jdbcType=BIGINT} and organization_id = #{organizationId,jdbcType=BIGINT}
+        delete from recruitment_organization_info where recruitment_id = #{recruitmentId,jdbcType=BIGINT} and department_id = #{departmentId,jdbcType=BIGINT}
     </delete>
 </mapper>
