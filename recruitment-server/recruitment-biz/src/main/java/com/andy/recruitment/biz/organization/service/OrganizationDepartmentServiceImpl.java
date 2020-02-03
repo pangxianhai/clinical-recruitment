@@ -5,6 +5,7 @@ import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentQuery;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,10 @@ public class OrganizationDepartmentServiceImpl implements OrganizationDepartment
     public PageResult<OrganizationDepartmentDO> getOrganizationDepartment(OrganizationDepartmentQuery query,
         Paginator paginator) {
         return this.organizationDepartmentDAO.getOrganizationDepartment(query, paginator);
+    }
+
+    @Override
+    public List<OrganizationDepartmentDO> getOrganizationDepartment(List<Long> departmentIdList) {
+        return this.organizationDepartmentDAO.getOrganizationDepartment(departmentIdList);
     }
 }

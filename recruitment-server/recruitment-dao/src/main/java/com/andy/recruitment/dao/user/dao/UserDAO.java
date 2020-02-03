@@ -5,6 +5,7 @@ import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.dao.user.entity.UserQuery;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
+import java.util.List;
 
 /**
  * 用户dao接口
@@ -71,6 +72,14 @@ public interface UserDAO {
      * @return 分页查询结果
      */
     PageResult<UserInfoDO> getUserInfo(UserQuery queryParam, Paginator paginator);
+
+    /**
+     * 通过用户ID列表查询用户ID
+     *
+     * @param userIdList 用户已ID列表
+     * @return 用户信息列表
+     */
+    List<UserInfoDO> getUserInfo(List<Long> userIdList);
 
     /**
      * 删除用户信息

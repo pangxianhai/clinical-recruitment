@@ -4,6 +4,7 @@ import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentQuery;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
+import java.util.List;
 
 /**
  * 机构科室服务接口
@@ -37,4 +38,12 @@ public interface OrganizationDepartmentService {
      */
     PageResult<OrganizationDepartmentDO> getOrganizationDepartment(OrganizationDepartmentQuery query,
         Paginator paginator);
+
+    /**
+     * 通过科室ID列表查询科室信息
+     *
+     * @param departmentIdList 科室ID列表
+     * @return 科室信息
+     */
+    List<OrganizationDepartmentDO> getOrganizationDepartment(List<Long> departmentIdList);
 }

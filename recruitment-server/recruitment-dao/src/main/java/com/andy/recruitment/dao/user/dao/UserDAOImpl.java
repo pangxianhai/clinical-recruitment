@@ -14,6 +14,9 @@ import com.soyoung.base.util.CollectionUtil;
 import com.soyoung.base.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,6 +122,20 @@ public class UserDAOImpl implements UserDAO {
         Page page = PageUtil.transformToPage(paginator);
         List<UserInfoDO> userInfoDoList = this.userInfoMapper.select(queryParam, page);
         return new PageResult<>(userInfoDoList, PageUtil.transformToPaginator(page));
+    }
+
+    @Override
+    public List<UserInfoDO> getUserInfo(List<Long> userIdList) {
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return null;
+        }
+        userIdList = userIdList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return null;
+        }
+        UserQuery queryParam = new UserQuery();
+        queryParam.setUserIdLIst(userIdList);
+        return this.userInfoMapper.select(queryParam);
     }
 
     @Override

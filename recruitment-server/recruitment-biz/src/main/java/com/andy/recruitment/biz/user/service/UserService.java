@@ -1,6 +1,7 @@
 package com.andy.recruitment.biz.user.service;
 
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
+import java.util.List;
 
 /**
  * 用户服务接口
@@ -16,4 +17,12 @@ public interface UserService {
      * @return 用户信息
      */
     UserInfoDO getUserInfoByPhone(String phone);
+
+    /**
+     * 通过用户ID列表查询用户ID
+     *
+     * @param userIdList 用户已ID列表
+     * @return 用户信息列表
+     */
+    List<UserInfoDO> getUserInfo(List<Long> userIdList);
 }

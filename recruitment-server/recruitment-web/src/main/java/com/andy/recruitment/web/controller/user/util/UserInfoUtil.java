@@ -2,6 +2,11 @@ package com.andy.recruitment.web.controller.user.util;
 
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -19,5 +24,13 @@ public class UserInfoUtil {
         BeanUtils.copyProperties(userInfoDo, userInfoRes);
         userInfoRes.setUserId(userInfoDo.getId());
         return userInfoRes;
+    }
+
+    public static List<UserInfoRes> transformUserInfoRes(List<UserInfoDO> userInfoDoList) {
+        if (CollectionUtils.isEmpty(userInfoDoList)) {
+            return new ArrayList<>(0);
+        }
+        return userInfoDoList.stream().map(UserInfoUtil::transformUserInfoRes).filter(Objects::nonNull).collect(
+            Collectors.toList());
     }
 }

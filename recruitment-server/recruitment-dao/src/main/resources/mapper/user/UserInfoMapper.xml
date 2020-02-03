@@ -70,6 +70,14 @@
                 and status =
                 #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandlerr}
             </if>
+            <if test="userIdLIst != null">
+                and id in
+                <foreach collection="userIdLIst" item="userId" index="index"
+                  open="(" close=")"
+                  separator=",">
+                    #{userId,jdbcType=BIGINT}
+                </foreach>
+            </if>
         </where>
     </select>
 

@@ -78,7 +78,6 @@ public class RecruitmentAddReq implements Serializable {
     /**
      * 初筛要点
      */
-    @NotBlank
     @Length(max = 10000)
     private String screeningStandard;
     /**

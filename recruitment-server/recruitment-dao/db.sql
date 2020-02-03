@@ -58,6 +58,7 @@ create table researcher_info(
  department_id bigint(20) NOT NULL COMMENT '所属科室id',
  medical_institution varchar(1024) COMMENT '执业机构',
  medical_category varchar(1024) COMMENT '执业类别',
+ remark varchar(1024) COMMENT '备注',
  status TINYINT  NOT NULL COMMENT '研究员状态 1-正常,2-待审核,3-冻结',
  created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
  created_time datetime NOT NULL COMMENT '创建时间',

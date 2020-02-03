@@ -67,9 +67,12 @@
     Radio,
     Button,
     Icon,
-    Cascader,
+    Cascader, Message,
   } from 'element-ui';
   import OrganizationApi from '@/api/OrganizationApi';
+  import UserApi from '@/api/UserApi';
+  import ResearcherApi from '@/api/ResearcherApi';
+  import {RouterUtil} from '@/util/Util';
 
   export default {
     components: {
@@ -139,7 +142,12 @@
         }
         Object.assign(addParam, this.researcherInfo);
         delete addParam.organizationDepartmentList;
-        window.console.log(addParam);
+        ResearcherApi.addResearcher(addParam).then(success => {
+          if (success) {
+            Message.success('添加成功即将跳转!');
+            RouterUtil.goToBack(this.$route, this.$router, '/researcher/list');
+          }
+        });
       },
       loadOrganization: function () {
         OrganizationApi.getOrganization({
@@ -182,13 +190,13 @@
         if (value === '') {
           callback(new Error('请输入手机号码'));
         } else {
-          // UserApi.getUserByPhone(value).then(userInfo => {
-          //   if (userInfo.userId) {
-          //     callback(new Error('手机号码已经被注册了'));
-          //   } else {
-          //     callback();
-          //   }
-          // });
+          UserApi.getUserByPhone(value).then(userInfo => {
+            if (userInfo.userId) {
+              callback(new Error('手机号码已经被注册了'));
+            } else {
+              callback();
+            }
+          });
         }
       }
     }

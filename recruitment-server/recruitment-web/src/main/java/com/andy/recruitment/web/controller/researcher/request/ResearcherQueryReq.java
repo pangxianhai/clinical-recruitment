@@ -1,6 +1,5 @@
 package com.andy.recruitment.web.controller.researcher.request;
 
-import com.andy.recruitment.dao.user.constant.UserStatus;
 import com.soyoung.base.base.BaseQueryReq;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +24,7 @@ public class ResearcherQueryReq extends BaseQueryReq {
      */
     private String phoneLike;
     /**
-     * 用户状态
+     * 研究员状态
      */
-    private UserStatus status;
+    private Integer status;
 }

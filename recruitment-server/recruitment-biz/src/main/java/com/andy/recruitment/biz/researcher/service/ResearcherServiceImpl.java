@@ -2,8 +2,11 @@ package com.andy.recruitment.biz.researcher.service;
 
 import com.andy.recruitment.dao.researcher.dao.ResearcherDAO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
+import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
 import com.andy.recruitment.dao.user.dao.UserDAO;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
+import com.soyoung.base.page.PageResult;
+import com.soyoung.base.page.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -44,5 +47,10 @@ public class ResearcherServiceImpl implements ResearcherService {
             }
             return null;
         });
+    }
+
+    @Override
+    public PageResult<ResearcherInfoDO> getResearcherInfo(ResearcherQuery query, Paginator paginator) {
+        return this.researcherDAO.getResearcherInfo(query, paginator);
     }
 }
