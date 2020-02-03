@@ -1,5 +1,6 @@
 package com.andy.recruitment.dao.researcher.entity;
 
+import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
 import com.soyoung.base.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +26,10 @@ public class ResearcherInfoDO extends BaseDO {
      */
     private Long organizationId;
     /**
+     * 所属科室ID
+     */
+    private Long departmentId;
+    /**
      * 执业机构
      */
     private String medicalInstitution;
@@ -32,4 +37,12 @@ public class ResearcherInfoDO extends BaseDO {
      * 执业类别
      */
     private String medicalCategory;
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
+     * 研究员状态
+     */
+    private ResearcherStatus status;
 }

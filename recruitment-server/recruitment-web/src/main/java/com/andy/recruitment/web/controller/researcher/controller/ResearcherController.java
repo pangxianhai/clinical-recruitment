@@ -1,12 +1,14 @@
 package com.andy.recruitment.web.controller.researcher.controller;
 
 import com.andy.recruitment.biz.researcher.service.ResearcherService;
+import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherAddReq;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherQueryReq;
 import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoRes;
 import com.andy.recruitment.web.controller.researcher.util.ResearcherUtil;
+import com.soyoung.base.auth.LoginInfo;
 import com.soyoung.base.auth.RoleType;
 import com.soyoung.base.context.ServletContext;
 import com.soyoung.base.converter.MyParameter;
@@ -46,7 +48,13 @@ public class ResearcherController {
     @RequiresUser
     @PostMapping
     public boolean addResearcher(@RequestBody ResearcherAddReq researcherAddReq) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
         ResearcherInfoDO researcherInfoDo = ResearcherUtil.transformResearcherInfo(researcherAddReq);
+        if (RoleType.MANAGER.equals(loginInfo.getRoleType())) {
+            researcherInfoDo.setStatus(ResearcherStatus.NORMAL);
+        } else {
+            researcherInfoDo.setStatus(ResearcherStatus.NON_EXAMINE);
+        }
         UserInfoDO userInfoDo = ResearcherUtil.transformUserInfo(researcherAddReq);
         this.researcherService.registerResearcher(researcherInfoDo, userInfoDo,
             ServletContext.getLoginInfo().getRealName());

@@ -141,42 +141,42 @@ const router = new Router({
       ]
     },
     {
-      path: '/doctor',
+      path: '/researcher',
       component: () => import("@/views/Layout"),
       icon: 'iconfont icon-yisheng',
       menu: true,
-      name: '医生管理',
+      name: '研究员管理',
       index: "3",
       children: [
         {
           path: 'list',
-          name: '医生列表',
+          name: '研究员列表',
           meta: {
             needLogin: true
           },
           menu: true,
           index: "3-1",
-          component: () => import("@/views/doctor/List"),
+          component: () => import("@/views/researcher/List"),
         },
         {
           path: 'add',
-          name: '添加医生',
+          name: '添加研究员',
           meta: {
             needLogin: true
           },
           menu: true,
           index: "3-2",
-          component: () => import("@/views/doctor/Add"),
+          component: () => import("@/views/researcher/Add"),
         },
         {
-          path: 'update/:doctorId',
-          name: '添加医生',
+          path: 'update/:researcherId',
+          name: '更新研究员',
           meta: {
             needLogin: true
           },
           menu: false,
           index: "3-1",
-          component: () => import("@/views/doctor/Update"),
+          component: () => import("@/views/researcher/Update"),
         },
       ]
     },

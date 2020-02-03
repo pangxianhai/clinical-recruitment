@@ -191,7 +191,7 @@
           ],
           bidParty: [
             {required: true, message: '请输入申办方', trigger: 'blur'},
-            {min: 1, max: 52, message: '最大只能输入64个字符', trigger: 'blur'}
+            {min: 1, max: 64, message: '最大只能输入64个字符', trigger: 'blur'}
           ],
           recruitmentNumber: [
             {required: true, message: '请输入招募人数', trigger: 'blur'},

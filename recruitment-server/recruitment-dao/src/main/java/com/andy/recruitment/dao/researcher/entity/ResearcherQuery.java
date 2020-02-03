@@ -1,5 +1,6 @@
 package com.andy.recruitment.dao.researcher.entity;
 
+import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
 import com.andy.recruitment.dao.user.constant.UserStatus;
 import java.io.Serializable;
 import lombok.Data;
@@ -29,5 +30,17 @@ public class ResearcherQuery implements Serializable {
     /**
      * 用户状态
      */
-    private UserStatus status;
+    private UserStatus userStatus;
+    /**
+     * 所属机构id
+     */
+    private Long organizationId;
+    /**
+     * 所属科室ID
+     */
+    private Long departmentId;
+    /**
+     * 研究员状态
+     */
+    private ResearcherStatus status;
 }

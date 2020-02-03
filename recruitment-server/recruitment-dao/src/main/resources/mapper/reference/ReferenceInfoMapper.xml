@@ -51,7 +51,7 @@
                 and u.phone like CONCAT('%', #{phoneLike,jdbcType=VARCHAR},'%')
             </if>
             <if test="status != null">
-                and u.status = #{status,typeHandler=com.xgimi.base.MyBaseTypeHandler}
+                and u.status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
         </where>
     </select>

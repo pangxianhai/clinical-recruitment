@@ -1,7 +1,10 @@
 package com.andy.recruitment.web.controller.organization.request;
 
 import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * 机构科室添加参数
@@ -16,10 +19,13 @@ public class OrganizationDepartmentAddReq implements Serializable {
     /**
      * 机构ID
      */
+    @NotNull
     private Long organizationId;
 
     /**
      * 科室名称
      */
+    @NotBlank
+    @Length(max = 64)
     private String name;
 }
