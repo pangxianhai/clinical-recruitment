@@ -19,7 +19,9 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +54,13 @@ public class ResearcherController {
     }
 
     @RequiresUser
+    @GetMapping("/{researcherId:\\d+}")
+    public ResearcherInfoRes getResearcherDetail(@PathVariable Long researcherId) {
+        ResearcherInfoDO researcherInfoDo = this.researcherService.getResearcherInfoByResearchId(researcherId);
+        return ResearcherUtil.transformResearcherInfoRes(researcherInfoDo);
+    }
+
+    @RequiresUser
     @PostMapping
     public boolean addResearcher(@RequestBody ResearcherAddReq researcherAddReq) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
@@ -62,8 +71,21 @@ public class ResearcherController {
             researcherInfoDo.setStatus(ResearcherStatus.NON_EXAMINE);
         }
         UserInfoDO userInfoDo = ResearcherUtil.transformUserInfo(researcherAddReq);
-        this.researcherService.registerResearcher(researcherInfoDo, userInfoDo,
-            ServletContext.getLoginInfo().getRealName());
+        this.researcherService.registerResearcher(researcherInfoDo, userInfoDo, loginInfo.getRealName());
+        return true;
+    }
+
+    @RequiresUser
+    @PutMapping("/{researcherId:\\d+}")
+    public boolean updateResearcher(@PathVariable Long researcherId, @RequestBody ResearcherAddReq researcherAddReq) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        ResearcherInfoDO researcherInfoDo = ResearcherUtil.transformResearcherInfo(researcherAddReq);
+        researcherInfoDo.setId(researcherId);
+        //所属科室暂不允许修改
+        researcherInfoDo.setOrganizationId(null);
+        researcherInfoDo.setDepartmentId(null);
+        UserInfoDO userInfoDo = ResearcherUtil.transformUserInfo(researcherAddReq);
+        this.researcherService.registerResearcher(researcherInfoDo, userInfoDo, loginInfo.getRealName());
         return true;
     }
 }

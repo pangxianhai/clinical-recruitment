@@ -57,36 +57,12 @@
 </style>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Form,
-    FormItem,
-    Input,
-    RadioGroup,
-    Radio,
-    Button,
-    Icon,
-    Cascader, Message,
-  } from 'element-ui';
   import OrganizationApi from '@/api/OrganizationApi';
   import UserApi from '@/api/UserApi';
   import ResearcherApi from '@/api/ResearcherApi';
   import {RouterUtil} from '@/util/Util';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [RadioGroup.name]: RadioGroup,
-      [Radio.name]: Radio,
-      [Button.name]: Button,
-      [Icon.name]: Icon,
-      [Cascader.name]: Cascader,
-    },
     data: function () {
       return {
         researcherInfo: {},
@@ -129,7 +105,6 @@
       }
     },
     created: function () {
-      window.console.log(typeof this.loadOrganization);
       this.loadOrganization();
     },
     methods: {
@@ -144,7 +119,7 @@
         delete addParam.organizationDepartmentList;
         ResearcherApi.addResearcher(addParam).then(success => {
           if (success) {
-            Message.success('添加成功即将跳转!');
+            this.$message.success('添加成功即将跳转!');
             RouterUtil.goToBack(this.$route, this.$router, '/researcher/list');
           }
         });

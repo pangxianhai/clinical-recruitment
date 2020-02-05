@@ -30,6 +30,14 @@ public interface ResearcherDAO {
     ResearcherInfoDO getResearcherInfoByUserId(Long userId);
 
     /**
+     * 通过研究员ID查询研究员信息
+     *
+     * @param researcherId 研究员ID
+     * @return 研究员信息
+     */
+    ResearcherInfoDO getResearcherInfoByResearchId(Long researcherId);
+
+    /**
      * 更新研究员信息
      *
      * @param researcherInfoDo 研究员信息

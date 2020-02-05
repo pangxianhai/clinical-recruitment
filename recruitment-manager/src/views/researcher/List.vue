@@ -70,6 +70,26 @@
                 prop="status.desc"
                 label="状态">
             </el-table-column>
+            <el-table-column
+                width="60"
+                fixed="right"
+                label="操作">
+                <template slot-scope="scope">
+                    <el-row type="flex">
+                        <el-tooltip effect="dark" content="更新" placement="bottom"
+                                    :hide-after="500">
+                            <el-col>
+                                <el-button
+                                    icon="el-icon-more"
+                                    type="primary"
+                                    @click="onResearcherUpdate(scope.row)"
+                                    size="mini" circle>
+                                </el-button>
+                            </el-col>
+                        </el-tooltip>
+                    </el-row>
+                </template>
+            </el-table-column>
         </el-table>
         <el-pagination
             @current-change="loadResearchInfo"
@@ -107,37 +127,9 @@
 </style>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Table,
-    TableColumn,
-    Pagination,
-    Button,
-    Tag,
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option
-  } from 'element-ui';
   import ResearcherApi from '@/api/ResearcherApi';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-      [Pagination.name]: Pagination,
-      [Button.name]: Button,
-      [Tag.name]: Tag,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [Select.name]: Select,
-      [Option.name]: Option
-    },
     data: function () {
       return {
         researcherList: [],
@@ -156,6 +148,11 @@
           this.researcherList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
+      },
+      onResearcherUpdate: function (researcher) {
+        this.$router.push({
+          path: `/researcher/update/${researcher.researcherId}`
+        }).catch(e => e);
       }
     }
   }

@@ -21,6 +21,7 @@ import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoRes
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
 import com.andy.recruitment.web.controller.user.util.UserInfoUtil;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -86,6 +87,14 @@ public class ResearcherUtil {
         return query;
     }
 
+    public static ResearcherInfoRes transformResearcherInfoRes(ResearcherInfoDO researcherInfoDo) {
+        List<ResearcherInfoDO> researcherInfoDoList = Collections.singletonList(researcherInfoDo);
+        List<ResearcherInfoRes> researcherInfoResList = ResearcherUtil.transformResearcherInfoRes(researcherInfoDoList);
+        if (CollectionUtils.isEmpty(researcherInfoResList)) {
+            return null;
+        }
+        return researcherInfoResList.get(0);
+    }
 
     public static List<ResearcherInfoRes> transformResearcherInfoRes(List<ResearcherInfoDO> researcherInfoDoList) {
         if (CollectionUtils.isEmpty(researcherInfoDoList)) {
@@ -121,7 +130,7 @@ public class ResearcherUtil {
                 organizationResMap, organizationDepartmentResMap)).collect(Collectors.toList());
     }
 
-    public static ResearcherInfoRes transformResearcherInfoRes(ResearcherInfoDO researcherInfoDo,
+    private static ResearcherInfoRes transformResearcherInfoRes(ResearcherInfoDO researcherInfoDo,
         Map<Long, UserInfoRes> userInfoResMap, Map<Long, OrganizationRes> organizationResMap,
         Map<Long, OrganizationDepartmentRes> organizationDepartmentResMap) {
         if (researcherInfoDo == null) {
@@ -133,6 +142,7 @@ public class ResearcherUtil {
         researcherInfoRes.setOrganizationRes(organizationResMap.get(researcherInfoRes.getOrganizationId()));
         researcherInfoRes.setOrganizationDepartmentRes(
             organizationDepartmentResMap.get(researcherInfoRes.getDepartmentId()));
+        researcherInfoRes.setResearcherId(researcherInfoDo.getId());
         return researcherInfoRes;
     }
 }

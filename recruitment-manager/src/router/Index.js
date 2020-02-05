@@ -93,7 +93,7 @@ const router = new Router({
     {
       path: '/organization',
       component: () => import("@/views/Layout"),
-      icon: 'iconfont icon-yisheng',
+      icon: 'iconfont icon-yiyuan',
       menu: true,
       name: '机构管理',
       index: "6",
@@ -177,6 +177,26 @@ const router = new Router({
           menu: false,
           index: "3-1",
           component: () => import("@/views/researcher/Update"),
+        },
+      ]
+    },
+    {
+      path: '/reference',
+      component: () => import("@/views/Layout"),
+      icon: 'iconfont icon-iconfonttuijianren',
+      menu: true,
+      name: '推荐人管理',
+      index: "7",
+      children: [
+        {
+          path: 'list',
+          name: '推荐人列表',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "7-1",
+          component: () => import("@/views/patient/List"),
         },
       ]
     },

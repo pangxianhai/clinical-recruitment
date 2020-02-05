@@ -51,6 +51,17 @@ public class ResearcherDAOImpl implements ResearcherDAO {
     }
 
     @Override
+    public ResearcherInfoDO getResearcherInfoByResearchId(Long researcherId) {
+        if (researcherId == null) {
+            return null;
+        }
+        ResearcherQuery query = new ResearcherQuery();
+        query.setResearcherId(researcherId);
+        List<ResearcherInfoDO> researcherInfoDoList = this.researcherInfoMapper.select(query);
+        return CollectionUtil.parseOne(researcherInfoDoList, Function.identity());
+    }
+
+    @Override
     public void updateResearcherInfo(ResearcherInfoDO researcherInfoDo, String operator) {
         AssertUtil.assertNull(researcherInfoDo.getId(), () -> {
             throw new RecruitmentException(RecruitmentErrorCode.RESEARCHER_ID_EMPTY);

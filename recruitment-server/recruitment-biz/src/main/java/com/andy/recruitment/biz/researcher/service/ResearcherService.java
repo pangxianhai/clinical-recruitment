@@ -23,6 +23,15 @@ public interface ResearcherService {
     void registerResearcher(ResearcherInfoDO researcherInfoDo, UserInfoDO userInfoDo, String operator);
 
     /**
+     * 更新研究员信息
+     *
+     * @param researcherInfoDo 研究员信息
+     * @param userInfoDo       用户信息
+     * @param operator         操作人
+     */
+    void updateResearcher(ResearcherInfoDO researcherInfoDo, UserInfoDO userInfoDo, String operator);
+
+    /**
      * 分页查询研究员
      *
      * @param query     查询参数
@@ -30,4 +39,12 @@ public interface ResearcherService {
      * @return 研究员信息
      */
     PageResult<ResearcherInfoDO> getResearcherInfo(ResearcherQuery query, Paginator paginator);
+
+    /**
+     * 通过研究员ID查询研究员信息
+     *
+     * @param researcherId 研究员ID
+     * @return 研究员信息
+     */
+    ResearcherInfoDO getResearcherInfoByResearchId(Long researcherId);
 }

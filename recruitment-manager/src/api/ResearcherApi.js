@@ -6,7 +6,10 @@ let ResearcherApi = {
   },
   getResearcher: async (param) => {
     return await ApiUtil.get('/researcher', param);
-  }
+  },
+  gerResearcherById: async (researcherId) => {
+    return await ApiUtil.get('/researcher/' + researcherId, {});
+  },
 }
 
 export default ResearcherApi;

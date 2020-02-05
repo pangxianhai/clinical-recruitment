@@ -1,5 +1,7 @@
 package com.andy.recruitment.biz.researcher.service;
 
+import com.andy.recruitment.common.exception.RecruitmentErrorCode;
+import com.andy.recruitment.common.exception.RecruitmentException;
 import com.andy.recruitment.dao.researcher.dao.ResearcherDAO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
@@ -7,6 +9,7 @@ import com.andy.recruitment.dao.user.dao.UserDAO;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.Paginator;
+import com.soyoung.base.util.asserts.AssertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -50,7 +53,27 @@ public class ResearcherServiceImpl implements ResearcherService {
     }
 
     @Override
+    public void updateResearcher(ResearcherInfoDO researcherInfoDo, UserInfoDO userInfoDo, String operator) {
+        ResearcherInfoDO sourceResearcherInfoDo = this.researcherDAO.getResearcherInfoByResearchId(
+            researcherInfoDo.getId());
+        AssertUtil.assertNull(sourceResearcherInfoDo, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.RESEARCHER_NOT_EXIST);
+        });
+        transactionTemplate.execute((status) -> {
+            this.researcherDAO.updateResearcherInfo(researcherInfoDo, operator);
+            userInfoDo.setId(sourceResearcherInfoDo.getUserId());
+            this.userDAO.updateUserInfo(userInfoDo, operator);
+            return null;
+        });
+    }
+
+    @Override
     public PageResult<ResearcherInfoDO> getResearcherInfo(ResearcherQuery query, Paginator paginator) {
         return this.researcherDAO.getResearcherInfo(query, paginator);
+    }
+
+    @Override
+    public ResearcherInfoDO getResearcherInfoByResearchId(Long researcherId) {
+        return this.researcherDAO.getResearcherInfoByResearchId(researcherId);
     }
 }

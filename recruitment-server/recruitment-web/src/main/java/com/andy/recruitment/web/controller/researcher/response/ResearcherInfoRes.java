@@ -18,6 +18,10 @@ public class ResearcherInfoRes implements Serializable {
     private static final long serialVersionUID = - 1899971211991016838L;
 
     /**
+     * 研究员ID
+     */
+    private Long researcherId;
+    /**
      * 用户ID
      */
     private Long userId;

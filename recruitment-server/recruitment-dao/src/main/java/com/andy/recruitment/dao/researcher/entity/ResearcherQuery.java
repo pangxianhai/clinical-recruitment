@@ -16,6 +16,10 @@ public class ResearcherQuery implements Serializable {
     private static final long serialVersionUID = 9053109323839786038L;
 
     /**
+     * 研究员ID
+     */
+    private Long researcherId;
+    /**
      * 用户ID
      */
     private Long userId;

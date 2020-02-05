@@ -156,11 +156,15 @@ public enum RecruitmentErrorCode {
     /**
      * 研究员更新失败
      */
-    RESEARCHER_UPDATE_FAILED(101800),
+    RESEARCHER_UPDATE_FAILED(101801),
     /**
      * 研究员ID为空
      */
-    RESEARCHER_ID_EMPTY(101800),
+    RESEARCHER_ID_EMPTY(101802),
+    /**
+     * 研究员不存在
+     */
+    RESEARCHER_NOT_EXIST(101803),
 
     ;
 
