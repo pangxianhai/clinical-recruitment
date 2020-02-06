@@ -125,10 +125,6 @@
             <if test="status != null ">
                 status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
-            <if test="userType != null ">
-                user_type =
-                #{userType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
-            </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},
             </if>
@@ -136,7 +132,7 @@
                 updated_time = #{updatedTime, jdbcType=TIMESTAMP},
             </if>
         </set>
-        where id = #{userId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
     </update>
     <delete id="delete">
         delete from user_info where id = #{userId,jdbcType=BIGINT}

@@ -98,42 +98,12 @@
 </template>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Form,
-    FormItem,
-    Input,
-    InputNumber,
-    DatePicker,
-    Button,
-    Col,
-    Row,
-    Cascader,
-    Message, Select, Option
-  } from 'element-ui';
-
   import AreaData from '@/util/AreaData';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RouterUtil} from '@/util/Util';
   import OrganizationApi from '@/api/OrganizationApi';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [InputNumber.name]: InputNumber,
-      [DatePicker.name]: DatePicker,
-      [Button.name]: Button,
-      [Col.name]: Col,
-      [Row.name]: Row,
-      [Cascader.name]: Cascader,
-      [Select.name]: Select,
-      [Option.name]: Option
-    },
     data: function () {
       return {
         editorOption: {
@@ -319,7 +289,7 @@
                 this.recruitmentInfo).then(
                 success => {
                   if (success) {
-                    Message.success('修改成功，即将跳转');
+                    this.$message.success('修改成功，即将跳转');
                     RouterUtil.goToBack(this.$route, this.$router);
                   }
                 });

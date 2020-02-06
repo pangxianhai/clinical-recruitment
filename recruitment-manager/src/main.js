@@ -13,6 +13,7 @@ import {
   Form,
   FormItem,
   Input,
+  InputNumber,
   Cascader,
   RadioGroup,
   Radio,
@@ -27,7 +28,19 @@ import {
   Option,
   Tooltip,
   Row,
-  Col
+  Col,
+  Container,
+  Header,
+  Aside,
+  Main,
+  Footer,
+  Menu,
+  Submenu,
+  MenuItem,
+  MenuItemGroup,
+  RadioButton,
+  Loading,
+  DatePicker,
 } from 'element-ui';
 
 Vue.use(Breadcrumb);
@@ -35,6 +48,7 @@ Vue.use(BreadcrumbItem);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Input);
+Vue.use(InputNumber);
 Vue.use(Cascader);
 Vue.use(RadioGroup);
 Vue.use(Radio);
@@ -49,7 +63,20 @@ Vue.use(Option);
 Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Container);
+Vue.use(Header);
+Vue.use(Aside);
+Vue.use(Main);
+Vue.use(Footer);
+Vue.use(Menu);
+Vue.use(Submenu);
+Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
+Vue.use(RadioButton);
+Vue.use(DatePicker);
+Vue.use(Loading.directive);
 Vue.prototype.$message = Message;
+Vue.prototype.$loading = Loading.service;
 
 Vue.use(VueQuillEditor);
 

@@ -85,7 +85,7 @@ public class ResearcherController {
         researcherInfoDo.setOrganizationId(null);
         researcherInfoDo.setDepartmentId(null);
         UserInfoDO userInfoDo = ResearcherUtil.transformUserInfo(researcherAddReq);
-        this.researcherService.registerResearcher(researcherInfoDo, userInfoDo, loginInfo.getRealName());
+        this.researcherService.updateResearcher(researcherInfoDo, userInfoDo, loginInfo.getRealName());
         return true;
     }
 }

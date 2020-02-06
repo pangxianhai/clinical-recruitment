@@ -10,6 +10,9 @@ let ResearcherApi = {
   gerResearcherById: async (researcherId) => {
     return await ApiUtil.get('/researcher/' + researcherId, {});
   },
+  updateResearcher: async (researcherId, param) => {
+    return await ApiUtil.put('/researcher/' + researcherId, param);
+  },
 }
 
 export default ResearcherApi;

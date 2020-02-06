@@ -108,43 +108,10 @@
 </style>
 
 <script>
-  import {
-    Container,
-    Header,
-    Aside,
-    Main,
-    Footer,
-    Menu,
-    Submenu,
-    MenuItem,
-    MenuItemGroup,
-    Radio,
-    RadioGroup,
-    RadioButton,
-    Button,
-    Loading,
-    Tooltip
-  } from 'element-ui';
   import Router from '@/router/Index';
   import AdminApi from '@/api/AdminApi';
 
   export default {
-    components: {
-      [Container.name]: Container,
-      [Header.name]: Header,
-      [Aside.name]: Aside,
-      [Main.name]: Main,
-      [Footer.name]: Footer,
-      [Menu.name]: Menu,
-      [Submenu.name]: Submenu,
-      [MenuItem.name]: MenuItem,
-      [MenuItemGroup.name]: MenuItemGroup,
-      [Radio.name]: Radio,
-      [RadioGroup.name]: RadioGroup,
-      [RadioButton.name]: RadioButton,
-      [Button.name]: Button,
-      [Tooltip.name]: Tooltip,
-    },
 
     data: function () {
       return {
@@ -214,7 +181,7 @@
         });
       },
       onLogOutAction: function () {
-        const loading = Loading.service({
+        const loading = this.$loading({
           lock: true,
           text: '正在退出登陆',
           spinner: 'el-icon-loading',

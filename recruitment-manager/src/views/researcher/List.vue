@@ -32,15 +32,18 @@
             <el-table-column
                 fixed
                 prop="userInfoRes.realName"
-                label="姓名">
+                label="姓名"
+                width="80">
             </el-table-column>
             <el-table-column
                 prop="userInfoRes.phone"
-                label="电话号码">
+                label="电话号码"
+                width="110">
             </el-table-column>
             <el-table-column
                 prop="userInfoRes.gender.desc"
-                label="性别">
+                label="性别"
+                width="50">
             </el-table-column>
             <el-table-column
                 prop="organizationRes.name"
@@ -68,7 +71,8 @@
             </el-table-column>
             <el-table-column
                 prop="status.desc"
-                label="状态">
+                label="状态"
+                width="50">
             </el-table-column>
             <el-table-column
                 width="60"
@@ -80,8 +84,8 @@
                                     :hide-after="500">
                             <el-col>
                                 <el-button
-                                    icon="el-icon-more"
-                                    type="primary"
+                                    icon="el-icon-edit"
+                                    type="success"
                                     @click="onResearcherUpdate(scope.row)"
                                     size="mini" circle>
                                 </el-button>
