@@ -2,6 +2,7 @@ package com.andy.recruitment.biz.patient.service;
 
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
+import com.andy.recruitment.dao.patient.constant.PatientStatus;
 import com.andy.recruitment.dao.patient.dao.PatientInfoDAO;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
@@ -64,6 +65,14 @@ public class PatientInfoServiceImpl implements PatientInfoService {
             this.userDAO.updateUserInfo(userInfoDo, operator);
             return null;
         });
+    }
+
+    @Override
+    public void updatePatientStatus(Long patientId, PatientStatus status, String operator) {
+        PatientInfoDO patientInfoDo = new PatientInfoDO();
+        patientInfoDo.setId(patientId);
+        patientInfoDo.setStatus(status);
+        this.patientInfoDAO.updatePatientInfo(patientInfoDo, operator);
     }
 
     @Override

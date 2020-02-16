@@ -40,19 +40,19 @@
             style="width: 100%">
             <el-table-column
                 fixed
-                prop="userInfoVO.realName"
+                prop="userInfoRes.realName"
                 label="姓名">
             </el-table-column>
             <el-table-column
-                prop="userInfoVO.phone"
+                prop="userInfoRes.phone"
                 label="手机号">
             </el-table-column>
             <el-table-column
-                prop="userInfoVO.nickname"
+                prop="userInfoRes.nickname"
                 label="微信昵称">
             </el-table-column>
             <el-table-column
-                prop="userInfoVO.gender.desc"
+                prop="userInfoRes.gender.desc"
                 label="性别">
             </el-table-column>
             <el-table-column
@@ -66,11 +66,11 @@
             <el-table-column
                 label="状态">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.userInfoVO.status.code===UserStatus.NORMAL">
-                        {{scope.row.userInfoVO.status.desc}}
+                    <el-tag v-if="scope.row.status.code===PatientStatus.NORMAL">
+                        {{scope.row.status.desc}}
                     </el-tag>
-                    <el-tag v-if="scope.row.userInfoVO.status.code===UserStatus.FREEZE" type="info">
-                        {{scope.row.userInfoVO.status.desc}}
+                    <el-tag v-if="scope.row.status.code===PatientStatus.FREEZE" type="info">
+                        {{scope.row.status.desc}}
                     </el-tag>
                 </template>
             </el-table-column>
@@ -80,39 +80,42 @@
                 label="操作">
                 <template slot-scope="scope">
                     <el-row type="flex">
-                        <el-col>
-                            <el-button
-                                v-if="scope.row.userInfoVO.status.code===UserStatus.NORMAL"
-                                type="danger"
-                                icon="el-icon-goods"
-                                @click="freezeUser(scope.row.userInfoVO)"
-                                size="mini">
-                                冻结
-                            </el-button>
-                        </el-col>
+                        <el-tooltip effect="dark" content="冻结" placement="bottom">
+                            <el-col>
+                                <el-button
+                                    v-if="scope.row.status.code===PatientStatus.NORMAL"
+                                    type="danger"
+                                    icon="el-icon-goods"
+                                    @click="freezePatient(scope.row)"
+                                    size="mini">
+                                </el-button>
+                            </el-col>
+                        </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-col>
-                            <el-button
-                                v-if="scope.row.userInfoVO.status.code===UserStatus.FREEZE"
-                                type="primary"
-                                icon="el-icon-sold-out"
-                                @click="unfreezeUser(scope.row.userInfoVO)"
-                                size="mini">
-                                解冻
-                            </el-button>
-                        </el-col>
+                        <el-tooltip effect="dark" content="解冻" placement="bottom">
+                            <el-col>
+                                <el-button
+                                    v-if="scope.row.status.code===PatientStatus.FREEZE"
+                                    type="primary"
+                                    icon="el-icon-sold-out"
+                                    @click="unfreezePatient(scope.row)"
+                                    size="mini">
+                                </el-button>
+                            </el-col>
+                        </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-col>
-                            <el-button
-                                icon="el-icon-edit"
-                                type="success"
-                                @click="onUpdateAction(scope.row)"
-                                size="mini">
-                                编辑
-                            </el-button>
-                        </el-col>
+                        <el-tooltip effect="dark" content="更新" placement="bottom">
+                            <el-col>
+                                <el-button
+                                    icon="el-icon-edit"
+                                    type="success"
+                                    @click="onUpdateAction(scope.row)"
+                                    size="mini">
+                                </el-button>
+                            </el-col>
+                        </el-tooltip>
                     </el-row>
                 </template>
             </el-table-column>
@@ -155,59 +158,24 @@
 </style>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Table,
-    TableColumn,
-    Pagination,
-    Button,
-    Tag,
-    Message,
-    Row,
-    Col,
-    Form,
-    FormItem,
-    Input,
-    InputNumber,
-    Select,
-    Option,
-    Cascader,
-  } from 'element-ui';
   import PatientApi from '@/api/PatientApi';
-  import {UserStatus} from '@/constants/Global';
-  import AdminApi from '@/api/AdminApi';
+  import {PatientStatus} from '@/constants/Global';
   import AreaData from '@/util/AreaData';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-      [Pagination.name]: Pagination,
-      [Button.name]: Button,
-      [Tag.name]: Tag,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [InputNumber.name]: InputNumber,
-      [Select.name]: Select,
-      [Option.name]: Option,
-      [Cascader.name]: Cascader,
-    },
     data: function () {
       return {
         areaData: AreaData,
-        UserStatus: UserStatus,
+        PatientStatus: PatientStatus,
         patientList: [],
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
         queryInfo: {
           addressIds: [],
+          realName: '',
+          phoneLike: '',
+          status: ''
         }
       }
     },
@@ -230,28 +198,33 @@
             currentPage: this.currentPage,
             pageSize: this.pageSize
           })
+        }, function () {
+
         });
-        PatientApi.getPatient(Object.assign({
+
+        let queryParam = Object.assign({
           provinceId: this.queryInfo.addressIds[0],
           cityId: this.queryInfo.addressIds[1],
           districtId: this.queryInfo.addressIds[2],
-        }, this.queryInfo)).then(data => {
+        }, this.queryInfo);
+        delete queryParam.addressIds;
+        PatientApi.getPatient(queryParam).then(data => {
           this.patientList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
       },
-      freezeUser: function (userInfo) {
-        AdminApi.freezeUser(userInfo.userId).then(success => {
+      freezePatient: function (patientInfo) {
+        PatientApi.freezePatient(patientInfo.patientId).then(success => {
           if (success) {
-            Message.success('操作成功!');
+            this.$message.success('操作成功!');
             this.loadPatientInfo();
           }
         });
       },
-      unfreezeUser: function (userInfo) {
-        AdminApi.unfreezeUser(userInfo.userId).then(success => {
+      unfreezePatient: function (patientInfo) {
+        PatientApi.unfreezePatient(patientInfo.patientId).then(success => {
           if (success) {
-            Message.success('操作成功!');
+            this.$message.success('操作成功!');
             this.loadPatientInfo();
           }
         });

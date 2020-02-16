@@ -1,10 +1,4 @@
-export const UserConstants = {
-  ADMIN: 1,
-  DOCTOR: 2,
-  PATIENT: 3
-};
-
-export const UserStatus = {
+export const PatientStatus = {
   NORMAL: 1,
   FREEZE: 2
 };

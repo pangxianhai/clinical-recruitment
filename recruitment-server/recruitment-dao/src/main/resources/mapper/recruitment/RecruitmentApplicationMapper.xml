@@ -97,6 +97,12 @@
             <if test="status != null ">
                 status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
+            <if test="updatedBy != null and updatedBy != ''">
+                updated_by=#{updatedBy, jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null">
+                updated_time=#{updatedTime, jdbcType=TIMESTAMP},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>

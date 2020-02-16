@@ -10,10 +10,12 @@ import com.andy.recruitment.web.controller.patient.request.PatientQueryReq;
 import com.andy.recruitment.web.controller.patient.response.PatientInfoRes;
 import com.andy.recruitment.web.controller.patient.util.PatientInfoUtil;
 import com.soyoung.base.auth.LoginInfo;
+import com.soyoung.base.auth.RoleType;
 import com.soyoung.base.context.ServletContext;
 import com.soyoung.base.converter.MyParameter;
 import com.soyoung.base.page.PageResult;
 import java.util.List;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,12 +69,30 @@ public class PatientController {
 
     @RequiresUser
     @PutMapping("/{patientId:\\d+}")
-    public boolean updatePatientId(@PathVariable Long patientId, @RequestBody PatientAddReq patientAddReq) {
+    public boolean updatePatient(@PathVariable Long patientId, @RequestBody PatientAddReq patientAddReq) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         PatientInfoDO patientInfoDo = PatientInfoUtil.transformPatientInfoDo(patientAddReq);
         patientInfoDo.setId(patientId);
         UserInfoDO userInfoDo = PatientInfoUtil.transformUserInfo(patientAddReq);
         this.patientInfoService.updatePatient(patientInfoDo, userInfoDo, loginInfo.getRealName());
+        return true;
+    }
+
+    @RequiresUser
+    @RequiresRoles(RoleType.MANAGER_CODE + "")
+    @PutMapping("/{patientId:\\d+}/freeze")
+    public boolean freezePatient(@PathVariable Long patientId) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        this.patientInfoService.updatePatientStatus(patientId, PatientStatus.FREEZE, loginInfo.getRealName());
+        return true;
+    }
+
+    @RequiresUser
+    @RequiresRoles(RoleType.MANAGER_CODE + "")
+    @PutMapping("/{patientId:\\d+}/unfreeze")
+    public boolean unfreezePatient(@PathVariable Long patientId) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        this.patientInfoService.updatePatientStatus(patientId, PatientStatus.NORMAL, loginInfo.getRealName());
         return true;
     }
 }

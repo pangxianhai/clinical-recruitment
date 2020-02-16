@@ -71,25 +71,25 @@
         update administrator_info
         <set>
             <if test="userName != null and userName != ''">
-                user_name=#{userName, jdbcType=VARCHAR}
+                user_name=#{userName, jdbcType=VARCHAR},
             </if>
             <if test="password != null and password != ''">
-                password=#{password, jdbcType=VARCHAR}
+                password=#{password, jdbcType=VARCHAR},
             </if>
             <if test="name != null and name != ''">
-                `name`=#{name, jdbcType=VARCHAR}
+                `name`=#{name, jdbcType=VARCHAR},
             </if>
             <if test="type != null and type != ''">
-                `type`=#{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                `type`=#{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="status != null and status != ''">
-                status=#{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                status=#{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
-                updated_by=#{updatedBy, jdbcType=VARCHAR}
+                updated_by=#{updatedBy, jdbcType=VARCHAR},
             </if>
-            <if test="updatedTime != null and updatedTime != ''">
-                updated_time=#{updatedTime, jdbcType=TIMESTAMP}
+            <if test="updatedTime != null">
+                updated_time=#{updatedTime, jdbcType=TIMESTAMP},
             </if>
         </set>
         where id =#{id, jdbcType=BIGINT}

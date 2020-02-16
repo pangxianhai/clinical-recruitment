@@ -45,37 +45,12 @@
 </template>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Form,
-    FormItem,
-    Input,
-    RadioGroup,
-    Radio,
-    Button,
-    Icon,
-    Message,
-    Cascader,
-  } from 'element-ui';
-  // import AdminApi from '@/api/AdminApi';
   import PatientApi from '@/api/PatientApi';
   import {RouterUtil} from '@/util/Util';
   import AreaData from '@/util/AreaData';
+  import UserApi from '@/api/UserApi';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [RadioGroup.name]: RadioGroup,
-      [Radio.name]: Radio,
-      [Button.name]: Button,
-      [Icon.name]: Icon,
-      [Cascader.name]: Cascader,
-    },
     data: function () {
       return {
         areaData: AreaData,
@@ -115,7 +90,7 @@
             }
             PatientApi.addPatient(this.patientInfo).then(success => {
               if (success) {
-                Message.success('添加成功即将跳转!');
+                this.$message.success('添加成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/patient/list');
               }
             });
@@ -128,13 +103,13 @@
         if (value === '') {
           callback(new Error('请输入手机号码'));
         } else {
-          // UserApi.getUserByPhone(value).then(userInfo => {
-          //   if (userInfo.userId) {
-          //     callback(new Error('手机号码已经被注册了'));
-          //   } else {
-          //     callback();
-          //   }
-          // });
+          UserApi.getUserByPhone(value).then(userInfo => {
+            if (userInfo.userId) {
+              callback(new Error('手机号码已经被注册了'));
+            } else {
+              callback();
+            }
+          });
         }
       }
     }

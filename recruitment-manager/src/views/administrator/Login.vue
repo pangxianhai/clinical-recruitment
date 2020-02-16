@@ -119,6 +119,9 @@
         this.$refs[loginForm].validate((valid) => {
           if (valid) {
             AdminApi.manageLogin(this.loginForm).then(loginInfo => {
+              if (!loginInfo) {
+                return;
+              }
               AdminApi.saveLoginInfo(loginInfo.userName, loginInfo.token);
               Message({
                 message: '登录成功，即将跳转',
@@ -129,7 +132,9 @@
                 if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
                   redirectURL = '/recruitment/list';
                 }
-                this.$router.push({path: redirectURL});
+                this.$router.push({path: redirectURL}, function () {
+
+                });
               }, 2000);
             });
           } else {

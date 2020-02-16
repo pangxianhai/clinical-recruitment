@@ -30,4 +30,16 @@ public class PatientQueryReq extends BaseQueryReq implements Serializable {
      * 患者状态
      */
     private Integer status;
+    /**
+     * 省ID
+     */
+    private Long provinceId;
+    /**
+     * 城市ID
+     */
+    private Long cityId;
+    /**
+     * 区ID
+     */
+    private Long districtId;
 }

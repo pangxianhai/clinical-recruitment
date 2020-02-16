@@ -44,7 +44,6 @@ public class SystemInfo implements CommandLineRunner {
      */
     private void initIntern() {
         MessageHandler.setBeanNames("i18/recruitment/recruitment-error");
-        MessageHandler.setBeanNames("i18/recruitment/recruitment-center-error");
-        MessageHandler.setBeanNames("i18/common/commons-error");
+        MessageHandler.setBeanNames("i18/common/base-error");
     }
 }

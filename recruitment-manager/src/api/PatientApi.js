@@ -12,6 +12,12 @@ let PatientApi = {
   },
   updatePatient: async (patientId, patientInfo) => {
     return await ApiUtil.put('/patient/' + patientId, patientInfo);
+  },
+  freezePatient: async (patientId) => {
+    return await ApiUtil.put('/patient/' + patientId + '/freeze');
+  },
+  unfreezePatient: async (patientId) => {
+    return await ApiUtil.put('/patient/' + patientId + '/unfreeze');
   }
 };
 export default PatientApi;

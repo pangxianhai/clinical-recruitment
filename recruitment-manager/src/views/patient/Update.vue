@@ -17,10 +17,10 @@
             </el-form-item>
             <el-form-item label="性别" prop="gender">
                 <el-radio-group v-model="patientInfo.gender">
-                    <el-radio label="1">
+                    <el-radio :label="1">
                         <i class="el-icon-male"></i>男
                     </el-radio>
-                    <el-radio label="2">
+                    <el-radio :label="2">
                         <i class="el-icon-female"></i>女
                     </el-radio>
                 </el-radio-group>
@@ -45,44 +45,19 @@
 </template>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Form,
-    FormItem,
-    Input,
-    RadioGroup,
-    Radio,
-    Button,
-    Icon,
-    Message,
-    Cascader,
-  } from 'element-ui';
-  // import AdminApi from '@/api/AdminApi';
+  import UserApi from '@/api/UserApi';
   import PatientApi from '@/api/PatientApi';
   import {RouterUtil} from '@/util/Util';
   import AreaData from '@/util/AreaData';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [RadioGroup.name]: RadioGroup,
-      [Radio.name]: Radio,
-      [Button.name]: Button,
-      [Icon.name]: Icon,
-      [Cascader.name]: Cascader,
-    },
     data: function () {
       return {
         areaData: AreaData,
         patientInfo: {
           name: '',
           phone: '',
-          gender: '',
+          gender: 0,
           addressIds: [],
           age: ''
         },
@@ -116,14 +91,14 @@
     methods: {
       loadPatientInfo: function (patientId) {
         PatientApi.getPatientById(patientId).then(patientInfo => {
-          this.patientInfo.name = patientInfo.userInfoVO.realName;
-          this.patientInfo.phone = patientInfo.userInfoVO.phone;
-          this.patientInfo.gender = patientInfo.userInfoVO.gender.code + "";
+          this.patientInfo.name = patientInfo.userInfoRes.realName;
+          this.patientInfo.phone = patientInfo.userInfoRes.phone;
+          this.patientInfo.gender = patientInfo.userInfoRes.gender.code;
           this.patientInfo.addressIds = [patientInfo.provinceId, patientInfo.cityId,
             patientInfo.districtId];
           this.patientInfo.age = patientInfo.age;
           this.patientInfo.patientId = patientInfo.patientId;
-          this.patientInfo.userId = patientInfo.userInfoVO.userId;
+          this.patientInfo.userId = patientInfo.userId;
         });
       },
       onUpdatePatientAction: function (formName) {
@@ -137,7 +112,7 @@
             }
             PatientApi.updatePatient(this.patientInfo.patientId, this.patientInfo).then(success => {
               if (success) {
-                Message.success('修改成功即将跳转!');
+                this.$message.success('修改成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/patient/list');
               }
             });
@@ -150,13 +125,13 @@
         if (value === '') {
           callback(new Error('请输入手机号码'));
         } else {
-          // UserApi.getUserByPhone(value).then(userInfo => {
-          //   if (userInfo.userId && this.patientInfo.userId !== userInfo.userId) {
-          //     callback(new Error('手机号码已经被注册了'));
-          //   } else {
-          //     callback();
-          //   }
-          // });
+          UserApi.getUserByPhone(value).then(userInfo => {
+            if (userInfo.userId && this.referenceInfo.userId !== userInfo.userId) {
+              callback(new Error('手机号码已经被注册了'));
+            } else {
+              callback();
+            }
+          });
         }
       }
     }
