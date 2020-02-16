@@ -1,4 +1,4 @@
-package com.andy.recruitment.web.controller.researcher.request;
+package com.andy.recruitment.web.controller.reference.request;
 
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
@@ -7,14 +7,14 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * 研究员添加参数
+ * 推荐人添加参数
  *
- * @author 庞先海 2020-01-31
+ * @author 庞先海 2020-02-15
  */
 @Data
-public class ResearcherAddReq implements Serializable {
+public class ReferenceAddReq implements Serializable {
 
-    private static final long serialVersionUID = - 3580079645942042249L;
+    private static final long serialVersionUID = 466986966112127464L;
 
     /**
      * 微信openId
@@ -33,15 +33,20 @@ public class ResearcherAddReq implements Serializable {
     @Length(max = 32)
     private String phone;
     /**
-     * 所属机构id
+     * 省份ID
      */
     @NotNull
-    private Long organizationId;
+    private Long provinceId;
     /**
-     * 所属科室ID
+     * 城市ID
      */
     @NotNull
-    private Long departmentId;
+    private Long cityId;
+    /**
+     * 区ID
+     */
+    @NotNull
+    private Long districtId;
     /**
      * 执业机构
      */
@@ -55,6 +60,11 @@ public class ResearcherAddReq implements Serializable {
     @Length(max = 64)
     private String medicalCategory;
     /**
+     * 备注
+     */
+    @Length(max = 64)
+    private String remark;
+    /**
      * 姓名
      */
     @NotBlank
@@ -65,9 +75,5 @@ public class ResearcherAddReq implements Serializable {
      */
     @NotNull
     private Integer gender;
-    /**
-     * 备注信息
-     */
-    @Length(max = 512)
-    private String remark;
+
 }

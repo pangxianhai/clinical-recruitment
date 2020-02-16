@@ -22,6 +22,22 @@ public interface ReferenceDAO {
     PageResult<ReferenceInfoDO> getReferenceInfo(ReferenceInfoQuery query, Paginator paginator);
 
     /**
+     * 通过userId查询推荐人信息
+     *
+     * @param userId 用户ID
+     * @return 推荐人信息
+     */
+    ReferenceInfoDO getReferenceInfoByUserId(Long userId);
+
+    /**
+     * 通过推荐人ID查询推荐人信息
+     *
+     * @param referenceId 推荐人ID
+     * @return 推荐人信息
+     */
+    ReferenceInfoDO getReferenceInfoById(Long referenceId);
+
+    /**
      * 添加推荐人
      *
      * @param referenceInfoDo 推荐人信息

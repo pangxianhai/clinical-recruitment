@@ -35,8 +35,7 @@ function build_manager_dev() {
 function build_server_dev() {
     cd /Users/pangxianhai/projects/clinical-recruitment/recruitment-server
     build_dir=/Users/pangxianhai/workspace/recruitment-server
-    gradle clean
-    gradle build -x test
+    gradle clean build -x test
     supervisorctl stop recruitment-server
     if [ -d $build_dir ]; then
        rm -rf $build_dir

@@ -18,6 +18,10 @@ public enum RecruitmentErrorCode {
      * 更新推荐人信息失败
      */
     REFERENCE_UPDATE_FAILED(101102),
+    /**
+     * 推荐人不存在
+     */
+    REFERENCE_NOT_EXIST(101103),
 
     /**
      * 注册患者失败

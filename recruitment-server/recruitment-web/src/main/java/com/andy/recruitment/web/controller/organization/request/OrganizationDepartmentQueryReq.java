@@ -3,6 +3,7 @@ package com.andy.recruitment.web.controller.organization.request;
 import com.soyoung.base.base.BaseQueryReq;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * 机构科室查询参数
@@ -23,5 +24,6 @@ public class OrganizationDepartmentQueryReq extends BaseQueryReq {
     /**
      * 科室名称模糊查询
      */
+    @Length(max = 64)
     private String nameLike;
 }

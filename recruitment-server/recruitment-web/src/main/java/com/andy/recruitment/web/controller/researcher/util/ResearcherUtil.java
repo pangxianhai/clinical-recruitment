@@ -4,8 +4,6 @@ import com.andy.recruitment.biz.organization.service.OrganizationDepartmentServi
 import com.andy.recruitment.biz.organization.service.OrganizationService;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.biz.user.service.UserService;
-import com.andy.recruitment.dao.organization.entity.OrganizationDO;
-import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -108,22 +105,10 @@ public class ResearcherUtil {
             organizationIdList.add(researcherInfoDo.getOrganizationId());
             departmentIdList.add(researcherInfoDo.getDepartmentId());
         }
-        List<UserInfoDO> userInfoDoList = userService.getUserInfo(userIdList);
-        List<UserInfoRes> userInfoResList = UserInfoUtil.transformUserInfoRes(userInfoDoList);
-        Map<Long, UserInfoRes> userInfoResMap = userInfoResList.stream().collect(
-            Collectors.toMap(UserInfoRes::getUserId, Function.identity(), (u1, u2) -> u1));
-
-        List<OrganizationDO> organizationDoList = organizationService.getOrganization(organizationIdList);
-        List<OrganizationRes> organizationResList = OrganizationUtil.transformOrganizationRes(organizationDoList);
-        Map<Long, OrganizationRes> organizationResMap = organizationResList.stream().collect(
-            Collectors.toMap(OrganizationRes::getOrganizationId, Function.identity(), (o1, o2) -> o1));
-
-        List<OrganizationDepartmentDO> organizationDepartmentDoList = organizationDepartmentService.getOrganizationDepartment(
+        Map<Long, UserInfoRes> userInfoResMap = UserInfoUtil.getUserInfoRes(userIdList);
+        Map<Long, OrganizationRes> organizationResMap = OrganizationUtil.getOrganizationRes(organizationIdList);
+        Map<Long, OrganizationDepartmentRes> organizationDepartmentResMap = OrganizationDepartmentUtil.getOrganizationDepartmentRes(
             departmentIdList);
-        List<OrganizationDepartmentRes> organizationDepartmentResList = OrganizationDepartmentUtil.transformOrganizationDepartmentRes(
-            organizationDepartmentDoList);
-        Map<Long, OrganizationDepartmentRes> organizationDepartmentResMap = organizationDepartmentResList.stream().collect(
-            Collectors.toMap(OrganizationDepartmentRes::getDepartmentId, Function.identity(), (d1, d2) -> d1));
 
         return researcherInfoDoList.stream().map(
             researcherInfoDo -> ResearcherUtil.transformResearcherInfoRes(researcherInfoDo, userInfoResMap,

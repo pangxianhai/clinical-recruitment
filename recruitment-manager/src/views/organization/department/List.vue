@@ -77,46 +77,10 @@
 </style>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Table,
-    TableColumn,
-    Pagination,
-    Button,
-    Tag,
-    Row,
-    Col,
-    Form,
-    FormItem,
-    Input,
-    InputNumber,
-    Select,
-    Option,
-    Cascader,
-  } from 'element-ui';
   import AreaData from '@/util/AreaData';
   import OrganizationApi from '@/api/OrganizationApi';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-      [Pagination.name]: Pagination,
-      [Button.name]: Button,
-      [Tag.name]: Tag,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [InputNumber.name]: InputNumber,
-      [Select.name]: Select,
-      [Option.name]: Option,
-      [Cascader.name]: Cascader,
-    },
     data: function () {
       return {
         areaData: AreaData,
@@ -153,7 +117,9 @@
             currentPage: this.currentPage,
             pageSize: this.pageSize
           })
-        }).catch(e => e);
+        }, function () {
+
+        });
         OrganizationApi.getOrganizationDepartment(this.queryInfo).then(data => {
           this.organizationDepartmentList = data.data;
           this.totalRecord = data.paginator.totalRecord;

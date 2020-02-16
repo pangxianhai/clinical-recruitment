@@ -86,47 +86,10 @@
 </style>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Table,
-    TableColumn,
-    Pagination,
-    Button,
-    Tag,
-    // Message,
-    Row,
-    Col,
-    Form,
-    FormItem,
-    Input,
-    InputNumber,
-    Select,
-    Option,
-    Cascader,
-  } from 'element-ui';
   import AreaData from '@/util/AreaData';
   import OrganizationApi from '@/api/OrganizationApi';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-      [Pagination.name]: Pagination,
-      [Button.name]: Button,
-      [Tag.name]: Tag,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [InputNumber.name]: InputNumber,
-      [Select.name]: Select,
-      [Option.name]: Option,
-      [Cascader.name]: Cascader,
-    },
     data: function () {
       return {
         areaData: AreaData,
@@ -135,6 +98,7 @@
         totalRecord: 0,
         pageSize: 10,
         queryInfo: {
+          nameLike: '',
           addressIds: []
         }
       }
@@ -158,6 +122,7 @@
             currentPage: this.currentPage,
             pageSize: this.pageSize
           })
+        }, function () {
         });
         let queryParam = Object.assign({
           provinceId: this.queryInfo.addressIds[0],

@@ -10,6 +10,9 @@
         <result column="district_id" property="districtId" jdbcType="BIGINT"/>
         <result column="medical_institution" property="medicalInstitution" jdbcType="VARCHAR"/>
         <result column="medical_category" property="medicalCategory" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status"
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -23,6 +26,8 @@
         district_id,
         medical_institution,
         medical_category,
+        remark,
+        status,
         created_by,
         created_time,
         updated_by,
@@ -32,9 +37,12 @@
       parameterType="com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery">
         select
         d.id,d.user_id,d.province_id,d.city_id,d.district_id,d.medical_institution,d.medical_category,
-        d.created_by,d.created_time,d.updated_by,d.updated_time
+        d.remark,d.status,d.created_by,d.created_time,d.updated_by,d.updated_time
         from reference_info d inner join user_info u on (d.user_id = u.id)
         <where>
+            <if test="referenceId != null">
+                and d.id = #{referenceId, jdbcType=BIGINT}
+            </if>
             <if test="userId != null">
                 and d.user_id = #{userId, jdbcType=BIGINT}
             </if>
@@ -44,15 +52,17 @@
             <if test="cityId != null">
                 and d.city_id = #{cityId, jdbcType=BIGINT}
             </if>
+            <if test="status != null">
+                and d.status =
+                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
             <if test="realName != null and realName != ''">
                 and u.real_name like CONCAT('%', #{realName,jdbcType=VARCHAR},'%')
             </if>
             <if test="phoneLike != null and phoneLike != ''">
                 and u.phone like CONCAT('%', #{phoneLike,jdbcType=VARCHAR},'%')
             </if>
-            <if test="status != null">
-                and u.status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
-            </if>
+
         </where>
     </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
@@ -66,6 +76,8 @@
         #{districtId, jdbcType=BIGINT},
         #{medicalInstitution, jdbcType=VARCHAR},
         #{medicalCategory, jdbcType=VARCHAR},
+        #{remark, jdbcType=VARCHAR},
+        #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -89,6 +101,12 @@
             </if>
             <if test="medicalCategory != null and medicalCategory != ''">
                 medical_category = #{medicalCategory, jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null ">
+                status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

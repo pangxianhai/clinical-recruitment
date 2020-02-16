@@ -217,7 +217,6 @@
         })
       },
       onUpdateResearcherAction: function (formName) {
-        window.console.log(this.researcherInfo);
         this.researcherInfo.organizationId = this.researcherInfo.organizationDepartmentList[0];
         this.researcherInfo.departmentId = this.researcherInfo.organizationDepartmentList[1];
         this.$refs[formName].validate((valid) => {

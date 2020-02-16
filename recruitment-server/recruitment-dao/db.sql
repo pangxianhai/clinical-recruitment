@@ -79,6 +79,7 @@ create table reference_info(
  medical_institution varchar(1024) COMMENT '执业机构',
  medical_category varchar(1024) COMMENT '执业类别',
  remark varchar(1024) COMMENT '备注',
+ status TINYINT  NOT NULL COMMENT '推荐人状态 1-正常,2-冻结',
  created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
  created_time datetime NOT NULL COMMENT '创建时间',
  updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',

@@ -1,20 +1,21 @@
-package com.andy.recruitment.web.controller.researcher.request;
+package com.andy.recruitment.web.controller.reference.request;
 
 import com.soyoung.base.base.BaseQueryReq;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * 研究员查询参数
+ * 推荐人查询参数
  *
- * @author 庞先海 2020-01-31
+ * @author 庞先海 2020-02-15
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ResearcherQueryReq extends BaseQueryReq {
+public class ReferenceQueryReq extends BaseQueryReq implements Serializable {
 
-    private static final long serialVersionUID = - 5870447433726844909L;
+    private static final long serialVersionUID = - 2635117696964106247L;
 
     /**
      * 真实姓名
@@ -27,7 +28,7 @@ public class ResearcherQueryReq extends BaseQueryReq {
     @Length(max = 32)
     private String phoneLike;
     /**
-     * 研究员状态
+     * 推荐人状态
      */
     private Integer status;
 }

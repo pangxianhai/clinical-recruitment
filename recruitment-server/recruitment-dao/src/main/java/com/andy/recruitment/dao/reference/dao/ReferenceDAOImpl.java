@@ -9,9 +9,11 @@ import com.soyoung.base.mybatis.paginator.Page;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.PageUtil;
 import com.soyoung.base.page.Paginator;
+import com.soyoung.base.util.CollectionUtil;
 import com.soyoung.base.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +60,27 @@ public class ReferenceDAOImpl implements ReferenceDAO {
         AssertUtil.assertTrue(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.REFERENCE_UPDATE_FAILED);
         });
+    }
+
+    @Override
+    public ReferenceInfoDO getReferenceInfoByUserId(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        ReferenceInfoQuery query = new ReferenceInfoQuery();
+        query.setUserId(userId);
+        List<ReferenceInfoDO> referenceInfoDoList = this.referenceInfoMapper.select(query);
+        return CollectionUtil.parseOne(referenceInfoDoList, Function.identity());
+    }
+
+    @Override
+    public ReferenceInfoDO getReferenceInfoById(Long referenceId) {
+        if (referenceId == null) {
+            return null;
+        }
+        ReferenceInfoQuery query = new ReferenceInfoQuery();
+        query.setReferenceId(referenceId);
+        List<ReferenceInfoDO> referenceInfoDoList = this.referenceInfoMapper.select(query);
+        return CollectionUtil.parseOne(referenceInfoDoList, Function.identity());
     }
 }

@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.reference.entity;
 
-import com.andy.recruitment.dao.user.constant.UserStatus;
+import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -13,6 +13,10 @@ import lombok.Data;
 public class ReferenceInfoQuery implements Serializable {
 
     private static final long serialVersionUID = - 2442097856732489920L;
+    /**
+     * 推荐人ID
+     */
+    private Long referenceId;
     /**
      * 用户ID
      */
@@ -40,5 +44,5 @@ public class ReferenceInfoQuery implements Serializable {
     /**
      * 用户状态
      */
-    private UserStatus status;
+    private ReferenceStatus status;
 }

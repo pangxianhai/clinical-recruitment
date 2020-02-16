@@ -1,5 +1,6 @@
 package com.andy.recruitment.web.controller.organization.util;
 
+import com.andy.recruitment.biz.organization.service.OrganizationService;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationQuery;
@@ -8,7 +9,9 @@ import com.andy.recruitment.web.controller.organization.request.OrganizationQuer
 import com.andy.recruitment.web.controller.organization.response.OrganizationRes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -25,9 +28,12 @@ public class OrganizationUtil {
 
     private static RegionService regionService;
 
+    private static OrganizationService organizationService;
+
     @Autowired
-    public OrganizationUtil(RegionService regionService) {
+    public OrganizationUtil(RegionService regionService, OrganizationService organizationService) {
         OrganizationUtil.regionService = regionService;
+        OrganizationUtil.organizationService = organizationService;
     }
 
     public static OrganizationQuery transformOrganizationQuery(OrganizationQueryReq queryReq) {
@@ -70,5 +76,13 @@ public class OrganizationUtil {
         }
         return organizationDoList.stream().map(OrganizationUtil::transformOrganizationRes).filter(
             Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static Map<Long, OrganizationRes> getOrganizationRes(List<Long> organizationIdList) {
+        List<OrganizationDO> organizationDoList = organizationService.getOrganization(organizationIdList);
+        List<OrganizationRes> organizationResList = OrganizationUtil.transformOrganizationRes(organizationDoList);
+        return organizationResList.stream().collect(
+            Collectors.toMap(OrganizationRes::getOrganizationId, Function.identity(), (o1, o2) -> o1));
+
     }
 }

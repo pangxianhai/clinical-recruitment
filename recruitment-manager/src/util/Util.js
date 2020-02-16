@@ -145,7 +145,8 @@ export const RouterUtil = {
       redirectURL = defaultPath;
     }
     setTimeout(() => {
-      router.push({path: redirectURL});
+      router.push({path: redirectURL}, function () {
+      });
     }, 2000);
   }
 };

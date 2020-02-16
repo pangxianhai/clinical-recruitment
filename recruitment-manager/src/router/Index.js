@@ -196,8 +196,28 @@ const router = new Router({
           },
           menu: true,
           index: "7-1",
-          component: () => import("@/views/patient/List"),
+          component: () => import("@/views/reference/List"),
         },
+        {
+          path: 'add',
+          name: '添加推荐人',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "7-2",
+          component: () => import("@/views/reference/Add"),
+        },
+        {
+          path: 'update/:referenceId',
+          name: '更新推荐人',
+          meta: {
+            needLogin: true
+          },
+          menu: false,
+          index: "7-1",
+          component: () => import("@/views/reference/Update"),
+        }
       ]
     },
     {

@@ -1,5 +1,6 @@
 package com.andy.recruitment.web.controller.organization.util;
 
+import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
 import com.andy.recruitment.biz.organization.service.OrganizationService;
 import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
@@ -27,9 +28,13 @@ public class OrganizationDepartmentUtil {
 
     private static OrganizationService organizationService;
 
+    private static OrganizationDepartmentService organizationDepartmentService;
+
     @Autowired
-    public OrganizationDepartmentUtil(OrganizationService organizationService) {
+    public OrganizationDepartmentUtil(OrganizationService organizationService,
+        OrganizationDepartmentService organizationDepartmentService) {
         OrganizationDepartmentUtil.organizationService = organizationService;
+        OrganizationDepartmentUtil.organizationDepartmentService = organizationDepartmentService;
     }
 
     public static OrganizationDepartmentDO transformOrganizationDepartmentDo(
@@ -72,5 +77,15 @@ public class OrganizationDepartmentUtil {
             }
             return organizationDepartmentRes;
         }).collect(Collectors.toList());
+    }
+
+    public static Map<Long, OrganizationDepartmentRes> getOrganizationDepartmentRes(List<Long> departmentIdList) {
+        List<OrganizationDepartmentDO> organizationDepartmentDoList = organizationDepartmentService.getOrganizationDepartment(
+            departmentIdList);
+        List<OrganizationDepartmentRes> organizationDepartmentResList = OrganizationDepartmentUtil.transformOrganizationDepartmentRes(
+            organizationDepartmentDoList);
+        return organizationDepartmentResList.stream().collect(
+            Collectors.toMap(OrganizationDepartmentRes::getDepartmentId, Function.identity(), (d1, d2) -> d1));
+
     }
 }

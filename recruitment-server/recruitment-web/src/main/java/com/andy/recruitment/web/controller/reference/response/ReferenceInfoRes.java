@@ -1,26 +1,31 @@
-package com.andy.recruitment.dao.reference.entity;
+package com.andy.recruitment.web.controller.reference.response;
 
 import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
-import com.soyoung.base.base.BaseDO;
+import com.andy.recruitment.web.controller.user.response.UserInfoRes;
+import java.io.Serializable;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
  * 推荐人信息
  *
- * @author 庞先海 2018-12-26
+ * @author 庞先海 2020-02-15
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-public class ReferenceInfoDO extends BaseDO {
+public class ReferenceInfoRes implements Serializable {
 
-    private static final long serialVersionUID = - 1171395858993872274L;
+    private static final long serialVersionUID = - 3642147770564844962L;
+    /**
+     * 推荐人ID
+     */
+    private Long referenceId;
     /**
      * 用户ID
      */
     private Long userId;
+    /**
+     * 用户信息
+     */
+    private UserInfoRes userInfoRes;
     /**
      * 省ID
      */
@@ -33,6 +38,10 @@ public class ReferenceInfoDO extends BaseDO {
      * 区ID
      */
     private Long districtId;
+    /**
+     * 推荐人所在地址
+     */
+    private String address;
     /**
      * 执业机构
      */
