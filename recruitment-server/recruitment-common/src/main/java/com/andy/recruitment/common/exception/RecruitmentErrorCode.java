@@ -35,6 +35,10 @@ public enum RecruitmentErrorCode {
      * 更新患者失败
      */
     PATIENT_UPDATE_FAILED(101202),
+    /**
+     * 患者不存在
+     */
+    PATIENT_NOT_EXIST(101203),
 
     /**
      * 添加用户失败

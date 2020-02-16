@@ -9,6 +9,8 @@
         <result column="city_id" property="cityId" jdbcType="BIGINT"/>
         <result column="district_id" property="districtId" jdbcType="BIGINT"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="status" property="status"
+          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -22,6 +24,7 @@
         city_id,
         district_id,
         age,
+        status,
         created_by,
         created_time,
         updated_by,
@@ -31,8 +34,8 @@
     <select id="select" resultMap="baseResultMap"
       parameterType="com.andy.recruitment.dao.patient.entity.PatientQuery">
         select
-        p.id,p.user_id,p.province_id ,p.city_id,p.district_id ,p.age ,p.created_by,p.created_time,
-        p.updated_by,p.updated_time
+        p.id, p.user_id, p.province_id, p.city_id, p.district_id, p.age, p.status,
+        p.created_by, p.created_time, p.updated_by, p.updated_time
         from patient_info p inner join user_info u on (p.user_id = u.id)
         <where>
             <if test="userId != null">
@@ -47,14 +50,15 @@
             <if test="districtId != null">
                 and p. district_id = #{districtId, jdbcType=BIGINT}
             </if>
+            <if test="status != null">
+                and p.status =
+                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+            </if>
             <if test="realName != null and realName != ''">
                 and u.real_name like CONCAT('%', #{realName,jdbcType=VARCHAR},'%')
             </if>
             <if test="phoneLike != null and phoneLike != ''">
                 and u.phone like CONCAT('%', #{phoneLike,jdbcType=VARCHAR},'%')
-            </if>
-            <if test="status != null">
-                and u.status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
         </where>
     </select>
@@ -69,6 +73,7 @@
         #{cityId, jdbcType=BIGINT},
         #{districtId, jdbcType=BIGINT},
         #{age, jdbcType=INTEGER},
+        #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -90,6 +95,9 @@
             </if>
             <if test="age != null">
                 age = #{age, jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

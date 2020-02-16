@@ -1,18 +1,20 @@
-package com.andy.recruitment.dao.patient.entity;
+package com.andy.recruitment.web.controller.patient.response;
 
 import com.andy.recruitment.dao.patient.constant.PatientStatus;
+import com.andy.recruitment.web.controller.user.response.UserInfoRes;
 import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 患者查询信息
+ * 患者信息
  *
- * @author 庞先海 2018-12-27
+ * @author 庞先海 2020-02-16
  */
 @Data
-public class PatientQuery implements Serializable {
+public class PatientInfoRes implements Serializable {
 
-    private static final long serialVersionUID = - 3410326219398167056L;
+    private static final long serialVersionUID = 6944867281048775588L;
+
     /**
      * 患者ID
      */
@@ -21,6 +23,10 @@ public class PatientQuery implements Serializable {
      * 用户ID
      */
     private Long userId;
+    /**
+     * 用户信息
+     */
+    private UserInfoRes userInfoRes;
     /**
      * 省ID
      */
@@ -34,13 +40,13 @@ public class PatientQuery implements Serializable {
      */
     private Long districtId;
     /**
-     * 真实姓名
+     * 推荐人所在地址
      */
-    private String realName;
+    private String address;
     /**
-     * 手机号码模糊查询
+     * 年龄
      */
-    private String phoneLike;
+    private Integer age;
     /**
      * 患者状态
      */

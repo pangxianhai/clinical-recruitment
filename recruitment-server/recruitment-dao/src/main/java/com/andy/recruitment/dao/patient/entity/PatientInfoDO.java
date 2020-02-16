@@ -1,5 +1,6 @@
 package com.andy.recruitment.dao.patient.entity;
 
+import com.andy.recruitment.dao.patient.constant.PatientStatus;
 import com.soyoung.base.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,4 +37,8 @@ public class PatientInfoDO extends BaseDO {
      * 年龄
      */
     private Integer age;
+    /**
+     * 患者状态
+     */
+    private PatientStatus status;
 }

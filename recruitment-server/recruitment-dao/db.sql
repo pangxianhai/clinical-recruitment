@@ -96,6 +96,7 @@ create table patient_info(
   city_id bigint(20) NOT NULL COMMENT '市ID',
   district_id bigint(20) COMMENT '区ID',
   age int COMMENT '年龄',
+  status TINYINT  NOT NULL COMMENT '患者状态 1-正常,2-冻结',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',
   updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
