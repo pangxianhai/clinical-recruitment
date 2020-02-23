@@ -30,7 +30,7 @@ export default new Router({
           component: () => import("@/views/recruitment/ApplicationList"),
         },
         {
-          path: 'application',
+          path: ':recruitmentId/application/',
           component: () => import("@/views/recruitment/Application"),
         },
         {
@@ -69,6 +69,10 @@ export default new Router({
           path: 'wxlogin',
           component: () => import("@/views/user/WxLogin"),
         },
+        {
+          path: 'me',
+          component: () => import("@/views/user/Me"),
+        }
       ]
     },
     {

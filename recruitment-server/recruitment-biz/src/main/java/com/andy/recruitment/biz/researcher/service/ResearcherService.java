@@ -47,4 +47,12 @@ public interface ResearcherService {
      * @return 研究员信息
      */
     ResearcherInfoDO getResearcherInfoByResearchId(Long researcherId);
+
+    /**
+     * 通过用户id查询研究员信息
+     *
+     * @param userId 用户ID
+     * @return 研究员信息
+     */
+    ResearcherInfoDO getResearcherInfoByUserId(Long userId);
 }

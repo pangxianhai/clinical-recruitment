@@ -4,7 +4,6 @@ import com.andy.recruitment.web.auth.RecruitmentShiroRealm;
 import com.andy.recruitment.web.auth.RecruitmentShiroUserFilter;
 import com.soyoung.base.converter.MyHttpMessageConverter;
 import com.soyoung.base.datasource.EnableDataSource;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.Filter;
 import org.apache.shiro.mgt.SecurityManager;
@@ -72,13 +71,6 @@ public class App {
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-//        //拦截器.
-//        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-//                filterChainDefinitionMap.put("/administrator/login", "anon");
-////        filterChainDefinitionMap.put("/**", "anon");
-//        filterChainDefinitionMap.put("/**", "authc");
-//        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
         filters.put("authc", new RecruitmentShiroUserFilter());
         return shiroFilterFactoryBean;

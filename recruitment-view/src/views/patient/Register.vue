@@ -75,24 +75,11 @@
 </style>
 
 <script>
-  import {NavBar, CellGroup, Button, Col, Field, Popup, Picker, Row} from 'vant';
-  import AddressSelect from "@/components/AddressSelect";
   import AsyncValidator from 'async-validator';
   import PatientApi from '@/api/PatientApi';
   import UserApi from "@/api/UserApi";
 
   export default {
-    components: {
-      [NavBar.name]: NavBar,
-      [CellGroup.name]: CellGroup,
-      [Button.name]: Button,
-      [Col.name]: Col,
-      [Field.name]: Field,
-      [Popup.name]: Popup,
-      [Picker.name]: Picker,
-      [Row.name]: Row,
-      [AddressSelect.name]: AddressSelect,
-    },
     data: function () {
       return {
         showAddress: false,
@@ -138,9 +125,10 @@
     methods: {
       patientRegister: function () {
         this.validatorAll().then(() => {
-          PatientApi.registerPatient(this.patientInfo).then(userId => {
-            if (userId) {
-              UserApi.saveUserId(userId);
+          PatientApi.registerPatient(this.patientInfo).then(loginInfo => {
+            window.console.log(loginInfo);
+            if (loginInfo) {
+              UserApi.saveLoginInfo(loginInfo);
               this.$toast.success('注册成功！即将跳转');
               setTimeout(() => {
                 this.onGoBack();
@@ -172,7 +160,7 @@
         });
       },
       handlerError: function (item, errors, fields) {
-        if (typeof  item !== 'undefined') {
+        if (typeof item !== 'undefined') {
           if (typeof fields[item] !== 'undefined') {
             this.errorMsg[item] = fields[item][0].message;
           } else {
@@ -211,7 +199,11 @@
         if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
           redirectURL = '/recruitment/list';
         }
-        this.$router.push({path: redirectURL});
+        this.$router.push({
+          path: String(redirectURL)
+        }, function () {
+
+        });
       },
     }
   }

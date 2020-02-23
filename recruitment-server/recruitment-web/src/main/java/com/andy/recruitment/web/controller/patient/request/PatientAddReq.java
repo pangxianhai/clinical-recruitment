@@ -15,17 +15,6 @@ import org.hibernate.validator.constraints.Length;
 public class PatientAddReq implements Serializable {
 
     private static final long serialVersionUID = 2565459530001986631L;
-
-    /**
-     * 微信openId
-     */
-    @Length(max = 32)
-    private String openId;
-    /**
-     * 微信昵称
-     */
-    @Length(max = 64)
-    private String nickname;
     /**
      * 手机号
      */

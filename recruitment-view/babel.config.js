@@ -3,7 +3,11 @@ module.exports = {
   plugins: [
     [
       'import',
-      {libraryName: 'vant', libraryDirectory: 'es', style: true},
+      {
+        libraryName: 'vant',
+        libraryDirectory: 'es',
+        style: true
+      },
       'vant'
     ]
   ]

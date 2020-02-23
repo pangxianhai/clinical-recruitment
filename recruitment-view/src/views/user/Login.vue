@@ -3,8 +3,6 @@
 </template>
 
 <script>
-  import {Toast} from 'vant';
-
   import UserApi from '@/api/UserApi';
 
   export default {
@@ -12,36 +10,14 @@
       return {}
     },
     created: function () {
-      Toast.loading({
+      this.$toast.loading({
         mask: true,
         duration: 0,
         forbidClick: true,
         loadingType: 'spinner',
         message: '自动登录中...'
       });
-      if (UserApi.isLogin()) {
-        UserApi.getLogInfo().then((userInfo) => {
-          let thisUserType = this.$route.query.userType;
-          if (userInfo.userType.code !== parseInt(thisUserType)) {
-            Toast.loading({
-              duration: 0,
-              mask: true,
-              loadingType: 'spinner',
-              forbidClick: true,
-              message: '您没有权限访问该页面，即将为您跳转到项目列表页...'
-            });
-            setTimeout(() => {
-              this.onGoBack();
-              Toast.clear();
-            }, 2000);
-          } else {
-            this.onGoBack();
-          }
-        });
-      } else {
-        this.onToLogin();
-      }
-      Toast.clear();
+      this.onToLogin();
     },
     methods: {
       onGoBack: function () {
@@ -49,16 +25,21 @@
         if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
           redirectURL = '/recruitment/list';
         }
-        this.$router.push({path: redirectURL});
+        this.$router.push({
+          path: String(redirectURL)
+        }, function () {
+
+        });
       },
       onToLogin: function () {
         let query = [];
         for (let q in this.$route.query) {
-          query.push(q + '=' + this.$route.query[q]);
+          query.push(q + '=' + encodeURIComponent(String(this.$route.query[q])));
         }
-        let redirectURL = process.env.VUE_APP_HOST + "/user/wxlogin?" + query.join('&');
+        let redirectURL = window.location.origin + "/user/wxlogin?" + query.join('&');
         UserApi.getWxLoginUrl(redirectURL).then(data => {
-          window.location.href = data;
+          this.$toast.clear();
+          window.location.href = String(data);
         });
       }
     }

@@ -84,4 +84,9 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     public PatientInfoDO getPatient(Long patientId) {
         return this.patientInfoDAO.getPatientInfoById(patientId);
     }
+
+    @Override
+    public PatientInfoDO getPatientByUserId(Long userId) {
+        return this.patientInfoDAO.getPatientInfoByUserId(userId);
+    }
 }

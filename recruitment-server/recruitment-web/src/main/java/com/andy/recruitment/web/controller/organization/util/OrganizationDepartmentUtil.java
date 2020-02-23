@@ -2,15 +2,18 @@ package com.andy.recruitment.web.controller.organization.util;
 
 import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
 import com.andy.recruitment.biz.organization.service.OrganizationService;
-import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentQuery;
 import com.andy.recruitment.web.controller.organization.request.OrganizationDepartmentAddReq;
 import com.andy.recruitment.web.controller.organization.request.OrganizationDepartmentQueryReq;
+import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentDetailRes;
 import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentRes;
+import com.andy.recruitment.web.controller.organization.response.OrganizationRes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
@@ -57,35 +60,50 @@ public class OrganizationDepartmentUtil {
         return departmentQuery;
     }
 
-    public static List<OrganizationDepartmentRes> transformOrganizationDepartmentRes(
+    public static List<OrganizationDepartmentDetailRes> transformOrganizationDepartmentDetailRes(
         List<OrganizationDepartmentDO> departmentDoList) {
         if (CollectionUtils.isEmpty(departmentDoList)) {
             return new ArrayList<>(0);
         }
         List<Long> organizationIdList = departmentDoList.stream().map(
             OrganizationDepartmentDO::getOrganizationId).collect(Collectors.toList());
-        List<OrganizationDO> organizationDoList = organizationService.getOrganization(organizationIdList);
-        Map<Long, OrganizationDO> organizationDoMap = organizationDoList.stream().collect(
-            Collectors.toMap(OrganizationDO::getId, Function.identity(), (o1, o2) -> o1));
-        return departmentDoList.stream().map(departmentDo -> {
-            OrganizationDepartmentRes organizationDepartmentRes = new OrganizationDepartmentRes();
-            BeanUtils.copyProperties(departmentDo, organizationDepartmentRes);
-            organizationDepartmentRes.setDepartmentId(departmentDo.getId());
-            OrganizationDO organizationDo = organizationDoMap.get(departmentDo.getOrganizationId());
-            if (organizationDo != null) {
-                organizationDepartmentRes.setOrganizationName(organizationDo.getName());
-            }
-            return organizationDepartmentRes;
-        }).collect(Collectors.toList());
+        Map<Long, OrganizationRes> organizationResMap = OrganizationUtil.getOrganizationRes(organizationIdList);
+        return departmentDoList.stream().map(
+            departmentDo -> transformOrganizationDepartmentDetailRes(departmentDo, organizationResMap)).collect(
+            Collectors.toList());
     }
 
     public static Map<Long, OrganizationDepartmentRes> getOrganizationDepartmentRes(List<Long> departmentIdList) {
         List<OrganizationDepartmentDO> organizationDepartmentDoList = organizationDepartmentService.getOrganizationDepartment(
             departmentIdList);
-        List<OrganizationDepartmentRes> organizationDepartmentResList = OrganizationDepartmentUtil.transformOrganizationDepartmentRes(
-            organizationDepartmentDoList);
+        if (CollectionUtils.isEmpty(organizationDepartmentDoList)) {
+            return Collections.emptyMap();
+        }
+        List<OrganizationDepartmentRes> organizationDepartmentResList = organizationDepartmentDoList.stream().map(
+            OrganizationDepartmentUtil::transformOrganizationDepartmentRes).filter(Objects::nonNull).collect(
+            Collectors.toList());
         return organizationDepartmentResList.stream().collect(
             Collectors.toMap(OrganizationDepartmentRes::getDepartmentId, Function.identity(), (d1, d2) -> d1));
+    }
 
+    public static OrganizationDepartmentRes transformOrganizationDepartmentRes(OrganizationDepartmentDO departmentDo) {
+        if (departmentDo == null) {
+            return null;
+        }
+        OrganizationDepartmentRes departmentRes = new OrganizationDepartmentRes();
+        BeanUtils.copyProperties(departmentDo, departmentRes);
+        departmentRes.setDepartmentId(departmentDo.getId());
+        return departmentRes;
+    }
+
+    private static OrganizationDepartmentDetailRes transformOrganizationDepartmentDetailRes(
+        OrganizationDepartmentDO departmentDo, Map<Long, OrganizationRes> organizationResMap) {
+        OrganizationDepartmentDetailRes departmentDetailRes = new OrganizationDepartmentDetailRes();
+        BeanUtils.copyProperties(departmentDo, departmentDetailRes);
+        departmentDetailRes.setDepartmentId(departmentDo.getId());
+        if (organizationResMap != null) {
+            departmentDetailRes.setOrganizationRes(organizationResMap.get(departmentDetailRes.getOrganizationId()));
+        }
+        return departmentDetailRes;
     }
 }

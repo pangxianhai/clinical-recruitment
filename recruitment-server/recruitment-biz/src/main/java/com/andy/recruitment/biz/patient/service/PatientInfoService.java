@@ -57,4 +57,12 @@ public interface PatientInfoService {
      * @return 患者信息
      */
     PatientInfoDO getPatient(Long patientId);
+
+    /**
+     * 通过用户ID查询患者信息 只返回有效的患者信息
+     *
+     * @param userId 用户ID
+     * @return 患者信息
+     */
+    PatientInfoDO getPatientByUserId(Long userId);
 }

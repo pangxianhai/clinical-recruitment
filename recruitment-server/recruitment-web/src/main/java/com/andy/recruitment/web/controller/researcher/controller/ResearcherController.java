@@ -7,7 +7,7 @@ import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherAddReq;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherQueryReq;
-import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoRes;
+import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoDetailRes;
 import com.andy.recruitment.web.controller.researcher.util.ResearcherUtil;
 import com.soyoung.base.auth.LoginInfo;
 import com.soyoung.base.auth.RoleType;
@@ -45,19 +45,20 @@ public class ResearcherController {
     @RequiresUser
     @RequiresRoles(RoleType.MANAGER_CODE + "")
     @GetMapping
-    public PageResult<ResearcherInfoRes> listResearcher(@MyParameter ResearcherQueryReq queryReq) {
+    public PageResult<ResearcherInfoDetailRes> listResearcher(@MyParameter ResearcherQueryReq queryReq) {
         ResearcherQuery query = ResearcherUtil.transformResearcherQuery(queryReq);
         PageResult<ResearcherInfoDO> pageResult = this.researcherService.getResearcherInfo(query,
             queryReq.getPaginator());
-        List<ResearcherInfoRes> researcherInfoResList = ResearcherUtil.transformResearcherInfoRes(pageResult.getData());
-        return new PageResult<>(researcherInfoResList, pageResult.getPaginator());
+        List<ResearcherInfoDetailRes> researcherInfoDetailResList = ResearcherUtil.transformResearcherDetailRes(
+            pageResult.getData());
+        return new PageResult<>(researcherInfoDetailResList, pageResult.getPaginator());
     }
 
     @RequiresUser
     @GetMapping("/{researcherId:\\d+}")
-    public ResearcherInfoRes getResearcherDetail(@PathVariable Long researcherId) {
+    public ResearcherInfoDetailRes getResearcherDetail(@PathVariable Long researcherId) {
         ResearcherInfoDO researcherInfoDo = this.researcherService.getResearcherInfoByResearchId(researcherId);
-        return ResearcherUtil.transformResearcherInfoRes(researcherInfoDo);
+        return ResearcherUtil.transformResearcherDetailRes(researcherInfoDo);
     }
 
     @RequiresUser

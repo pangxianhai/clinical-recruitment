@@ -39,6 +39,10 @@ public enum RecruitmentErrorCode {
      * 患者不存在
      */
     PATIENT_NOT_EXIST(101203),
+    /**
+     * 地区信息错误
+     */
+    PATIENT_REGISTER_REGION_ERROR(101204),
 
     /**
      * 添加用户失败
@@ -60,6 +64,14 @@ public enum RecruitmentErrorCode {
      * 手机号已经被使用
      */
     USER_PHONE_HAS_USED(101304),
+    /**
+     * 未登录
+     */
+    USER_NOT_LOGIN(101305),
+    /**
+     * 用户注册失败
+     */
+    USER_REGISTER_FAILED(101306),
 
     /**
      * 招募信息添加失败

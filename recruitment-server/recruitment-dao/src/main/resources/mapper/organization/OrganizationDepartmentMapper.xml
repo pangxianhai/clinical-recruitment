@@ -40,6 +40,9 @@
                     #{departmentId,jdbcType=BIGINT}
                 </foreach>
             </if>
+            <if test="departmentId != null">
+                and id = #{departmentId,jdbcType=BIGINT}
+            </if>
         </where>
     </select>
 

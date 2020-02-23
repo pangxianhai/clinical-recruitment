@@ -9,9 +9,11 @@ import com.soyoung.base.mybatis.paginator.Page;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.PageUtil;
 import com.soyoung.base.page.Paginator;
+import com.soyoung.base.util.CollectionUtil;
 import com.soyoung.base.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,5 +69,13 @@ public class OrganizationDepartmentDAOImpl implements OrganizationDepartmentDAO 
         OrganizationDepartmentQuery query = new OrganizationDepartmentQuery();
         query.setDepartmentIdList(departmentIdList);
         return this.organizationDepartmentMapper.select(query);
+    }
+
+    @Override
+    public OrganizationDepartmentDO getOrganizationDepartmentById(Long departmentId) {
+        OrganizationDepartmentQuery query = new OrganizationDepartmentQuery();
+        query.setDepartmentId(departmentId);
+        List<OrganizationDepartmentDO> departmentDoList = this.organizationDepartmentMapper.select(query);
+        return CollectionUtil.parseOne(departmentDoList, Function.identity());
     }
 }

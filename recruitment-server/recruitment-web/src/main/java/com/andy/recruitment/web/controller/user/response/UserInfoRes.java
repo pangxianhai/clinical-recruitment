@@ -40,10 +40,6 @@ public class UserInfoRes implements Serializable {
      */
     private String phone;
     /**
-     * 密码
-     */
-    private String password;
-    /**
      * 性别
      */
     private Gender gender;

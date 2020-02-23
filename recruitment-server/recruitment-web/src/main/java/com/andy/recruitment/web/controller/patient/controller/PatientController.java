@@ -1,13 +1,15 @@
 package com.andy.recruitment.web.controller.patient.controller;
 
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
+import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.dao.patient.constant.PatientStatus;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.patient.request.PatientAddReq;
 import com.andy.recruitment.web.controller.patient.request.PatientQueryReq;
-import com.andy.recruitment.web.controller.patient.response.PatientInfoRes;
+import com.andy.recruitment.web.controller.patient.request.PatientRegisterReq;
+import com.andy.recruitment.web.controller.patient.response.PatientInfoDetailRes;
 import com.andy.recruitment.web.controller.patient.util.PatientInfoUtil;
 import com.soyoung.base.auth.LoginInfo;
 import com.soyoung.base.auth.RoleType;
@@ -37,12 +39,16 @@ public class PatientController {
 
     private final PatientInfoService patientInfoService;
 
+    private final UserService userService;
+
     @Autowired
-    public PatientController(PatientInfoService patientInfoService) {
+    public PatientController(PatientInfoService patientInfoService, UserService userService) {
         this.patientInfoService = patientInfoService;
+        this.userService = userService;
     }
 
     @RequiresUser
+    @RequiresRoles(RoleType.MANAGER_CODE + "")
     @PostMapping
     public boolean addPatient(@RequestBody PatientAddReq patientAddReq) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
@@ -53,18 +59,28 @@ public class PatientController {
         return true;
     }
 
+    @PostMapping("register")
+    public LoginInfo registerPatient(@RequestBody PatientRegisterReq patientRegisterReq) {
+        PatientInfoDO patientInfoDo = PatientInfoUtil.transformPatientInfoDo(patientRegisterReq);
+        patientInfoDo.setStatus(PatientStatus.NORMAL);
+        UserInfoDO userInfoDo = PatientInfoUtil.transformUserInfo(patientRegisterReq);
+        this.patientInfoService.registerPatient(patientInfoDo, userInfoDo, patientRegisterReq.getName());
+        return this.userService.userInfoLogin(userInfoDo);
+    }
+
     @GetMapping
-    public PageResult<PatientInfoRes> getPatient(@MyParameter PatientQueryReq queryReq) {
+    public PageResult<PatientInfoDetailRes> getPatient(@MyParameter PatientQueryReq queryReq) {
         PatientQuery query = PatientInfoUtil.transformPatientQuery(queryReq);
         PageResult<PatientInfoDO> pageResult = this.patientInfoService.getPatient(query, queryReq.getPaginator());
-        List<PatientInfoRes> patientInfoResList = PatientInfoUtil.transformReferenceRes(pageResult.getData());
-        return new PageResult<>(patientInfoResList, pageResult.getPaginator());
+        List<PatientInfoDetailRes> patientInfoDetailResList = PatientInfoUtil.transformReferenceDetailRes(
+            pageResult.getData());
+        return new PageResult<>(patientInfoDetailResList, pageResult.getPaginator());
     }
 
     @GetMapping("/{patientId:\\d+}")
-    public PatientInfoRes getPatient(@PathVariable Long patientId) {
+    public PatientInfoDetailRes getPatient(@PathVariable Long patientId) {
         PatientInfoDO patientInfoDo = this.patientInfoService.getPatient(patientId);
-        return PatientInfoUtil.transformReferenceRes(patientInfoDo);
+        return PatientInfoUtil.transformReferenceDetailRes(patientInfoDo);
     }
 
     @RequiresUser

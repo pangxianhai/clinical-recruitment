@@ -10,6 +10,21 @@ const recruitmentStatus = {
   FINISHED: 2
 };
 
+const applicationAction = {
+  ATTEND: '1',
+  RECOMMEND: '2',
+  RESEARCHER: '3'
+};
+
+const cookieNameConstant = {
+  USER_NAME: 'N5Bc4f',
+  TOKEN_NAME: 'b4Qi5W'
+};
+
 export const UserConstants = userConstants;
 
 export const RecruitmentStatus = recruitmentStatus;
+
+export const ApplicationAction = applicationAction;
+
+export const CookieNameConstant = cookieNameConstant;

@@ -15,6 +15,11 @@ public class OrganizationDepartmentQuery implements Serializable {
     private static final long serialVersionUID = - 3006009164033875171L;
 
     /**
+     * 科室ID
+     */
+    private Long departmentId;
+
+    /**
      * 机构ID
      */
     private Long organizationId;

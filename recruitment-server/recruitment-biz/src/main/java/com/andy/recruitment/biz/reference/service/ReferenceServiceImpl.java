@@ -74,4 +74,9 @@ public class ReferenceServiceImpl implements ReferenceService {
     public ReferenceInfoDO getReference(Long referenceId) {
         return this.referenceDAO.getReferenceInfoById(referenceId);
     }
+
+    @Override
+    public ReferenceInfoDO getReferenceByUserId(Long userId) {
+        return this.referenceDAO.getReferenceInfoByUserId(userId);
+    }
 }

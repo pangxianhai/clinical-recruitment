@@ -15,6 +15,7 @@ import com.andy.recruitment.web.controller.organization.util.OrganizationDepartm
 import com.andy.recruitment.web.controller.organization.util.OrganizationUtil;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherAddReq;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherQueryReq;
+import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoDetailRes;
 import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoRes;
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
 import com.andy.recruitment.web.controller.user.util.UserInfoUtil;
@@ -84,16 +85,21 @@ public class ResearcherUtil {
         return query;
     }
 
-    public static ResearcherInfoRes transformResearcherInfoRes(ResearcherInfoDO researcherInfoDo) {
-        List<ResearcherInfoDO> researcherInfoDoList = Collections.singletonList(researcherInfoDo);
-        List<ResearcherInfoRes> researcherInfoResList = ResearcherUtil.transformResearcherInfoRes(researcherInfoDoList);
-        if (CollectionUtils.isEmpty(researcherInfoResList)) {
+    public static ResearcherInfoDetailRes transformResearcherDetailRes(ResearcherInfoDO researcherInfoDo) {
+        if (researcherInfoDo == null) {
             return null;
         }
-        return researcherInfoResList.get(0);
+        List<ResearcherInfoDO> researcherInfoDoList = Collections.singletonList(researcherInfoDo);
+        List<ResearcherInfoDetailRes> researcherInfoDetailResList = ResearcherUtil.transformResearcherDetailRes(
+            researcherInfoDoList);
+        if (CollectionUtils.isEmpty(researcherInfoDetailResList)) {
+            return null;
+        }
+        return researcherInfoDetailResList.get(0);
     }
 
-    public static List<ResearcherInfoRes> transformResearcherInfoRes(List<ResearcherInfoDO> researcherInfoDoList) {
+    public static List<ResearcherInfoDetailRes> transformResearcherDetailRes(
+        List<ResearcherInfoDO> researcherInfoDoList) {
         if (CollectionUtils.isEmpty(researcherInfoDoList)) {
             return new ArrayList<>(0);
         }
@@ -111,23 +117,33 @@ public class ResearcherUtil {
             departmentIdList);
 
         return researcherInfoDoList.stream().map(
-            researcherInfoDo -> ResearcherUtil.transformResearcherInfoRes(researcherInfoDo, userInfoResMap,
+            researcherInfoDo -> ResearcherUtil.transformResearcherDetailRes(researcherInfoDo, userInfoResMap,
                 organizationResMap, organizationDepartmentResMap)).collect(Collectors.toList());
     }
 
-    private static ResearcherInfoRes transformResearcherInfoRes(ResearcherInfoDO researcherInfoDo,
-        Map<Long, UserInfoRes> userInfoResMap, Map<Long, OrganizationRes> organizationResMap,
-        Map<Long, OrganizationDepartmentRes> organizationDepartmentResMap) {
+    public static ResearcherInfoRes transformResearcherRes(ResearcherInfoDO researcherInfoDo) {
         if (researcherInfoDo == null) {
             return null;
         }
         ResearcherInfoRes researcherInfoRes = new ResearcherInfoRes();
         BeanUtils.copyProperties(researcherInfoDo, researcherInfoRes);
-        researcherInfoRes.setUserInfoRes(userInfoResMap.get(researcherInfoRes.getUserId()));
-        researcherInfoRes.setOrganizationRes(organizationResMap.get(researcherInfoRes.getOrganizationId()));
-        researcherInfoRes.setOrganizationDepartmentRes(
-            organizationDepartmentResMap.get(researcherInfoRes.getDepartmentId()));
         researcherInfoRes.setResearcherId(researcherInfoDo.getId());
         return researcherInfoRes;
+    }
+
+    private static ResearcherInfoDetailRes transformResearcherDetailRes(ResearcherInfoDO researcherInfoDo,
+        Map<Long, UserInfoRes> userInfoResMap, Map<Long, OrganizationRes> organizationResMap,
+        Map<Long, OrganizationDepartmentRes> organizationDepartmentResMap) {
+        if (researcherInfoDo == null) {
+            return null;
+        }
+        ResearcherInfoDetailRes researcherInfoDetailRes = new ResearcherInfoDetailRes();
+        BeanUtils.copyProperties(researcherInfoDo, researcherInfoDetailRes);
+        researcherInfoDetailRes.setUserInfoRes(userInfoResMap.get(researcherInfoDetailRes.getUserId()));
+        researcherInfoDetailRes.setOrganizationRes(organizationResMap.get(researcherInfoDetailRes.getOrganizationId()));
+        researcherInfoDetailRes.setOrganizationDepartmentRes(
+            organizationDepartmentResMap.get(researcherInfoDetailRes.getDepartmentId()));
+        researcherInfoDetailRes.setResearcherId(researcherInfoDo.getId());
+        return researcherInfoDetailRes;
     }
 }

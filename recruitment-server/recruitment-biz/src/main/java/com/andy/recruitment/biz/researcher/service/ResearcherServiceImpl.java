@@ -76,4 +76,9 @@ public class ResearcherServiceImpl implements ResearcherService {
     public ResearcherInfoDO getResearcherInfoByResearchId(Long researcherId) {
         return this.researcherDAO.getResearcherInfoByResearchId(researcherId);
     }
+
+    @Override
+    public ResearcherInfoDO getResearcherInfoByUserId(Long userId) {
+        return this.researcherDAO.getResearcherInfoByUserId(userId);
+    }
 }

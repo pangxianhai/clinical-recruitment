@@ -48,6 +48,9 @@
                     #{organizationId,jdbcType=BIGINT}
                 </foreach>
             </if>
+            <if test="organizationId != null">
+                and id = #{organizationId,jdbcType=BIGINT}
+            </if>
         </where>
     </select>
 

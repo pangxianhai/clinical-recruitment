@@ -63,6 +63,15 @@
                 type="number"
             ></van-field>
             <van-field
+                v-model="applicationInfo.phone"
+                clearable
+                label="推荐人手机号"
+                placeholder="请推荐人手机号"
+                :error-message="errorMsg.phone"
+                @blur="validator('name')"
+            ></van-field>
+
+            <van-field
                 v-model="applicationInfo.diseaseDesc"
                 label="病例描述"
                 type="textarea"
@@ -83,10 +92,14 @@
                          @click="previewImage(index)"/>
                 </van-col>
             </van-row>
-            <van-checkbox class="service-agreement" v-model="agreementService">
-                我同意服务协议
-                <a @click="onToServiceAgreement">（服务协议）</a>
-            </van-checkbox>
+            <van-row type="flex" justify="center">
+                <van-col>
+                    <van-checkbox class="service-agreement" v-model="agreementService">
+                        我同意服务协议
+                        <a @click="onToServiceAgreement">（服务协议）</a>
+                    </van-checkbox>
+                </van-col>
+            </van-row>
         </van-cell-group>
         <van-row class="submit-panel">
             <van-col span="11">
@@ -120,24 +133,7 @@
     }
 </style>
 <script>
-  import {
-    NavBar,
-    Button,
-    Icon,
-    Row,
-    Col,
-    Popup,
-    Cell,
-    CellGroup,
-    Uploader,
-    Field,
-    Picker,
-    Checkbox,
-    CheckboxGroup,
-    ImagePreview,
-    Notify
-  } from 'vant';
-  import AddressSelect from "@/components/AddressSelect";
+  import {ImagePreview} from 'vant';
   import AsyncValidator from 'async-validator';
   import RecruitmentApi from "@/api/RecruitmentApi";
   import PatientApi from "@/api/PatientApi";
@@ -147,24 +143,6 @@
   import md5 from 'js-md5';
 
   export default {
-    components: {
-      [NavBar.name]: NavBar,
-      [Button.name]: Button,
-      [Icon.name]: Icon,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Popup.name]: Popup,
-      [Cell.name]: Cell,
-      [CellGroup.name]: CellGroup,
-      [Uploader.name]: Uploader,
-      [Field.name]: Field,
-      [Picker.name]: Picker,
-      [AddressSelect.name]: AddressSelect,
-      [Checkbox.name]: Checkbox,
-      [CheckboxGroup.name]: CheckboxGroup,
-      [ImagePreview.name]: ImagePreview,
-      [Notify.name]: Notify,
-    },
     data: function () {
       return {
         recruitment: {
@@ -184,17 +162,23 @@
       }
     },
     created: function () {
-      this.applicationInfo.nickname = this.$route.query.nickname;
-      this.applicationInfo.openId = this.$route.query.openId;
-      this.applicationInfo.doctorUserId = this.$route.query.doctorUserId;
       this.onLoadRecruitmentInfo();
       this.onLoadPatientInfo();
+      if (!UserApi.isLogin()) {
+        this.$router.push({
+          path: '/user/login',
+          query: {
+            redirectURL: this.$route.fullPath,
+            action: this.$route.query.action
+          },
+        });
+      }
     },
     methods: {
       onApplicationAction: function () {
         this.validatorApplicationInfo().then(() => {
           if (!this.agreementService) {
-            Notify('请您同意服务协议');
+            this.$notify('请您同意服务协议');
             return;
           }
           let diseaseImageList = [];
@@ -295,7 +279,7 @@
         });
       },
       onLoadRecruitmentInfo: function () {
-        let recruitmentId = this.$route.query.recruitmentId;
+        let recruitmentId = this.$route.params.recruitmentId;
         if (typeof recruitmentId === 'undefined') {
           return;
         }

@@ -46,4 +46,12 @@ public interface OrganizationDepartmentService {
      * @return 科室信息
      */
     List<OrganizationDepartmentDO> getOrganizationDepartment(List<Long> departmentIdList);
+
+    /**
+     * 通过科室id查询科室信息
+     *
+     * @param departmentId 科室id
+     * @return 科室信息
+     */
+    OrganizationDepartmentDO getOrganizationDepartmentById(Long departmentId);
 }

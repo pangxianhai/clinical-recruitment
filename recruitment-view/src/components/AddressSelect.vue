@@ -5,7 +5,6 @@
 </template>
 
 <script>
-  import {Area,Popup} from 'vant';
   import AreaData from '@/util/AreaData'
 
   export default {
@@ -16,11 +15,8 @@
     data: function () {
       return {
         areaList: AreaData,
+        name: 'address-select',
       }
-    },
-    components: {
-      [Area.name]: Area,
-      [Popup.name]: Popup,
     },
     created: function () {
     },

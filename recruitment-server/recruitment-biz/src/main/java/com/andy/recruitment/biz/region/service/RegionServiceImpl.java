@@ -1,5 +1,6 @@
 package com.andy.recruitment.biz.region.service;
 
+import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.dao.region.dao.RegionDAO;
 import com.andy.recruitment.dao.region.entity.RegionDO;
 import java.util.List;
@@ -62,5 +63,35 @@ public class RegionServiceImpl implements RegionService {
             buffer.append(district.getRegionName());
         }
         return buffer.toString();
+    }
+
+    @Override
+    public AddressInfo parseAddressInfo(String text) {
+        if (null == text) {
+            return null;
+        }
+        String[] addressArr = text.split(" ");
+        AddressInfo addressInfo = new AddressInfo();
+        if (addressArr.length == 2) {
+            this.parseAddressInfo(addressInfo, addressArr[0], addressArr[0], addressArr[1]);
+        } else if (addressArr.length == 3) {
+            this.parseAddressInfo(addressInfo, addressArr[0], addressArr[1], addressArr[2]);
+        }
+        return addressInfo;
+    }
+
+    private void parseAddressInfo(AddressInfo addressInfo, String provinceName, String cityName, String districtName) {
+        RegionDO province = this.regionDAO.getRegionByParent(RegionDAO.CHINA_REGION_ID, provinceName);
+        addressInfo.setProvince(province);
+        if (null == province) {
+            return;
+        }
+        RegionDO city = this.regionDAO.getRegionByParent(province.getId(), cityName);
+        addressInfo.setCity(city);
+        if (null == city) {
+            return;
+        }
+        RegionDO district = this.regionDAO.getRegionByParent(city.getId(), districtName);
+        addressInfo.setDistrict(district);
     }
 }

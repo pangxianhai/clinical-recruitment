@@ -15,6 +15,11 @@ public class OrganizationQuery implements Serializable {
     private static final long serialVersionUID = - 5991416483672186462L;
 
     /**
+     * 机构ID
+     */
+    private Long organizationId;
+
+    /**
      * 机构名称模糊查询
      */
     private String nameLike;

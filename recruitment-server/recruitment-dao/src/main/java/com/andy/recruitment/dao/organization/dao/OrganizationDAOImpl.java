@@ -9,10 +9,12 @@ import com.soyoung.base.mybatis.paginator.Page;
 import com.soyoung.base.page.PageResult;
 import com.soyoung.base.page.PageUtil;
 import com.soyoung.base.page.Paginator;
+import com.soyoung.base.util.CollectionUtil;
 import com.soyoung.base.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +77,16 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         OrganizationQuery query = new OrganizationQuery();
         query.setOrganizationIdList(organizationIdList);
         return this.organizationInfoMapper.select(query);
+    }
+
+    @Override
+    public OrganizationDO getOrganizationById(Long organizationId) {
+        if (organizationId == null) {
+            return null;
+        }
+        OrganizationQuery query = new OrganizationQuery();
+        query.setOrganizationId(organizationId);
+        List<OrganizationDO> organizationDoList = this.organizationInfoMapper.select(query);
+        return CollectionUtil.parseOne(organizationDoList, Function.identity());
     }
 }

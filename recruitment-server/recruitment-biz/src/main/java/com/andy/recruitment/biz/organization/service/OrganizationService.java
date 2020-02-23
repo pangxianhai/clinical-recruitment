@@ -45,4 +45,12 @@ public interface OrganizationService {
      * @return 机构信息
      */
     List<OrganizationDO> getOrganization(List<Long> organizationIdList);
+
+    /**
+     * 通过机构ID查询机构信息
+     *
+     * @param organizationId 机构ID
+     * @return 机构信息
+     */
+    OrganizationDO getOrganizationById(Long organizationId);
 }

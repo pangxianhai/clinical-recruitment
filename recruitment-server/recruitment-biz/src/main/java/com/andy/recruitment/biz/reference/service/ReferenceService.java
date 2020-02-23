@@ -48,4 +48,12 @@ public interface ReferenceService {
      */
     ReferenceInfoDO getReference(Long referenceId);
 
+    /**
+     * 通过用户ID查询推荐人信息
+     *
+     * @param userId 用户ID
+     * @return 推荐人信息
+     */
+    ReferenceInfoDO getReferenceByUserId(Long userId);
+
 }

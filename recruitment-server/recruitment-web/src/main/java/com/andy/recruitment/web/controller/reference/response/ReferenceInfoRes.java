@@ -23,10 +23,6 @@ public class ReferenceInfoRes implements Serializable {
      */
     private Long userId;
     /**
-     * 用户信息
-     */
-    private UserInfoRes userInfoRes;
-    /**
      * 省ID
      */
     private Long provinceId;

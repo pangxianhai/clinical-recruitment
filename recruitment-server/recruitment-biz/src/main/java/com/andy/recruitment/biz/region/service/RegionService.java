@@ -1,5 +1,6 @@
 package com.andy.recruitment.biz.region.service;
 
+import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.dao.region.entity.RegionDO;
 import java.util.List;
 
@@ -53,4 +54,12 @@ public interface RegionService {
      * @return 名称字符串
      */
     String parseAddressName(Long provinceId, Long cityId, Long districtId);
+
+    /**
+     * 将 '四川 成都 武侯区'这种字符串解析成地址对象
+     *
+     * @param text 地区文本
+     * @return 地址对象
+     */
+    AddressInfo parseAddressInfo(String text);
 }

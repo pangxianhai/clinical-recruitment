@@ -15,3 +15,9 @@ executor:
     keepAliveTime: 60000
     queueSize: 1024
     threadName: recruitment-server-thread
+
+weixin:
+    appId: wx333c087d34914c3c
+    appSecret: a72599df68568a01bab10ad7f85544b7
+    apiAddress: https://api.weixin.qq.com
+    openAddress: https://open.weixin.qq.com

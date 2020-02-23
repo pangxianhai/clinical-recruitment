@@ -2,10 +2,7 @@
     <div class="recruitment-detail">
         <van-nav-bar title="项目详情" left-arrow @click-right="onRecruitmentApplication"
                      @click-left="onGoBack">
-            <van-icon v-if="userInfo.userType.code === UserConstants.DOCTOR" name="share"
-                      slot="right"></van-icon>
-            <van-icon v-if="userInfo.userType.code === UserConstants.PATIENT" name="edit"
-                      slot="right"></van-icon>
+            <van-icon name="share" slot="right"></van-icon>
         </van-nav-bar>
         <van-panel class="recruitment-panel" :title="recruitmentInfo.title">
             <van-row type="flex">
@@ -30,7 +27,20 @@
                 <van-col span="5">招募人数:</van-col>
                 <van-col span="8">{{recruitmentInfo.recruitmentNumber}}人</van-col>
                 <van-col span="5">招募状态:</van-col>
-                <van-col span="3">{{recruitmentInfo.status.desc}}</van-col>
+                <van-col span="3">
+                    <van-tag style="min-width: 38px" round
+                             v-if="RecruitmentStatus.FINISHED===recruitmentInfo.status.code">
+                        {{recruitmentInfo.status.desc}}
+                    </van-tag>
+                    <van-tag style="min-width: 38px" round type="primary" plain
+                             v-if="RecruitmentStatus.NOT_BEGIN===recruitmentInfo.status.code">
+                        {{recruitmentInfo.status.desc}}
+                    </van-tag>
+                    <van-tag style="min-width: 38px" round type="primary"
+                             v-if="RecruitmentStatus.IN_PROCESS===recruitmentInfo.status.code">
+                        {{recruitmentInfo.status.desc}}
+                    </van-tag>
+                </van-col>
             </van-row>
             <van-row type="flex">
                 <van-col span="5">起至时间:</van-col>
@@ -59,49 +69,20 @@
                     :v-model="false"
                     :finished="true">
                     <van-cell
-                        v-for="(center,index) in researchCenterList"
+                        v-for="(department,index) in recruitmentInfo.departmentInfoBoList"
                         :key="index"
-                        :title="center.name" :value="center.address">
+                        :title="department.organizationName + '-' + department.departmentName"
+                        :value="department.organizationAddress">
                     </van-cell>
                 </van-list>
             </van-tab>
         </van-tabs>
-        <van-row style="margin-top:15px;margin-bottom:4px " type="flex" justify="center">
-            <van-col>
-                <van-button type="info" size="small"
-                            @click="onContactUs">
-                    <van-icon name="service-o"></van-icon>
-                    联系我们
-                </van-button>
-            </van-col>
-            <van-col
-                v-if="userInfo.userType.code === UserConstants.PATIENT && recruitmentInfo.status.code === RecruitmentStatus.IN_PROCESS"
-                style="margin-left: 15px">
-                <van-button type="warning" size="small"
-                            @click="onRecruitmentApplication()">
-                    <van-icon name="edit"></van-icon>
-                    我要参加
-                </van-button>
-            </van-col>
-            <van-col
-                v-if="userInfo.userType.code === UserConstants.DOCTOR && recruitmentInfo.status.code === RecruitmentStatus.IN_PROCESS"
-                style="margin-left: 15px">
-                <van-button type="warning" size="small"
-                            @click="onRecruitmentApplication()">
-                    <van-icon name="share"></van-icon>
-                    我要推荐
-                </van-button>
-            </van-col>
-            <van-col
-                v-if="userInfo.userType.code === UserConstants.DOCTOR && recruitmentInfo.status.code === RecruitmentStatus.IN_PROCESS"
-                style="margin-left: 15px">
-                <van-button type="danger" size="small"
-                            @click="onRecommendQrcode()">
-                    <van-icon name="qr"></van-icon>
-                    推荐二维码
-                </van-button>
-            </van-col>
-        </van-row>
+        <van-goods-action :safe-area-inset-bottom="true" style="position: sticky;">
+            <van-goods-action-icon icon="service-o" text="联系我们" color="#1989fa"/>
+            <van-goods-action-icon icon="share" text="推荐"/>
+            <van-goods-action-button icon="qr" type="warning" text="推荐二维码"/>
+            <van-goods-action-button icon="chat-o" type="danger" text="我要参加"/>
+        </van-goods-action>
         <van-popup v-model="recommendQrcode"
                    position="bottom"
                    :overlay="true"
@@ -159,36 +140,17 @@
 
 </style>
 <script>
-  import {NavBar, Panel, Row, Col, Tab, Tabs, List, Cell, Button, Popup, Icon,Divider} from 'vant';
   import RecruitmentApi from "@/api/RecruitmentApi";
-  import {UserConstants} from '@/constants/Global';
-  import {RecruitmentStatus} from '@/constants/Global';
+  import {UserConstants, RecruitmentStatus} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
   import QRCode from 'qrcode';
 
   export default {
-    components: {
-      [NavBar.name]: NavBar,
-      [Panel.name]: Panel,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Tab.name]: Tab,
-      [Tabs.name]: Tabs,
-      [List.name]: List,
-      [Button.name]: Button,
-      [Popup.name]: Popup,
-      [Icon.name]: Icon,
-      [Cell.name]: Cell,
-      [Divider.name]: Divider,
-    },
     data: function () {
       return {
         recruitmentInfo: {
           status: {}
         },
-        recruitmentCenterLoading: false,
-        recruitmentCenterFinished: false,
-        researchCenterList: [],
         UserConstants: UserConstants,
         RecruitmentStatus: RecruitmentStatus,
         userInfo: {
@@ -202,11 +164,8 @@
     created: function () {
       let recruitmentId = this.$route.params.recruitmentId;
       this.onLoadRecruitmentInfo(recruitmentId);
-      this.onLoadRecruitmentCenter(recruitmentId);
       UserApi.getLogInfo().then(userInfo => {
-        if (userInfo.userId) {
-          this.userInfo = userInfo;
-        }
+        this.userInfo = userInfo;
       });
     },
     methods: {
@@ -223,14 +182,6 @@
         }
         RecruitmentApi.getRecruitmentById(recruitmentId).then(recruitmentInfo => {
           this.recruitmentInfo = recruitmentInfo;
-        });
-      },
-      onLoadRecruitmentCenter: function (recruitmentId) {
-        if (typeof recruitmentId === 'undefined') {
-          return;
-        }
-        RecruitmentApi.getRecruitmentCenterById(recruitmentId).then(centerList => {
-          this.researchCenterList = centerList;
         });
       },
       onContactUs: function () {

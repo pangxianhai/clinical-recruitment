@@ -5,7 +5,7 @@ let PatientApi = {
     patientInfo: undefined
   },
   getCurrentPatientInfo: async () => {
-    if (typeof  PatientApi.data.patientInfo === 'undefined') {
+    if (typeof PatientApi.data.patientInfo === 'undefined') {
       await ApiUtil.get('/patient/currentInfo', {})
       .then((patientInfo) => {
         PatientApi.data.patientInfo = patientInfo;
@@ -15,7 +15,7 @@ let PatientApi = {
     return PatientApi.data.patientInfo;
   },
   registerPatient: async (params) => {
-    return await ApiUtil.post('/patient', params);
+    return await ApiUtil.post('/patient/register', params);
   }
 }
 

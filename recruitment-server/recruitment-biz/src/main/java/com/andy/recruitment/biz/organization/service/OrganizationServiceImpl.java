@@ -47,4 +47,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<OrganizationDO> getOrganization(List<Long> organizationIdList) {
         return this.organizationDAO.getOrganization(organizationIdList);
     }
+
+    @Override
+    public OrganizationDO getOrganizationById(Long organizationId) {
+        return this.organizationDAO.getOrganizationById(organizationId);
+    }
 }

@@ -7,7 +7,7 @@ import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.reference.request.ReferenceAddReq;
 import com.andy.recruitment.web.controller.reference.request.ReferenceQueryReq;
-import com.andy.recruitment.web.controller.reference.response.ReferenceInfoRes;
+import com.andy.recruitment.web.controller.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.web.controller.reference.util.ReferenceUtil;
 import com.soyoung.base.auth.LoginInfo;
 import com.soyoung.base.context.ServletContext;
@@ -52,17 +52,18 @@ public class ReferenceController {
     }
 
     @GetMapping
-    public PageResult<ReferenceInfoRes> getReference(@MyParameter ReferenceQueryReq queryReq) {
+    public PageResult<ReferenceDetailInfoRes> getReference(@MyParameter ReferenceQueryReq queryReq) {
         ReferenceInfoQuery query = ReferenceUtil.transformReferenceQuery(queryReq);
         PageResult<ReferenceInfoDO> pageResult = this.referenceService.getReference(query, queryReq.getPaginator());
-        List<ReferenceInfoRes> referenceInfoResList = ReferenceUtil.transformReferenceRes(pageResult.getData());
-        return new PageResult<>(referenceInfoResList, pageResult.getPaginator());
+        List<ReferenceDetailInfoRes> referenceDetailInfoResList = ReferenceUtil.transformReferenceDetailRes(
+            pageResult.getData());
+        return new PageResult<>(referenceDetailInfoResList, pageResult.getPaginator());
     }
 
     @GetMapping("/{referenceId:\\d+}")
-    public ReferenceInfoRes getReference(@PathVariable Long referenceId) {
+    public ReferenceDetailInfoRes getReference(@PathVariable Long referenceId) {
         ReferenceInfoDO referenceInfoDo = this.referenceService.getReference(referenceId);
-        return ReferenceUtil.transformReferenceRes(referenceInfoDo);
+        return ReferenceUtil.transformReferenceDetailRes(referenceInfoDo);
     }
 
     @RequiresUser

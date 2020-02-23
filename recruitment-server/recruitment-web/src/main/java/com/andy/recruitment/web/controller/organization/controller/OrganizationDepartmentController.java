@@ -5,7 +5,7 @@ import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentQuery;
 import com.andy.recruitment.web.controller.organization.request.OrganizationDepartmentAddReq;
 import com.andy.recruitment.web.controller.organization.request.OrganizationDepartmentQueryReq;
-import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentRes;
+import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentDetailRes;
 import com.andy.recruitment.web.controller.organization.util.OrganizationDepartmentUtil;
 import com.soyoung.base.auth.RoleType;
 import com.soyoung.base.context.ServletContext;
@@ -38,14 +38,14 @@ public class OrganizationDepartmentController {
     }
 
     @GetMapping
-    public PageResult<OrganizationDepartmentRes> listOrganizationDepartment(
+    public PageResult<OrganizationDepartmentDetailRes> listOrganizationDepartment(
         @MyParameter OrganizationDepartmentQueryReq queryReq) {
         OrganizationDepartmentQuery query = OrganizationDepartmentUtil.transformOrganizationDepartmentQuery(queryReq);
         PageResult<OrganizationDepartmentDO> pageResult = this.organizationDepartmentService.getOrganizationDepartment(
             query, queryReq.getPaginator());
-        List<OrganizationDepartmentRes> organizationDepartmentResList = OrganizationDepartmentUtil.transformOrganizationDepartmentRes(
+        List<OrganizationDepartmentDetailRes> departmentDetailResList = OrganizationDepartmentUtil.transformOrganizationDepartmentDetailRes(
             pageResult.getData());
-        return new PageResult<>(organizationDepartmentResList, pageResult.getPaginator());
+        return new PageResult<>(departmentDetailResList, pageResult.getPaginator());
     }
 
     @RequiresUser

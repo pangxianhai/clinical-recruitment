@@ -58,7 +58,20 @@
                         <van-col span="5">招募人数:</van-col>
                         <van-col span="8">{{item.recruitmentNumber}}人</van-col>
                         <van-col span="5">招募状态:</van-col>
-                        <van-col span="3">{{item.status.desc}}</van-col>
+                        <van-col span="3">
+                            <van-tag style="min-width: 38px" round
+                                     v-if="RecruitmentStatus.FINISHED===item.status.code">
+                                {{item.status.desc}}
+                            </van-tag>
+                            <van-tag style="min-width: 38px" round type="primary" plain
+                                     v-if="RecruitmentStatus.NOT_BEGIN===item.status.code">
+                                {{item.status.desc}}
+                            </van-tag>
+                            <van-tag style="min-width: 38px" round type="primary"
+                                     v-if="RecruitmentStatus.IN_PROCESS===item.status.code">
+                                {{item.status.desc}}
+                            </van-tag>
+                        </van-col>
                     </van-row>
                     <van-row type="flex">
                         <van-col span="5">起至时间:</van-col>
@@ -73,9 +86,7 @@
                             联系我们
                         </van-button>
                     </van-col>
-                    <van-col
-                        v-if="userInfo.userType.code === UserConstants.PATIENT && item.status.code === RecruitmentStatus.IN_PROCESS"
-                        style="margin-left: 15px">
+                    <van-col style="margin-left: 15px">
                         <van-button type="warning" size="small"
                                     @click="onRecruitmentApplication(item)">
                             <van-icon name="edit"></van-icon>
@@ -83,16 +94,6 @@
                         </van-button>
                     </van-col>
                     <van-col
-                        v-if="userInfo.userType.code === UserConstants.DOCTOR && item.status.code === RecruitmentStatus.IN_PROCESS"
-                        style="margin-left: 15px">
-                        <van-button type="warning" size="small"
-                                    @click="onRecruitmentApplication(item)">
-                            <van-icon name="share"></van-icon>
-                            我要推荐
-                        </van-button>
-                    </van-col>
-                    <van-col
-                        v-if="userInfo.userType.code === UserConstants.DOCTOR && item.status.code === RecruitmentStatus.IN_PROCESS"
                         style="margin-left: 15px">
                         <van-button type="danger" size="small"
                                     @click="onRecommendQrcode(item)">
@@ -185,31 +186,12 @@
 </style>
 
 <script>
-  import {NavBar, Button, List, Icon, Search, Row, Col, Popup, Swipe, SwipeItem, Panel} from 'vant';
   import QRCode from 'qrcode';
-  import AddressSelect from "@/components/AddressSelect";
   import RecruitmentApi from '@/api/RecruitmentApi';
   import UserApi from '@/api/UserApi';
-  import {UserConstants} from '@/constants/Global';
-  import {RecruitmentStatus} from '@/constants/Global';
-  import Footer from '@/components/Footer';
+  import {RecruitmentStatus, ApplicationAction, UserConstants} from '@/constants/Global';
 
   export default {
-    components: {
-      [AddressSelect.name]: AddressSelect,
-      [Footer.name]: Footer,
-      [NavBar.name]: NavBar,
-      [Button.name]: Button,
-      [List.name]: List,
-      [Icon.name]: Icon,
-      [Search.name]: Search,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Popup.name]: Popup,
-      [Swipe.name]: Swipe,
-      [SwipeItem.name]: SwipeItem,
-      [Panel.name]: Panel,
-    },
     data: function () {
       return {
         userInfo: {
@@ -242,7 +224,7 @@
     },
     created: function () {
       UserApi.getLogInfo().then(userInfo => {
-        if (userInfo.userId) {
+        if (userInfo) {
           this.userInfo = userInfo;
         }
       });
@@ -298,25 +280,35 @@
       },
       onRecruitmentApplication: function (recruitment) {
         let redirectURL = this.$route.path;
-        if (UserApi.isLogin()) {
-          this.$router.push({
-            path: '/recruitment/application',
-            query: {
-              recruitmentId: recruitment.recruitmentId,
-              redirectURL: redirectURL
-            },
-          });
-        } else {
-          this.$router.push({
-            path: '/user/login',
-            query: {
-              userType: 3,
-              recruitmentId: recruitment.recruitmentId,
-              action: 'application',
-              redirectURL: redirectURL
-            },
-          });
-        }
+        this.$router.push({
+          path: '/recruitment/' + recruitment.recruitmentId + '/application',
+          query: {
+            redirectURL: String(redirectURL),
+            action: ApplicationAction.ATTEND
+          },
+        }, function () {
+
+        });
+
+        // if (UserApi.isLogin()) {
+        //   this.$router.push({
+        //     path: '/recruitment/application',
+        //     query: {
+        //       recruitmentId: recruitment.recruitmentId,
+        //       redirectURL: redirectURL
+        //     },
+        //   });
+        // } else {
+        //   this.$router.push({
+        //     path: '/user/login',
+        //     query: {
+        //       userType: 3,
+        //       recruitmentId: recruitment.recruitmentId,
+        //       action: 'application',
+        //       redirectURL: redirectURL
+        //     },
+        //   });
+        // }
       },
       onContactUs: function () {
         this.$router.push({
@@ -324,6 +316,8 @@
           query: {
             redirectURL: this.$route.path
           }
+        }, function () {
+
         });
       },
       onRecommendQrcode: function (recruitmentInfo) {

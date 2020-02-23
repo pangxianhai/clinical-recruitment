@@ -1,18 +1,44 @@
 <template>
-    <div></div>
+    <div class="wx-login">
+        <van-cell-group>
+            <van-cell icon="user-circle-o" title="成为受试者" is-link
+                      @click="toRegister('/patient/register')">
+            </van-cell>
+            <van-cell icon="contact" title="成为推荐人" is-link
+                      @click="toRegister('/reference/register')"></van-cell>
+            <van-cell icon="friends-o" title="成为研究员" is-link
+                      @click="toRegister('/researcher/register')"></van-cell>
+        </van-cell-group>
+    </div>
 </template>
 
+<style>
+    .wx-login .van-icon-user-circle-o {
+        color: rgba(204, 6, 223, 0.63);
+    }
+
+    .wx-login .van-icon-contact {
+        color: rgba(119, 9, 222, 0.72);
+    }
+
+    .wx-login .van-icon-friends-o {
+        color: rgba(238, 93, 13, 0.81);
+    }
+</style>
+
 <script>
-  import {Toast} from 'vant';
-  import {UserConstants} from '@/constants/Global'
+  import {StringUtil} from '@/util/Util';
   import UserApi from '@/api/UserApi';
+  import {ApplicationAction} from '@/constants/Global';
 
   export default {
     data: function () {
-      return {}
+      return {
+        wxLoginRes: {}
+      }
     },
     created: function () {
-      Toast.loading({
+      this.$toast.loading({
         duration: 0,
         mask: true,
         forbidClick: true,
@@ -20,64 +46,49 @@
         message: '微信登录中...'
       });
       let code = this.$route.query.code;
-      let userType = this.$route.query.userType;
-      UserApi.wxLogin(code).then(userInfo => {
-        Toast.clear();
-        let query = this.$route.query;
-        if (typeof userInfo.userId === 'undefined') {
-          if (UserConstants.PATIENT === parseInt(userType)) {
-            if ('application' === query.action && query.recruitmentId.length > 0) {
-              this.$router.push({
-                path: '/recruitment/application',
-                query: {
-                  recruitmentId: query.recruitmentId,
-                  redirectURL: query.redirectURL,
-                  openId: userInfo.openId,
-                  nickname: userInfo.nickname
-                }
-              });
-            } else {
-              this.$router.push({
-                path: '/patient/register',
-                query: {
-                  recruitmentId: query.recruitmentId,
-                  redirectURL: query.redirectURL,
-                  openId: userInfo.openId,
-                  nickname: userInfo.nickname
-                }
-              });
-            }
-          } else if (UserConstants.DOCTOR === parseInt(userType)) {
-            this.$router.push({
-              path: '/doctor/register',
-              query: {
-                openId: userInfo.openId,
-                nickname: userInfo.nickname,
-                redirectURL: query.redirectURL,
-              }
-            });
-          }
-        } else {
-          //已登陆的用户
-          UserApi.saveUserId(userInfo.userId);
-          let thisUserType = this.$route.query.userType;
-          if (userInfo.userType.code !== parseInt(thisUserType)) {
-            Toast.loading({
-              duration: 0,
-              mask: true,
-              loadingType: 'spinner',
-              forbidClick: true,
-              message: '您没有权限访问该页面，即将为您跳转到项目列表页...'
-            });
-            setTimeout(() => {
-              this.$router.push({path: '/recruitment/list'});
-              Toast.clear();
-            }, 2000);
-          } else {
-            this.$router.push({path: '/recruitment/list'});
-          }
+      if (StringUtil.isEmpty(code)) {
+        this.$toast.clear();
+        return;
+      }
+      UserApi.wxLogin(code).then(wxLoginRes => {
+        this.$toast.clear();
+        this.wxLoginRes = wxLoginRes;
+        if (typeof wxLoginRes.userId !== 'undefined') {
+          UserApi.saveLoginInfo(wxLoginRes);
+          this.onGoBack();
+          return;
+        }
+        if (ApplicationAction.ATTEND === this.$route.query.action) {
+          this.toRegister('/patient/register');
+        } else if (ApplicationAction.RECOMMEND === this.$route.query.action) {
+          this.toRegister('/reference/register');
+        } else if (ApplicationAction.RESEARCHER === this.$route.query.action) {
+          this.toRegister('/researcher/register');
         }
       })
+    },
+    methods: {
+      toRegister: function (path) {
+        this.$router.push({
+          path: path,
+          query: {
+            redirectURL: this.$route.query.redirectURL,
+            openId: this.wxLoginRes.openId,
+            nickname: this.wxLoginRes.nickname
+          },
+        }, function () {
+
+        });
+      },
+      onGoBack: function () {
+        let redirectURL = this.$route.query.redirectURL;
+        if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
+          redirectURL = '/recruitment/list';
+        }
+        this.$router.push({path: String(redirectURL)}, function () {
+
+        });
+      },
     }
   }
 </script>

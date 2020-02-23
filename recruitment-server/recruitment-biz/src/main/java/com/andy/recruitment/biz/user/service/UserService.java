@@ -1,6 +1,7 @@
 package com.andy.recruitment.biz.user.service;
 
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
+import com.soyoung.base.auth.LoginInfo;
 import java.util.List;
 
 /**
@@ -25,4 +26,28 @@ public interface UserService {
      * @return 用户信息列表
      */
     List<UserInfoDO> getUserInfo(List<Long> userIdList);
+
+    /**
+     * 根据用户id获取用户信息
+     *
+     * @param userId 用户ID
+     * @return 用户信息
+     */
+    UserInfoDO getUserInfoByUserId(Long userId);
+
+    /**
+     * 微信登录
+     *
+     * @param code 授权码
+     * @return 用户信息
+     */
+    UserInfoDO wxLogin(String code);
+
+    /**
+     * 通过用户信息登录 所有信息都在userInfoDo 生成token和shirodeng登录
+     *
+     * @param userInfoDo 用户信息
+     * @return 登录信息
+     */
+    LoginInfo userInfoLogin(UserInfoDO userInfoDo);
 }

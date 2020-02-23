@@ -20,7 +20,8 @@ function build_manager_dev() {
     build_dir=/Users/pangxianhai/workspace/recruitment-manager
     cd /Users/pangxianhai/projects/clinical-recruitment/recruitment-manager
     rm -rf ./dist/*
-    npm run build-dev
+    #npm run build-dev
+	npm run build
     cd dist
     tar -czf dist.tar.gz ./*
     cd ..

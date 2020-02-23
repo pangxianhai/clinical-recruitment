@@ -8,6 +8,7 @@ import com.andy.recruitment.dao.user.constant.Gender;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.reference.request.ReferenceAddReq;
 import com.andy.recruitment.web.controller.reference.request.ReferenceQueryReq;
+import com.andy.recruitment.web.controller.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.web.controller.reference.response.ReferenceInfoRes;
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
 import com.andy.recruitment.web.controller.user.util.UserInfoUtil;
@@ -70,7 +71,7 @@ public class ReferenceUtil {
         return query;
     }
 
-    public static List<ReferenceInfoRes> transformReferenceRes(List<ReferenceInfoDO> referenceInfoDoList) {
+    public static List<ReferenceDetailInfoRes> transformReferenceDetailRes(List<ReferenceInfoDO> referenceInfoDoList) {
         if (CollectionUtils.isEmpty(referenceInfoDoList)) {
             return Collections.emptyList();
         }
@@ -80,31 +81,48 @@ public class ReferenceUtil {
         }
         Map<Long, UserInfoRes> userInfoResMap = UserInfoUtil.getUserInfoRes(userIdList);
         return referenceInfoDoList.stream().map(
-            referenceInfoDo -> ReferenceUtil.transformReferenceRes(referenceInfoDo, userInfoResMap)).filter(
+            referenceInfoDo -> ReferenceUtil.transformReferenceDetailRes(referenceInfoDo, userInfoResMap)).filter(
             Objects::nonNull).collect(Collectors.toList());
     }
 
-    public static ReferenceInfoRes transformReferenceRes(ReferenceInfoDO referenceInfoDo) {
-        List<ReferenceInfoDO> referenceInfoDoList = Collections.singletonList(referenceInfoDo);
-        List<ReferenceInfoRes> referenceInfoResList = ReferenceUtil.transformReferenceRes(referenceInfoDoList);
-        if (CollectionUtils.isEmpty(referenceInfoDoList)) {
+    public static ReferenceDetailInfoRes transformReferenceDetailRes(ReferenceInfoDO referenceInfoDo) {
+        if (referenceInfoDo == null) {
             return null;
         }
-        return referenceInfoResList.get(0);
+        List<ReferenceInfoDO> referenceInfoDoList = Collections.singletonList(referenceInfoDo);
+        List<ReferenceDetailInfoRes> referenceDetailInfoResList = ReferenceUtil.transformReferenceDetailRes(
+            referenceInfoDoList);
+        if (CollectionUtils.isEmpty(referenceDetailInfoResList)) {
+            return null;
+        }
+        return referenceDetailInfoResList.get(0);
     }
 
-    private static ReferenceInfoRes transformReferenceRes(ReferenceInfoDO referenceInfoDo,
-        Map<Long, UserInfoRes> userInfoResMap) {
+    public static ReferenceInfoRes transformReferenceRes(ReferenceInfoDO referenceInfoDo) {
         if (referenceInfoDo == null) {
             return null;
         }
         ReferenceInfoRes referenceInfoRes = new ReferenceInfoRes();
         BeanUtils.copyProperties(referenceInfoDo, referenceInfoRes);
         referenceInfoRes.setReferenceId(referenceInfoDo.getId());
-        referenceInfoRes.setUserInfoRes(userInfoResMap.get(referenceInfoDo.getUserId()));
         referenceInfoRes.setAddress(
             regionService.parseAddressName(referenceInfoDo.getProvinceId(), referenceInfoDo.getCityId(),
                 referenceInfoDo.getDistrictId()));
         return referenceInfoRes;
+    }
+
+    private static ReferenceDetailInfoRes transformReferenceDetailRes(ReferenceInfoDO referenceInfoDo,
+        Map<Long, UserInfoRes> userInfoResMap) {
+        if (referenceInfoDo == null) {
+            return null;
+        }
+        ReferenceDetailInfoRes referenceDetailInfoRes = new ReferenceDetailInfoRes();
+        BeanUtils.copyProperties(referenceInfoDo, referenceDetailInfoRes);
+        referenceDetailInfoRes.setReferenceId(referenceInfoDo.getId());
+        referenceDetailInfoRes.setUserInfoRes(userInfoResMap.get(referenceInfoDo.getUserId()));
+        referenceDetailInfoRes.setAddress(
+            regionService.parseAddressName(referenceInfoDo.getProvinceId(), referenceInfoDo.getCityId(),
+                referenceInfoDo.getDistrictId()));
+        return referenceDetailInfoRes;
     }
 }
