@@ -128,6 +128,13 @@ public class UserController {
             wxLoginRes.setUserId(loginInfo.getUserId());
             wxLoginRes.setToken(loginInfo.getToken());
             wxLoginRes.setUserName(loginInfo.getUserName());
+
+            PatientInfoDO patientInfoDo = this.patientInfoService.getPatientByUserId(loginInfo.getUserId());
+            wxLoginRes.setHasPatient(patientInfoDo != null);
+            ResearcherInfoDO researcherInfoDo = this.researcherService.getResearcherInfoByUserId(loginInfo.getUserId());
+            wxLoginRes.setHasResearcher(researcherInfoDo != null);
+            ReferenceInfoDO referenceInfoDo = this.referenceService.getReferenceByUserId(loginInfo.getUserId());
+            wxLoginRes.setHasReference(referenceInfoDo != null);
             return wxLoginRes;
         } else {
             return UserInfoUtil.transformWxLoginRes(userInfoDo);

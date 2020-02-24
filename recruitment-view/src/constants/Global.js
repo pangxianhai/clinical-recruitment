@@ -12,7 +12,7 @@ const recruitmentStatus = {
 
 const applicationAction = {
   ATTEND: '1',
-  RECOMMEND: '2',
+  REFERENCE: '2',
   RESEARCHER: '3'
 };
 

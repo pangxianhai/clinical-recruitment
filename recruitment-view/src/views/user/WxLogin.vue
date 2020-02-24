@@ -55,15 +55,27 @@
         this.wxLoginRes = wxLoginRes;
         if (typeof wxLoginRes.userId !== 'undefined') {
           UserApi.saveLoginInfo(wxLoginRes);
-          this.onGoBack();
-          return;
         }
         if (ApplicationAction.ATTEND === this.$route.query.action) {
-          this.toRegister('/patient/register');
-        } else if (ApplicationAction.RECOMMEND === this.$route.query.action) {
-          this.toRegister('/reference/register');
+          if (wxLoginRes.hasPatient) {
+            this.onGoBack();
+          } else {
+            this.toRegister('/patient/register');
+          }
+        } else if (ApplicationAction.REFERENCE === this.$route.query.action) {
+          if (wxLoginRes.hasReference) {
+            this.onGoBack();
+          } else {
+            this.toRegister('/reference/register');
+          }
         } else if (ApplicationAction.RESEARCHER === this.$route.query.action) {
-          this.toRegister('/researcher/register');
+          if (wxLoginRes.hasResearcher) {
+            this.onGoBack();
+          } else {
+            this.toRegister('/researcher/register');
+          }
+        } else {
+          this.onGoBack();
         }
       })
     },

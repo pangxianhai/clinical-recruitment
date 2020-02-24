@@ -48,13 +48,12 @@
                       :value="userInfo.medicalCategory"></van-cell>
             <van-cell icon="award-o" title="本科室申报的项目"
                       v-if="userInfo.showDepartmentApplication"></van-cell>
-            <van-cell icon="user-circle-o" title="成为受试者" v-if="userInfo.showRegisterPatient"
-                      is-link>
-            </van-cell>
-            <van-cell icon="contact" title="成为推荐人" v-if="userInfo.showRegisterReference"
-                      is-link></van-cell>
-            <van-cell icon="friends-o" title="成为研究员" v-if="userInfo.showRegisterResearcher"
-                      is-link></van-cell>
+            <van-cell icon="user-circle-o" title="注册受试者" v-if="userInfo.showRegisterPatient"
+                      is-link @click="onRegisterPatient"></van-cell>
+            <van-cell icon="contact" title="注册推荐人" v-if="userInfo.showRegisterReference"
+                      is-link @click="onRegisterReference"></van-cell>
+            <van-cell icon="friends-o" title="注册研究员" v-if="userInfo.showRegisterResearcher"
+                      is-link @click="onRegisterResearcher"></van-cell>
         </van-cell-group>
         <my-footer></my-footer>
     </div>
@@ -78,7 +77,7 @@
     }
 
     .user-me .head .van-row {
-        padding: 0px 0 8px 0;
+        padding: 0 0 8px 0;
     }
 
     .user-me .spacing {
@@ -142,6 +141,7 @@
 </style>
 <script>
   import UserApi from '@/api/UserApi';
+  import {ApplicationAction} from '@/constants/Global';
 
   export default {
     data: function () {
@@ -156,9 +156,9 @@
           showOrganizationName: false,
           showDepartmentName: false,
           showDepartmentApplication: false,
-          showRegisterPatient: false,
-          showRegisterReference: false,
-          showRegisterResearcher: false,
+          showRegisterPatient: true,
+          showRegisterReference: true,
+          showRegisterResearcher: true,
         }
       }
     },
@@ -192,12 +192,14 @@
         this.userInfo.realName = userInfo.realName;
         this.userInfo.gender = userInfo.gender.desc;
         this.userInfo.phone = userInfo.phone;
+        this.userInfo.openId = userInfo.openId;
+        this.userInfo.nickname = userInfo.nickname;
+
         if (userInfo.patientInfoRes) {
           this.userInfo.showAge = true;
           this.userInfo.age = userInfo.patientInfoRes.age;
           this.userInfo.showAddress = true;
           this.userInfo.address = userInfo.patientInfoRes.address;
-          this.userInfo.openId = userInfo.openId;
           this.userInfo.showRegisterPatient = false;
         } else {
           this.userInfo.showRegisterPatient = true;
@@ -227,7 +229,46 @@
           this.userInfo.showDepartmentName = true;
           this.userInfo.departmentName = userInfo.organizationDepartmentRes.name;
         }
-      }
+      },
+      onRegisterPatient: function () {
+        this.onToRegister(ApplicationAction.ATTEND);
+      },
+      onRegisterReference: function () {
+        this.onToRegister(ApplicationAction.REFERENCE);
+      },
+      onRegisterResearcher: function () {
+        this.onToRegister(ApplicationAction.RESEARCHER);
+      },
+      onToRegister: function (action) {
+        let path = '/patient/register';
+        if (ApplicationAction.REFERENCE === action) {
+          path = '/reference/register';
+        } else if (ApplicationAction.RESEARCHER === action) {
+          path = '/researcher/register';
+        }
+        if (UserApi.isLogin()) {
+          this.$router.push({
+            path: path,
+            query: {
+              redirectURL: this.$route.fullPath,
+              openId: this.userInfo.openId,
+              nickname: this.userInfo.nickname
+            },
+          }, function () {
+
+          });
+        } else {
+          this.$router.push({
+            path: '/user/login',
+            query: {
+              redirectURL: this.$route.fullPath,
+              action: action
+            },
+          }, function () {
+
+          });
+        }
+      },
     }
   }
 </script>

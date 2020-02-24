@@ -18,8 +18,24 @@ public class WxLoginRes extends UserInfoRes {
      * 用户名
      */
     private String userName;
+
     /**
      * 登录成功的令牌
      */
     private String token;
+
+    /**
+     * 是否已经注册患者
+     */
+    private Boolean hasPatient;
+
+    /**
+     * 是否已经注册推荐人
+     */
+    private Boolean hasReference;
+
+    /**
+     * 是否已经注册研究员
+     */
+    private Boolean hasResearcher;
 }
