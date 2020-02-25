@@ -81,6 +81,7 @@
     },
     methods: {
       toRegister: function (path) {
+        window.console.log(this.wxLoginRes);
         this.$router.push({
           path: path,
           query: {

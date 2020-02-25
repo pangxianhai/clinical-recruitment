@@ -124,7 +124,7 @@ public class UserController {
         if (userInfoDo.getId() != null) {
             LoginInfo loginInfo = this.userService.userInfoLogin(userInfoDo);
 
-            WxLoginRes wxLoginRes = new WxLoginRes();
+            WxLoginRes wxLoginRes = UserInfoUtil.transformWxLoginRes(userInfoDo);
             wxLoginRes.setUserId(loginInfo.getUserId());
             wxLoginRes.setToken(loginInfo.getToken());
             wxLoginRes.setUserName(loginInfo.getUserName());

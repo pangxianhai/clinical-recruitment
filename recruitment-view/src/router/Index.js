@@ -90,16 +90,12 @@ export default new Router({
       ]
     },
     {
-      path: '/doctor',
-      component: () => import("@/views/doctor/Layout"),
+      path: '/reference',
+      component: () => import("@/views/reference/Layout"),
       children: [
         {
           path: 'register',
-          component: () => import("@/views/doctor/Register")
-        },
-        {
-          path: 'info',
-          component: () => import("@/views/doctor/DoctorInfo"),
+          component: () => import("@/views/reference/Register")
         }
       ]
     }
