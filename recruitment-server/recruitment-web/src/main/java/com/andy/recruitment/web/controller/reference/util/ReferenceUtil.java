@@ -1,6 +1,9 @@
 package com.andy.recruitment.web.controller.reference.util;
 
+import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.biz.region.service.RegionService;
+import com.andy.recruitment.common.exception.RecruitmentErrorCode;
+import com.andy.recruitment.common.exception.RecruitmentException;
 import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
@@ -8,10 +11,12 @@ import com.andy.recruitment.dao.user.constant.Gender;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.reference.request.ReferenceAddReq;
 import com.andy.recruitment.web.controller.reference.request.ReferenceQueryReq;
+import com.andy.recruitment.web.controller.reference.request.ReferenceRegisterReq;
 import com.andy.recruitment.web.controller.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.web.controller.reference.response.ReferenceInfoRes;
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
 import com.andy.recruitment.web.controller.user.util.UserInfoUtil;
+import com.soyoung.base.util.asserts.AssertUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +62,39 @@ public class ReferenceUtil {
         userInfoDo.setRealName(referenceAddReq.getName());
         return userInfoDo;
     }
+
+    public static ReferenceInfoDO transformReferenceInfoDo(ReferenceRegisterReq referenceRegisterReq) {
+        if (null == referenceRegisterReq) {
+            return null;
+        }
+        ReferenceInfoDO referenceInfoDo = new ReferenceInfoDO();
+        BeanUtils.copyProperties(referenceRegisterReq, referenceInfoDo);
+        AddressInfo addressInfo = regionService.parseAddressInfo(referenceRegisterReq.getAddress());
+        AssertUtil.assertNull(addressInfo, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.REFERENCE_REGISTER_REGION_ERROR);
+        });
+        AssertUtil.assertNull(addressInfo.getProvince(), () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.REFERENCE_REGISTER_REGION_ERROR);
+        });
+        AssertUtil.assertNull(addressInfo.getCity(), () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.REFERENCE_REGISTER_REGION_ERROR);
+        });
+        referenceInfoDo.setProvinceId(addressInfo.getProvince().getId());
+        referenceInfoDo.setCityId(addressInfo.getCity().getId());
+        return referenceInfoDo;
+    }
+
+    public static UserInfoDO transformUserInfo(ReferenceRegisterReq referenceRegisterReq) {
+        if (null == referenceRegisterReq) {
+            return null;
+        }
+        UserInfoDO userInfoDo = new UserInfoDO();
+        BeanUtils.copyProperties(referenceRegisterReq, userInfoDo);
+        userInfoDo.setGender(Gender.parse(referenceRegisterReq.getGender()));
+        userInfoDo.setRealName(referenceRegisterReq.getName());
+        return userInfoDo;
+    }
+
 
     public static ReferenceInfoQuery transformReferenceQuery(ReferenceQueryReq queryReq) {
         if (queryReq == null) {

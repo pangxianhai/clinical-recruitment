@@ -1,19 +1,23 @@
 package com.andy.recruitment.web.controller.reference.controller;
 
 import com.andy.recruitment.biz.reference.service.ReferenceService;
+import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.reference.request.ReferenceAddReq;
 import com.andy.recruitment.web.controller.reference.request.ReferenceQueryReq;
+import com.andy.recruitment.web.controller.reference.request.ReferenceRegisterReq;
 import com.andy.recruitment.web.controller.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.web.controller.reference.util.ReferenceUtil;
 import com.soyoung.base.auth.LoginInfo;
+import com.soyoung.base.auth.RoleType;
 import com.soyoung.base.context.ServletContext;
 import com.soyoung.base.converter.MyParameter;
 import com.soyoung.base.page.PageResult;
 import java.util.List;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,12 +39,16 @@ public class ReferenceController {
 
     private final ReferenceService referenceService;
 
+    private final UserService userService;
+
     @Autowired
-    public ReferenceController(ReferenceService referenceService) {
+    public ReferenceController(ReferenceService referenceService, UserService userService) {
         this.referenceService = referenceService;
+        this.userService = userService;
     }
 
     @RequiresUser
+    @RequiresRoles(RoleType.MANAGER_CODE + "")
     @PostMapping
     public boolean addReference(@RequestBody ReferenceAddReq referenceAddReq) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
@@ -49,6 +57,15 @@ public class ReferenceController {
         UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceAddReq);
         this.referenceService.registerReference(referenceInfoDo, userInfoDo, loginInfo.getRealName());
         return true;
+    }
+
+    @PostMapping("register")
+    public LoginInfo registerReference(@RequestBody ReferenceRegisterReq referenceRegisterReq) {
+        ReferenceInfoDO referenceInfoDo = ReferenceUtil.transformReferenceInfoDo(referenceRegisterReq);
+        referenceInfoDo.setStatus(ReferenceStatus.NORMAL);
+        UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceRegisterReq);
+        this.referenceService.registerReference(referenceInfoDo, userInfoDo, referenceRegisterReq.getName());
+        return this.userService.userInfoLogin(userInfoDo);
     }
 
     @GetMapping

@@ -15,6 +15,7 @@ import com.andy.recruitment.web.controller.organization.util.OrganizationDepartm
 import com.andy.recruitment.web.controller.organization.util.OrganizationUtil;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherAddReq;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherQueryReq;
+import com.andy.recruitment.web.controller.researcher.request.ResearcherRegisterReq;
 import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoDetailRes;
 import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoRes;
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
@@ -74,6 +75,27 @@ public class ResearcherUtil {
         userInfoDo.setRealName(researcherAddReq.getName());
         return userInfoDo;
     }
+
+    public static ResearcherInfoDO transformResearcherInfo(ResearcherRegisterReq researcherRegisterReq) {
+        if (null == researcherRegisterReq) {
+            return null;
+        }
+        ResearcherInfoDO researcherInfoDo = new ResearcherInfoDO();
+        BeanUtils.copyProperties(researcherRegisterReq, researcherInfoDo);
+        return researcherInfoDo;
+    }
+
+    public static UserInfoDO transformUserInfo(ResearcherRegisterReq researcherRegisterReq) {
+        if (null == researcherRegisterReq) {
+            return null;
+        }
+        UserInfoDO userInfoDo = new UserInfoDO();
+        BeanUtils.copyProperties(researcherRegisterReq, userInfoDo);
+        userInfoDo.setGender(Gender.parse(researcherRegisterReq.getGender()));
+        userInfoDo.setRealName(researcherRegisterReq.getName());
+        return userInfoDo;
+    }
+
 
     public static ResearcherQuery transformResearcherQuery(ResearcherQueryReq queryReq) {
         if (queryReq == null) {

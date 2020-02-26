@@ -12,10 +12,33 @@ import org.hibernate.validator.constraints.Length;
  * @author 庞先海 2020-01-31
  */
 @Data
-public class ResearcherAddReq implements Serializable {
+public class ResearcherRegisterReq implements Serializable {
 
     private static final long serialVersionUID = - 3580079645942042249L;
 
+    /**
+     * 微信openId
+     */
+    @Length(max = 32)
+    @NotBlank
+    private String openId;
+    /**
+     * 微信昵称
+     */
+    @Length(max = 64)
+    @NotBlank
+    private String nickname;
+    /**
+     * 姓名
+     */
+    @NotBlank
+    @Length(max = 64)
+    private String name;
+    /**
+     * 性别
+     */
+    @NotNull
+    private Integer gender;
     /**
      * 手机号
      */
@@ -44,17 +67,6 @@ public class ResearcherAddReq implements Serializable {
     @NotBlank
     @Length(max = 64)
     private String medicalCategory;
-    /**
-     * 姓名
-     */
-    @NotBlank
-    @Length(max = 64)
-    private String name;
-    /**
-     * 性别
-     */
-    @NotNull
-    private Integer gender;
     /**
      * 备注信息
      */

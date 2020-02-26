@@ -1,12 +1,14 @@
 package com.andy.recruitment.web.controller.researcher.controller;
 
 import com.andy.recruitment.biz.researcher.service.ResearcherService;
+import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherAddReq;
 import com.andy.recruitment.web.controller.researcher.request.ResearcherQueryReq;
+import com.andy.recruitment.web.controller.researcher.request.ResearcherRegisterReq;
 import com.andy.recruitment.web.controller.researcher.response.ResearcherInfoDetailRes;
 import com.andy.recruitment.web.controller.researcher.util.ResearcherUtil;
 import com.soyoung.base.auth.LoginInfo;
@@ -37,9 +39,12 @@ public class ResearcherController {
 
     private final ResearcherService researcherService;
 
+    private final UserService userService;
+
     @Autowired
-    public ResearcherController(ResearcherService researcherService) {
+    public ResearcherController(ResearcherService researcherService, UserService userService) {
         this.researcherService = researcherService;
+        this.userService = userService;
     }
 
     @RequiresUser
@@ -62,18 +67,26 @@ public class ResearcherController {
     }
 
     @RequiresUser
+    @RequiresRoles(RoleType.MANAGER_CODE + "")
     @PostMapping
     public boolean addResearcher(@RequestBody ResearcherAddReq researcherAddReq) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         ResearcherInfoDO researcherInfoDo = ResearcherUtil.transformResearcherInfo(researcherAddReq);
-        if (RoleType.MANAGER.equals(loginInfo.getRoleType())) {
-            researcherInfoDo.setStatus(ResearcherStatus.NORMAL);
-        } else {
-            researcherInfoDo.setStatus(ResearcherStatus.NON_EXAMINE);
-        }
+        researcherInfoDo.setStatus(ResearcherStatus.NORMAL);
         UserInfoDO userInfoDo = ResearcherUtil.transformUserInfo(researcherAddReq);
         this.researcherService.registerResearcher(researcherInfoDo, userInfoDo, loginInfo.getRealName());
         return true;
+    }
+
+    @RequiresUser
+    @RequiresRoles(RoleType.MANAGER_CODE + "")
+    @PostMapping("register")
+    public LoginInfo registerResearcher(@RequestBody ResearcherRegisterReq researcherRegisterReq) {
+        ResearcherInfoDO researcherInfoDo = ResearcherUtil.transformResearcherInfo(researcherRegisterReq);
+        researcherInfoDo.setStatus(ResearcherStatus.NON_EXAMINE);
+        UserInfoDO userInfoDo = ResearcherUtil.transformUserInfo(researcherRegisterReq);
+        this.researcherService.registerResearcher(researcherInfoDo, userInfoDo, researcherRegisterReq.getName());
+        return this.userService.userInfoLogin(userInfoDo);
     }
 
     @RequiresUser

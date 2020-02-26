@@ -7,15 +7,27 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * 推荐人添加参数
+ * 推荐人注册参数
  *
- * @author 庞先海 2020-02-15
+ * @author 庞先海 2020-02-26
  */
 @Data
-public class ReferenceAddReq implements Serializable {
+public class ReferenceRegisterReq implements Serializable {
 
-    private static final long serialVersionUID = 466986966112127464L;
+    private static final long serialVersionUID = - 6075185569450509952L;
 
+    /**
+     * 微信openId
+     */
+    @Length(max = 32)
+    @NotBlank
+    private String openId;
+    /**
+     * 微信昵称
+     */
+    @Length(max = 64)
+    @NotBlank
+    private String nickname;
     /**
      * 手机号
      */
@@ -23,20 +35,22 @@ public class ReferenceAddReq implements Serializable {
     @Length(max = 32)
     private String phone;
     /**
-     * 省份ID
+     * 姓名
      */
-    @NotNull
-    private Long provinceId;
+    @NotBlank
+    @Length(max = 64)
+    private String name;
     /**
-     * 城市ID
+     * 性别
      */
     @NotNull
-    private Long cityId;
+    private Integer gender;
     /**
-     * 区ID
+     * 地址
      */
-    @NotNull
-    private Long districtId;
+    @NotBlank
+    @Length(max = 64)
+    private String address;
     /**
      * 执业机构
      */
@@ -54,16 +68,5 @@ public class ReferenceAddReq implements Serializable {
      */
     @Length(max = 64)
     private String remark;
-    /**
-     * 姓名
-     */
-    @NotBlank
-    @Length(max = 64)
-    private String name;
-    /**
-     * 性别
-     */
-    @NotNull
-    private Integer gender;
 
 }

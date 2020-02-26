@@ -10,6 +10,7 @@
                 placeholder="请输入姓名"
                 :error-message="errorMsg.name"
                 @blur="validator('name')"
+                :disabled="nameDisabled"
             ></van-field>
             <van-field
                 v-model="referenceInfo.phone"
@@ -19,6 +20,7 @@
                 placeholder="请输入手机号"
                 :error-message="errorMsg.phone"
                 @blur="validator('phone')"
+                :disabled="phoneDisabled"
             ></van-field>
             <van-field
                 v-model="referenceInfo.genderShow"
@@ -29,6 +31,7 @@
                 :error-message="errorMsg.genderShow"
                 @blur="validator('genderShow')"
                 @focus="showGenderPopup = true"
+                :disabled="genderDisabled"
             ></van-field>
             <van-popup v-model="showGenderPopup" position="bottom">
                 <van-picker :columns="genderList" show-toolbar title="选择性别"
@@ -87,12 +90,22 @@
 
 <script>
   import AsyncValidator from 'async-validator';
+  import UserApi from '@/api/UserApi';
+  import ReferenceApi from '@/api/ReferenceApi'
 
   export default {
     data: function () {
       return {
         showAddress: false,
-        referenceInfo: {},
+        nameDisabled: false,
+        phoneDisabled: false,
+        genderDisabled: false,
+        referenceInfo: {
+          name: '',
+          phone: '',
+          gender: '',
+          genderShow: ''
+        },
         errorMsg: {
           name: '',
           phone: ''
@@ -142,8 +155,23 @@
     created: function () {
       this.referenceInfo.openId = this.$route.query.openId;
       this.referenceInfo.nickname = this.$route.query.nickname;
+      this.loadCurrentUserInfo();
     },
     methods: {
+      loadCurrentUserInfo: function () {
+        UserApi.getCurrentUserInfo().then(userInfo => {
+          if (!userInfo.userId) {
+            return;
+          }
+          this.referenceInfo.name = userInfo.realName;
+          this.nameDisabled = true;
+          this.referenceInfo.phone = userInfo.phone;
+          this.referenceInfo.gender = userInfo.gender.code;
+          this.phoneDisabled = true;
+          this.referenceInfo.genderShow = userInfo.gender.desc;
+          this.genderDisabled = true;
+        });
+      },
       onGoBack: function () {
         let redirectURL = this.$route.query.redirectURL;
         if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
@@ -205,9 +233,18 @@
         this.onGoBack();
       },
       onRegisterAction: function () {
-        window.console.log(this.referenceInfo);
         this.validatorRegisterInfo().then(() => {
-
+          ReferenceApi.registerReference(this.referenceInfo).then(loginInfo => {
+            if (loginInfo) {
+              if (!UserApi.isLogin()) {
+                UserApi.saveLoginInfo(loginInfo);
+              }
+              this.$toast.success('注册成功！即将跳转');
+              setTimeout(() => {
+                this.onGoBack();
+              }, 2000);
+            }
+          });
         });
       }
     }

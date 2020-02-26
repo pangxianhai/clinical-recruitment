@@ -126,9 +126,10 @@
       patientRegister: function () {
         this.validatorAll().then(() => {
           PatientApi.registerPatient(this.patientInfo).then(loginInfo => {
-            window.console.log(loginInfo);
             if (loginInfo) {
-              UserApi.saveLoginInfo(loginInfo);
+              if (!UserApi.isLogin()) {
+                UserApi.saveLoginInfo(loginInfo);
+              }
               this.$toast.success('注册成功！即将跳转');
               setTimeout(() => {
                 this.onGoBack();
