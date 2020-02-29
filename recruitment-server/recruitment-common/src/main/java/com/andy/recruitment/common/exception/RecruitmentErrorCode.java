@@ -61,14 +61,6 @@ public enum RecruitmentErrorCode {
      */
     USER_UPDATE_FAILED(101302),
     /**
-     * 请保证一个管理员
-     */
-    USER_MANAGER_MUST_ONE(101303),
-    /**
-     * 手机号已经被使用
-     */
-    USER_PHONE_HAS_USED(101304),
-    /**
      * 未登录
      */
     USER_NOT_LOGIN(101305),
@@ -126,6 +118,10 @@ public enum RecruitmentErrorCode {
      * 机构科室ID为空
      */
     ORGANIZATION_DEPARTMENT_ID_EMPTY(101512),
+    /**
+     * 科室不存在
+     */
+    ORGANIZATION_DEPARTMENT_NOT_EXIST(101513),
 
     /**
      * 招募信息申请失败

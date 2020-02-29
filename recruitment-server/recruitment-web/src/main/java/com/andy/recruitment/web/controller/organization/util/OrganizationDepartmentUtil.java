@@ -86,6 +86,15 @@ public class OrganizationDepartmentUtil {
             Collectors.toMap(OrganizationDepartmentRes::getDepartmentId, Function.identity(), (d1, d2) -> d1));
     }
 
+    public static List<OrganizationDepartmentRes> transformOrganizationDepartmentRes(
+        List<OrganizationDepartmentDO> departmentDoList) {
+        if (CollectionUtils.isEmpty(departmentDoList)) {
+            return Collections.emptyList();
+        }
+        return departmentDoList.stream().map(OrganizationDepartmentUtil::transformOrganizationDepartmentRes).filter(
+            Objects::nonNull).collect(Collectors.toList());
+    }
+
     public static OrganizationDepartmentRes transformOrganizationDepartmentRes(OrganizationDepartmentDO departmentDo) {
         if (departmentDo == null) {
             return null;

@@ -40,6 +40,14 @@ public interface OrganizationDepartmentService {
         Paginator paginator);
 
     /**
+     * 通过机构id获取所有科室信息
+     *
+     * @param organizationId 机构id
+     * @return 科室信息
+     */
+    List<OrganizationDepartmentDO> getOrganizationDepartmentByOrganization(Long organizationId);
+
+    /**
      * 通过科室ID列表查询科室信息
      *
      * @param departmentIdList 科室ID列表

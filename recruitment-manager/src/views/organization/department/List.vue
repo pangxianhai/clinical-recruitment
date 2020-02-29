@@ -42,7 +42,7 @@
             </el-table-column>
             <el-table-column
                 fixed
-                prop="organizationName"
+                prop="organizationRes.name"
                 label="机构名称">
             </el-table-column>
         </el-table>

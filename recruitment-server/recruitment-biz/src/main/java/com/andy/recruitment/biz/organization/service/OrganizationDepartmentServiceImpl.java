@@ -41,6 +41,11 @@ public class OrganizationDepartmentServiceImpl implements OrganizationDepartment
     }
 
     @Override
+    public List<OrganizationDepartmentDO> getOrganizationDepartmentByOrganization(Long organizationId) {
+        return this.organizationDepartmentDAO.getOrganizationDepartmentByOrganization(organizationId);
+    }
+
+    @Override
     public List<OrganizationDepartmentDO> getOrganizationDepartment(List<Long> departmentIdList) {
         return this.organizationDepartmentDAO.getOrganizationDepartment(departmentIdList);
     }

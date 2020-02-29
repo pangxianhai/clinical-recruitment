@@ -48,10 +48,6 @@ export default new Router({
       component: () => import("@/views/patient/Layout"),
       children: [
         {
-          path: 'info',
-          component: () => import("@/views/patient/PatientInfo"),
-        },
-        {
           path: 'register',
           component: () => import("@/views/patient/Register"),
         }
@@ -96,6 +92,16 @@ export default new Router({
         {
           path: 'register',
           component: () => import("@/views/reference/Register")
+        }
+      ]
+    },
+    {
+      path: '/researcher',
+      component: () => import("@/views/researcher/Layout"),
+      children: [
+        {
+          path: 'register',
+          component: () => import("@/views/researcher/Register")
         }
       ]
     }

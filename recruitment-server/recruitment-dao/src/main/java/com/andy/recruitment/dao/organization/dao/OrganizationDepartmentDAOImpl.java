@@ -65,6 +65,16 @@ public class OrganizationDepartmentDAOImpl implements OrganizationDepartmentDAO 
     }
 
     @Override
+    public List<OrganizationDepartmentDO> getOrganizationDepartmentByOrganization(Long organizationId) {
+        if (organizationId == null) {
+            return null;
+        }
+        OrganizationDepartmentQuery query = new OrganizationDepartmentQuery();
+        query.setOrganizationId(organizationId);
+        return this.organizationDepartmentMapper.select(query);
+    }
+
+    @Override
     public List<OrganizationDepartmentDO> getOrganizationDepartment(List<Long> departmentIdList) {
         OrganizationDepartmentQuery query = new OrganizationDepartmentQuery();
         query.setDepartmentIdList(departmentIdList);

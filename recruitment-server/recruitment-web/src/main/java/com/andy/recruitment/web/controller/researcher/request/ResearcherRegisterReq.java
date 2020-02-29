@@ -46,11 +46,6 @@ public class ResearcherRegisterReq implements Serializable {
     @Length(max = 32)
     private String phone;
     /**
-     * 所属机构id
-     */
-    @NotNull
-    private Long organizationId;
-    /**
      * 所属科室ID
      */
     @NotNull

@@ -38,7 +38,7 @@ import {
   CheckboxGroup,
   ImagePreview,
   Notify,
-  Toast
+  Toast,
 } from 'vant';
 
 Vue.config.productionTip = false;

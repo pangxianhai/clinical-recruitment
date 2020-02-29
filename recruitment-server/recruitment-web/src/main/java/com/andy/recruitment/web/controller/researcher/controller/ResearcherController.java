@@ -1,7 +1,11 @@
 package com.andy.recruitment.web.controller.researcher.controller;
 
+import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
 import com.andy.recruitment.biz.researcher.service.ResearcherService;
 import com.andy.recruitment.biz.user.service.UserService;
+import com.andy.recruitment.common.exception.RecruitmentErrorCode;
+import com.andy.recruitment.common.exception.RecruitmentException;
+import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
@@ -16,6 +20,7 @@ import com.soyoung.base.auth.RoleType;
 import com.soyoung.base.context.ServletContext;
 import com.soyoung.base.converter.MyParameter;
 import com.soyoung.base.page.PageResult;
+import com.soyoung.base.util.asserts.AssertUtil;
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
@@ -39,11 +44,15 @@ public class ResearcherController {
 
     private final ResearcherService researcherService;
 
+    private final OrganizationDepartmentService organizationDepartmentService;
+
     private final UserService userService;
 
     @Autowired
-    public ResearcherController(ResearcherService researcherService, UserService userService) {
+    public ResearcherController(ResearcherService researcherService,
+        OrganizationDepartmentService organizationDepartmentService, UserService userService) {
         this.researcherService = researcherService;
+        this.organizationDepartmentService = organizationDepartmentService;
         this.userService = userService;
     }
 
@@ -79,10 +88,15 @@ public class ResearcherController {
     }
 
     @RequiresUser
-    @RequiresRoles(RoleType.MANAGER_CODE + "")
     @PostMapping("register")
     public LoginInfo registerResearcher(@RequestBody ResearcherRegisterReq researcherRegisterReq) {
         ResearcherInfoDO researcherInfoDo = ResearcherUtil.transformResearcherInfo(researcherRegisterReq);
+        OrganizationDepartmentDO departmentDo = organizationDepartmentService.getOrganizationDepartmentById(
+            researcherRegisterReq.getDepartmentId());
+        AssertUtil.assertNull(departmentDo, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.ORGANIZATION_DEPARTMENT_NOT_EXIST);
+        });
+        researcherInfoDo.setOrganizationId(departmentDo.getOrganizationId());
         researcherInfoDo.setStatus(ResearcherStatus.NON_EXAMINE);
         UserInfoDO userInfoDo = ResearcherUtil.transformUserInfo(researcherRegisterReq);
         this.researcherService.registerResearcher(researcherInfoDo, userInfoDo, researcherRegisterReq.getName());
