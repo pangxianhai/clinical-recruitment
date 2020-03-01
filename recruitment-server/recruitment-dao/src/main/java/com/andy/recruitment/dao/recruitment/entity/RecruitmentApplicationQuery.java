@@ -30,6 +30,14 @@ public class RecruitmentApplicationQuery implements Serializable {
      */
     private Long referenceUserId;
     /**
+     * 选择的机构ID
+     */
+    private Long organizationId;
+    /**
+     * 选择的科室ID
+     */
+    private Long departmentId;
+    /**
      * 申请状态
      */
     private RecruitmentApplicationStatus status;

@@ -8,31 +8,31 @@
                 disabled
             ></van-field>
             <van-field
-                v-model="applicationInfo.name"
+                v-model="applicationInfo.patientName"
                 label="患者姓名"
                 required
                 clearable
                 placeholder="请输入患者姓名"
-                :error-message="errorMsg.name"
-                @blur="validator('name')"
+                :error-message="errorMsg.patientName"
+                @blur="validator('patientName')"
             ></van-field>
             <van-field
-                v-model="applicationInfo.phone"
+                v-model="applicationInfo.patientPhone"
                 required
                 clearable
                 label="患者手机号"
                 placeholder="请输入患者手机号"
-                :error-message="errorMsg.phone"
-                @blur="validator('name')"
+                :error-message="errorMsg.patientPhone"
+                @blur="validator('patientPhone')"
             ></van-field>
             <van-field
-                v-model="applicationInfo.genderShow"
+                v-model="applicationInfo.patientGenderShow"
                 required
                 clearable
                 label="患者性别"
                 placeholder="请选择患者性别"
-                :error-message="errorMsg.genderShow"
-                @blur="validator('genderShow')"
+                :error-message="errorMsg.patientGenderShow"
+                @blur="validator('patientGenderShow')"
                 @focus="showGenderPopup = true"
             ></van-field>
             <van-popup v-model="showGenderPopup" position="bottom">
@@ -42,33 +42,51 @@
                             :visible-item-count=3></van-picker>
             </van-popup>
             <van-field
-                v-model="applicationInfo.address"
+                v-model="applicationInfo.patientAddress"
                 required
                 label="患者地址"
                 placeholder="请输入患者地址"
-                :error-message="errorMsg.address"
-                @blur="validator('address')"
+                :error-message="errorMsg.patientAddress"
+                @blur="validator('patientAddress')"
                 @focus="showAddress = true">
             </van-field>
             <address-select :show="showAddress" @confirm="addressSelectConfirm"
                             @cancel="addressSelectCancel"></address-select>
             <van-field
-                v-model="applicationInfo.age"
+                v-model="applicationInfo.patientAge"
                 required
                 clearable
                 label="患者年龄"
                 placeholder="请输入患者年龄"
-                :error-message="errorMsg.age"
-                @blur="validator('age')"
+                :error-message="errorMsg.patientAge"
+                @blur="validator('patientAge')"
                 type="number"
             ></van-field>
             <van-field
-                v-model="applicationInfo.phone"
+                v-model="applicationInfo.departmentShow"
+                required
+                clearable
+                label="研究机构"
+                placeholder="请选择研究机构"
+                :error-message="errorMsg.departmentShow"
+                @blur="validator('departmentShow')"
+                @focus="showDepartmentPopup=true"
+            ></van-field>
+            <van-popup v-model="showDepartmentPopup" position="bottom">
+                <van-picker show-toolbar title="机构及科室列表"
+                            :columns="departmentColumns"
+                            @confirm="onConfirmDepartment"
+                            @cancel="onCancelDepartment"
+                />
+            </van-popup>
+
+            <van-field
+                v-model="applicationInfo.referencePhone"
                 clearable
                 label="推荐人手机号"
                 placeholder="请推荐人手机号"
-                :error-message="errorMsg.phone"
-                @blur="validator('name')"
+                :error-message="errorMsg.referencePhone"
+                @blur="validator('referencePhone')"
             ></van-field>
 
             <van-field
@@ -136,11 +154,11 @@
   import {ImagePreview} from 'vant';
   import AsyncValidator from 'async-validator';
   import RecruitmentApi from "@/api/RecruitmentApi";
-  import PatientApi from "@/api/PatientApi";
   import UserApi from "@/api/UserApi";
   import FileApi from "@/api/FileApi";
   import Vue from "vue";
   import md5 from 'js-md5';
+  import {ApplicationAction} from '@/constants/Global';
 
   export default {
     data: function () {
@@ -149,65 +167,119 @@
           title: '',
         },
         applicationInfo: {
-          name: '',
-          diseaseImageList: []
+          recruitmentId: 0,
+          patientName: '',
+          patientPhone: '',
+          patientGender: 0,
+          patientGenderShow: '',
+          patientAddress: '',
+          patientAge: 0,
+          departmentId: 0,
+          departmentShow: '',
+          diseaseImageList: [],
+          referencePhone: '',
+          diseaseDesc: ''
         },
         errorMsg: {},
         rules: {},
         showAddress: false,
         showGenderPopup: false,
         genderList: [{text: '男', value: 1}, {text: '女', value: 2}],
+        showDepartmentPopup: false,
+        departmentColumns: [],
         uploadImageList: [],
         agreementService: false
       }
     },
     created: function () {
+      this.onLoadUserInfo();
       this.onLoadRecruitmentInfo();
-      this.onLoadPatientInfo();
-      if (!UserApi.isLogin()) {
-        this.$router.push({
-          path: '/user/login',
-          query: {
-            redirectURL: this.$route.fullPath,
-            action: this.$route.query.action
-          },
-        });
-      }
     },
     methods: {
-      onApplicationAction: function () {
-        this.validatorApplicationInfo().then(() => {
-          if (!this.agreementService) {
-            this.$notify('请您同意服务协议');
-            return;
-          }
-          let diseaseImageList = [];
-          this.uploadImageList.forEach((imageInfo) => {
-            diseaseImageList.push(imageInfo.imageId);
-          });
-          this.applicationInfo.diseaseImageList = diseaseImageList;
-          RecruitmentApi.recruitmentApplication(this.applicationInfo).then(userId => {
-            if (userId) {
-              this.$toast('报名成功！即将跳转');
-              if (!UserApi.isLogin()) {
-                UserApi.saveUserId(userId);
+      onLoadRecruitmentInfo: function () {
+        let recruitmentId = this.$route.params.recruitmentId;
+        if (typeof recruitmentId === 'undefined') {
+          return;
+        }
+        RecruitmentApi.getRecruitmentById(recruitmentId).then(recruitmentInfo => {
+          this.recruitment = recruitmentInfo;
+          this.applicationInfo.recruitmentId = recruitmentInfo.recruitmentId;
+        });
+        this.loadDepartment(recruitmentId);
+      },
+      onLoadUserInfo: function () {
+        let action = this.$route.query.action;
+        if (!UserApi.isLogin()) {
+          this.onToLogin('您未登录，正在为您跳转登录页面', action);
+        } else {
+          UserApi.getCurrentUserInfo().then(userDetailInfo => {
+            if (ApplicationAction.REFERENCE === action) {
+              if (!userDetailInfo.referenceInfoRes) {
+                this.onToLogin('您还未成为推荐人，请先注册推荐人', action);
+                return;
               }
-              setTimeout(() => {
-                this.onGoBack();
-              }, 2000);
+              this.applicationInfo = userDetailInfo.phone;
+            } else {
+              //其他都默认参与
+              if (!userDetailInfo.patientInfoRes) {
+                this.onToLogin('您还未成为受试者，请先注册受试者', action);
+                return;
+              }
+              this.applicationInfo.patientName = userDetailInfo.realName;
+              this.applicationInfo.patientPhone = userDetailInfo.phone;
+              this.applicationInfo.patientGender = userDetailInfo.gender.code;
+              this.applicationInfo.patientGenderShow = userDetailInfo.gender.desc;
+              this.applicationInfo.patientAddress = userDetailInfo.patientInfoRes.address;
+              this.applicationInfo.patientAge = userDetailInfo.patientInfoRes.age;
             }
           });
-        });
+        }
       },
-      onApplicationCancelAction: function () {
-        this.onGoBack();
+      loadDepartment: function (recruitmentId) {
+        RecruitmentApi.getRecruitmentDepartment(recruitmentId).then(departmentDetailList => {
+          let departmentColumns = [];
+          for (let i = 0; i < departmentDetailList.length; ++i) {
+            let departmentInfo = departmentDetailList[i];
+            departmentColumns.push({
+              text: departmentInfo.organizationRes.name + '/' + departmentInfo.name,
+              value: departmentInfo.departmentId
+            });
+          }
+          this.departmentColumns = departmentColumns;
+        });
       },
       onGoBack: function () {
         let redirectURL = this.$route.query.redirectURL;
         if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
           redirectURL = '/recruitment/applicationList';
         }
-        this.$router.push({path: redirectURL});
+        this.$router.push({path: String(redirectURL)}, function () {
+        });
+      },
+
+      onToServiceAgreement: function () {
+        this.$router.push({
+          path: '/site/serviceAgreement',
+          query: {
+            redirectURL: this.$route.path
+          }
+        }, function () {
+
+        });
+      },
+      onToLogin: function (notifyMsg, action) {
+        this.$toast(notifyMsg);
+        setTimeout(() => {
+          this.$router.push({
+            path: '/user/login',
+            query: {
+              redirectURL: this.$route.fullPath,
+              action: action
+            },
+          }, function () {
+
+          });
+        }, 3000);
       },
       validatorApplicationInfo: function (item) {
         const validator = new AsyncValidator(this.rules);
@@ -238,24 +310,33 @@
         }
       },
       addressSelectConfirm: function (data) {
-        this.applicationInfo.address = data[0].name + " " + data[1].name + " " + data[2].name;
+        this.applicationInfo.patientAddress = data[0].name + " " + data[1].name + " "
+            + data[2].name;
         this.showAddress = false;
-        this.validator('address');
+        this.validator('patientAddress');
       },
       addressSelectCancel: function () {
         this.applicationInfo.address = '';
         this.showAddress = false;
-        this.validator('address');
+        this.validator('patientAddress');
       },
       onChangeGender: function (picker, value) {
-        this.applicationInfo.gender = value.value;
-        this.applicationInfo.genderShow = value.text;
+        this.applicationInfo.patientGender = value.value;
+        this.applicationInfo.patientGenderShow = value.text;
         this.showGenderPopup = false;
       },
       onConfirmGender: function (value) {
         this.applicationInfo.gender = value.value;
         this.applicationInfo.genderShow = value.text;
         this.showGenderPopup = false;
+      },
+      onConfirmDepartment: function (value) {
+        this.applicationInfo.departmentId = value.value;
+        this.applicationInfo.departmentShow = value.text;
+        this.showDepartmentPopup = false;
+      },
+      onCancelDepartment: function () {
+        this.showDepartmentPopup = false;
       },
       onUploaderRead: function (file) {
         this.$toast({
@@ -278,37 +359,6 @@
           this.$toast.clear();
         });
       },
-      onLoadRecruitmentInfo: function () {
-        let recruitmentId = this.$route.params.recruitmentId;
-        if (typeof recruitmentId === 'undefined') {
-          return;
-        }
-        RecruitmentApi.getRecruitmentById(recruitmentId).then(recruitmentInfo => {
-          this.recruitment = recruitmentInfo;
-          this.applicationInfo.recruitmentId = recruitmentInfo.recruitmentId;
-        });
-      },
-      onLoadPatientInfo: function () {
-        PatientApi.getCurrentPatientInfo().then(patientInfo => {
-          if (!patientInfo.patientId) {
-            return;
-          }
-          this.applicationInfo.name = patientInfo.userInfoVO.realName;
-          this.applicationInfo.phone = patientInfo.userInfoVO.phone;
-          this.applicationInfo.genderShow = patientInfo.userInfoVO.gender.desc;
-          this.applicationInfo.gender = patientInfo.userInfoVO.gender.code;
-          this.applicationInfo.address = patientInfo.address;
-          this.applicationInfo.age = patientInfo.age;
-        });
-      },
-      onToServiceAgreement: function () {
-        this.$router.push({
-          path: '/site/serviceAgreement',
-          query: {
-            redirectURL: this.$route.path
-          }
-        });
-      },
       previewImage: function (index) {
         let imageList = [];
         this.uploadImageList.forEach((imageInfo) => {
@@ -318,6 +368,32 @@
           images: imageList,
           startPosition: index
         });
+      },
+      onApplicationAction: function () {
+        this.validatorApplicationInfo().then(() => {
+          if (!this.agreementService) {
+            this.$toast('请您同意服务协议');
+            return;
+          }
+          let diseaseImageList = [];
+          this.uploadImageList.forEach((imageInfo) => {
+            diseaseImageList.push(imageInfo.imageId);
+          });
+          this.applicationInfo.diseaseImageList = diseaseImageList;
+          window.console.log(this.applicationInfo);
+          RecruitmentApi.recruitmentApplication(this.applicationInfo.recruitmentId,
+              this.applicationInfo).then(success => {
+            if (success) {
+              this.$toast('报名成功！即将跳转');
+              setTimeout(() => {
+                this.onGoBack();
+              }, 2000);
+            }
+          });
+        });
+      },
+      onApplicationCancelAction: function () {
+        this.onGoBack();
       }
     }
   }

@@ -56,4 +56,12 @@ public interface ReferenceService {
      */
     ReferenceInfoDO getReferenceByUserId(Long userId);
 
+    /**
+     * 通过手机号查询推荐人信息
+     *
+     * @param phone 手机号
+     * @return 推荐人信息
+     */
+    ReferenceInfoDO getReferenceByPhone(String phone);
+
 }

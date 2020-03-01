@@ -51,7 +51,7 @@
                 @focus="onOpenDepartmentPopup"
             ></van-field>
             <van-popup v-model="showDepartmentPopup" position="bottom">
-                <van-picker show-toolbar title="标题"
+                <van-picker show-toolbar title="机构及科室列表"
                             :columns="organizationAndDepartmentColumns"
                             @confirm="onConfirmDepartment"
                             @cancel="onCancelDepartment"

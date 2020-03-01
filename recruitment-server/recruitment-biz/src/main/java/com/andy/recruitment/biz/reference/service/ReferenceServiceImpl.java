@@ -79,4 +79,13 @@ public class ReferenceServiceImpl implements ReferenceService {
     public ReferenceInfoDO getReferenceByUserId(Long userId) {
         return this.referenceDAO.getReferenceInfoByUserId(userId);
     }
+
+    @Override
+    public ReferenceInfoDO getReferenceByPhone(String phone) {
+        UserInfoDO userInfoDo = this.userDAO.getUserInfoByPhone(phone);
+        if (userInfoDo == null) {
+            return null;
+        }
+        return this.getReferenceByUserId(userInfoDo.getId());
+    }
 }

@@ -21,7 +21,7 @@ public interface PatientInfoService {
      * @param userInfoDo    用户信息
      * @param operator      操作人
      */
-    void registerPatient(PatientInfoDO patientInfoDo, UserInfoDO userInfoDo, String operator);
+    Long registerPatient(PatientInfoDO patientInfoDo, UserInfoDO userInfoDo, String operator);
 
     /**
      * 更新患者信息

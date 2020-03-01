@@ -1,10 +1,14 @@
 package com.andy.recruitment.web.controller.recruitment.controller;
 
+import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
 import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
+import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
+import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentDetailRes;
+import com.andy.recruitment.web.controller.organization.util.OrganizationDepartmentUtil;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoDetailRes;
@@ -14,7 +18,10 @@ import com.soyoung.base.auth.RoleType;
 import com.soyoung.base.context.ServletContext;
 import com.soyoung.base.converter.MyParameter;
 import com.soyoung.base.page.PageResult;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.BeanUtils;
@@ -38,9 +45,13 @@ public class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
 
+    private final OrganizationDepartmentService organizationDepartmentService;
+
     @Autowired
-    public RecruitmentController(RecruitmentService recruitmentService) {
+    public RecruitmentController(RecruitmentService recruitmentService,
+        OrganizationDepartmentService organizationDepartmentService) {
         this.recruitmentService = recruitmentService;
+        this.organizationDepartmentService = organizationDepartmentService;
     }
 
     @GetMapping
@@ -102,5 +113,20 @@ public class RecruitmentController {
         this.recruitmentService.updateRecruitmentInfoStatus(recruitmentId, RecruitmentStatus.FINISHED,
             ServletContext.getLoginInfo().getRealName());
         return true;
+    }
+
+    @GetMapping("/{recruitmentId:\\d+}/department")
+    public List<OrganizationDepartmentDetailRes> getDepartmentDetailOfRecruitment(@PathVariable Long recruitmentId) {
+        List<Long> departmentIdList = this.recruitmentService.listDepartmentByRecruitment(recruitmentId);
+        List<OrganizationDepartmentDO> organizationDepartmentDoList = organizationDepartmentService.getOrganizationDepartment(
+            departmentIdList);
+        List<OrganizationDepartmentDetailRes> organizationDepartmentDetailResList = OrganizationDepartmentUtil.transformOrganizationDepartmentDetailRes(
+            organizationDepartmentDoList);
+        if (CollectionUtils.isEmpty(organizationDepartmentDetailResList)) {
+            return Collections.emptyList();
+        }
+        organizationDepartmentDetailResList.sort(
+            Comparator.comparing(OrganizationDepartmentDetailRes::getOrganizationId));
+        return organizationDepartmentDetailResList;
     }
 }

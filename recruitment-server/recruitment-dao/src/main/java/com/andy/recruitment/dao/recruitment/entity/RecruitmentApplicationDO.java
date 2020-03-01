@@ -26,9 +26,13 @@ public class RecruitmentApplicationDO extends BaseDO {
      */
     private String recruitmentRegisterCode;
     /**
-     * 选择的机构id
+     * 选择的机构ID
      */
     private Long organizationId;
+    /**
+     * 选择的科室ID
+     */
+    private Long departmentId;
     /**
      * 患者用户ID
      */

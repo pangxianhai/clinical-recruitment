@@ -11,6 +11,7 @@
         <result column="patient_user_id" property="patientUserId" jdbcType="BIGINT"/>
         <result column="reference_user_id" property="referenceUserId" jdbcType="BIGINT"/>
         <result column="organization_id" property="organizationId" jdbcType="BIGINT"/>
+        <result column="department_id" property="departmentId" jdbcType="BIGINT"/>
         <result column="status" property="status"
           typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
         <result column="disease_desc" property="diseaseDesc" jdbcType="VARCHAR"/>
@@ -29,6 +30,7 @@
         patient_user_id,
         reference_user_id,
         organization_id,
+        department_id,
         status,
         disease_desc,
         genetic_disease_desc,
@@ -60,8 +62,12 @@
             <if test="organizationId != null">
                 and organization_id = #{organizationId, jdbcType=BIGINT}
             </if>
+            <if test="departmentId != null">
+                and department_id = #{departmentId, jdbcType=BIGINT}
+            </if>
             <if test="status != null">
-                and status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                and status =
+                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="recruitmentRegisterCode != null and recruitmentRegisterCode != ''">
                 and recruitment_register_code = #{recruitmentRegisterCode, jdbcType=VARCHAR}
@@ -79,6 +85,7 @@
         #{patientUserId, jdbcType=BIGINT},
         #{referenceUserId, jdbcType=BIGINT},
         #{organizationId, jdbcType=BIGINT},
+        #{departmentId, jdbcType=BIGINT},
         #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
         #{diseaseDesc, jdbcType=VARCHAR},
         #{geneticDiseaseDesc, jdbcType=VARCHAR},

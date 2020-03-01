@@ -1,7 +1,6 @@
 package com.andy.recruitment.biz.recruitment.service;
 
 import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
-import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
@@ -69,4 +68,12 @@ public interface RecruitmentService {
      * @param operator      操作人
      */
     void updateRecruitmentInfoStatus(Long recruitmentId, RecruitmentStatus status, String operator);
+
+    /**
+     * 查询项目关联的所有科室ID
+     *
+     * @param recruitmentId 招募项目ID
+     * @return 科室ID列表
+     */
+    List<Long> listDepartmentByRecruitment(Long recruitmentId);
 }

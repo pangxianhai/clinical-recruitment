@@ -82,6 +82,14 @@ public enum RecruitmentErrorCode {
      */
     RECRUITMENT_ID_EMPTY(101402),
     /**
+     * 招募项目不存在
+     */
+    RECRUITMENT_NOT_EXIST(101403),
+    /**
+     * 该项目当前不在招募中
+     */
+    RECRUITMENT_NOT_IN_PROCESS(101404),
+    /**
      * 招募项目添加研究机构失败
      */
     RECRUITMENT_ORGANIZATION_ADD_FAILED(101420),

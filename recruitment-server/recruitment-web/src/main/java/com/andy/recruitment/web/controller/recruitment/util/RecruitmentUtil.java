@@ -1,13 +1,21 @@
 package com.andy.recruitment.web.controller.recruitment.util;
 
+import com.andy.recruitment.biz.region.entity.AddressInfo;
+import com.andy.recruitment.biz.region.service.RegionService;
+import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
+import com.andy.recruitment.dao.user.constant.Gender;
+import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq;
+import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationAddReq;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoRes;
 import com.soyoung.base.util.DateUtil;
+import com.soyoung.base.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,13 +23,23 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 招募项目工具
  *
  * @author 庞先海 2020-01-30
  */
+@Component
 public class RecruitmentUtil {
+
+    private static RegionService regionService;
+
+    @Autowired
+    public RecruitmentUtil(RegionService regionService) {
+        RecruitmentUtil.regionService = regionService;
+    }
 
     public static RecruitmentQuery transformQueryParam(RecruitmentQueryReq queryReq) {
         if (null == queryReq) {
@@ -79,5 +97,51 @@ public class RecruitmentUtil {
         }
         return recruitmentInfoDoList.stream().map(RecruitmentUtil::transformRecruitmentInfoRes).filter(
             Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static PatientInfoDO buildPatientInfoDo(RecruitmentApplicationAddReq applicationAddReq) {
+        if (applicationAddReq == null) {
+            return null;
+        }
+        PatientInfoDO patientInfoDo = new PatientInfoDO();
+        patientInfoDo.setAge(applicationAddReq.getPatientAge());
+        AddressInfo addressInfo = regionService.parseAddressInfo(applicationAddReq.getPatientAddress());
+        if (addressInfo != null) {
+            if (addressInfo.getProvince() != null) {
+                patientInfoDo.setProvinceId(addressInfo.getProvince().getId());
+            }
+            if (addressInfo.getCity() != null) {
+                patientInfoDo.setCityId(addressInfo.getCity().getId());
+            }
+            if (addressInfo.getDistrict() != null) {
+                patientInfoDo.setDistrictId(addressInfo.getDistrict().getId());
+            }
+        }
+        return patientInfoDo;
+    }
+
+    public static UserInfoDO buildUserInfoDo(RecruitmentApplicationAddReq applicationAddReq) {
+        if (applicationAddReq == null) {
+            return null;
+        }
+        UserInfoDO userInfoDo = new UserInfoDO();
+        userInfoDo.setRealName(applicationAddReq.getPatientName());
+        userInfoDo.setPhone(applicationAddReq.getPatientPhone());
+        userInfoDo.setGender(Gender.parse(applicationAddReq.getPatientGender()));
+        return userInfoDo;
+    }
+
+    public static RecruitmentApplicationDO transformRecruitmentApplicationDo(
+        RecruitmentApplicationAddReq applicationAddReq, RecruitmentInfoDO recruitmentInfoDo) {
+        if (applicationAddReq == null) {
+            return null;
+        }
+        RecruitmentApplicationDO applicationDo = new RecruitmentApplicationDO();
+        applicationDo.setRecruitmentId(recruitmentInfoDo.getId());
+        applicationDo.setRecruitmentRegisterCode(recruitmentInfoDo.getRegisterCode());
+        applicationDo.setDepartmentId(applicationAddReq.getDepartmentId());
+        applicationDo.setDiseaseDesc(applicationAddReq.getDiseaseDesc());
+        applicationDo.setDiseaseImage(StringUtil.join(applicationAddReq.getDiseaseImageList(), ","));
+        return applicationDo;
     }
 }

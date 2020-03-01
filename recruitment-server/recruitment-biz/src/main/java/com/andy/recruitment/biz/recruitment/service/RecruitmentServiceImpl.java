@@ -152,6 +152,11 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         this.recruitmentDAO.updateRecruitmentInfo(recruitmentInfoDo, operator);
     }
 
+    @Override
+    public List<Long> listDepartmentByRecruitment(Long recruitmentId) {
+        return this.recruitmentOrganizationDAO.listDepartmentByRecruitment(recruitmentId);
+    }
+
     private void updateOrganizationDepartment(Long recruitmentId, List<List<Long>> organizationDepartmentList,
         String operator) {
         List<Long> sourceDepartmentIdList = recruitmentOrganizationDAO.listDepartmentByRecruitment(recruitmentId);

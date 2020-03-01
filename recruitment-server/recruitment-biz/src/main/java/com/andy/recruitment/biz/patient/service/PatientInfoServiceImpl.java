@@ -38,8 +38,8 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     }
 
     @Override
-    public void registerPatient(PatientInfoDO patientInfoDo, UserInfoDO userInfoDo, String operator) {
-        transactionTemplate.execute((status) -> {
+    public Long registerPatient(PatientInfoDO patientInfoDo, UserInfoDO userInfoDo, String operator) {
+        return transactionTemplate.execute((status) -> {
             Long userId = this.userDAO.registerUser(userInfoDo, operator);
             patientInfoDo.setUserId(userId);
             PatientInfoDO existPatientInfoDo = this.patientInfoDAO.getPatientInfoByUserId(userId);
@@ -49,7 +49,7 @@ public class PatientInfoServiceImpl implements PatientInfoService {
                 patientInfoDo.setId(existPatientInfoDo.getId());
                 this.patientInfoDAO.updatePatientInfo(patientInfoDo, operator);
             }
-            return null;
+            return userId;
         });
     }
 
