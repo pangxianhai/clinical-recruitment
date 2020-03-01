@@ -173,7 +173,7 @@
           patientGender: 0,
           patientGenderShow: '',
           patientAddress: '',
-          patientAge: 0,
+          patientAge: '',
           departmentId: 0,
           departmentShow: '',
           diseaseImageList: [],
@@ -218,7 +218,7 @@
                 this.onToLogin('您还未成为推荐人，请先注册推荐人', action);
                 return;
               }
-              this.applicationInfo = userDetailInfo.phone;
+              this.applicationInfo.referencePhone = userDetailInfo.phone;
             } else {
               //其他都默认参与
               if (!userDetailInfo.patientInfoRes) {
@@ -326,8 +326,8 @@
         this.showGenderPopup = false;
       },
       onConfirmGender: function (value) {
-        this.applicationInfo.gender = value.value;
-        this.applicationInfo.genderShow = value.text;
+        this.applicationInfo.patientGender = value.value;
+        this.applicationInfo.patientGenderShow = value.text;
         this.showGenderPopup = false;
       },
       onConfirmDepartment: function (value) {

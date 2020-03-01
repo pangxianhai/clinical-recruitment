@@ -20,6 +20,7 @@ public interface PatientInfoService {
      * @param patientInfoDo 患者信息
      * @param userInfoDo    用户信息
      * @param operator      操作人
+     * @return 患者用户ID
      */
     Long registerPatient(PatientInfoDO patientInfoDo, UserInfoDO userInfoDo, String operator);
 

@@ -53,7 +53,6 @@ public class PatientController {
     public boolean addPatient(@RequestBody PatientAddReq patientAddReq) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         PatientInfoDO patientInfoDo = PatientInfoUtil.transformPatientInfoDo(patientAddReq);
-        patientInfoDo.setStatus(PatientStatus.NORMAL);
         UserInfoDO userInfoDo = PatientInfoUtil.transformUserInfo(patientAddReq);
         this.patientInfoService.registerPatient(patientInfoDo, userInfoDo, loginInfo.getRealName());
         return true;
@@ -62,7 +61,6 @@ public class PatientController {
     @PostMapping("register")
     public LoginInfo registerPatient(@RequestBody PatientRegisterReq patientRegisterReq) {
         PatientInfoDO patientInfoDo = PatientInfoUtil.transformPatientInfoDo(patientRegisterReq);
-        patientInfoDo.setStatus(PatientStatus.NORMAL);
         UserInfoDO userInfoDo = PatientInfoUtil.transformUserInfo(patientRegisterReq);
         this.patientInfoService.registerPatient(patientInfoDo, userInfoDo, patientRegisterReq.getName());
         return this.userService.userInfoLogin(userInfoDo);

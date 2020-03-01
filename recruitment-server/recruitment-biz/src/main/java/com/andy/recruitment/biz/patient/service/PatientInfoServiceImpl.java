@@ -44,6 +44,7 @@ public class PatientInfoServiceImpl implements PatientInfoService {
             patientInfoDo.setUserId(userId);
             PatientInfoDO existPatientInfoDo = this.patientInfoDAO.getPatientInfoByUserId(userId);
             if (existPatientInfoDo == null) {
+                patientInfoDo.setStatus(PatientStatus.NORMAL);
                 this.patientInfoDAO.addPatientInfo(patientInfoDo, operator);
             } else {
                 patientInfoDo.setId(existPatientInfoDo.getId());

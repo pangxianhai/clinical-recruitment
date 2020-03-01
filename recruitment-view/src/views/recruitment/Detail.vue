@@ -1,6 +1,6 @@
 <template>
     <div class="recruitment-detail">
-        <van-nav-bar title="项目详情" left-arrow @click-right="onRecruitmentApplication"
+        <van-nav-bar title="项目详情" left-arrow @click-right="onRecruitmentRecommend"
                      @click-left="onGoBack">
             <van-icon name="share" slot="right"></van-icon>
         </van-nav-bar>
@@ -78,10 +78,13 @@
             </van-tab>
         </van-tabs>
         <van-goods-action :safe-area-inset-bottom="true" style="position: sticky;">
-            <van-goods-action-icon icon="service-o" text="联系我们" color="#1989fa"/>
-            <van-goods-action-icon icon="share" text="推荐"/>
-            <van-goods-action-button icon="qr" type="warning" text="推荐二维码"/>
-            <van-goods-action-button icon="chat-o" type="danger" text="我要参加"/>
+            <van-goods-action-icon icon="service-o" text="联系我们" color="#1989fa"
+                                   @click="onContactUs"/>
+            <van-goods-action-icon icon="share" text="推荐" @click="onRecruitmentRecommend"/>
+            <van-goods-action-button icon="qr" type="warning" text="推荐二维码"
+                                     @click="onRecommendQrcode"/>
+            <van-goods-action-button icon="chat-o" type="danger" text="我要参加"
+                                     @click="onRecruitmentApplication"/>
         </van-goods-action>
         <van-popup v-model="recommendQrcode"
                    position="bottom"
@@ -141,7 +144,7 @@
 </style>
 <script>
   import RecruitmentApi from "@/api/RecruitmentApi";
-  import {UserConstants, RecruitmentStatus} from '@/constants/Global';
+  import {UserConstants, RecruitmentStatus, ApplicationAction} from '@/constants/Global';
   import UserApi from '@/api/UserApi';
   import QRCode from 'qrcode';
 
@@ -149,6 +152,7 @@
     data: function () {
       return {
         recruitmentInfo: {
+          recruitmentId: '',
           status: {}
         },
         UserConstants: UserConstants,
@@ -174,7 +178,9 @@
         if (typeof redirectURL === 'undefined' || redirectURL.length <= 0) {
           redirectURL = '/recruitment/list';
         }
-        this.$router.push({path: redirectURL});
+        this.$router.push({path: String(redirectURL)}, function () {
+
+        });
       },
       onLoadRecruitmentInfo: function (recruitmentId) {
         if (typeof recruitmentId === 'undefined') {
@@ -194,25 +200,27 @@
       },
       onRecruitmentApplication: function () {
         let redirectURL = this.$route.path;
-        if (UserApi.isLogin()) {
-          this.$router.push({
-            path: '/recruitment/application',
-            query: {
-              recruitmentId: this.recruitmentInfo.recruitmentId,
-              redirectURL: redirectURL
-            },
-          });
-        } else {
-          this.$router.push({
-            path: '/user/login',
-            query: {
-              userType: 3,
-              recruitmentId: this.recruitmentInfo.recruitmentId,
-              action: 'application',
-              redirectURL: redirectURL
-            },
-          });
-        }
+        this.$router.push({
+          path: '/recruitment/' + this.recruitmentInfo.recruitmentId + '/application',
+          query: {
+            redirectURL: String(redirectURL),
+            action: ApplicationAction.ATTEND
+          },
+        }, function () {
+
+        });
+      },
+      onRecruitmentRecommend: function () {
+        let redirectURL = this.$route.path;
+        this.$router.push({
+          path: '/recruitment/' + this.recruitmentInfo.recruitmentId + '/application',
+          query: {
+            redirectURL: String(redirectURL),
+            action: ApplicationAction.REFERENCE
+          },
+        }, function () {
+
+        });
       },
       onRecommendQrcode: function () {
         let canvas = document.getElementById('canvas');

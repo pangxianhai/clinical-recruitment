@@ -289,26 +289,6 @@
         }, function () {
 
         });
-
-        // if (UserApi.isLogin()) {
-        //   this.$router.push({
-        //     path: '/recruitment/application',
-        //     query: {
-        //       recruitmentId: recruitment.recruitmentId,
-        //       redirectURL: redirectURL
-        //     },
-        //   });
-        // } else {
-        //   this.$router.push({
-        //     path: '/user/login',
-        //     query: {
-        //       userType: 3,
-        //       recruitmentId: recruitment.recruitmentId,
-        //       action: 'application',
-        //       redirectURL: redirectURL
-        //     },
-        //   });
-        // }
       },
       onContactUs: function () {
         this.$router.push({
