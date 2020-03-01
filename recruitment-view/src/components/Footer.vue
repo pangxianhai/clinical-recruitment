@@ -8,8 +8,6 @@
 </template>
 
 <script>
-  import UserApi from '@/api/UserApi';
-
   export default {
     name: 'my-footer',
     data: function () {
@@ -36,14 +34,7 @@
       }
     },
     created: function () {
-      UserApi.getLogInfo().then(userInfo => {
-        if (userInfo) {
-          this.userInfo = userInfo;
-          this.initMenu();
-        } else {
-          UserApi.logout();
-        }
-      });
+      this.initMenu();
     },
     methods: {
       initMenu: function () {

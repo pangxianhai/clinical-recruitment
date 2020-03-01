@@ -18,7 +18,8 @@ const applicationAction = {
 
 const cookieNameConstant = {
   USER_NAME: 'N5Bc4f',
-  TOKEN_NAME: 'b4Qi5W'
+  TOKEN_NAME: 'b4Qi5W',
+  USER_ID: 'VrX2Mu'
 };
 
 export const UserConstants = userConstants;

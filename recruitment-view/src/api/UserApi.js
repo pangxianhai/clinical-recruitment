@@ -2,20 +2,6 @@ import {ApiUtil, CookieUtil, StringUtil} from '@/util/Util';
 import {CookieNameConstant} from '@/constants/Global';
 
 let UserApi = {
-
-  data: {
-    userInfo: undefined
-  },
-
-  getLogInfo: async () => {
-    if (typeof UserApi.data.userInfo === 'undefined') {
-      await ApiUtil.get('/user/current', {}).then((userInfo) => {
-        UserApi.data.userInfo = userInfo;
-        return UserApi.data.userInfo;
-      });
-    }
-    return UserApi.data.userInfo;
-  },
   getCurrentUserInfo: async () => {
     return await ApiUtil.get('/user/current', {});
   },
@@ -29,20 +15,27 @@ let UserApi = {
       code: code
     });
   },
+  getUserId: function () {
+    return CookieUtil.getCookie(CookieNameConstant.USER_ID);
+  },
   isLogin: function () {
     let userName = CookieUtil.getCookie(CookieNameConstant.USER_NAME);
     let token = CookieUtil.getCookie(CookieNameConstant.TOKEN_NAME);
-    return StringUtil.isNotEmpty(userName) && StringUtil.isNotEmpty(token);
+    let userId = CookieUtil.getCookie(CookieNameConstant.USER_ID);
+    return StringUtil.isNotEmpty(userName) && StringUtil.isNotEmpty(token)
+        && StringUtil.isNotEmpty(userId);
   },
   saveLoginInfo: function (loginInfo) {
     CookieUtil.setCookie(CookieNameConstant.USER_NAME,
         String(loginInfo.userName));
     CookieUtil.setCookie(CookieNameConstant.TOKEN_NAME,
         String(loginInfo.token));
+    CookieUtil.setCookie(CookieNameConstant.USER_ID, loginInfo.userId);
   },
   logout: function () {
     CookieUtil.deleteCookie(CookieNameConstant.USER_NAME);
     CookieUtil.deleteCookie(CookieNameConstant.TOKEN_NAME);
+    CookieUtil.deleteCookie(CookieNameConstant.USER_ID);
   }
 };
 
