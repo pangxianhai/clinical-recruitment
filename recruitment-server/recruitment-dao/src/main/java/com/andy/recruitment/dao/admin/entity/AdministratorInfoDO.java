@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.admin.entity;
 
 import com.andy.recruitment.dao.admin.constant.AdminType;
 import com.andy.recruitment.dao.admin.constant.AdministratorStatus;
-import com.soyoung.base.base.BaseDO;
+import com.andy.spring.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

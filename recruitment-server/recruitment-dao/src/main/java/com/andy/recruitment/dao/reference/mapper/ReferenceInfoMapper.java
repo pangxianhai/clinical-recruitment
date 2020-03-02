@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.reference.mapper;
 
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
-import com.soyoung.base.mybatis.paginator.Page;
+import com.andy.spring.mybatis.paginator.Page;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 

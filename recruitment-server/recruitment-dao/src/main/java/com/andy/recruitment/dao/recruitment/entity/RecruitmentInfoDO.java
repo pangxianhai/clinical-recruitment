@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.recruitment.entity;
 
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
-import com.soyoung.base.base.BaseDO;
+import com.andy.spring.base.BaseDO;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

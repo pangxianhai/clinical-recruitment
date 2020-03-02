@@ -10,7 +10,7 @@
         <result column="district_id" property="districtId" jdbcType="BIGINT"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
         <result column="status" property="status"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -52,7 +52,7 @@
             </if>
             <if test="status != null">
                 and p.status =
-                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="realName != null and realName != ''">
                 and u.real_name like CONCAT('%', #{realName,jdbcType=VARCHAR},'%')
@@ -73,7 +73,7 @@
         #{cityId, jdbcType=BIGINT},
         #{districtId, jdbcType=BIGINT},
         #{age, jdbcType=INTEGER},
-        #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -97,7 +97,7 @@
                 age = #{age, jdbcType=BIGINT},
             </if>
             <if test="status != null">
-                status = #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                status = #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by=#{updatedBy, jdbcType=VARCHAR},

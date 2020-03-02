@@ -8,7 +8,7 @@
         <result column="register_code" property="registerCode" jdbcType="VARCHAR"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="category_id" property="category"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="practice_stages" property="practiceStages" jdbcType="VARCHAR"/>
         <result column="indication" property="indication" jdbcType="VARCHAR"/>
         <result column="drug_name" property="drugName" jdbcType="VARCHAR"/>
@@ -23,7 +23,7 @@
         <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
         <result column="stop_time" property="stopTime" jdbcType="TIMESTAMP"/>
         <result column="status" property="status"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -95,7 +95,7 @@
             </if>
             <if test="status != null">
                 and status =
-                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="startTimeBegin != null">
                 <![CDATA[
@@ -119,7 +119,7 @@
             </if>
             <if test="category != null">
                 and category_id =
-                #{category,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                #{category,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
         </where>
     </select>
@@ -130,7 +130,7 @@
         #{id,jdbcType=BIGINT},
         #{registerCode, jdbcType=VARCHAR},
         #{title, jdbcType=VARCHAR},
-        #{category, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{category, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{practiceStages, jdbcType=VARCHAR},
         #{indication, jdbcType=VARCHAR},
         #{drugName, jdbcType=VARCHAR},
@@ -144,7 +144,7 @@
         #{patientRights, jdbcType=VARCHAR},
         #{startTime, jdbcType=TIMESTAMP},
         #{stopTime, jdbcType=TIMESTAMP},
-        #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -163,7 +163,7 @@
             </if>
             <if test="category != null">
                 category_id =
-                #{category, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                #{category, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="drugName != null and drugName != ''">
                 drug_name = #{drugName, jdbcType=VARCHAR},
@@ -205,7 +205,7 @@
                 stop_time = #{stopTime, jdbcType=TIMESTAMP},
             </if>
             <if test="status != null ">
-                status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                status = #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

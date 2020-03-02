@@ -1,6 +1,6 @@
 package com.andy.recruitment.web.controller.organization.request;
 
-import com.soyoung.base.base.BaseQueryReq;
+import com.andy.spring.base.BaseQueryReq;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;

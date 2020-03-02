@@ -1,6 +1,6 @@
 package com.andy.recruitment.biz.admin.service;
 
-import com.soyoung.base.auth.LoginInfo;
+import com.andy.spring.auth.LoginInfo;
 
 /**
  * 管理员服务

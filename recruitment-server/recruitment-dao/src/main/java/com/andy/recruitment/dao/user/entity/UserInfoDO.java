@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.user.entity;
 
 import com.andy.recruitment.dao.user.constant.Gender;
 import com.andy.recruitment.dao.user.constant.UserStatus;
-import com.soyoung.base.base.BaseDO;
+import com.andy.spring.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

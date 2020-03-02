@@ -2,8 +2,8 @@ package com.andy.recruitment.dao.patient.dao;
 
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 
 /**
  * 病人信息服务

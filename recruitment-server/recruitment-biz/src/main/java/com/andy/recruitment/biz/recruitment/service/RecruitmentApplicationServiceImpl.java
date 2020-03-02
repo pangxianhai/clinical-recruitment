@@ -3,8 +3,8 @@ package com.andy.recruitment.biz.recruitment.service;
 import com.andy.recruitment.dao.recruitment.dao.RecruitmentApplicationDAO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -145,7 +145,6 @@
 <script>
   import RecruitmentApi from "@/api/RecruitmentApi";
   import {UserConstants, RecruitmentStatus, ApplicationAction} from '@/constants/Global';
-  import UserApi from '@/api/UserApi';
   import QRCode from 'qrcode';
 
   export default {
@@ -157,20 +156,12 @@
         },
         UserConstants: UserConstants,
         RecruitmentStatus: RecruitmentStatus,
-        userInfo: {
-          userType: {
-            code: UserConstants.PATIENT,
-          }
-        },
         recommendQrcode: false
       }
     },
     created: function () {
       let recruitmentId = this.$route.params.recruitmentId;
       this.onLoadRecruitmentInfo(recruitmentId);
-      UserApi.getLogInfo().then(userInfo => {
-        this.userInfo = userInfo;
-      });
     },
     methods: {
       onGoBack: function () {
@@ -225,7 +216,7 @@
       onRecommendQrcode: function () {
         let canvas = document.getElementById('canvas');
         let recommendUrl = process.env.VUE_APP_HOST + '/recruitment/application?recruitmentId='
-            + this.recruitmentInfo.recruitmentId + "&doctorUserId=" + this.userInfo.userId;
+            + this.recruitmentInfo.recruitmentId + "&doctorUserId=";
         QRCode.toCanvas(canvas, recommendUrl, {
           width: 320,
           height: 320

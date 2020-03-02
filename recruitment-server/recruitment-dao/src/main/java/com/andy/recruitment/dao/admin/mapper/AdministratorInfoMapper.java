@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.admin.mapper;
 
 import com.andy.recruitment.dao.admin.entity.AdministratorInfoDO;
 import com.andy.recruitment.dao.admin.entity.AdministratorQuery;
-import com.soyoung.base.mybatis.paginator.Page;
+import com.andy.spring.mybatis.paginator.Page;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 

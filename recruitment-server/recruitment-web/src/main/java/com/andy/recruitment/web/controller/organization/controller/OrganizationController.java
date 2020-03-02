@@ -7,10 +7,10 @@ import com.andy.recruitment.web.controller.organization.request.OrganizationAddR
 import com.andy.recruitment.web.controller.organization.request.OrganizationQueryReq;
 import com.andy.recruitment.web.controller.organization.response.OrganizationRes;
 import com.andy.recruitment.web.controller.organization.util.OrganizationUtil;
-import com.soyoung.base.auth.RoleType;
-import com.soyoung.base.context.ServletContext;
-import com.soyoung.base.converter.MyParameter;
-import com.soyoung.base.page.PageResult;
+import com.andy.spring.auth.RoleType;
+import com.andy.spring.context.ServletContext;
+import com.andy.spring.converter.MyParameter;
+import com.andy.spring.page.PageResult;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;

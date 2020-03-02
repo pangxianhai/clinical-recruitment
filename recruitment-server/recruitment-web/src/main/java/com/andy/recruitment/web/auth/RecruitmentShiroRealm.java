@@ -2,11 +2,11 @@ package com.andy.recruitment.web.auth;
 
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
-import com.soyoung.base.auth.LoginInfo;
-import com.soyoung.base.constant.Constant;
-import com.soyoung.base.context.ServletContext;
-import com.soyoung.base.util.JsonUtil;
-import com.soyoung.base.util.encrypt.Rc4Util;
+import com.andy.spring.auth.LoginInfo;
+import com.andy.spring.constant.Constant;
+import com.andy.spring.context.ServletContext;
+import com.andy.spring.util.JsonUtil;
+import com.andy.spring.util.encrypt.Rc4Util;
 import java.util.Base64;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.region.mapper;
 
 import com.andy.recruitment.dao.region.entity.RegionDO;
-import com.soyoung.base.mybatis.paginator.Page;
+import com.andy.spring.mybatis.paginator.Page;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 

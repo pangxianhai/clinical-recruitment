@@ -14,8 +14,8 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationAddReq;
 import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoRes;
-import com.soyoung.base.util.DateUtil;
-import com.soyoung.base.util.StringUtil;
+import com.andy.spring.util.DateUtil;
+import com.andy.spring.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

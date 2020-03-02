@@ -2,8 +2,8 @@ package com.andy.recruitment.biz.organization.service;
 
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 import java.util.List;
 
 /**

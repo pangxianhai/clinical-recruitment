@@ -16,7 +16,7 @@ import com.andy.recruitment.web.controller.patient.response.PatientInfoDetailRes
 import com.andy.recruitment.web.controller.patient.response.PatientInfoRes;
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
 import com.andy.recruitment.web.controller.user.util.UserInfoUtil;
-import com.soyoung.base.util.asserts.AssertUtil;
+import com.andy.spring.util.asserts.AssertUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

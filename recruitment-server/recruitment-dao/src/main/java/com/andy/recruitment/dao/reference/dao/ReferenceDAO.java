@@ -2,8 +2,8 @@ package com.andy.recruitment.dao.reference.dao;
 
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 
 /**
  * 推荐人DAO接口

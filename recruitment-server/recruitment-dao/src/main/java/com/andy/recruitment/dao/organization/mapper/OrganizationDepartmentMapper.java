@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.organization.mapper;
 
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentQuery;
-import com.soyoung.base.mybatis.paginator.Page;
+import com.andy.spring.mybatis.paginator.Page;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 

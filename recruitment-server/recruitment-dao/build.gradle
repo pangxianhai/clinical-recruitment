@@ -1,7 +1,5 @@
 dependencies {
     compile project(':recruitment-common')
-    compile("com.soyoung.commerce:soyoung-base:${soyoungBaseVersion}") {
-        exclude group: 'com.soyoung.zk.config', module: 'soyoung-zk-config'
-    }
+    compile "com.andy.base:andy-spring:${andySpringVersion}"
     compile "org.apache.shiro:shiro-spring:${shiroVersion}"
 }

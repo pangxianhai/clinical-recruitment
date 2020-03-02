@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.user.constant;
 
-import com.soyoung.base.type.BaseType;
+import com.andy.spring.type.BaseType;
 import java.util.List;
 
 /**

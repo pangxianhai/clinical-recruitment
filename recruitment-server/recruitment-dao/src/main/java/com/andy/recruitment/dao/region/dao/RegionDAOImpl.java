@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.region.dao;
 
 import com.andy.recruitment.dao.region.entity.RegionDO;
 import com.andy.recruitment.dao.region.mapper.RegionMapper;
-import com.soyoung.base.util.CollectionUtil;
+import com.andy.spring.util.CollectionUtil;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentHashMap;

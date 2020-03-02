@@ -2,8 +2,8 @@ package com.andy.recruitment.web.interceptor;
 
 
 import com.andy.recruitment.web.SystemInfo;
-import com.soyoung.base.interceptor.MyWebHandlerInterceptor;
-import com.soyoung.base.util.encrypt.EncodeUtil;
+import com.andy.spring.interceptor.MyWebHandlerInterceptor;
+import com.andy.spring.util.encrypt.EncodeUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;

@@ -12,7 +12,7 @@
         <result column="medical_category" property="medicalCategory" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="status" property="status"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -54,7 +54,7 @@
             </if>
             <if test="status != null">
                 and d.status =
-                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="realName != null and realName != ''">
                 and u.real_name like CONCAT('%', #{realName,jdbcType=VARCHAR},'%')
@@ -77,7 +77,7 @@
         #{medicalInstitution, jdbcType=VARCHAR},
         #{medicalCategory, jdbcType=VARCHAR},
         #{remark, jdbcType=VARCHAR},
-        #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -106,7 +106,7 @@
                 remark = #{remark, jdbcType=VARCHAR},
             </if>
             <if test="status != null ">
-                status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                status = #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

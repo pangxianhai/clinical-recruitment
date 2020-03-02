@@ -1,9 +1,9 @@
 package com.andy.recruitment.web.auth;
 
-import com.soyoung.base.base.Result;
-import com.soyoung.base.exception.CommonCode;
-import com.soyoung.base.message.MessageHandler;
-import com.soyoung.base.util.JsonUtil;
+import com.andy.spring.base.Result;
+import com.andy.spring.exception.CommonCode;
+import com.andy.spring.message.MessageHandler;
+import com.andy.spring.util.JsonUtil;
 import java.io.IOException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

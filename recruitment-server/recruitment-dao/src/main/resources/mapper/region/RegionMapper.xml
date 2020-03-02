@@ -7,9 +7,9 @@
         <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
         <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
         <result column="region_type" property="regionType"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="status" property="regionStatus"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -32,7 +32,7 @@
             </if>
             <if test="regionType != null">
                 and region_type =
-                #{regionType,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                #{regionType,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
         </where>
     </select>
@@ -42,8 +42,8 @@
         values(
         #{parentId, jdbcType=BIGINT},
         #{regionName, jdbcType=VARCHAR},
-        #{regionType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
-        #{regionStatus, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{regionType, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
+        #{regionStatus, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -61,11 +61,11 @@
             </if>
             <if test="regionType != null ">
                 region_type =
-                #{regionType, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                #{regionType, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="regionStatus != null ">
                 status =
-                #{regionStatus, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                #{regionStatus, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

@@ -14,10 +14,10 @@ import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryR
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoDetailRes;
 import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoRes;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
-import com.soyoung.base.auth.RoleType;
-import com.soyoung.base.context.ServletContext;
-import com.soyoung.base.converter.MyParameter;
-import com.soyoung.base.page.PageResult;
+import com.andy.spring.auth.RoleType;
+import com.andy.spring.context.ServletContext;
+import com.andy.spring.converter.MyParameter;
+import com.andy.spring.page.PageResult;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

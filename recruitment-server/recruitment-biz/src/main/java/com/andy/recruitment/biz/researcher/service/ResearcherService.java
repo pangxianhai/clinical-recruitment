@@ -3,8 +3,8 @@ package com.andy.recruitment.biz.researcher.service;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 
 /**
  * 研究员服务接口

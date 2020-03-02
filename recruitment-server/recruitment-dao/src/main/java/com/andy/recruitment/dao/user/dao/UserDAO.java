@@ -3,8 +3,8 @@ package com.andy.recruitment.dao.user.dao;
 import com.andy.recruitment.dao.user.constant.UserStatus;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.dao.user.entity.UserQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 import java.util.List;
 
 /**

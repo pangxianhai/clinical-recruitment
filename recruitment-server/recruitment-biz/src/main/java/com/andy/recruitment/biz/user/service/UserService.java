@@ -1,7 +1,7 @@
 package com.andy.recruitment.biz.user.service;
 
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.soyoung.base.auth.LoginInfo;
+import com.andy.spring.auth.LoginInfo;
 import java.util.List;
 
 /**

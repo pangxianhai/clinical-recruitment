@@ -4,7 +4,6 @@ import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.user.response.UserInfoRes;
 import com.andy.recruitment.web.controller.user.response.WxLoginRes;
-import com.soyoung.base.auth.LoginInfo;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

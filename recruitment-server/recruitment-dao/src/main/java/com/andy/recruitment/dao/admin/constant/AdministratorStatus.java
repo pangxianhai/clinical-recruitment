@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.admin.constant;
 
-import com.soyoung.base.type.BaseType;
+import com.andy.spring.type.BaseType;
 
 /**
  * 管理员类型

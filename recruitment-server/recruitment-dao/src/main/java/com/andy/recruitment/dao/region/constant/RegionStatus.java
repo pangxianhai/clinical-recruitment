@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.region.constant;
 
-import com.soyoung.base.type.BaseType;
+import com.andy.spring.type.BaseType;
 
 /**
  * 地区状态定义

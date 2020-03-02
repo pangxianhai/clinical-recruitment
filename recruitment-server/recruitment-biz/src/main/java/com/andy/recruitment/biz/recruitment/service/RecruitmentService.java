@@ -4,8 +4,8 @@ import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 import java.util.List;
 
 /**

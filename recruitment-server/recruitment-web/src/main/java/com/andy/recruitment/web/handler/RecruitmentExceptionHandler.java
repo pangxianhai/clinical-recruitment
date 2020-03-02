@@ -1,13 +1,13 @@
 package com.andy.recruitment.web.handler;
 
 import com.andy.recruitment.web.SystemInfo;
-import com.soyoung.base.base.Result;
-import com.soyoung.base.context.ServletContext;
-import com.soyoung.base.exception.CommonCode;
-import com.soyoung.base.exception.ExceptionUtil;
-import com.soyoung.base.handler.MyExceptionHandler;
-import com.soyoung.base.message.MessageHandler;
-import com.soyoung.base.util.ServletUtil;
+import com.andy.spring.base.Result;
+import com.andy.spring.context.ServletContext;
+import com.andy.spring.exception.CommonCode;
+import com.andy.spring.exception.ExceptionUtil;
+import com.andy.spring.handler.MyExceptionHandler;
+import com.andy.spring.message.MessageHandler;
+import com.andy.spring.util.ServletUtil;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

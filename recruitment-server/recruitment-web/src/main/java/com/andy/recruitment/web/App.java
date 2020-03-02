@@ -2,8 +2,8 @@ package com.andy.recruitment.web;
 
 import com.andy.recruitment.web.auth.RecruitmentShiroRealm;
 import com.andy.recruitment.web.auth.RecruitmentShiroUserFilter;
-import com.soyoung.base.converter.MyHttpMessageConverter;
-import com.soyoung.base.datasource.EnableDataSource;
+import com.andy.spring.converter.MyHttpMessageConverter;
+import com.andy.spring.datasource.EnableDataSource;
 import java.util.Map;
 import javax.servlet.Filter;
 import org.apache.shiro.mgt.SecurityManager;

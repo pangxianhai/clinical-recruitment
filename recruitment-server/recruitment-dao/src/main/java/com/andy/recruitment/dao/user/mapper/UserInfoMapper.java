@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.user.mapper;
 
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.dao.user.entity.UserQuery;
-import com.soyoung.base.mybatis.paginator.Page;
+import com.andy.spring.mybatis.paginator.Page;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 

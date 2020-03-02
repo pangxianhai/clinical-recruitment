@@ -2,8 +2,8 @@ package com.andy.recruitment.biz.recruitment.service;
 
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 
 /**
  * 招募申请记录服务

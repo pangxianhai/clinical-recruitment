@@ -11,9 +11,9 @@
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="gender" property="gender"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="status" property="status"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -64,11 +64,11 @@
             </if>
             <if test="gender != null">
                 and gender =
-                #{gender,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                #{gender,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="status != null">
                 and status =
-                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandlerr}
+                #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandlerr}
             </if>
             <if test="userIdLIst != null">
                 and id in
@@ -92,8 +92,8 @@
         #{realName, jdbcType=VARCHAR},
         #{phone, jdbcType=VARCHAR},
         #{password, jdbcType=VARCHAR},
-        #{gender,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
-        #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{gender,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
+        #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -120,10 +120,10 @@
                 phone = #{phone, jdbcType=VARCHAR},
             </if>
             <if test="gender != null ">
-                gender = #{gender, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                gender = #{gender, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="status != null ">
-                status = #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                status = #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

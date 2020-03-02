@@ -2,8 +2,8 @@ package com.andy.recruitment.dao.admin.dao;
 
 import com.andy.recruitment.dao.admin.entity.AdministratorInfoDO;
 import com.andy.recruitment.dao.admin.entity.AdministratorQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 
 /**
  * 管理员DAO

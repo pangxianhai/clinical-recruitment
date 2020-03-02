@@ -5,7 +5,7 @@ import com.andy.recruitment.common.exception.RecruitmentException;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentOrganizationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentOrganizationQuery;
 import com.andy.recruitment.dao.recruitment.mapper.RecruitmentOrganizationMapper;
-import com.soyoung.base.util.asserts.AssertUtil;
+import com.andy.spring.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

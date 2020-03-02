@@ -1,6 +1,6 @@
 package com.andy.recruitment.web.controller.patient.request;
 
-import com.soyoung.base.base.BaseQueryReq;
+import com.andy.spring.base.BaseQueryReq;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

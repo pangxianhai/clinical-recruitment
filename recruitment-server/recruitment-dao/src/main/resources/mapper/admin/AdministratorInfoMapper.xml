@@ -11,9 +11,9 @@
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="type" property="type"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="status" property="status"
-          typeHandler="com.soyoung.base.mybatis.handler.MyBaseTypeHandler"/>
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
@@ -38,11 +38,11 @@
                 and user_name = #{userName}
             </if>
             <if test="type != null">
-                and `type` = #{type,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                and `type` = #{type,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="status != null">
                 and `status` =
-                #{status,typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler}
+                #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
         </where>
     </select>
@@ -57,8 +57,8 @@
         #{userName, jdbcType=VARCHAR},
         #{password, jdbcType=VARCHAR},
         #{name, jdbcType=VARCHAR},
-        #{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
-        #{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+        #{type, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
+        #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
         #{updatedBy, jdbcType=VARCHAR},
@@ -80,10 +80,10 @@
                 `name`=#{name, jdbcType=VARCHAR},
             </if>
             <if test="type != null and type != ''">
-                `type`=#{type, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                `type`=#{type, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="status != null and status != ''">
-                status=#{status, typeHandler=com.soyoung.base.mybatis.handler.MyBaseTypeHandler},
+                status=#{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by=#{updatedBy, jdbcType=VARCHAR},

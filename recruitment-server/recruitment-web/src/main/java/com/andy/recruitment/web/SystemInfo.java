@@ -1,7 +1,7 @@
 package com.andy.recruitment.web;
 
-import com.soyoung.base.constant.Constant;
-import com.soyoung.base.message.MessageHandler;
+import com.andy.spring.constant.Constant;
+import com.andy.spring.message.MessageHandler;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import org.springframework.boot.CommandLineRunner;

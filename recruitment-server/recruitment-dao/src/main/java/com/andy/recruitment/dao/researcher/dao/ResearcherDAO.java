@@ -2,8 +2,8 @@ package com.andy.recruitment.dao.researcher.dao;
 
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
-import com.soyoung.base.page.PageResult;
-import com.soyoung.base.page.Paginator;
+import com.andy.spring.page.PageResult;
+import com.andy.spring.page.Paginator;
 
 /**
  * 研究员DAO接口

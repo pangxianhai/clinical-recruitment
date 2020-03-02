@@ -2,7 +2,7 @@ apply plugin: 'idea'
 //  子模块（项目）的统一配置
 subprojects {
     ext {
-        set('soyoungBaseVersion', "1.1.2.RELEASE")
+        set('andySpringVersion', "1.0.0-SNAPSHOT")
         set('lombokVersion', "1.18.10")
         set('springCloudVersion', "Finchley.SR2")
         set('springBootpluginVersion', '2.0.6.RELEASE')
@@ -42,9 +42,7 @@ subprojects {
     dependencies {
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-        compileOnly("com.soyoung.commerce:soyoung-base:${soyoungBaseVersion}") {
-            exclude group: 'com.soyoung.zk.config', module: 'soyoung-zk-config'
-        }
+        compileOnly "com.andy.base:andy-spring:${andySpringVersion}"
         compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
     }
 
