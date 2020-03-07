@@ -81,7 +81,7 @@
 
 <script>
   import RecruitmentApi from '@/api/RecruitmentApi';
-  import UserApi from '@/api/UserApi';
+  import {StringUtil} from "../../util/Util";
 
   export default {
 
@@ -99,8 +99,23 @@
     },
     methods: {
       onLoadApplication: function () {
-        RecruitmentApi.getRecruitmentApplication({}).then((pageResult) => {
-
+        let patientUserId = this.$route.query.patientUserId;
+        let referenceUserId = this.$route.query.referenceUserId;
+        let departmentId = this.$route.query.departmentId;
+        if (StringUtil.isEmpty(patientUserId)) {
+          patientUserId = '';
+        }
+        if (StringUtil.isEmpty(referenceUserId)) {
+          referenceUserId = '';
+        }
+        if (StringUtil.isEmpty(departmentId)) {
+          departmentId = '';
+        }
+        RecruitmentApi.getRecruitmentApplication({
+          patientUserId: patientUserId,
+          referenceUserId: referenceUserId,
+          departmentId: departmentId
+        }).then((pageResult) => {
           if (!pageResult) {
             this.applicationLoading = false;
             this.applicationFinished = true;

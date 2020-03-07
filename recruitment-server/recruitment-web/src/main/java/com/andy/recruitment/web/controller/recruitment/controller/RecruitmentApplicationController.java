@@ -108,7 +108,14 @@ public class RecruitmentApplicationController {
     @GetMapping("/application")
     public PageResult<RecruitmentApplicationDetailRes> getRecruitmentApplication(
         @MyParameter RecruitmentApplicationQueryReq queryReq) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
         RecruitmentApplicationQuery query = RecruitmentUtil.transformRecruitmentApplicationQuery(queryReq);
+        if (RoleType.CUSTOMER.equals(loginInfo.getRoleType())) {
+            if (query.getPatientUserId() == null && query.getReferenceUserId() == null
+                && query.getDepartmentId() == null) {
+                query.setPatientUserId(loginInfo.getUserId());
+            }
+        }
         PageResult<RecruitmentApplicationDO> pageResult = this.recruitmentApplicationService.getRecruitmentApplicationInfo(
             query, queryReq.getPaginator());
         List<RecruitmentApplicationDetailRes> detailResList = RecruitmentUtil.transformApplicationDetailRes(

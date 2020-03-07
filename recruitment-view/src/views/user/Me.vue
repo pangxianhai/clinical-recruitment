@@ -24,8 +24,9 @@
         <div class="spacing"></div>
         <van-grid clickable :column-num="2" :border="false" :gutter="40" :icon-size="16">
             <van-grid-item icon="chat-o" text="我的参加" style="color:#5b4cff"
-                           @click="onToApplicationList"/>
-            <van-grid-item icon="coupon-o" text="我的推荐" style="color:#ff7813"/>
+                           @click="onToApplicationList(ApplicationAction.ATTEND)"/>
+            <van-grid-item icon="coupon-o" text="我的推荐" style="color:#ff7813"
+                           @click="onToApplicationList(ApplicationAction.REFERENCE)"/>
         </van-grid>
         <div class="spacing"></div>
         <van-cell-group>
@@ -47,8 +48,9 @@
                       :value="userInfo.medicalInstitution"></van-cell>
             <van-cell icon="label-o" title="执业类别" v-if="userInfo.showMedicalCategory"
                       :value="userInfo.medicalCategory"></van-cell>
-            <van-cell icon="award-o" title="本科室申报的项目"
-                      v-if="userInfo.showDepartmentApplication"></van-cell>
+            <van-cell icon="award-o" title="本科室申报的项目" is-link
+                      v-if="userInfo.showDepartmentApplication"
+                      @click="onToApplicationList(ApplicationAction.RESEARCHER)"></van-cell>
             <van-cell icon="user-circle-o" title="注册受试者" v-if="userInfo.showRegisterPatient"
                       is-link @click="onRegisterPatient"></van-cell>
             <van-cell icon="contact" title="注册推荐人" v-if="userInfo.showRegisterReference"
@@ -147,9 +149,12 @@
   export default {
     data: function () {
       return {
+        ApplicationAction: ApplicationAction,
         nickname: '登录/注册',
         isShowArrow: true,
         userInfo: {
+          userId: 0,
+          organizationDepartmentRes: {},
           showAge: false,
           showAddress: false,
           showMedicalInstitution: false,
@@ -195,6 +200,8 @@
         this.userInfo.phone = userInfo.phone;
         this.userInfo.openId = userInfo.openId;
         this.userInfo.nickname = userInfo.nickname;
+        this.userInfo.userId = userInfo.userId;
+        this.userInfo.organizationDepartmentRes = userInfo.organizationDepartmentRes;
 
         if (userInfo.patientInfoRes) {
           this.userInfo.showAge = true;
@@ -270,12 +277,22 @@
           });
         }
       },
-      onToApplicationList() {
+      onToApplicationList(action) {
+        let query = {
+          redirectURL: this.$route.fullPath
+        };
+        if (ApplicationAction.ATTEND === action) {
+          query.patientUserId = this.userInfo.userId;
+        }
+        if (ApplicationAction.REFERENCE === action) {
+          query.referenceUserId = this.userInfo.userId;
+        }
+        if (ApplicationAction.RESEARCHER === action) {
+          query.departmentId = this.userInfo.organizationDepartmentRes.departmentId;
+        }
         this.$router.push({
           path: '/recruitment/applicationList',
-          query: {
-            redirectURL: this.$route.fullPath
-          },
+          query: query,
         }, function () {
 
         });
