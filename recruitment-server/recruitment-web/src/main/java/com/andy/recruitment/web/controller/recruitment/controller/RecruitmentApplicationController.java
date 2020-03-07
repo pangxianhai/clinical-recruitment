@@ -1,5 +1,8 @@
 package com.andy.recruitment.web.controller.recruitment.controller;
 
+import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationAddReq;
+import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationQueryReq;
+import com.andy.recruitment.api.recruitment.response.RecruitmentApplicationDetailRes;
 import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentApplicationService;
@@ -7,18 +10,15 @@ import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
 import com.andy.recruitment.biz.reference.service.ReferenceService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentApplicationStatus;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentApplicationStatus;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationAddReq;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryReq;
-import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationDetailRes;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.andy.spring.auth.LoginInfo;
 import com.andy.spring.auth.RoleType;
@@ -26,7 +26,6 @@ import com.andy.spring.context.ServletContext;
 import com.andy.spring.converter.MyParameter;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.util.asserts.AssertUtil;
-import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,11 +115,7 @@ public class RecruitmentApplicationController {
                 query.setPatientUserId(loginInfo.getUserId());
             }
         }
-        PageResult<RecruitmentApplicationDO> pageResult = this.recruitmentApplicationService.getRecruitmentApplicationInfo(
-            query, queryReq.getPaginator());
-        List<RecruitmentApplicationDetailRes> detailResList = RecruitmentUtil.transformApplicationDetailRes(
-            pageResult.getData());
-        return new PageResult<>(detailResList, pageResult.getPaginator());
+        return this.recruitmentApplicationService.getRecruitmentApplicationInfo(query, queryReq.getPaginator());
     }
 
 }

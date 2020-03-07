@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.user.entity;
 
-import com.andy.recruitment.dao.user.constant.Gender;
-import com.andy.recruitment.dao.user.constant.UserStatus;
+import com.andy.recruitment.common.user.constant.Gender;
+import com.andy.recruitment.common.user.constant.UserStatus;
 import com.andy.spring.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

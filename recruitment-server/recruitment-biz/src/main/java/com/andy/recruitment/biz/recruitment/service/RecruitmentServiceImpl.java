@@ -1,10 +1,14 @@
 package com.andy.recruitment.biz.recruitment.service;
 
+import com.andy.recruitment.api.organization.response.OrganizationDepartmentDetailRes;
+import com.andy.recruitment.api.recruitment.response.RecruitmentInfoDetailRes;
+import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
+import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
+import com.andy.recruitment.biz.recruitment.util.RecruitmentUtil;
 import com.andy.recruitment.biz.region.service.RegionService;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.organization.dao.OrganizationDAO;
 import com.andy.recruitment.dao.organization.dao.OrganizationDepartmentDAO;
-import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.dao.RecruitmentDAO;
 import com.andy.recruitment.dao.recruitment.dao.RecruitmentOrganizationDAO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
@@ -13,11 +17,14 @@ import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -40,17 +47,21 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     private final RegionService regionService;
 
+    private final OrganizationDepartmentService organizationDepartmentService;
+
     private final TransactionTemplate transactionTemplate;
 
     @Autowired
     public RecruitmentServiceImpl(RecruitmentDAO recruitmentDAO, RecruitmentOrganizationDAO recruitmentOrganizationDAO,
         OrganizationDAO organizationDAO, OrganizationDepartmentDAO organizationDepartmentDAO,
-        RegionService regionService, TransactionTemplate transactionTemplate) {
+        RegionService regionService, OrganizationDepartmentService organizationDepartmentService,
+        TransactionTemplate transactionTemplate) {
         this.recruitmentDAO = recruitmentDAO;
         this.recruitmentOrganizationDAO = recruitmentOrganizationDAO;
         this.organizationDAO = organizationDAO;
         this.organizationDepartmentDAO = organizationDepartmentDAO;
         this.regionService = regionService;
+        this.organizationDepartmentService = organizationDepartmentService;
         this.transactionTemplate = transactionTemplate;
     }
 
@@ -62,6 +73,22 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     public List<RecruitmentInfoDO> getRecruitmentInfo(List<Long> recruitmentIdList) {
         return this.recruitmentDAO.getRecruitmentInfo(recruitmentIdList);
+    }
+
+    @Override
+    public Map<Long, RecruitmentInfoRes> getRecruitmentInfoRes(List<Long> recruitmentIdList) {
+        if (CollectionUtils.isEmpty(recruitmentIdList)) {
+            return Collections.emptyMap();
+        }
+        List<RecruitmentInfoDO> recruitmentInfoDoList = this.recruitmentDAO.getRecruitmentInfo(recruitmentIdList);
+        List<RecruitmentInfoRes> recruitmentInfoResList = RecruitmentUtil.transformRecruitmentInfoRes(
+            recruitmentInfoDoList);
+        if (CollectionUtils.isEmpty(recruitmentInfoResList)) {
+            return Collections.emptyMap();
+        }
+        return recruitmentInfoResList.stream().collect(
+            Collectors.toMap(RecruitmentInfoRes::getRecruitmentId, Function.identity(), (d1, d2) -> d1));
+
     }
 
     @Override
@@ -83,15 +110,21 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     @Override
-    public List<OrganizationDepartmentDO> getOrganizationByRecruitment(Long recruitmentId) {
+    public RecruitmentInfoDetailRes getRecruitmentDetailInfo(Long recruitmentId) {
+        RecruitmentInfoDO recruitmentInfoDo = this.recruitmentDAO.getRecruitmentInfoById(recruitmentId);
+        RecruitmentInfoRes recruitmentInfoRes = RecruitmentUtil.transformRecruitmentInfoRes(recruitmentInfoDo);
+        RecruitmentInfoDetailRes recruitmentInfoDetailRes = new RecruitmentInfoDetailRes();
+        BeanUtils.copyProperties(recruitmentInfoRes, recruitmentInfoDetailRes);
         List<RecruitmentOrganizationDO> recruitmentOrganizationDoList = recruitmentOrganizationDAO.listOrganizationByRecruitment(
             recruitmentId);
-        if (CollectionUtils.isEmpty(recruitmentOrganizationDoList)) {
-            return null;
+        if (CollectionUtils.isNotEmpty(recruitmentOrganizationDoList)) {
+            List<Long> departmentIdList = recruitmentOrganizationDoList.stream().map(
+                RecruitmentOrganizationDO::getDepartmentId).collect(Collectors.toList());
+            List<OrganizationDepartmentDetailRes> departmentDetailResList = this.organizationDepartmentService.getOrganizationDepartmentDetailList(
+                departmentIdList);
+            recruitmentInfoDetailRes.setDepartmentDetailResList(departmentDetailResList);
         }
-        List<Long> departmentIdList = recruitmentOrganizationDoList.stream().map(
-            RecruitmentOrganizationDO::getDepartmentId).collect(Collectors.toList());
-        return organizationDepartmentDAO.getOrganizationDepartment(departmentIdList);
+        return recruitmentInfoDetailRes;
     }
 
     @Override

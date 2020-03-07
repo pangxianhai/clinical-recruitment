@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.admin.entity;
 
-import com.andy.recruitment.dao.admin.constant.AdminType;
-import com.andy.recruitment.dao.admin.constant.AdministratorStatus;
+import com.andy.recruitment.common.admin.constant.AdminType;
+import com.andy.recruitment.common.admin.constant.AdministratorStatus;
 import java.io.Serializable;
 import lombok.Data;
 

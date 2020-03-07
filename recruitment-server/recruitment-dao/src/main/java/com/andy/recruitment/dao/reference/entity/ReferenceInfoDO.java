@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.reference.entity;
 
-import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
+import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.spring.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.reference.entity;
 
-import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
+import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;

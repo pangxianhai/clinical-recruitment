@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.researcher.entity;
 
-import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
+import com.andy.recruitment.common.researcher.constant.ResearcherStatus;
 import com.andy.spring.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

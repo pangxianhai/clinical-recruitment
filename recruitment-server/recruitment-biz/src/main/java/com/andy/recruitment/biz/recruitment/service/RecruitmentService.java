@@ -1,12 +1,14 @@
 package com.andy.recruitment.biz.recruitment.service;
 
-import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.api.recruitment.response.RecruitmentInfoDetailRes;
+import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 招募项目服务接口
@@ -33,6 +35,14 @@ public interface RecruitmentService {
     List<RecruitmentInfoDO> getRecruitmentInfo(List<Long> recruitmentIdList);
 
     /**
+     * 批量查询招募信息
+     *
+     * @param recruitmentIdList 项目ID列表
+     * @return 招募信息
+     */
+    Map<Long, RecruitmentInfoRes> getRecruitmentInfoRes(List<Long> recruitmentIdList);
+
+    /**
      * 通过招募项目ID查询招募信息
      *
      * @param recruitmentId 招募项目ID
@@ -41,12 +51,12 @@ public interface RecruitmentService {
     RecruitmentInfoDO getRecruitmentInfo(Long recruitmentId);
 
     /**
-     * 查询招募项目下所有机构列表
+     * 通过招募项目ID查询招募详细信息
      *
      * @param recruitmentId 招募项目ID
-     * @return 机构信息
+     * @return 招募信息
      */
-    List<OrganizationDepartmentDO> getOrganizationByRecruitment(Long recruitmentId);
+    RecruitmentInfoDetailRes getRecruitmentDetailInfo(Long recruitmentId);
 
     /**
      * 添加招募项目

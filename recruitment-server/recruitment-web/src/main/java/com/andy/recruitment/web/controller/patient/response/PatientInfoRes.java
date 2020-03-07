@@ -1,7 +1,6 @@
 package com.andy.recruitment.web.controller.patient.response;
 
-import com.andy.recruitment.dao.patient.constant.PatientStatus;
-import com.andy.recruitment.web.controller.user.response.UserInfoRes;
+import com.andy.recruitment.common.patient.constant.PatientStatus;
 import java.io.Serializable;
 import lombok.Data;
 

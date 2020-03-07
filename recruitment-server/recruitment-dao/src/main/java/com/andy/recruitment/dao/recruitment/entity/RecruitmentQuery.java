@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.recruitment.entity;
 
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentCategory;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;

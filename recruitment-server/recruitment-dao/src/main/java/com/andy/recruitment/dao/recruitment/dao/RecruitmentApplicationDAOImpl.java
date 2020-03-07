@@ -2,7 +2,7 @@ package com.andy.recruitment.dao.recruitment.dao;
 
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentApplicationStatus;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentApplicationStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
 import com.andy.recruitment.dao.recruitment.mapper.RecruitmentApplicationMapper;

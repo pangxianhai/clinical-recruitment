@@ -1,8 +1,10 @@
 package com.andy.recruitment.biz.user.service;
 
+import com.andy.recruitment.api.user.response.UserInfoRes;
+import com.andy.recruitment.biz.user.util.UserInfoUtil;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
-import com.andy.recruitment.dao.user.constant.Gender;
+import com.andy.recruitment.common.user.constant.Gender;
 import com.andy.recruitment.dao.user.dao.UserDAO;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.manager.weixin.entity.OauthToken;
@@ -16,6 +18,9 @@ import com.andy.spring.util.asserts.AssertUtil;
 import com.andy.spring.util.encrypt.Rc4Util;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -53,6 +58,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoDO getUserInfoByUserId(Long userId) {
         return this.userDAO.getUserInfoByUserId(userId);
+    }
+
+    @Override
+    public Map<Long, UserInfoRes> getUserInfoRes(List<Long> userIdList) {
+        List<UserInfoDO> userInfoDoList = this.userDAO.getUserInfo(userIdList);
+        List<UserInfoRes> userInfoResList = UserInfoUtil.transformUserInfoRes(userInfoDoList);
+        return userInfoResList.stream().collect(
+            Collectors.toMap(UserInfoRes::getUserId, Function.identity(), (u1, u2) -> u1));
     }
 
     @Override
@@ -102,5 +115,15 @@ public class UserServiceImpl implements UserService {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.login(token);
         return loginInfo;
+    }
+
+    @Override
+    public Long registerUser(UserInfoDO userInfoDo, String operator) {
+        return this.userDAO.registerUser(userInfoDo, operator);
+    }
+
+    @Override
+    public void updateUserInfo(UserInfoDO userInfoDo, String operator) {
+        this.userDAO.updateUserInfo(userInfoDo, operator);
     }
 }

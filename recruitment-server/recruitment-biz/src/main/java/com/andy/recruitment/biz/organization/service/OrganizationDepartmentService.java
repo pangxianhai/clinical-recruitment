@@ -1,10 +1,12 @@
 package com.andy.recruitment.biz.organization.service;
 
+import com.andy.recruitment.api.organization.response.OrganizationDepartmentDetailRes;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentQuery;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 机构科室服务接口
@@ -54,6 +56,23 @@ public interface OrganizationDepartmentService {
      * @return 科室信息
      */
     List<OrganizationDepartmentDO> getOrganizationDepartment(List<Long> departmentIdList);
+
+
+    /**
+     * 通过科室ID列表查询科室信息
+     *
+     * @param departmentIdList 科室ID列表
+     * @return 科室信息
+     */
+    List<OrganizationDepartmentDetailRes> getOrganizationDepartmentDetailList(List<Long> departmentIdList);
+
+    /**
+     * 通过科室ID列表查询科室信息
+     *
+     * @param departmentIdList 科室ID列表
+     * @return 科室详细信息
+     */
+    Map<Long, OrganizationDepartmentDetailRes> getOrganizationDepartmentDetailRes(List<Long> departmentIdList);
 
     /**
      * 通过科室id查询科室信息

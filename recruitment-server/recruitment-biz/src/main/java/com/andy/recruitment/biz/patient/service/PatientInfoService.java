@@ -1,12 +1,14 @@
 package com.andy.recruitment.biz.patient.service;
 
-import com.andy.recruitment.dao.patient.constant.PatientStatus;
+import com.andy.recruitment.api.patient.response.PatientInfoDetailRes;
+import com.andy.recruitment.common.patient.constant.PatientStatus;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 患者信息服务
@@ -59,6 +61,14 @@ public interface PatientInfoService {
      * @return 患者信息
      */
     List<PatientInfoDO> getPatientInfoByUserIdList(List<Long> userIdList);
+
+    /**
+     * 批量查询患者详情
+     *
+     * @param userIdList 用户 id 列表
+     * @return 患者详情
+     */
+    Map<Long, PatientInfoDetailRes> getReferenceDetailRes(List<Long> userIdList);
 
     /**
      * 通过患者ID查询患者信息

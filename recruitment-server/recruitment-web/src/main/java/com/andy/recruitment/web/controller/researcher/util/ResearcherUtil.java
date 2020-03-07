@@ -4,10 +4,10 @@ import com.andy.recruitment.biz.organization.service.OrganizationDepartmentServi
 import com.andy.recruitment.biz.organization.service.OrganizationService;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.biz.user.service.UserService;
-import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
+import com.andy.recruitment.common.researcher.constant.ResearcherStatus;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
-import com.andy.recruitment.dao.user.constant.Gender;
+import com.andy.recruitment.common.user.constant.Gender;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentRes;
 import com.andy.recruitment.web.controller.organization.response.OrganizationRes;

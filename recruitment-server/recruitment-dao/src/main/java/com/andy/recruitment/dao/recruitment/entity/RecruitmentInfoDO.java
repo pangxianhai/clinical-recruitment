@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.recruitment.entity;
 
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentCategory;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import com.andy.spring.base.BaseDO;
 import java.time.LocalDateTime;
 import lombok.Data;

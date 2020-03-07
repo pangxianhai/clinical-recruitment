@@ -4,4 +4,5 @@ include 'recruitment-biz'
 include 'recruitment-manager'
 include 'recruitment-dao'
 include 'recruitment-common'
+include 'recruitment-api'
 

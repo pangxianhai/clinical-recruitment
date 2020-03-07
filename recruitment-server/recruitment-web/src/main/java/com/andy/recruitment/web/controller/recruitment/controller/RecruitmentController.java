@@ -1,17 +1,17 @@
 package com.andy.recruitment.web.controller.recruitment.controller;
 
+import com.andy.recruitment.api.recruitment.request.RecruitmentAddReq;
+import com.andy.recruitment.api.recruitment.request.RecruitmentQueryReq;
+import com.andy.recruitment.api.recruitment.response.RecruitmentInfoDetailRes;
+import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
 import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentDetailRes;
 import com.andy.recruitment.web.controller.organization.util.OrganizationDepartmentUtil;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
-import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoDetailRes;
-import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoRes;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.andy.spring.auth.RoleType;
 import com.andy.spring.context.ServletContext;
@@ -23,7 +23,6 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,16 +64,7 @@ public class RecruitmentController {
 
     @GetMapping("/{recruitmentId:\\d+}")
     public RecruitmentInfoDetailRes getRecruitmentDetail(@PathVariable Long recruitmentId) {
-        RecruitmentInfoDO recruitmentInfoDo = this.recruitmentService.getRecruitmentInfo(recruitmentId);
-        RecruitmentInfoRes recruitmentInfoRes = RecruitmentUtil.transformRecruitmentInfoRes(recruitmentInfoDo);
-        RecruitmentInfoDetailRes recruitmentInfoDetailRes = new RecruitmentInfoDetailRes();
-        BeanUtils.copyProperties(recruitmentInfoRes, recruitmentInfoDetailRes);
-        List<OrganizationDepartmentDO> departmentDoList = this.recruitmentService.getOrganizationByRecruitment(
-            recruitmentId);
-        List<OrganizationDepartmentDetailRes> departmentDetailResList = OrganizationDepartmentUtil.transformOrganizationDepartmentDetailRes(
-            departmentDoList);
-        recruitmentInfoDetailRes.setDepartmentDetailResList(departmentDetailResList);
-        return recruitmentInfoDetailRes;
+        return this.recruitmentService.getRecruitmentDetailInfo(recruitmentId);
     }
 
     @RequiresUser

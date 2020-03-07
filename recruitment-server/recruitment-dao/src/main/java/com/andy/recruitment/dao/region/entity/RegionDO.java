@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.region.entity;
 
-import com.andy.recruitment.dao.region.constant.RegionStatus;
-import com.andy.recruitment.dao.region.constant.RegionType;
+import com.andy.recruitment.common.region.constant.RegionStatus;
+import com.andy.recruitment.common.region.constant.RegionType;
 import com.andy.spring.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

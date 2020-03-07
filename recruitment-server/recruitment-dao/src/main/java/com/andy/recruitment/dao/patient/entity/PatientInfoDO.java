@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.patient.entity;
 
-import com.andy.recruitment.dao.patient.constant.PatientStatus;
+import com.andy.recruitment.common.patient.constant.PatientStatus;
 import com.andy.spring.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

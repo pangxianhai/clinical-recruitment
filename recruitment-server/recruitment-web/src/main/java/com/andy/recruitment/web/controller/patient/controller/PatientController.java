@@ -2,7 +2,7 @@ package com.andy.recruitment.web.controller.patient.controller;
 
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.user.service.UserService;
-import com.andy.recruitment.dao.patient.constant.PatientStatus;
+import com.andy.recruitment.common.patient.constant.PatientStatus;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;

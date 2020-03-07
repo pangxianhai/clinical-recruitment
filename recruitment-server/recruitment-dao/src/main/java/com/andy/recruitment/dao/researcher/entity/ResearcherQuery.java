@@ -1,7 +1,7 @@
 package com.andy.recruitment.dao.researcher.entity;
 
-import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
-import com.andy.recruitment.dao.user.constant.UserStatus;
+import com.andy.recruitment.common.researcher.constant.ResearcherStatus;
+import com.andy.recruitment.common.user.constant.UserStatus;
 import java.io.Serializable;
 import lombok.Data;
 

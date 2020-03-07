@@ -1,10 +1,12 @@
 package com.andy.recruitment.biz.organization.service;
 
+import com.andy.recruitment.api.organization.response.OrganizationRes;
 import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationQuery;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 机构服务
@@ -45,6 +47,14 @@ public interface OrganizationService {
      * @return 机构信息
      */
     List<OrganizationDO> getOrganization(List<Long> organizationIdList);
+
+    /**
+     * 通过机构ID列表批量查询机构信息
+     *
+     * @param organizationIdList 机构ID列表
+     * @return 机构信息
+     */
+    Map<Long, OrganizationRes> getOrganizationRes(List<Long> organizationIdList);
 
     /**
      * 通过机构ID查询机构信息

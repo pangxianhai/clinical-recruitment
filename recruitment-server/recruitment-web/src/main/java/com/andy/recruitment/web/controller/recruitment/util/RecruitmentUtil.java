@@ -1,32 +1,24 @@
 package com.andy.recruitment.web.controller.recruitment.util;
 
+import com.andy.recruitment.api.recruitment.request.RecruitmentAddReq;
+import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationAddReq;
+import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationQueryReq;
+import com.andy.recruitment.api.recruitment.request.RecruitmentQueryReq;
+import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
 import com.andy.recruitment.biz.oss.service.OssService;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
 import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.biz.region.service.RegionService;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentApplicationStatus;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentCategory;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.common.user.constant.Gender;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentApplicationStatus;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
-import com.andy.recruitment.dao.user.constant.Gender;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentDetailRes;
-import com.andy.recruitment.web.controller.organization.util.OrganizationDepartmentUtil;
-import com.andy.recruitment.web.controller.patient.response.PatientInfoDetailRes;
-import com.andy.recruitment.web.controller.patient.util.PatientInfoUtil;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentAddReq;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationAddReq;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentApplicationQueryReq;
-import com.andy.recruitment.web.controller.recruitment.request.RecruitmentQueryReq;
-import com.andy.recruitment.web.controller.recruitment.response.ImageRes;
-import com.andy.recruitment.web.controller.recruitment.response.RecruitmentApplicationDetailRes;
-import com.andy.recruitment.web.controller.recruitment.response.RecruitmentInfoRes;
-import com.andy.recruitment.web.controller.reference.response.ReferenceDetailInfoRes;
-import com.andy.recruitment.web.controller.reference.util.ReferenceUtil;
 import com.andy.spring.util.DateUtil;
 import com.andy.spring.util.StringUtil;
 import java.util.ArrayList;
@@ -37,7 +29,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,91 +183,5 @@ public class RecruitmentUtil {
         BeanUtils.copyProperties(queryReq, query);
         query.setStatus(RecruitmentApplicationStatus.parse(queryReq.getStatus()));
         return query;
-    }
-
-    public static List<RecruitmentApplicationDetailRes> transformApplicationDetailRes(
-        List<RecruitmentApplicationDO> applicationDoList) {
-        if (CollectionUtils.isEmpty(applicationDoList)) {
-            return Collections.emptyList();
-        }
-        List<Long> recruitmentIdList = new ArrayList<>(applicationDoList.size());
-        List<Long> departmentIdList = new ArrayList<>(applicationDoList.size());
-        List<Long> patientUserIdList = new ArrayList<>(applicationDoList.size());
-        List<Long> referenceUserIdList = new ArrayList<>(applicationDoList.size());
-        for (RecruitmentApplicationDO applicationDo : applicationDoList) {
-            if (applicationDo.getRecruitmentId() != null) {
-                recruitmentIdList.add(applicationDo.getRecruitmentId());
-            }
-            if (applicationDo.getDepartmentId() != null) {
-                departmentIdList.add(applicationDo.getDepartmentId());
-            }
-            if (applicationDo.getPatientUserId() != null) {
-                patientUserIdList.add(applicationDo.getPatientUserId());
-            }
-            if (applicationDo.getReferenceUserId() != null) {
-                referenceUserIdList.add(applicationDo.getReferenceUserId());
-            }
-        }
-
-        Map<Long, RecruitmentInfoRes> recruitmentInfoResMap = getRecruitmentInfoRes(recruitmentIdList);
-        Map<Long, OrganizationDepartmentDetailRes> departmentDetailResMap = OrganizationDepartmentUtil.getOrganizationDepartmentDetailRes(
-            departmentIdList);
-        Map<Long, PatientInfoDetailRes> patientInfoDetailResMap = PatientInfoUtil.getReferenceDetailRes(
-            patientUserIdList);
-        Map<Long, ReferenceDetailInfoRes> referenceDetailInfoResMap = ReferenceUtil.getReferenceDetailInfoRes(
-            referenceUserIdList);
-
-        List<RecruitmentApplicationDetailRes> applicationDetailResList = new ArrayList<>(applicationDoList.size());
-        for (RecruitmentApplicationDO applicationDo : applicationDoList) {
-            RecruitmentApplicationDetailRes applicationDetailRes = transformApplicationDetailRes(applicationDo);
-            if (applicationDetailRes == null) {
-                continue;
-            }
-            if (MapUtils.isNotEmpty(recruitmentInfoResMap)) {
-                applicationDetailRes.setRecruitmentInfoRes(recruitmentInfoResMap.get(applicationDo.getRecruitmentId()));
-            }
-            if (MapUtils.isNotEmpty(departmentDetailResMap)) {
-                applicationDetailRes.setDepartmentDetailRes(
-                    departmentDetailResMap.get(applicationDo.getDepartmentId()));
-            }
-            if (MapUtils.isNotEmpty(patientInfoDetailResMap)) {
-                applicationDetailRes.setPatientInfoDetailRes(
-                    patientInfoDetailResMap.get(applicationDo.getPatientUserId()));
-            }
-            if (MapUtils.isNotEmpty(referenceDetailInfoResMap)) {
-                applicationDetailRes.setReferenceDetailInfoRes(
-                    referenceDetailInfoResMap.get(applicationDo.getReferenceUserId()));
-            }
-            applicationDetailResList.add(applicationDetailRes);
-        }
-        return applicationDetailResList;
-    }
-
-    private static RecruitmentApplicationDetailRes transformApplicationDetailRes(
-        RecruitmentApplicationDO applicationDo) {
-        if (applicationDo == null) {
-            return null;
-        }
-        RecruitmentApplicationDetailRes applicationDetailRes = new RecruitmentApplicationDetailRes();
-        BeanUtils.copyProperties(applicationDo, applicationDetailRes);
-        applicationDetailRes.setDiseaseImageList(buildImageRes(applicationDo.getDiseaseImage()));
-        applicationDetailRes.setApplicationId(applicationDo.getId());
-        applicationDetailRes.setApplicationTime(DateUtil.format(applicationDo.getCreatedTime(), "yyyy-MM-dd"));
-        return applicationDetailRes;
-    }
-
-    private static List<ImageRes> buildImageRes(String diseaseImage) {
-        if (StringUtils.isEmpty(diseaseImage)) {
-            return Collections.emptyList();
-        }
-        String[] diseaseImageArr = diseaseImage.split(DISEASE_IMAGE_SPACE);
-        List<ImageRes> imageResList = new ArrayList<>(diseaseImageArr.length);
-        for (String image : diseaseImageArr) {
-            String imageUrl = ossService.generateUrl(image);
-            String thumbnailUrl = ossService.generateUrl(image, 80, 80);
-            ImageRes imageRes = new ImageRes(imageUrl, thumbnailUrl);
-            imageResList.add(imageRes);
-        }
-        return imageResList;
     }
 }

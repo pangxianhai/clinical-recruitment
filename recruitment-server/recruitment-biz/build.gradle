@@ -1,3 +1,4 @@
 dependencies {
     compile project(':recruitment-manager')
+    compile project(':recruitment-api')
 }

@@ -1,5 +1,6 @@
 package com.andy.recruitment.biz.recruitment.service;
 
+import com.andy.recruitment.api.recruitment.response.RecruitmentApplicationDetailRes;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
 import com.andy.spring.page.PageResult;
@@ -27,6 +28,6 @@ public interface RecruitmentApplicationService {
      * @param paginator  分页参数
      * @return 招募申请信息列表
      */
-    PageResult<RecruitmentApplicationDO> getRecruitmentApplicationInfo(RecruitmentApplicationQuery queryParam,
+    PageResult<RecruitmentApplicationDetailRes> getRecruitmentApplicationInfo(RecruitmentApplicationQuery queryParam,
         Paginator paginator);
 }

@@ -6,7 +6,7 @@ import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
-import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
+import com.andy.recruitment.common.researcher.constant.ResearcherStatus;
 import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.researcher.entity.ResearcherQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;

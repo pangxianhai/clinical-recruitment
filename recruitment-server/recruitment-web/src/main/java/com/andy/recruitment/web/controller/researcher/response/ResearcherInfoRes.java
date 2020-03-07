@@ -1,6 +1,6 @@
 package com.andy.recruitment.web.controller.researcher.response;
 
-import com.andy.recruitment.dao.researcher.constant.ResearcherStatus;
+import com.andy.recruitment.common.researcher.constant.ResearcherStatus;
 import java.io.Serializable;
 import lombok.Data;
 

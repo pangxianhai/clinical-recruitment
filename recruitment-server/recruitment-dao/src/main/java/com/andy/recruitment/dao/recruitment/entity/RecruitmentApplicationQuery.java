@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.recruitment.entity;
 
-import com.andy.recruitment.dao.recruitment.constant.RecruitmentApplicationStatus;
+import com.andy.recruitment.common.recruitment.constant.RecruitmentApplicationStatus;
 import java.io.Serializable;
 import lombok.Data;
 

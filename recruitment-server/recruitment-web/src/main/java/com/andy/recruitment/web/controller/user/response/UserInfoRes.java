@@ -1,7 +1,7 @@
 package com.andy.recruitment.web.controller.user.response;
 
-import com.andy.recruitment.dao.user.constant.Gender;
-import com.andy.recruitment.dao.user.constant.UserStatus;
+import com.andy.recruitment.common.user.constant.Gender;
+import com.andy.recruitment.common.user.constant.UserStatus;
 import java.io.Serializable;
 import lombok.Data;
 

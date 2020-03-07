@@ -1,6 +1,6 @@
 package com.andy.recruitment.dao.patient.entity;
 
-import com.andy.recruitment.dao.patient.constant.PatientStatus;
+import com.andy.recruitment.common.patient.constant.PatientStatus;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;

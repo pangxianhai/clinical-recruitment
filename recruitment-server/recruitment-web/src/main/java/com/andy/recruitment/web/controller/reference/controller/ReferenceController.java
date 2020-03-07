@@ -2,7 +2,7 @@ package com.andy.recruitment.web.controller.reference.controller;
 
 import com.andy.recruitment.biz.reference.service.ReferenceService;
 import com.andy.recruitment.biz.user.service.UserService;
-import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
+import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;

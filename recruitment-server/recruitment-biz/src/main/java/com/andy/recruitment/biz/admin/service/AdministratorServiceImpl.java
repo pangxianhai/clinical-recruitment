@@ -2,7 +2,7 @@ package com.andy.recruitment.biz.admin.service;
 
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
-import com.andy.recruitment.dao.admin.constant.AdministratorStatus;
+import com.andy.recruitment.common.admin.constant.AdministratorStatus;
 import com.andy.recruitment.dao.admin.dao.AdministratorDAO;
 import com.andy.recruitment.dao.admin.entity.AdministratorInfoDO;
 import com.andy.spring.auth.LoginInfo;
