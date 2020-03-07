@@ -23,7 +23,8 @@
         </div>
         <div class="spacing"></div>
         <van-grid clickable :column-num="2" :border="false" :gutter="40" :icon-size="16">
-            <van-grid-item icon="chat-o" text="我的参加" style="color:#5b4cff"/>
+            <van-grid-item icon="chat-o" text="我的参加" style="color:#5b4cff"
+                           @click="onToApplicationList"/>
             <van-grid-item icon="coupon-o" text="我的推荐" style="color:#ff7813"/>
         </van-grid>
         <div class="spacing"></div>
@@ -269,6 +270,16 @@
           });
         }
       },
+      onToApplicationList() {
+        this.$router.push({
+          path: '/recruitment/applicationList',
+          query: {
+            redirectURL: this.$route.fullPath
+          },
+        }, function () {
+
+        });
+      }
     }
   }
 </script>

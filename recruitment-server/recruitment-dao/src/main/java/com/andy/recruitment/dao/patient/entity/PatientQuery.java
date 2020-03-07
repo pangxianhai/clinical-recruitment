@@ -2,6 +2,7 @@ package com.andy.recruitment.dao.patient.entity;
 
 import com.andy.recruitment.dao.patient.constant.PatientStatus;
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -21,6 +22,10 @@ public class PatientQuery implements Serializable {
      * 用户ID
      */
     private Long userId;
+    /**
+     * 用户ID列表
+     */
+    private List<Long> userIdList;
     /**
      * 省ID
      */

@@ -1,6 +1,6 @@
 package com.andy.recruitment.biz.recruitment.service;
 
-import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
+import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
@@ -25,6 +25,14 @@ public interface RecruitmentService {
     PageResult<RecruitmentInfoDO> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator);
 
     /**
+     * 批量查询招募信息
+     *
+     * @param recruitmentIdList 项目ID
+     * @return 招募信息
+     */
+    List<RecruitmentInfoDO> getRecruitmentInfo(List<Long> recruitmentIdList);
+
+    /**
      * 通过招募项目ID查询招募信息
      *
      * @param recruitmentId 招募项目ID
@@ -38,7 +46,7 @@ public interface RecruitmentService {
      * @param recruitmentId 招募项目ID
      * @return 机构信息
      */
-    List<DepartmentInfoBO> getOrganizationByRecruitment(Long recruitmentId);
+    List<OrganizationDepartmentDO> getOrganizationByRecruitment(Long recruitmentId);
 
     /**
      * 添加招募项目

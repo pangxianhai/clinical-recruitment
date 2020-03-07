@@ -159,6 +159,7 @@
   import Vue from "vue";
   import md5 from 'js-md5';
   import {ApplicationAction} from '@/constants/Global';
+  import {StringUtil} from "../../util/Util";
 
   export default {
     data: function () {
@@ -231,6 +232,15 @@
               this.applicationInfo.patientGenderShow = userDetailInfo.gender.desc;
               this.applicationInfo.patientAddress = userDetailInfo.patientInfoRes.address;
               this.applicationInfo.patientAge = userDetailInfo.patientInfoRes.age;
+              let referenceUserId = this.$route.query.referenceUserId;
+
+              if (StringUtil.isNotEmpty(referenceUserId)) {
+                UserApi.getUserInfoById(referenceUserId).then(userInfo => {
+                  if (userInfo) {
+                    this.applicationInfo.referencePhone = userInfo.phone;
+                  }
+                });
+              }
             }
           });
         }

@@ -4,6 +4,7 @@ import com.andy.recruitment.dao.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -24,6 +25,10 @@ public class RecruitmentQuery implements Serializable {
      * 招募ID
      */
     private Long recruitmentId;
+    /**
+     * 招募ID列表
+     */
+    private List<Long> recruitmentIdList;
     /**
      * 登记编号
      */

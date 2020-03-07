@@ -24,6 +24,10 @@
                 <van-col span="19">{{recruitmentInfo.indication}}</van-col>
             </van-row>
             <van-row type="flex">
+                <van-col span="5">申办方:</van-col>
+                <van-col span="19">{{recruitmentInfo.bidParty}}</van-col>
+            </van-row>
+            <van-row type="flex">
                 <van-col span="5">招募人数:</van-col>
                 <van-col span="8">{{recruitmentInfo.recruitmentNumber}}人</van-col>
                 <van-col span="5">招募状态:</van-col>
@@ -69,10 +73,10 @@
                     :v-model="false"
                     :finished="true">
                     <van-cell
-                        v-for="(department,index) in recruitmentInfo.departmentInfoBoList"
+                        v-for="(department,index) in recruitmentInfo.departmentDetailResList"
                         :key="index"
-                        :title="department.organizationName + '-' + department.departmentName"
-                        :value="department.organizationAddress">
+                        :title="department.organizationRes.name + '-' + department.name"
+                        :value="department.organizationRes.address">
                     </van-cell>
                 </van-list>
             </van-tab>
@@ -94,7 +98,8 @@
             <van-panel :title="recruitmentInfo.title">
             </van-panel>
             <div class="qrcode">
-                <canvas id="canvas" code=""></canvas>
+                <vue-qr :text="recommendQrcodeValue" :size="320"
+                        :logoSrc="require('@/assets/headimg.jpeg')"></vue-qr>
             </div>
             <van-row style="margin-bottom: 8px">
                 <van-col span="9" offset="2">
@@ -145,7 +150,7 @@
 <script>
   import RecruitmentApi from "@/api/RecruitmentApi";
   import {UserConstants, RecruitmentStatus, ApplicationAction} from '@/constants/Global';
-  import QRCode from 'qrcode';
+  import UserApi from '@/api/UserApi';
 
   export default {
     data: function () {
@@ -156,7 +161,8 @@
         },
         UserConstants: UserConstants,
         RecruitmentStatus: RecruitmentStatus,
-        recommendQrcode: false
+        recommendQrcode: false,
+        recommendQrcodeValue: ''
       }
     },
     created: function () {
@@ -214,19 +220,11 @@
         });
       },
       onRecommendQrcode: function () {
-        let canvas = document.getElementById('canvas');
-        let recommendUrl = process.env.VUE_APP_HOST + '/recruitment/application?recruitmentId='
-            + this.recruitmentInfo.recruitmentId + "&doctorUserId=";
-        QRCode.toCanvas(canvas, recommendUrl, {
-          width: 320,
-          height: 320
-        }, (error) => {
-          if (error) {
-            window.console.log(error);
-          } else {
-            this.recommendQrcode = true;
-          }
-        });
+        this.recommendQrcodeValue = window.location.origin + '/recruitment/'
+            + this.recruitmentInfo.recruitmentId
+            + '/application?action=' + ApplicationAction.ATTEND + '&referenceUserId='
+            + UserApi.getUserId();
+        this.recommendQrcode = true;
       }
     }
   }

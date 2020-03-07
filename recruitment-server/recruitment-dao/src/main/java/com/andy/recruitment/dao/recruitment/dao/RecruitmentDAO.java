@@ -4,6 +4,7 @@ import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
+import java.util.List;
 
 /**
  * 招募信息dao
@@ -37,6 +38,14 @@ public interface RecruitmentDAO {
      * @return 招募信息
      */
     PageResult<RecruitmentInfoDO> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator);
+
+    /**
+     * 批量查询招募信息
+     *
+     * @param recruitmentIdList 项目ID
+     * @return 招募信息
+     */
+    List<RecruitmentInfoDO> getRecruitmentInfo(List<Long> recruitmentIdList);
 
     /**
      * 通过招募ID查询招募信息

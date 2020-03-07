@@ -5,6 +5,7 @@ import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
+import java.util.List;
 
 /**
  * 推荐人服务
@@ -55,6 +56,15 @@ public interface ReferenceService {
      * @return 推荐人信息
      */
     ReferenceInfoDO getReferenceByUserId(Long userId);
+
+
+    /**
+     * 通过userId列表查询推荐人信息
+     *
+     * @param userIdList 用户 ID 列表
+     * @return 推荐人信息
+     */
+    List<ReferenceInfoDO> getReferenceInfoByUserIdList(List<Long> userIdList);
 
     /**
      * 通过手机号查询推荐人信息

@@ -13,6 +13,7 @@ import com.andy.spring.util.CollectionUtil;
 import com.andy.spring.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,5 +83,15 @@ public class PatientInfoDAOImpl implements PatientInfoDAO {
         Page page = PageUtil.transformToPage(paginator);
         List<PatientInfoDO> patientInfoDoList = this.patientInfoMapper.select(queryParam, page);
         return new PageResult<>(patientInfoDoList, PageUtil.transformToPaginator(page));
+    }
+
+    @Override
+    public List<PatientInfoDO> getPatientInfoByUserIdList(List<Long> userIdList) {
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return null;
+        }
+        PatientQuery queryParam = new PatientQuery();
+        queryParam.setUserIdList(userIdList);
+        return this.patientInfoMapper.select(queryParam);
     }
 }

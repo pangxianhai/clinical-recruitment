@@ -113,6 +113,12 @@ public class UserController {
         return userDetailRes;
     }
 
+    @GetMapping("/{userId:\\d+}")
+    public UserInfoRes getUserInfo(@PathVariable Long userId) {
+        UserInfoDO userInfoDo = this.userService.getUserInfoByUserId(userId);
+        return UserInfoUtil.transformUserInfoRes(userInfoDo);
+    }
+
     @GetMapping("/login/wx")
     public String getWxLoginUrl(String redirectUrl) {
         return weiXinService.getWeiXinLoginUrl(redirectUrl);

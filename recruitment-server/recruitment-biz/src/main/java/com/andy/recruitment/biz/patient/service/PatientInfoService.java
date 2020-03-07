@@ -6,6 +6,7 @@ import com.andy.recruitment.dao.patient.entity.PatientQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
+import java.util.List;
 
 /**
  * 患者信息服务
@@ -50,6 +51,14 @@ public interface PatientInfoService {
      * @return 患者信息
      */
     PageResult<PatientInfoDO> getPatient(PatientQuery query, Paginator paginator);
+
+    /**
+     * 通过患者用户id列表查询患者信息
+     *
+     * @param userIdList 患者用户id列表
+     * @return 患者信息
+     */
+    List<PatientInfoDO> getPatientInfoByUserIdList(List<Long> userIdList);
 
     /**
      * 通过患者ID查询患者信息

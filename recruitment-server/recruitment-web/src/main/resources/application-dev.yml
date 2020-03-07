@@ -21,3 +21,7 @@ weixin:
     appSecret: e9809618ff58a3b9a1c8704bd9649652
     apiAddress: https://api.weixin.qq.com
     openAddress: https://open.weixin.qq.com
+
+aliyun:
+    oss:
+        imageDomain: http://image.aiteruiyiyao.cn

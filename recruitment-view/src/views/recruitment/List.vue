@@ -55,6 +55,10 @@
                         <van-col span="19">{{item.indication}}</van-col>
                     </van-row>
                     <van-row type="flex">
+                        <van-col span="5">申办方:</van-col>
+                        <van-col span="19">{{item.bidParty}}</van-col>
+                    </van-row>
+                    <van-row type="flex">
                         <van-col span="5">招募人数:</van-col>
                         <van-col span="8">{{item.recruitmentNumber}}人</van-col>
                         <van-col span="5">招募状态:</van-col>
@@ -113,7 +117,8 @@
             <van-panel :title="recommendQrcodeTitle">
             </van-panel>
             <div class="qrcode">
-                <canvas id="canvas" code=""></canvas>
+                <vue-qr :text="recommendQrcodeValue" :size="320"
+                        :logoSrc="require('@/assets/headimg.jpeg')"></vue-qr>
             </div>
             <van-row style="margin-bottom: 8px">
                 <van-col span="9" offset="2">
@@ -186,7 +191,6 @@
 </style>
 
 <script>
-  import QRCode from 'qrcode';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import UserApi from '@/api/UserApi';
   import {RecruitmentStatus, ApplicationAction, UserConstants} from '@/constants/Global';
@@ -194,18 +198,13 @@
   export default {
     data: function () {
       return {
-        userInfo: {
-          userType: {
-            //默认为患者
-            code: UserConstants.PATIENT,
-          }
-        },
         UserConstants: UserConstants,
         RecruitmentStatus: RecruitmentStatus,
         showAddress: false,
         showRecommend: false,
         recommendQrcode: false,
         recommendQrcodeTitle: '',
+        recommendQrcodeValue: '',
         recruitmentInfList: [],
         recruitmentLoading: false,
         recruitmentFinished: false,
@@ -223,11 +222,6 @@
       }
     },
     created: function () {
-      UserApi.getLogInfo().then(userInfo => {
-        if (userInfo) {
-          this.userInfo = userInfo;
-        }
-      });
     },
     methods: {
       onLoadRecruitment: function () {
@@ -301,20 +295,12 @@
         });
       },
       onRecommendQrcode: function (recruitmentInfo) {
-        let canvas = document.getElementById('canvas');
-        let recommendUrl = process.env.VUE_APP_HOST + '/recruitment/application?recruitmentId='
-            + recruitmentInfo.recruitmentId + "&doctorUserId=" + this.userInfo.userId;
-        QRCode.toCanvas(canvas, recommendUrl, {
-          width: 320,
-          height: 320
-        }, (error) => {
-          if (error) {
-            window.console.log(error);
-          } else {
-            this.recommendQrcode = true;
-            this.recommendQrcodeTitle = recruitmentInfo.title;
-          }
-        });
+        this.recommendQrcodeValue = window.location.origin + '/recruitment/'
+            + recruitmentInfo.recruitmentId
+            + '/application?action=' + ApplicationAction.ATTEND + '&referenceUserId='
+            + UserApi.getUserId();
+        this.recommendQrcode = true;
+        this.recommendQrcodeTitle = recruitmentInfo.title;
       }
     }
   }

@@ -11,6 +11,7 @@ import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import com.andy.spring.util.asserts.AssertUtil;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -89,5 +90,10 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     @Override
     public PatientInfoDO getPatientByUserId(Long userId) {
         return this.patientInfoDAO.getPatientInfoByUserId(userId);
+    }
+
+    @Override
+    public List<PatientInfoDO> getPatientInfoByUserIdList(List<Long> userIdList) {
+        return this.patientInfoDAO.getPatientInfoByUserIdList(userIdList);
     }
 }

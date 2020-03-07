@@ -10,6 +10,7 @@ import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import com.andy.spring.util.asserts.AssertUtil;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -78,6 +79,11 @@ public class ReferenceServiceImpl implements ReferenceService {
     @Override
     public ReferenceInfoDO getReferenceByUserId(Long userId) {
         return this.referenceDAO.getReferenceInfoByUserId(userId);
+    }
+
+    @Override
+    public List<ReferenceInfoDO> getReferenceInfoByUserIdList(List<Long> userIdList) {
+        return this.referenceDAO.getReferenceInfoByUserIdList(userIdList);
     }
 
     @Override

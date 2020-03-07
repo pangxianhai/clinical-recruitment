@@ -1,10 +1,8 @@
 package com.andy.recruitment.biz.recruitment.service;
 
-import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.dao.organization.dao.OrganizationDAO;
 import com.andy.recruitment.dao.organization.dao.OrganizationDepartmentDAO;
-import com.andy.recruitment.dao.organization.entity.OrganizationDO;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.dao.recruitment.dao.RecruitmentDAO;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +60,11 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     @Override
+    public List<RecruitmentInfoDO> getRecruitmentInfo(List<Long> recruitmentIdList) {
+        return this.recruitmentDAO.getRecruitmentInfo(recruitmentIdList);
+    }
+
+    @Override
     public void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<List<Long>> organizationDepartmentList,
         String operator) {
         transactionTemplate.execute((status) -> {
@@ -81,57 +83,15 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     @Override
-    public List<DepartmentInfoBO> getOrganizationByRecruitment(Long recruitmentId) {
+    public List<OrganizationDepartmentDO> getOrganizationByRecruitment(Long recruitmentId) {
         List<RecruitmentOrganizationDO> recruitmentOrganizationDoList = recruitmentOrganizationDAO.listOrganizationByRecruitment(
             recruitmentId);
         if (CollectionUtils.isEmpty(recruitmentOrganizationDoList)) {
             return null;
         }
-        List<Long> organizationIdList = recruitmentOrganizationDoList.stream().map(
-            RecruitmentOrganizationDO::getOrganizationId).collect(Collectors.toList());
-        List<OrganizationDO> organizationDoList = organizationDAO.getOrganization(organizationIdList);
-        Map<Long, OrganizationDO> organizationDoMap = new HashMap<>(organizationIdList.size());
-        if (CollectionUtils.isNotEmpty(organizationDoList)) {
-            organizationDoMap = organizationDoList.stream().collect(
-                Collectors.toMap(OrganizationDO::getId, Function.identity(), (o1, o2) -> o1));
-        }
-
         List<Long> departmentIdList = recruitmentOrganizationDoList.stream().map(
             RecruitmentOrganizationDO::getDepartmentId).collect(Collectors.toList());
-        List<OrganizationDepartmentDO> departmentDoList = organizationDepartmentDAO.getOrganizationDepartment(
-            departmentIdList);
-        Map<Long, OrganizationDepartmentDO> departmentDoMap = new HashMap<>(departmentIdList.size());
-        if (CollectionUtils.isNotEmpty(departmentDoList)) {
-            departmentDoMap = departmentDoList.stream().collect(
-                Collectors.toMap(OrganizationDepartmentDO::getId, Function.identity(), (o1, o2) -> o1));
-        }
-
-        List<DepartmentInfoBO> departmentInfoBoList = new ArrayList<>(recruitmentOrganizationDoList.size());
-
-        for (RecruitmentOrganizationDO recruitmentOrganizationDo : recruitmentOrganizationDoList) {
-            DepartmentInfoBO departmentInfoBo = new DepartmentInfoBO();
-            departmentInfoBo.setOrganizationId(recruitmentOrganizationDo.getOrganizationId());
-            departmentInfoBo.setDepartmentId(recruitmentOrganizationDo.getDepartmentId());
-
-            OrganizationDO organizationDo = organizationDoMap.get(recruitmentOrganizationDo.getOrganizationId());
-            if (organizationDo != null) {
-                departmentInfoBo.setOrganizationName(organizationDo.getName());
-                departmentInfoBo.setProvinceId(organizationDo.getProvinceId());
-                departmentInfoBo.setCityId(organizationDo.getCityId());
-                departmentInfoBo.setDistrictId(organizationDo.getDistrictId());
-                String address = this.regionService.parseAddressName(organizationDo.getProvinceId(),
-                    organizationDo.getCityId(), organizationDo.getDistrictId());
-                departmentInfoBo.setOrganizationAddress(address);
-            }
-
-            OrganizationDepartmentDO departmentDo = departmentDoMap.get(recruitmentOrganizationDo.getDepartmentId());
-            if (departmentDo != null) {
-                departmentInfoBo.setDepartmentName(departmentDo.getName());
-            }
-
-            departmentInfoBoList.add(departmentInfoBo);
-        }
-        return departmentInfoBoList;
+        return organizationDepartmentDAO.getOrganizationDepartment(departmentIdList);
     }
 
     @Override

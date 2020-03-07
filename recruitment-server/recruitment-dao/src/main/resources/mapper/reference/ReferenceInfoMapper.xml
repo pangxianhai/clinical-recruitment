@@ -62,7 +62,14 @@
             <if test="phoneLike != null and phoneLike != ''">
                 and u.phone like CONCAT('%', #{phoneLike,jdbcType=VARCHAR},'%')
             </if>
-
+            <if test="userIdList != null">
+                and d.user_id in
+                <foreach collection="userIdList" item="userId" index="index"
+                  open="(" close=")"
+                  separator=",">
+                    #{userId,jdbcType=BIGINT}
+                </foreach>
+            </if>
         </where>
     </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"

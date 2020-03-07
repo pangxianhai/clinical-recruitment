@@ -1,6 +1,6 @@
 package com.andy.recruitment.web.controller.recruitment.response;
 
-import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
+import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentDetailRes;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,5 +19,5 @@ public class RecruitmentInfoDetailRes extends RecruitmentInfoRes {
     /**
      * 科室信息
      */
-    private List<DepartmentInfoBO> departmentInfoBoList;
+    private List<OrganizationDepartmentDetailRes> departmentDetailResList;
 }

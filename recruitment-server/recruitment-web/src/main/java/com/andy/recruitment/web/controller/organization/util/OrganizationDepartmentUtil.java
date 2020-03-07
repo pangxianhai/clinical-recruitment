@@ -86,6 +86,19 @@ public class OrganizationDepartmentUtil {
             Collectors.toMap(OrganizationDepartmentRes::getDepartmentId, Function.identity(), (d1, d2) -> d1));
     }
 
+    public static Map<Long, OrganizationDepartmentDetailRes> getOrganizationDepartmentDetailRes(
+        List<Long> departmentIdList) {
+        List<OrganizationDepartmentDO> organizationDepartmentDoList = organizationDepartmentService.getOrganizationDepartment(
+            departmentIdList);
+        if (CollectionUtils.isEmpty(organizationDepartmentDoList)) {
+            return Collections.emptyMap();
+        }
+        List<OrganizationDepartmentDetailRes> departmentDetailResList = transformOrganizationDepartmentDetailRes(
+            organizationDepartmentDoList);
+        return departmentDetailResList.stream().collect(
+            Collectors.toMap(OrganizationDepartmentRes::getDepartmentId, Function.identity(), (d1, d2) -> d1));
+    }
+
     public static List<OrganizationDepartmentRes> transformOrganizationDepartmentRes(
         List<OrganizationDepartmentDO> departmentDoList) {
         if (CollectionUtils.isEmpty(departmentDoList)) {

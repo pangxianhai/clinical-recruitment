@@ -2,6 +2,7 @@ package com.andy.recruitment.dao.reference.entity;
 
 import com.andy.recruitment.dao.reference.constant.ReferenceStatus;
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -21,6 +22,10 @@ public class ReferenceInfoQuery implements Serializable {
      * 用户ID
      */
     private Long userId;
+    /**
+     * 用户ID列表
+     */
+    private List<Long> userIdList;
     /**
      * 省ID
      */

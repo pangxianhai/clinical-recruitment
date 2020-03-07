@@ -4,6 +4,7 @@ import App from './App.vue';
 import router from './router/Index';
 import AddressSelect from "@/components/AddressSelect";
 import Footer from '@/components/Footer';
+import VueQr from 'vue-qr'
 import {
   NavBar,
   Button,
@@ -78,6 +79,7 @@ Vue.use(CheckboxGroup);
 Vue.use(ImagePreview);
 Vue.use(Notify);
 Vue.use(Toast);
+Vue.use(VueQr);
 
 Vue.component(AddressSelect.name, AddressSelect);
 Vue.component(Footer.name, Footer);
@@ -85,5 +87,5 @@ Vue.component(Footer.name, Footer);
 new Vue({
   el: '#app',
   router: router,
-  render: h => h(App)
+  render: h => h(App),
 });

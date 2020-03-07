@@ -1,5 +1,6 @@
 package com.andy.recruitment.web.controller.reference.util;
 
+import com.andy.recruitment.biz.reference.service.ReferenceService;
 import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -38,9 +40,12 @@ public class ReferenceUtil {
 
     private static RegionService regionService;
 
+    private static ReferenceService referenceService;
+
     @Autowired
-    public ReferenceUtil(RegionService regionService) {
+    public ReferenceUtil(RegionService regionService, ReferenceService referenceService) {
         ReferenceUtil.regionService = regionService;
+        ReferenceUtil.referenceService = referenceService;
     }
 
     public static ReferenceInfoDO transformReferenceInfoDo(ReferenceAddReq referenceAddReq) {
@@ -121,6 +126,16 @@ public class ReferenceUtil {
         return referenceInfoDoList.stream().map(
             referenceInfoDo -> ReferenceUtil.transformReferenceDetailRes(referenceInfoDo, userInfoResMap)).filter(
             Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static Map<Long, ReferenceDetailInfoRes> getReferenceDetailInfoRes(List<Long> userIdList) {
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return Collections.emptyMap();
+        }
+        List<ReferenceInfoDO> referenceInfoDoList = referenceService.getReferenceInfoByUserIdList(userIdList);
+        List<ReferenceDetailInfoRes> detailInfoResList = transformReferenceDetailRes(referenceInfoDoList);
+        return detailInfoResList.stream().collect(
+            Collectors.toMap(ReferenceDetailInfoRes::getUserId, Function.identity(), (r1, r2) -> r1));
     }
 
     public static ReferenceDetailInfoRes transformReferenceDetailRes(ReferenceInfoDO referenceInfoDo) {

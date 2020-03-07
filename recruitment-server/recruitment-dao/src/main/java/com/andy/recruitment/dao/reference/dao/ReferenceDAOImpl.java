@@ -14,6 +14,7 @@ import com.andy.spring.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,16 @@ public class ReferenceDAOImpl implements ReferenceDAO {
         query.setUserId(userId);
         List<ReferenceInfoDO> referenceInfoDoList = this.referenceInfoMapper.select(query);
         return CollectionUtil.parseOne(referenceInfoDoList, Function.identity());
+    }
+
+    @Override
+    public List<ReferenceInfoDO> getReferenceInfoByUserIdList(List<Long> userIdList) {
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return null;
+        }
+        ReferenceInfoQuery query = new ReferenceInfoQuery();
+        query.setUserIdList(userIdList);
+        return this.referenceInfoMapper.select(query);
     }
 
     @Override

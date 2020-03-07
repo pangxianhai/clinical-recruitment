@@ -1,5 +1,6 @@
 package com.andy.recruitment.web.controller.patient.util;
 
+import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -38,9 +40,12 @@ public class PatientInfoUtil {
 
     private static RegionService regionService;
 
+    private static PatientInfoService patientInfoService;
+
     @Autowired
-    public PatientInfoUtil(RegionService regionService) {
+    public PatientInfoUtil(RegionService regionService, PatientInfoService patientInfoService) {
         PatientInfoUtil.regionService = regionService;
+        PatientInfoUtil.patientInfoService = patientInfoService;
     }
 
     public static PatientInfoDO transformPatientInfoDo(PatientAddReq patientAddReq) {
@@ -137,6 +142,16 @@ public class PatientInfoUtil {
         return patientInfoDoList.stream().map(
             referenceInfoDo -> PatientInfoUtil.transformReferenceDetailRes(referenceInfoDo, userInfoResMap)).filter(
             Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static Map<Long, PatientInfoDetailRes> getReferenceDetailRes(List<Long> userIdList) {
+        List<PatientInfoDO> patientInfoDoList = patientInfoService.getPatientInfoByUserIdList(userIdList);
+        List<PatientInfoDetailRes> patientInfoDetailResList = transformReferenceDetailRes(patientInfoDoList);
+        if (CollectionUtils.isEmpty(patientInfoDetailResList)) {
+            return Collections.emptyMap();
+        }
+        return patientInfoDetailResList.stream().collect(
+            Collectors.toMap(PatientInfoDetailRes::getUserId, Function.identity(), (d1, d2) -> d1));
     }
 
     public static PatientInfoRes transformReferenceRes(PatientInfoDO patientInfoDo) {

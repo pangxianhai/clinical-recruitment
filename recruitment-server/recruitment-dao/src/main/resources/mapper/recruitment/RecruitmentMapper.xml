@@ -121,6 +121,14 @@
                 and category_id =
                 #{category,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
+            <if test="recruitmentIdList != null">
+                and id in
+                <foreach collection="recruitmentIdList" item="recruitmentId" index="index"
+                  open="(" close=")"
+                  separator=",">
+                    #{recruitmentId,jdbcType=BIGINT}
+                </foreach>
+            </if>
         </where>
     </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"

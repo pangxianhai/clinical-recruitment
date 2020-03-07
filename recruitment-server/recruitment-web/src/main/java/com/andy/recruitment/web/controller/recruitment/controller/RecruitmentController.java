@@ -1,7 +1,6 @@
 package com.andy.recruitment.web.controller.recruitment.controller;
 
 import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
-import com.andy.recruitment.biz.recruitment.entity.DepartmentInfoBO;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
 import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.recruitment.constant.RecruitmentStatus;
@@ -65,14 +64,16 @@ public class RecruitmentController {
     }
 
     @GetMapping("/{recruitmentId:\\d+}")
-    public RecruitmentInfoDetailRes listRecruitment(@PathVariable Long recruitmentId) {
+    public RecruitmentInfoDetailRes getRecruitmentDetail(@PathVariable Long recruitmentId) {
         RecruitmentInfoDO recruitmentInfoDo = this.recruitmentService.getRecruitmentInfo(recruitmentId);
         RecruitmentInfoRes recruitmentInfoRes = RecruitmentUtil.transformRecruitmentInfoRes(recruitmentInfoDo);
         RecruitmentInfoDetailRes recruitmentInfoDetailRes = new RecruitmentInfoDetailRes();
         BeanUtils.copyProperties(recruitmentInfoRes, recruitmentInfoDetailRes);
-        List<DepartmentInfoBO> departmentInfoBoList = this.recruitmentService.getOrganizationByRecruitment(
+        List<OrganizationDepartmentDO> departmentDoList = this.recruitmentService.getOrganizationByRecruitment(
             recruitmentId);
-        recruitmentInfoDetailRes.setDepartmentInfoBoList(departmentInfoBoList);
+        List<OrganizationDepartmentDetailRes> departmentDetailResList = OrganizationDepartmentUtil.transformOrganizationDepartmentDetailRes(
+            departmentDoList);
+        recruitmentInfoDetailRes.setDepartmentDetailResList(departmentDetailResList);
         return recruitmentInfoDetailRes;
     }
 

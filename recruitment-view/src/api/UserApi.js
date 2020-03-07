@@ -5,6 +5,9 @@ let UserApi = {
   getCurrentUserInfo: async () => {
     return await ApiUtil.get('/user/current', {});
   },
+  getUserInfoById: async (userId) => {
+    return await ApiUtil.get('/user/' + userId, {});
+  },
   getWxLoginUrl: async (redirectURL) => {
     return await ApiUtil.get('/user/login/wx', {
       redirectUrl: redirectURL
@@ -16,7 +19,11 @@ let UserApi = {
     });
   },
   getUserId: function () {
-    return CookieUtil.getCookie(CookieNameConstant.USER_ID);
+    let userId = CookieUtil.getCookie(CookieNameConstant.USER_ID);
+    if (StringUtil.isEmpty(userId)) {
+      userId = '';
+    }
+    return userId;
   },
   isLogin: function () {
     let userName = CookieUtil.getCookie(CookieNameConstant.USER_NAME);

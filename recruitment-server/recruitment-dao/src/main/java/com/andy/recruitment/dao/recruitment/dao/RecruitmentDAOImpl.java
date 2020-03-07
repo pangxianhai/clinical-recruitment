@@ -14,6 +14,7 @@ import com.andy.spring.util.CollectionUtil;
 import com.andy.spring.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,16 @@ public class RecruitmentDAOImpl implements RecruitmentDAO {
         Page page = PageUtil.transformToPage(paginator);
         List<RecruitmentInfoDO> recruitmentInfoDoList = this.recruitmentMapper.select(queryParam, page);
         return new PageResult<>(recruitmentInfoDoList, PageUtil.transformToPaginator(page));
+    }
+
+    @Override
+    public List<RecruitmentInfoDO> getRecruitmentInfo(List<Long> recruitmentIdList) {
+        if (CollectionUtils.isEmpty(recruitmentIdList)) {
+            return null;
+        }
+        RecruitmentQuery query = new RecruitmentQuery();
+        query.setRecruitmentIdList(recruitmentIdList);
+        return this.recruitmentMapper.select(query);
     }
 
     @Override
