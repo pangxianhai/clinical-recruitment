@@ -118,4 +118,9 @@ public class RecruitmentApplicationController {
         return this.recruitmentApplicationService.getRecruitmentApplicationInfo(query, queryReq.getPaginator());
     }
 
+    @RequiresUser
+    @GetMapping("/application/{applicationId:\\d+}")
+    public RecruitmentApplicationDetailRes getRecruitmentApplication(@PathVariable Long applicationId) {
+        return this.recruitmentApplicationService.getRecruitmentApplicationInfo(applicationId);
+    }
 }

@@ -30,4 +30,12 @@ public interface RecruitmentApplicationService {
      */
     PageResult<RecruitmentApplicationDetailRes> getRecruitmentApplicationInfo(RecruitmentApplicationQuery queryParam,
         Paginator paginator);
+
+    /**
+     * 通过申请记录ID查询详情
+     *
+     * @param applicationId 详情ID
+     * @return 招募申请详细信息
+     */
+    RecruitmentApplicationDetailRes getRecruitmentApplicationInfo(Long applicationId);
 }

@@ -77,6 +77,22 @@ public class RecruitmentApplicationServiceImpl implements RecruitmentApplication
         return new PageResult<>(detailResList, pageResult.getPaginator());
     }
 
+    @Override
+    public RecruitmentApplicationDetailRes getRecruitmentApplicationInfo(Long applicationId) {
+        RecruitmentApplicationDO applicationDo = this.recruitmentApplicationDAO.getRecruitmentApplicationInfo(
+            applicationId);
+        if (applicationDo == null) {
+            return null;
+        }
+        List<RecruitmentApplicationDO> applicationDoList = Collections.singletonList(applicationDo);
+        List<RecruitmentApplicationDetailRes> applicationDetailResList = this.transformApplicationDetailRes(
+            applicationDoList);
+        if (CollectionUtils.isEmpty(applicationDetailResList)) {
+            return null;
+        }
+        return applicationDetailResList.get(0);
+    }
+
     private List<RecruitmentApplicationDetailRes> transformApplicationDetailRes(
         List<RecruitmentApplicationDO> applicationDoList) {
         if (CollectionUtils.isEmpty(applicationDoList)) {
