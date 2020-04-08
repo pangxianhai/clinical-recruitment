@@ -1,22 +1,21 @@
 package com.andy.recruitment.web.controller.reference.controller;
 
+import com.andy.recruitment.api.reference.request.ReferenceAddReq;
+import com.andy.recruitment.api.reference.request.ReferenceQueryReq;
+import com.andy.recruitment.api.reference.request.ReferenceRegisterReq;
+import com.andy.recruitment.api.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.biz.reference.service.ReferenceService;
 import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.andy.recruitment.web.controller.reference.request.ReferenceAddReq;
-import com.andy.recruitment.web.controller.reference.request.ReferenceQueryReq;
-import com.andy.recruitment.web.controller.reference.request.ReferenceRegisterReq;
-import com.andy.recruitment.web.controller.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.web.controller.reference.util.ReferenceUtil;
 import com.andy.spring.auth.LoginInfo;
 import com.andy.spring.auth.RoleType;
 import com.andy.spring.context.ServletContext;
 import com.andy.spring.converter.MyParameter;
 import com.andy.spring.page.PageResult;
-import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,16 +70,12 @@ public class ReferenceController {
     @GetMapping
     public PageResult<ReferenceDetailInfoRes> getReference(@MyParameter ReferenceQueryReq queryReq) {
         ReferenceInfoQuery query = ReferenceUtil.transformReferenceQuery(queryReq);
-        PageResult<ReferenceInfoDO> pageResult = this.referenceService.getReference(query, queryReq.getPaginator());
-        List<ReferenceDetailInfoRes> referenceDetailInfoResList = ReferenceUtil.transformReferenceDetailRes(
-            pageResult.getData());
-        return new PageResult<>(referenceDetailInfoResList, pageResult.getPaginator());
+        return this.referenceService.getReference(query, queryReq.getPaginator());
     }
 
     @GetMapping("/{referenceId:\\d+}")
     public ReferenceDetailInfoRes getReference(@PathVariable Long referenceId) {
-        ReferenceInfoDO referenceInfoDo = this.referenceService.getReference(referenceId);
-        return ReferenceUtil.transformReferenceDetailRes(referenceInfoDo);
+        return this.referenceService.getReference(referenceId);
     }
 
     @RequiresUser

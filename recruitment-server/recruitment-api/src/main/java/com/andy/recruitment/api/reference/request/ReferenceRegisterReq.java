@@ -46,11 +46,15 @@ public class ReferenceRegisterReq implements Serializable {
     @NotNull
     private Integer gender;
     /**
-     * 地址
+     * 医院ID
      */
-    @NotBlank
-    @Length(max = 64)
-    private String address;
+    @NotNull
+    private Long hospitalId;
+    /**
+     * 科室ID
+     */
+    @NotNull
+    private Long departmentId;
     /**
      * 执业机构
      */

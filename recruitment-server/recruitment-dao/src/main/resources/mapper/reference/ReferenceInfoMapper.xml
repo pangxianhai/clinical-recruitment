@@ -5,13 +5,14 @@
     <resultMap id="baseResultMap" type="com.andy.recruitment.dao.reference.entity.ReferenceInfoDO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
-        <result column="province_id" property="provinceId" jdbcType="BIGINT"/>
-        <result column="city_id" property="cityId" jdbcType="BIGINT"/>
-        <result column="district_id" property="districtId" jdbcType="BIGINT"/>
+        <result column="hospital_id" property="hospitalId" jdbcType="BIGINT"/>
+        <result column="department_id" property="departmentId" jdbcType="BIGINT"/>
         <result column="medical_institution" property="medicalInstitution" jdbcType="VARCHAR"/>
         <result column="medical_category" property="medicalCategory" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="status" property="status"
+          typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
+        <result column="referenceRole" property="role"
           typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
@@ -21,12 +22,12 @@
     <sql id="baseColumnList">
         id,
         user_id,
-        province_id,
-        city_id,
-        district_id,
+        hospital_id,
+        department_id,
         medical_institution,
         medical_category,
         remark,
+        role,
         status,
         created_by,
         created_time,
@@ -46,11 +47,11 @@
             <if test="userId != null">
                 and d.user_id = #{userId, jdbcType=BIGINT}
             </if>
-            <if test="provinceId != null">
-                and d.province_id = #{provinceId, jdbcType=BIGINT}
+            <if test="hospitalId != null">
+                and d.hospital_id = #{hospitalId, jdbcType=BIGINT}
             </if>
-            <if test="cityId != null">
-                and d.city_id = #{cityId, jdbcType=BIGINT}
+            <if test="departmentId != null">
+                and d.department_id = #{departmentId, jdbcType=BIGINT}
             </if>
             <if test="status != null">
                 and d.status =
@@ -78,12 +79,12 @@
         values(
         #{id,jdbcType=BIGINT},
         #{userId, jdbcType=BIGINT},
-        #{provinceId, jdbcType=BIGINT},
-        #{cityId, jdbcType=BIGINT},
-        #{districtId, jdbcType=BIGINT},
+        #{hospitalId, jdbcType=BIGINT},
+        #{departmentId, jdbcType=BIGINT},
         #{medicalInstitution, jdbcType=VARCHAR},
         #{medicalCategory, jdbcType=VARCHAR},
         #{remark, jdbcType=VARCHAR},
+        #{referenceRole,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
         #{createdTime, jdbcType=TIMESTAMP},
@@ -94,14 +95,11 @@
     <update id="update" parameterType="com.andy.recruitment.dao.reference.entity.ReferenceInfoDO">
         update reference_info
         <set>
-            <if test="provinceId != null">
-                province_id = #{provinceId, jdbcType=BIGINT},
+            <if test="hospitalId != null">
+                hospital_id = #{hospitalId, jdbcType=BIGINT},
             </if>
-            <if test="cityId != null">
-                city_id = #{cityId, jdbcType=BIGINT},
-            </if>
-            <if test="districtId != null">
-                district_id = #{districtId, jdbcType=BIGINT},
+            <if test="departmentId != null">
+                department_id = #{departmentId, jdbcType=BIGINT},
             </if>
             <if test="medicalInstitution != null and medicalInstitution != ''">
                 medical_institution = #{medicalInstitution, jdbcType=VARCHAR},
@@ -114,6 +112,10 @@
             </if>
             <if test="status != null ">
                 status = #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
+            </if>
+            <if test="referenceRole != null ">
+                role =
+                #{referenceRole, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
             <if test="updatedBy != null and updatedBy != ''">
                 updated_by = #{updatedBy, jdbcType=VARCHAR},

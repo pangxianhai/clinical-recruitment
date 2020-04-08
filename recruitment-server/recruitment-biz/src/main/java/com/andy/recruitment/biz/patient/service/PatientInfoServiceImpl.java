@@ -1,7 +1,9 @@
 package com.andy.recruitment.biz.patient.service;
 
 import com.andy.recruitment.api.patient.response.PatientInfoDetailRes;
+import com.andy.recruitment.api.patient.response.PatientInfoRes;
 import com.andy.recruitment.api.user.response.UserInfoRes;
+import com.andy.recruitment.biz.patient.util.PatientInfoUtil;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
@@ -92,17 +94,31 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     }
 
     @Override
-    public PageResult<PatientInfoDO> getPatient(PatientQuery query, Paginator paginator) {
-        return this.patientInfoDAO.getPatientInfo(query, paginator);
+    public PageResult<PatientInfoDetailRes> getPatient(PatientQuery query, Paginator paginator) {
+        PageResult<PatientInfoDO> pageResult = this.patientInfoDAO.getPatientInfo(query, paginator);
+        List<PatientInfoDetailRes> detailResList = this.transformReferenceDetailRes(pageResult.getData());
+        return new PageResult<>(detailResList, pageResult.getPaginator());
     }
 
     @Override
-    public PatientInfoDO getPatient(Long patientId) {
-        return this.patientInfoDAO.getPatientInfoById(patientId);
+    public PatientInfoDetailRes getPatientById(Long patientId) {
+        PatientInfoDO patientInfoDo = this.patientInfoDAO.getPatientInfoById(patientId);
+        List<PatientInfoDetailRes> detailResList = this.transformReferenceDetailRes(
+            Collections.singletonList(patientInfoDo));
+        if (CollectionUtils.isEmpty(detailResList)) {
+            return null;
+        }
+        return detailResList.get(0);
     }
 
     @Override
-    public PatientInfoDO getPatientByUserId(Long userId) {
+    public PatientInfoRes getPatientByUserId(Long userId) {
+        PatientInfoDO patientInfoDo = this.patientInfoDAO.getPatientInfoByUserId(userId);
+        return PatientInfoUtil.transformReferenceRes(patientInfoDo, regionService);
+    }
+
+    @Override
+    public PatientInfoDO getPatientDoByUserId(Long userId) {
         return this.patientInfoDAO.getPatientInfoByUserId(userId);
     }
 

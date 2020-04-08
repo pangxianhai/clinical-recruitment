@@ -105,31 +105,31 @@ public enum RecruitmentErrorCode {
     /**
      * 机构信息添加失败
      */
-    ORGANIZATION_ADD_FAILED(101500),
+    HOSPITAL_ADD_FAILED(101500),
     /**
      * 机构信息更新失败
      */
-    ORGANIZATION_UPDATE_FAILED(101501),
+    HOSPITAL_UPDATE_FAILED(101501),
     /**
      * 机构ID为空
      */
-    ORGANIZATION_ID_EMPTY(101502),
+    HOSPITAL_ID_EMPTY(101502),
     /**
      * 机构科室添加失败
      */
-    ORGANIZATION_DEPARTMENT_ADD_FAILED(101510),
+    DEPARTMENT_ADD_FAILED(101550),
     /**
      * 机构科室更新失败
      */
-    ORGANIZATION_DEPARTMENT_UPDATE_FAILED(101511),
+    DEPARTMENT_UPDATE_FAILED(101551),
     /**
      * 机构科室ID为空
      */
-    ORGANIZATION_DEPARTMENT_ID_EMPTY(101512),
+    DEPARTMENT_ID_EMPTY(101552),
     /**
      * 科室不存在
      */
-    ORGANIZATION_DEPARTMENT_NOT_EXIST(101513),
+    DEPARTMENT_NOT_EXIST(101553),
 
     /**
      * 招募信息申请失败
@@ -176,23 +176,6 @@ public enum RecruitmentErrorCode {
      * 管理员账户异常
      */
     ADMINISTRATOR_ACCOUNT_ERROR(101706),
-
-    /**
-     * 研究员添加失败
-     */
-    RESEARCHER_ADD_FAILED(101800),
-    /**
-     * 研究员更新失败
-     */
-    RESEARCHER_UPDATE_FAILED(101801),
-    /**
-     * 研究员ID为空
-     */
-    RESEARCHER_ID_EMPTY(101802),
-    /**
-     * 研究员不存在
-     */
-    RESEARCHER_NOT_EXIST(101803),
 
     ;
 

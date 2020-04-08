@@ -57,7 +57,7 @@
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery">
         select
         <include refid="baseColumnList"/>
-        from medical_clinical_recruitment_info
+        from recruitment_info
         <where>
             <if test="queryText != null and queryText != ''">
                 and (register_code like CONCAT('%', #{queryText,jdbcType=VARCHAR},'%') or
@@ -133,7 +133,7 @@
     </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO">
-        insert into medical_clinical_recruitment_info (<include refid="baseColumnList"/>)
+        insert into recruitment_info (<include refid="baseColumnList"/>)
         values(
         #{id,jdbcType=BIGINT},
         #{registerCode, jdbcType=VARCHAR},
@@ -161,7 +161,7 @@
     </insert>
     <update id="update"
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO">
-        update medical_clinical_recruitment_info
+        update recruitment_info
         <set>
             <if test="registerCode != null and registerCode != ''">
                 register_code = #{registerCode, jdbcType=VARCHAR},

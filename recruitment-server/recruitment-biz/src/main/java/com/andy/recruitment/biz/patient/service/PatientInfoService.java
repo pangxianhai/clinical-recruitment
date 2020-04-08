@@ -1,6 +1,7 @@
 package com.andy.recruitment.biz.patient.service;
 
 import com.andy.recruitment.api.patient.response.PatientInfoDetailRes;
+import com.andy.recruitment.api.patient.response.PatientInfoRes;
 import com.andy.recruitment.common.patient.constant.PatientStatus;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
@@ -52,7 +53,7 @@ public interface PatientInfoService {
      * @param paginator 分页参数
      * @return 患者信息
      */
-    PageResult<PatientInfoDO> getPatient(PatientQuery query, Paginator paginator);
+    PageResult<PatientInfoDetailRes> getPatient(PatientQuery query, Paginator paginator);
 
     /**
      * 通过患者用户id列表查询患者信息
@@ -76,7 +77,7 @@ public interface PatientInfoService {
      * @param patientId 患者ID
      * @return 患者信息
      */
-    PatientInfoDO getPatient(Long patientId);
+    PatientInfoDetailRes getPatientById(Long patientId);
 
     /**
      * 通过用户ID查询患者信息 只返回有效的患者信息
@@ -84,5 +85,13 @@ public interface PatientInfoService {
      * @param userId 用户ID
      * @return 患者信息
      */
-    PatientInfoDO getPatientByUserId(Long userId);
+    PatientInfoRes getPatientByUserId(Long userId);
+
+    /**
+     * 通过用户ID查询患者信息 只返回有效的患者信息
+     *
+     * @param userId 用户ID
+     * @return 患者信息
+     */
+    PatientInfoDO getPatientDoByUserId(Long userId);
 }

@@ -28,7 +28,31 @@ public interface UserService {
      * @param phone 手机号码
      * @return 用户信息
      */
-    UserInfoDO getUserInfoByPhone(String phone);
+    UserInfoRes getUserInfoByPhone(String phone);
+
+    /**
+     * 通过手机号查询用户
+     *
+     * @param phone 手机号码
+     * @return 用户信息Do
+     */
+    UserInfoDO getUserInfoDoByPhone(String phone);
+
+    /**
+     * 根据用户id获取用户信息
+     *
+     * @param userId 用户ID
+     * @return 用户信息
+     */
+    UserInfoRes getUserInfoByUserId(Long userId);
+
+    /**
+     * 根据用户id获取用户信息
+     *
+     * @param userId 用户ID
+     * @return 用户信息
+     */
+    UserInfoDO getUserDoByUserId(Long userId);
 
     /**
      * 通过用户ID列表查询用户ID
@@ -47,14 +71,6 @@ public interface UserService {
     Map<Long, UserInfoRes> getUserInfoRes(List<Long> userIdList);
 
     /**
-     * 根据用户id获取用户信息
-     *
-     * @param userId 用户ID
-     * @return 用户信息
-     */
-    UserInfoDO getUserInfoByUserId(Long userId);
-
-    /**
      * 微信登录
      *
      * @param code 授权码
@@ -69,7 +85,6 @@ public interface UserService {
      * @return 登录信息
      */
     LoginInfo userInfoLogin(UserInfoDO userInfoDo);
-
 
     /**
      * 更新用户信息

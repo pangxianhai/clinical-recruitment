@@ -32,7 +32,7 @@ public class RecruitmentApplicationQuery implements Serializable {
     /**
      * 选择的机构ID
      */
-    private Long organizationId;
+    private Long hospitalId;
     /**
      * 选择的科室ID
      */

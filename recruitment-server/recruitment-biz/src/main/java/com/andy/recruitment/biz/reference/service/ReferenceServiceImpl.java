@@ -1,8 +1,11 @@
 package com.andy.recruitment.biz.reference.service;
 
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import com.andy.recruitment.api.reference.response.ReferenceDetailInfoRes;
+import com.andy.recruitment.api.reference.response.ReferenceInfoRes;
 import com.andy.recruitment.api.user.response.UserInfoRes;
-import com.andy.recruitment.biz.region.service.RegionService;
+import com.andy.recruitment.biz.hospital.service.DepartmentService;
+import com.andy.recruitment.biz.reference.util.ReferenceUtil;
 import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
@@ -21,6 +24,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,16 +42,16 @@ public class ReferenceServiceImpl implements ReferenceService {
 
     private final UserService userService;
 
-    private final RegionService regionService;
-
     private final TransactionTemplate transactionTemplate;
 
+    private final DepartmentService departmentService;
+
     @Autowired
-    public ReferenceServiceImpl(ReferenceDAO referenceDAO, UserService userService, RegionService regionService,
-        TransactionTemplate transactionTemplate) {
+    public ReferenceServiceImpl(ReferenceDAO referenceDAO, UserService userService,
+        TransactionTemplate transactionTemplate, DepartmentService departmentService) {
         this.referenceDAO = referenceDAO;
         this.userService = userService;
-        this.regionService = regionService;
+        this.departmentService = departmentService;
         this.transactionTemplate = transactionTemplate;
     }
 
@@ -82,17 +86,31 @@ public class ReferenceServiceImpl implements ReferenceService {
     }
 
     @Override
-    public PageResult<ReferenceInfoDO> getReference(ReferenceInfoQuery query, Paginator paginator) {
-        return this.referenceDAO.getReferenceInfo(query, paginator);
+    public PageResult<ReferenceDetailInfoRes> getReference(ReferenceInfoQuery query, Paginator paginator) {
+        PageResult<ReferenceInfoDO> pageResult = this.referenceDAO.getReferenceInfo(query, paginator);
+        List<ReferenceDetailInfoRes> detailInfoResList = this.transformReferenceDetailRes(pageResult.getData());
+        return new PageResult<>(detailInfoResList, pageResult.getPaginator());
     }
 
     @Override
-    public ReferenceInfoDO getReference(Long referenceId) {
-        return this.referenceDAO.getReferenceInfoById(referenceId);
+    public ReferenceDetailInfoRes getReference(Long referenceId) {
+        ReferenceInfoDO referenceInfoDo = this.referenceDAO.getReferenceInfoById(referenceId);
+        List<ReferenceDetailInfoRes> detailInfoResList = this.transformReferenceDetailRes(
+            Collections.singletonList(referenceInfoDo));
+        if (CollectionUtils.isEmpty(detailInfoResList)) {
+            return null;
+        }
+        return detailInfoResList.get(0);
     }
 
     @Override
-    public ReferenceInfoDO getReferenceByUserId(Long userId) {
+    public ReferenceInfoRes getReferenceByUserId(Long userId) {
+        ReferenceInfoDO referenceInfoDo = this.referenceDAO.getReferenceInfoByUserId(userId);
+        return ReferenceUtil.transformReferenceRes(referenceInfoDo);
+    }
+
+    @Override
+    public ReferenceInfoDO getReferenceDoByUserId(Long userId) {
         return this.referenceDAO.getReferenceInfoByUserId(userId);
     }
 
@@ -103,11 +121,11 @@ public class ReferenceServiceImpl implements ReferenceService {
 
     @Override
     public ReferenceInfoDO getReferenceByPhone(String phone) {
-        UserInfoDO userInfoDo = this.userService.getUserInfoByPhone(phone);
+        UserInfoDO userInfoDo = this.userService.getUserInfoDoByPhone(phone);
         if (userInfoDo == null) {
             return null;
         }
-        return this.getReferenceByUserId(userInfoDo.getId());
+        return this.referenceDAO.getReferenceInfoByUserId(userInfoDo.getId());
     }
 
     @Override
@@ -126,27 +144,35 @@ public class ReferenceServiceImpl implements ReferenceService {
             return Collections.emptyList();
         }
         List<Long> userIdList = new ArrayList<>(referenceInfoDoList.size());
+        List<Long> departmentIdList = new ArrayList<>(referenceInfoDoList.size());
         for (ReferenceInfoDO referenceInfoDO : referenceInfoDoList) {
             userIdList.add(referenceInfoDO.getUserId());
+            departmentIdList.add(referenceInfoDO.getDepartmentId());
         }
         Map<Long, UserInfoRes> userInfoResMap = this.userService.getUserInfoRes(userIdList);
+        Map<Long, DepartmentDetailRes> departmentDetailResMap = this.departmentService.getDepartmentDetailRes(
+            departmentIdList);
         return referenceInfoDoList.stream().map(
-            referenceInfoDo -> this.transformReferenceDetailRes(referenceInfoDo, userInfoResMap)).filter(
-            Objects::nonNull).collect(Collectors.toList());
+            referenceInfoDo -> this.transformReferenceDetailRes(referenceInfoDo, userInfoResMap,
+                departmentDetailResMap)).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private ReferenceDetailInfoRes transformReferenceDetailRes(ReferenceInfoDO referenceInfoDo,
-        Map<Long, UserInfoRes> userInfoResMap) {
+        Map<Long, UserInfoRes> userInfoResMap, Map<Long, DepartmentDetailRes> departmentDetailResMap) {
         if (referenceInfoDo == null) {
             return null;
         }
         ReferenceDetailInfoRes referenceDetailInfoRes = new ReferenceDetailInfoRes();
         BeanUtils.copyProperties(referenceInfoDo, referenceDetailInfoRes);
         referenceDetailInfoRes.setReferenceId(referenceInfoDo.getId());
-        referenceDetailInfoRes.setUserInfoRes(userInfoResMap.get(referenceInfoDo.getUserId()));
-        referenceDetailInfoRes.setAddress(
-            this.regionService.parseAddressName(referenceInfoDo.getProvinceId(), referenceInfoDo.getCityId(),
-                referenceInfoDo.getDistrictId()));
+        if (MapUtils.isNotEmpty(userInfoResMap)) {
+            referenceDetailInfoRes.setUserInfoRes(userInfoResMap.get(referenceInfoDo.getUserId()));
+        }
+        if (MapUtils.isNotEmpty(departmentDetailResMap)) {
+            referenceDetailInfoRes.setDepartmentDetailRes(
+                departmentDetailResMap.get(referenceInfoDo.getDepartmentId()));
+        }
+
         return referenceDetailInfoRes;
     }
 }

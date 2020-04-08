@@ -1,5 +1,6 @@
 package com.andy.recruitment.api.reference.response;
 
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import com.andy.recruitment.api.user.response.UserInfoRes;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,4 +19,9 @@ public class ReferenceDetailInfoRes extends ReferenceInfoRes {
      * 用户信息
      */
     private UserInfoRes userInfoRes;
+
+    /**
+     * 所在科室信息
+     */
+    private DepartmentDetailRes departmentDetailRes;
 }

@@ -33,9 +33,4 @@ public class WxLoginRes extends UserInfoRes {
      * 是否已经注册推荐人
      */
     private Boolean hasReference;
-
-    /**
-     * 是否已经注册研究员
-     */
-    private Boolean hasResearcher;
 }

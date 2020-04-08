@@ -1,26 +1,22 @@
 package com.andy.recruitment.web.controller.recruitment.controller;
 
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import com.andy.recruitment.api.recruitment.request.RecruitmentAddReq;
 import com.andy.recruitment.api.recruitment.request.RecruitmentQueryReq;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoDetailRes;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
-import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
+import com.andy.recruitment.biz.hospital.service.DepartmentService;
+import com.andy.recruitment.biz.recruitment.service.RecruitmentDepartmentService;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
-import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
-import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentDetailRes;
-import com.andy.recruitment.web.controller.organization.util.OrganizationDepartmentUtil;
 import com.andy.recruitment.web.controller.recruitment.util.RecruitmentUtil;
 import com.andy.spring.auth.RoleType;
 import com.andy.spring.context.ServletContext;
 import com.andy.spring.converter.MyParameter;
 import com.andy.spring.page.PageResult;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +39,16 @@ public class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
 
-    private final OrganizationDepartmentService organizationDepartmentService;
+    private final DepartmentService departmentService;
+
+    private final RecruitmentDepartmentService recruitmentDepartmentService;
 
     @Autowired
-    public RecruitmentController(RecruitmentService recruitmentService,
-        OrganizationDepartmentService organizationDepartmentService) {
+    public RecruitmentController(RecruitmentService recruitmentService, DepartmentService departmentService,
+        RecruitmentDepartmentService recruitmentDepartmentService) {
         this.recruitmentService = recruitmentService;
-        this.organizationDepartmentService = organizationDepartmentService;
+        this.departmentService = departmentService;
+        this.recruitmentDepartmentService = recruitmentDepartmentService;
     }
 
     @GetMapping
@@ -72,7 +71,8 @@ public class RecruitmentController {
     @PostMapping
     public boolean addRecruitment(@RequestBody RecruitmentAddReq addReq) {
         RecruitmentInfoDO recruitmentInfoDo = RecruitmentUtil.transformRecruitmentInfoDo(addReq);
-        this.recruitmentService.addRecruitmentInfo(recruitmentInfoDo, addReq.getOrganizationDepartmentList(),
+        this.recruitmentService.addRecruitmentInfo(recruitmentInfoDo,
+            RecruitmentUtil.parseDepartmentDo(addReq.getHospitalDepartmentList()),
             ServletContext.getLoginInfo().getRealName());
         return true;
     }
@@ -83,7 +83,8 @@ public class RecruitmentController {
     public boolean updateRecruitment(@PathVariable Long recruitmentId, @RequestBody RecruitmentAddReq updateReq) {
         RecruitmentInfoDO recruitmentInfoDo = RecruitmentUtil.transformRecruitmentInfoDo(updateReq);
         recruitmentInfoDo.setId(recruitmentId);
-        this.recruitmentService.updateRecruitmentInfo(recruitmentInfoDo, updateReq.getOrganizationDepartmentList(),
+        this.recruitmentService.updateRecruitmentInfo(recruitmentInfoDo,
+            RecruitmentUtil.parseDepartmentDo(updateReq.getHospitalDepartmentList()),
             ServletContext.getLoginInfo().getRealName());
         return true;
     }
@@ -107,17 +108,8 @@ public class RecruitmentController {
     }
 
     @GetMapping("/{recruitmentId:\\d+}/department")
-    public List<OrganizationDepartmentDetailRes> getDepartmentDetailOfRecruitment(@PathVariable Long recruitmentId) {
-        List<Long> departmentIdList = this.recruitmentService.listDepartmentByRecruitment(recruitmentId);
-        List<OrganizationDepartmentDO> organizationDepartmentDoList = organizationDepartmentService.getOrganizationDepartment(
-            departmentIdList);
-        List<OrganizationDepartmentDetailRes> organizationDepartmentDetailResList = OrganizationDepartmentUtil.transformOrganizationDepartmentDetailRes(
-            organizationDepartmentDoList);
-        if (CollectionUtils.isEmpty(organizationDepartmentDetailResList)) {
-            return Collections.emptyList();
-        }
-        organizationDepartmentDetailResList.sort(
-            Comparator.comparing(OrganizationDepartmentDetailRes::getOrganizationId));
-        return organizationDepartmentDetailResList;
+    public List<DepartmentDetailRes> getDepartmentDetailOfRecruitment(@PathVariable Long recruitmentId) {
+        List<Long> departmentIdList = recruitmentDepartmentService.listDepartmentIdByRecruitment(recruitmentId);
+        return departmentService.getDepartmentDetailList(departmentIdList);
     }
 }

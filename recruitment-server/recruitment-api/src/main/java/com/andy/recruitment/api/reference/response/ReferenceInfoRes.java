@@ -18,25 +18,17 @@ public class ReferenceInfoRes implements Serializable {
      */
     private Long referenceId;
     /**
+     * 医院ID
+     */
+    private Long hospitalId;
+    /**
+     * 科室ID
+     */
+    private Long departmentId;
+    /**
      * 用户ID
      */
     private Long userId;
-    /**
-     * 省ID
-     */
-    private Long provinceId;
-    /**
-     * 城市ID
-     */
-    private Long cityId;
-    /**
-     * 区ID
-     */
-    private Long districtId;
-    /**
-     * 推荐人所在地址
-     */
-    private String address;
     /**
      * 执业机构
      */

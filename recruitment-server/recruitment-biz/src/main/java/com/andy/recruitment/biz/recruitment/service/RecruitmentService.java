@@ -3,6 +3,7 @@ package com.andy.recruitment.biz.recruitment.service;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoDetailRes;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.dao.hospital.entity.DepartmentDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentQuery;
 import com.andy.spring.page.PageResult;
@@ -61,21 +62,20 @@ public interface RecruitmentService {
     /**
      * 添加招募项目
      *
-     * @param recruitmentInfoDo          招募项目信息
-     * @param organizationDepartmentList 研究机构及科室列表
-     * @param operator                   添加人
+     * @param recruitmentInfoDo 招募项目信息
+     * @param departmentDoList  研究机构及科室列表
+     * @param operator          添加人
      */
-    void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<List<Long>> organizationDepartmentList,
-        String operator);
+    void addRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<DepartmentDO> departmentDoList, String operator);
 
     /**
      * 更新招募项目
      *
-     * @param recruitmentInfoDo          招募项目信息
-     * @param organizationDepartmentList 研究机构及科室列表
-     * @param operator                   更新人
+     * @param recruitmentInfoDo 招募项目信息
+     * @param departmentDoList  研究机构科室列表
+     * @param operator          更新人
      */
-    void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<List<Long>> organizationDepartmentList,
+    void updateRecruitmentInfo(RecruitmentInfoDO recruitmentInfoDo, List<DepartmentDO> departmentDoList,
         String operator);
 
     /**
@@ -87,11 +87,4 @@ public interface RecruitmentService {
      */
     void updateRecruitmentInfoStatus(Long recruitmentId, RecruitmentStatus status, String operator);
 
-    /**
-     * 查询项目关联的所有科室ID
-     *
-     * @param recruitmentId 招募项目ID
-     * @return 科室ID列表
-     */
-    List<Long> listDepartmentByRecruitment(Long recruitmentId);
 }

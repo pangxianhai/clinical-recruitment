@@ -3,7 +3,7 @@ package com.andy.recruitment.web.controller.recruitment.controller;
 import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationAddReq;
 import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationQueryReq;
 import com.andy.recruitment.api.recruitment.response.RecruitmentApplicationDetailRes;
-import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
+import com.andy.recruitment.biz.hospital.service.DepartmentService;
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentApplicationService;
 import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
@@ -12,7 +12,7 @@ import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentApplicationStatus;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
-import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
+import com.andy.recruitment.dao.hospital.entity.DepartmentDO;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
@@ -53,17 +53,17 @@ public class RecruitmentApplicationController {
 
     private final RecruitmentService recruitmentService;
 
-    private final OrganizationDepartmentService organizationDepartmentService;
+    private final DepartmentService departmentService;
 
     @Autowired
     public RecruitmentApplicationController(RecruitmentApplicationService recruitmentApplicationService,
         PatientInfoService patientInfoService, ReferenceService referenceService, RecruitmentService recruitmentService,
-        OrganizationDepartmentService organizationDepartmentService) {
+        DepartmentService departmentService) {
         this.recruitmentApplicationService = recruitmentApplicationService;
         this.patientInfoService = patientInfoService;
         this.referenceService = referenceService;
         this.recruitmentService = recruitmentService;
-        this.organizationDepartmentService = organizationDepartmentService;
+        this.departmentService = departmentService;
     }
 
     @RequiresUser
@@ -84,10 +84,9 @@ public class RecruitmentApplicationController {
         AssertUtil.assertTrue(RecruitmentStatus.IN_PROCESS.equals(recruitmentInfoDo.getStatus()), () -> {
             throw new RecruitmentException(RecruitmentErrorCode.RECRUITMENT_NOT_IN_PROCESS);
         });
-        OrganizationDepartmentDO organizationDepartmentDo = organizationDepartmentService.getOrganizationDepartmentById(
-            applicationAddReq.getDepartmentId());
-        AssertUtil.assertNull(organizationDepartmentDo, () -> {
-            throw new RecruitmentException(RecruitmentErrorCode.ORGANIZATION_DEPARTMENT_NOT_EXIST);
+        DepartmentDO departmentDo = departmentService.getDepartmentDoById(applicationAddReq.getDepartmentId());
+        AssertUtil.assertNull(departmentDo, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.DEPARTMENT_NOT_EXIST);
         });
 
         RecruitmentApplicationDO applicationDo = RecruitmentUtil.transformRecruitmentApplicationDo(applicationAddReq,
@@ -96,8 +95,8 @@ public class RecruitmentApplicationController {
         if (referenceInfoDo != null) {
             applicationDo.setReferenceUserId(referenceInfoDo.getUserId());
         }
-        applicationDo.setDepartmentId(organizationDepartmentDo.getId());
-        applicationDo.setOrganizationId(organizationDepartmentDo.getOrganizationId());
+        applicationDo.setDepartmentId(departmentDo.getId());
+        applicationDo.setHospitalId(departmentDo.getHospitalId());
         applicationDo.setStatus(RecruitmentApplicationStatus.NOT_ACCEDE);
         this.recruitmentApplicationService.addRecruitmentApplication(applicationDo, loginInfo.getRealName());
         return true;

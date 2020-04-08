@@ -1,6 +1,6 @@
 package com.andy.recruitment.api.recruitment.response;
 
-import com.andy.recruitment.api.organization.response.OrganizationDepartmentDetailRes;
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,5 +19,5 @@ public class RecruitmentInfoDetailRes extends RecruitmentInfoRes {
     /**
      * 科室信息
      */
-    private List<OrganizationDepartmentDetailRes> departmentDetailResList;
+    private List<DepartmentDetailRes> departmentDetailResList;
 }

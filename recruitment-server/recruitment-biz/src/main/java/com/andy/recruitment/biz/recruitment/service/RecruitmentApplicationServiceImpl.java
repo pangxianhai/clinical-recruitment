@@ -1,12 +1,12 @@
 package com.andy.recruitment.biz.recruitment.service;
 
-import com.andy.recruitment.api.organization.response.OrganizationDepartmentDetailRes;
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import com.andy.recruitment.api.patient.response.PatientInfoDetailRes;
 import com.andy.recruitment.api.recruitment.response.ImageRes;
 import com.andy.recruitment.api.recruitment.response.RecruitmentApplicationDetailRes;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
 import com.andy.recruitment.api.reference.response.ReferenceDetailInfoRes;
-import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
+import com.andy.recruitment.biz.hospital.service.DepartmentService;
 import com.andy.recruitment.biz.oss.service.OssService;
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.reference.service.ReferenceService;
@@ -49,18 +49,18 @@ public class RecruitmentApplicationServiceImpl implements RecruitmentApplication
 
     private final ReferenceService referenceService;
 
-    private final OrganizationDepartmentService organizationDepartmentService;
+    private final DepartmentService departmentService;
 
     @Autowired
     public RecruitmentApplicationServiceImpl(RecruitmentApplicationDAO recruitmentApplicationDAO, OssService ossService,
         RecruitmentService recruitmentService, PatientInfoService patientInfoService, ReferenceService referenceService,
-        OrganizationDepartmentService organizationDepartmentService) {
+        DepartmentService departmentService) {
         this.recruitmentApplicationDAO = recruitmentApplicationDAO;
         this.ossService = ossService;
         this.recruitmentService = recruitmentService;
         this.patientInfoService = patientInfoService;
         this.referenceService = referenceService;
-        this.organizationDepartmentService = organizationDepartmentService;
+        this.departmentService = departmentService;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class RecruitmentApplicationServiceImpl implements RecruitmentApplication
 
         Map<Long, RecruitmentInfoRes> recruitmentInfoResMap = this.recruitmentService.getRecruitmentInfoRes(
             recruitmentIdList);
-        Map<Long, OrganizationDepartmentDetailRes> departmentDetailResMap = this.organizationDepartmentService.getOrganizationDepartmentDetailRes(
+        Map<Long, DepartmentDetailRes> departmentDetailResMap = this.departmentService.getDepartmentDetailRes(
             departmentIdList);
         Map<Long, PatientInfoDetailRes> patientInfoDetailResMap = this.patientInfoService.getReferenceDetailRes(
             patientUserIdList);

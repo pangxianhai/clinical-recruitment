@@ -27,17 +27,13 @@ public class ReferenceInfoQuery implements Serializable {
      */
     private List<Long> userIdList;
     /**
-     * 省ID
+     * 医院ID
      */
-    private Long provinceId;
+    private Long hospitalId;
     /**
-     * 城市ID
+     * 科室ID
      */
-    private Long cityId;
-    /**
-     * 区ID
-     */
-    private Long districtId;
+    private Long departmentId;
     /**
      * 真实姓名
      */

@@ -1,6 +1,6 @@
 package com.andy.recruitment.api.recruitment.response;
 
-import com.andy.recruitment.api.organization.response.OrganizationDepartmentDetailRes;
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import com.andy.recruitment.api.patient.response.PatientInfoDetailRes;
 import com.andy.recruitment.api.reference.response.ReferenceDetailInfoRes;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class RecruitmentApplicationDetailRes extends RecruitmentApplicationRes {
     /**
      * 选择的研究科室
      */
-    private OrganizationDepartmentDetailRes departmentDetailRes;
+    private DepartmentDetailRes departmentDetailRes;
 
     /**
      * 患者信息

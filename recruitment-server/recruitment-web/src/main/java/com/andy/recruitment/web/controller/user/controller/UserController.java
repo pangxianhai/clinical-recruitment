@@ -1,29 +1,21 @@
 package com.andy.recruitment.web.controller.user.controller;
 
-import com.andy.recruitment.biz.organization.service.OrganizationDepartmentService;
-import com.andy.recruitment.biz.organization.service.OrganizationService;
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
+import com.andy.recruitment.api.patient.response.PatientInfoRes;
+import com.andy.recruitment.api.reference.response.ReferenceInfoRes;
+import com.andy.recruitment.api.user.request.WxLoginReq;
+import com.andy.recruitment.api.user.response.UserInfoDetailRes;
+import com.andy.recruitment.api.user.response.UserInfoRes;
+import com.andy.recruitment.api.user.response.WxLoginRes;
+import com.andy.recruitment.biz.hospital.service.DepartmentService;
+import com.andy.recruitment.biz.hospital.service.HospitalService;
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.reference.service.ReferenceService;
-import com.andy.recruitment.biz.researcher.service.ResearcherService;
 import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.biz.weixin.service.WeiXinService;
-import com.andy.recruitment.dao.organization.entity.OrganizationDO;
-import com.andy.recruitment.dao.organization.entity.OrganizationDepartmentDO;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
-import com.andy.recruitment.dao.researcher.entity.ResearcherInfoDO;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.andy.recruitment.web.controller.organization.response.OrganizationDepartmentRes;
-import com.andy.recruitment.web.controller.organization.response.OrganizationRes;
-import com.andy.recruitment.web.controller.organization.util.OrganizationDepartmentUtil;
-import com.andy.recruitment.web.controller.organization.util.OrganizationUtil;
-import com.andy.recruitment.web.controller.patient.util.PatientInfoUtil;
-import com.andy.recruitment.web.controller.reference.util.ReferenceUtil;
-import com.andy.recruitment.web.controller.researcher.util.ResearcherUtil;
-import com.andy.recruitment.web.controller.user.request.WxLoginReq;
-import com.andy.recruitment.web.controller.user.response.UserInfoDetailRes;
-import com.andy.recruitment.web.controller.user.response.UserInfoRes;
-import com.andy.recruitment.web.controller.user.response.WxLoginRes;
 import com.andy.recruitment.web.controller.user.util.UserInfoUtil;
 import com.andy.spring.auth.LoginInfo;
 import com.andy.spring.context.ServletContext;
@@ -49,34 +41,29 @@ public class UserController {
 
     private final PatientInfoService patientInfoService;
 
-    private final ResearcherService researcherService;
-
     private final ReferenceService referenceService;
 
-    private final OrganizationDepartmentService organizationDepartmentService;
+    private final DepartmentService departmentService;
 
-    private final OrganizationService organizationService;
+    private final HospitalService hospitalService;
 
     private final WeiXinService weiXinService;
 
     @Autowired
     public UserController(UserService userService, PatientInfoService patientInfoService,
-        ResearcherService researcherService, ReferenceService referenceService,
-        OrganizationDepartmentService organizationDepartmentService, OrganizationService organizationService,
+        ReferenceService referenceService, DepartmentService departmentService, HospitalService hospitalService,
         WeiXinService weiXinService) {
         this.userService = userService;
         this.patientInfoService = patientInfoService;
-        this.researcherService = researcherService;
         this.referenceService = referenceService;
-        this.organizationDepartmentService = organizationDepartmentService;
-        this.organizationService = organizationService;
+        this.departmentService = departmentService;
+        this.hospitalService = hospitalService;
         this.weiXinService = weiXinService;
     }
 
     @GetMapping("/phone/{phone:\\d+}")
     public UserInfoRes getUserByPhone(@PathVariable String phone) {
-        UserInfoDO userInfoDo = this.userService.getUserInfoByPhone(phone);
-        return UserInfoUtil.transformUserInfoRes(userInfoDo);
+        return this.userService.getUserInfoByPhone(phone);
     }
 
     @GetMapping("/current")
@@ -85,38 +72,27 @@ public class UserController {
         if (loginInfo == null) {
             return null;
         }
-        UserInfoDO userInfoDo = this.userService.getUserInfoByUserId(loginInfo.getUserId());
+        UserInfoDO userInfoDo = this.userService.getUserDoByUserId(loginInfo.getUserId());
         UserInfoDetailRes userDetailRes = new UserInfoDetailRes();
         BeanUtils.copyProperties(userInfoDo, userDetailRes);
         userDetailRes.setUserId(userInfoDo.getId());
 
-        PatientInfoDO patientInfoDo = this.patientInfoService.getPatientByUserId(loginInfo.getUserId());
-        userDetailRes.setPatientInfoRes(PatientInfoUtil.transformReferenceRes(patientInfoDo));
+        PatientInfoRes patientInfoRes = this.patientInfoService.getPatientByUserId(loginInfo.getUserId());
+        userDetailRes.setPatientInfoRes(patientInfoRes);
 
-        ResearcherInfoDO researcherInfoDo = this.researcherService.getResearcherInfoByUserId(loginInfo.getUserId());
-        userDetailRes.setResearcherInfoRes(ResearcherUtil.transformResearcherRes(researcherInfoDo));
-        if (researcherInfoDo != null) {
-            OrganizationDO organizationDo = organizationService.getOrganizationById(
-                researcherInfoDo.getOrganizationId());
-            OrganizationRes organizationRes = OrganizationUtil.transformOrganizationRes(organizationDo);
-            userDetailRes.setOrganizationRes(organizationRes);
+        ReferenceInfoRes referenceInfoRes = this.referenceService.getReferenceByUserId(loginInfo.getUserId());
+        userDetailRes.setReferenceInfoRes(referenceInfoRes);
 
-            OrganizationDepartmentDO departmentDo = organizationDepartmentService.getOrganizationDepartmentById(
-                researcherInfoDo.getDepartmentId());
-            OrganizationDepartmentRes departmentRes = OrganizationDepartmentUtil.transformOrganizationDepartmentRes(
-                departmentDo);
-            userDetailRes.setOrganizationDepartmentRes(departmentRes);
-        }
+        DepartmentDetailRes departmentDetailRes = departmentService.getDepartmentById(
+            referenceInfoRes.getDepartmentId());
+        userDetailRes.setDepartmentDetailRes(departmentDetailRes);
 
-        ReferenceInfoDO referenceInfoDo = this.referenceService.getReferenceByUserId(loginInfo.getUserId());
-        userDetailRes.setReferenceInfoRes(ReferenceUtil.transformReferenceRes(referenceInfoDo));
         return userDetailRes;
     }
 
     @GetMapping("/{userId:\\d+}")
     public UserInfoRes getUserInfo(@PathVariable Long userId) {
-        UserInfoDO userInfoDo = this.userService.getUserInfoByUserId(userId);
-        return UserInfoUtil.transformUserInfoRes(userInfoDo);
+        return this.userService.getUserInfoByUserId(userId);
     }
 
     @GetMapping("/login/wx")
@@ -135,11 +111,10 @@ public class UserController {
             wxLoginRes.setToken(loginInfo.getToken());
             wxLoginRes.setUserName(loginInfo.getUserName());
 
-            PatientInfoDO patientInfoDo = this.patientInfoService.getPatientByUserId(loginInfo.getUserId());
+            PatientInfoDO patientInfoDo = this.patientInfoService.getPatientDoByUserId(loginInfo.getUserId());
             wxLoginRes.setHasPatient(patientInfoDo != null);
-            ResearcherInfoDO researcherInfoDo = this.researcherService.getResearcherInfoByUserId(loginInfo.getUserId());
-            wxLoginRes.setHasResearcher(researcherInfoDo != null);
-            ReferenceInfoDO referenceInfoDo = this.referenceService.getReferenceByUserId(loginInfo.getUserId());
+
+            ReferenceInfoDO referenceInfoDo = this.referenceService.getReferenceDoByUserId(loginInfo.getUserId());
             wxLoginRes.setHasReference(referenceInfoDo != null);
             return wxLoginRes;
         } else {

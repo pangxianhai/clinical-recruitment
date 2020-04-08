@@ -5,14 +5,13 @@ import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationAddReq
 import com.andy.recruitment.api.recruitment.request.RecruitmentApplicationQueryReq;
 import com.andy.recruitment.api.recruitment.request.RecruitmentQueryReq;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
-import com.andy.recruitment.biz.oss.service.OssService;
-import com.andy.recruitment.biz.recruitment.service.RecruitmentService;
 import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentApplicationStatus;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import com.andy.recruitment.common.user.constant.Gender;
+import com.andy.recruitment.dao.hospital.entity.DepartmentDO;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery;
@@ -22,11 +21,8 @@ import com.andy.recruitment.dao.user.entity.UserInfoDO;
 import com.andy.spring.util.DateUtil;
 import com.andy.spring.util.StringUtil;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,15 +42,9 @@ public class RecruitmentUtil {
 
     private static RegionService regionService;
 
-    private static OssService ossService;
-
-    private static RecruitmentService recruitmentService;
-
     @Autowired
-    public RecruitmentUtil(RegionService regionService, OssService ossService, RecruitmentService recruitmentService) {
+    public RecruitmentUtil(RegionService regionService) {
         RecruitmentUtil.regionService = regionService;
-        RecruitmentUtil.ossService = ossService;
-        RecruitmentUtil.recruitmentService = recruitmentService;
     }
 
     public static RecruitmentQuery transformQueryParam(RecruitmentQueryReq queryReq) {
@@ -115,19 +105,6 @@ public class RecruitmentUtil {
             Objects::nonNull).collect(Collectors.toList());
     }
 
-    public static Map<Long, RecruitmentInfoRes> getRecruitmentInfoRes(List<Long> recruitmentIdList) {
-        if (CollectionUtils.isEmpty(recruitmentIdList)) {
-            return Collections.emptyMap();
-        }
-        List<RecruitmentInfoDO> recruitmentInfoDoList = recruitmentService.getRecruitmentInfo(recruitmentIdList);
-        List<RecruitmentInfoRes> recruitmentInfoResList = transformRecruitmentInfoRes(recruitmentInfoDoList);
-        if (CollectionUtils.isEmpty(recruitmentInfoResList)) {
-            return Collections.emptyMap();
-        }
-        return recruitmentInfoResList.stream().collect(
-            Collectors.toMap(RecruitmentInfoRes::getRecruitmentId, Function.identity(), (d1, d2) -> d1));
-    }
-
     public static PatientInfoDO buildPatientInfoDo(RecruitmentApplicationAddReq applicationAddReq) {
         if (applicationAddReq == null) {
             return null;
@@ -183,5 +160,23 @@ public class RecruitmentUtil {
         BeanUtils.copyProperties(queryReq, query);
         query.setStatus(RecruitmentApplicationStatus.parse(queryReq.getStatus()));
         return query;
+    }
+
+    public static List<DepartmentDO> parseDepartmentDo(List<List<Long>> hospitalDepartmentList) {
+        //格式如：[[机构id,科室id],[机构id,科室id],]
+        if (CollectionUtils.isEmpty(hospitalDepartmentList)) {
+            return null;
+        }
+        List<DepartmentDO> departmentDoList = new ArrayList<>(16);
+        for (List<Long> hospitalDepartment : hospitalDepartmentList) {
+            if (hospitalDepartment.size() != 2) {
+                continue;
+            }
+            DepartmentDO departmentDo = new DepartmentDO();
+            departmentDo.setHospitalId(hospitalDepartment.get(0));
+            departmentDo.setId(hospitalDepartment.get(1));
+            departmentDoList.add(departmentDo);
+        }
+        return departmentDoList;
     }
 }

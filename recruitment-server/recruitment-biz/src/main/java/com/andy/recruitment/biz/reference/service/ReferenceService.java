@@ -1,6 +1,7 @@
 package com.andy.recruitment.biz.reference.service;
 
 import com.andy.recruitment.api.reference.response.ReferenceDetailInfoRes;
+import com.andy.recruitment.api.reference.response.ReferenceInfoRes;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
@@ -41,7 +42,7 @@ public interface ReferenceService {
      * @param paginator 分页参数
      * @return 推荐人信息
      */
-    PageResult<ReferenceInfoDO> getReference(ReferenceInfoQuery query, Paginator paginator);
+    PageResult<ReferenceDetailInfoRes> getReference(ReferenceInfoQuery query, Paginator paginator);
 
     /**
      * 通过推荐人ID查询推荐人
@@ -49,7 +50,7 @@ public interface ReferenceService {
      * @param referenceId 推荐人ID
      * @return 推荐人信息
      */
-    ReferenceInfoDO getReference(Long referenceId);
+    ReferenceDetailInfoRes getReference(Long referenceId);
 
     /**
      * 通过用户ID查询推荐人信息
@@ -57,8 +58,15 @@ public interface ReferenceService {
      * @param userId 用户ID
      * @return 推荐人信息
      */
-    ReferenceInfoDO getReferenceByUserId(Long userId);
+    ReferenceInfoRes getReferenceByUserId(Long userId);
 
+    /**
+     * 通过用户ID查询推荐人信息
+     *
+     * @param userId 用户ID
+     * @return 推荐人信息
+     */
+    ReferenceInfoDO getReferenceDoByUserId(Long userId);
 
     /**
      * 通过userId列表查询推荐人信息

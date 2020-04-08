@@ -1,10 +1,8 @@
 package com.andy.recruitment.api.user.response;
 
-import com.andy.recruitment.api.organization.response.OrganizationDepartmentRes;
-import com.andy.recruitment.api.organization.response.OrganizationRes;
+import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import com.andy.recruitment.api.patient.response.PatientInfoRes;
 import com.andy.recruitment.api.reference.response.ReferenceInfoRes;
-import com.andy.recruitment.api.researcher.response.ResearcherInfoRes;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,16 +28,7 @@ public class UserInfoDetailRes extends UserInfoRes {
     private ReferenceInfoRes referenceInfoRes;
 
     /**
-     * 研究员信息
-     */
-    private ResearcherInfoRes researcherInfoRes;
-
-    /**
-     * 机构信息
-     */
-    private OrganizationRes organizationRes;
-    /**
      * 机构科室信息
      */
-    private OrganizationDepartmentRes organizationDepartmentRes;
+    private DepartmentDetailRes departmentDetailRes;
 }

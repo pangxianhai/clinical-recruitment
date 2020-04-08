@@ -1,22 +1,21 @@
 package com.andy.recruitment.web.controller.patient.controller;
 
+import com.andy.recruitment.api.patient.request.PatientAddReq;
+import com.andy.recruitment.api.patient.request.PatientQueryReq;
+import com.andy.recruitment.api.patient.request.PatientRegisterReq;
+import com.andy.recruitment.api.patient.response.PatientInfoDetailRes;
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.common.patient.constant.PatientStatus;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.andy.recruitment.web.controller.patient.request.PatientAddReq;
-import com.andy.recruitment.web.controller.patient.request.PatientQueryReq;
-import com.andy.recruitment.web.controller.patient.request.PatientRegisterReq;
-import com.andy.recruitment.web.controller.patient.response.PatientInfoDetailRes;
 import com.andy.recruitment.web.controller.patient.util.PatientInfoUtil;
 import com.andy.spring.auth.LoginInfo;
 import com.andy.spring.auth.RoleType;
 import com.andy.spring.context.ServletContext;
 import com.andy.spring.converter.MyParameter;
 import com.andy.spring.page.PageResult;
-import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,16 +68,13 @@ public class PatientController {
     @GetMapping
     public PageResult<PatientInfoDetailRes> getPatient(@MyParameter PatientQueryReq queryReq) {
         PatientQuery query = PatientInfoUtil.transformPatientQuery(queryReq);
-        PageResult<PatientInfoDO> pageResult = this.patientInfoService.getPatient(query, queryReq.getPaginator());
-        List<PatientInfoDetailRes> patientInfoDetailResList = PatientInfoUtil.transformReferenceDetailRes(
-            pageResult.getData());
-        return new PageResult<>(patientInfoDetailResList, pageResult.getPaginator());
+        return this.patientInfoService.getPatient(query, queryReq.getPaginator());
+
     }
 
     @GetMapping("/{patientId:\\d+}")
     public PatientInfoDetailRes getPatient(@PathVariable Long patientId) {
-        PatientInfoDO patientInfoDo = this.patientInfoService.getPatient(patientId);
-        return PatientInfoUtil.transformReferenceDetailRes(patientInfoDo);
+        return this.patientInfoService.getPatientById(patientId);
     }
 
     @RequiresUser

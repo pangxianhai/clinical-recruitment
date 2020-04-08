@@ -23,20 +23,15 @@ public class ReferenceAddReq implements Serializable {
     @Length(max = 32)
     private String phone;
     /**
-     * 省份ID
+     * 医院ID
      */
     @NotNull
-    private Long provinceId;
+    private Long hospitalId;
     /**
-     * 城市ID
+     * 科室ID
      */
     @NotNull
-    private Long cityId;
-    /**
-     * 区ID
-     */
-    @NotNull
-    private Long districtId;
+    private Long departmentId;
     /**
      * 执业机构
      */

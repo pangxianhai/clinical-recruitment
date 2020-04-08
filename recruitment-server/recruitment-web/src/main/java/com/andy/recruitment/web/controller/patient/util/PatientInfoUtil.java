@@ -1,31 +1,19 @@
 package com.andy.recruitment.web.controller.patient.util;
 
+import com.andy.recruitment.api.patient.request.PatientAddReq;
+import com.andy.recruitment.api.patient.request.PatientQueryReq;
+import com.andy.recruitment.api.patient.request.PatientRegisterReq;
 import com.andy.recruitment.biz.patient.service.PatientInfoService;
 import com.andy.recruitment.biz.region.entity.AddressInfo;
 import com.andy.recruitment.biz.region.service.RegionService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
 import com.andy.recruitment.common.patient.constant.PatientStatus;
+import com.andy.recruitment.common.user.constant.Gender;
 import com.andy.recruitment.dao.patient.entity.PatientInfoDO;
 import com.andy.recruitment.dao.patient.entity.PatientQuery;
-import com.andy.recruitment.common.user.constant.Gender;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
-import com.andy.recruitment.web.controller.patient.request.PatientAddReq;
-import com.andy.recruitment.web.controller.patient.request.PatientQueryReq;
-import com.andy.recruitment.web.controller.patient.request.PatientRegisterReq;
-import com.andy.recruitment.web.controller.patient.response.PatientInfoDetailRes;
-import com.andy.recruitment.web.controller.patient.response.PatientInfoRes;
-import com.andy.recruitment.web.controller.user.response.UserInfoRes;
-import com.andy.recruitment.web.controller.user.util.UserInfoUtil;
 import com.andy.spring.util.asserts.AssertUtil;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -115,70 +103,5 @@ public class PatientInfoUtil {
             query.setStatus(PatientStatus.parse(queryReq.getStatus()));
         }
         return query;
-    }
-
-    public static PatientInfoDetailRes transformReferenceDetailRes(PatientInfoDO patientInfoDo) {
-        if (patientInfoDo == null) {
-            return null;
-        }
-        List<PatientInfoDO> patientInfoDoList = Collections.singletonList(patientInfoDo);
-        List<PatientInfoDetailRes> patientInfoDetailResList = PatientInfoUtil.transformReferenceDetailRes(
-            patientInfoDoList);
-        if (CollectionUtils.isEmpty(patientInfoDetailResList)) {
-            return null;
-        }
-        return patientInfoDetailResList.get(0);
-    }
-
-    public static List<PatientInfoDetailRes> transformReferenceDetailRes(List<PatientInfoDO> patientInfoDoList) {
-        if (CollectionUtils.isEmpty(patientInfoDoList)) {
-            return Collections.emptyList();
-        }
-        List<Long> userIdList = new ArrayList<>(patientInfoDoList.size());
-        for (PatientInfoDO patientInfoDo : patientInfoDoList) {
-            userIdList.add(patientInfoDo.getUserId());
-        }
-        Map<Long, UserInfoRes> userInfoResMap = UserInfoUtil.getUserInfoRes(userIdList);
-        return patientInfoDoList.stream().map(
-            referenceInfoDo -> PatientInfoUtil.transformReferenceDetailRes(referenceInfoDo, userInfoResMap)).filter(
-            Objects::nonNull).collect(Collectors.toList());
-    }
-
-    public static Map<Long, PatientInfoDetailRes> getReferenceDetailRes(List<Long> userIdList) {
-        List<PatientInfoDO> patientInfoDoList = patientInfoService.getPatientInfoByUserIdList(userIdList);
-        List<PatientInfoDetailRes> patientInfoDetailResList = transformReferenceDetailRes(patientInfoDoList);
-        if (CollectionUtils.isEmpty(patientInfoDetailResList)) {
-            return Collections.emptyMap();
-        }
-        return patientInfoDetailResList.stream().collect(
-            Collectors.toMap(PatientInfoDetailRes::getUserId, Function.identity(), (d1, d2) -> d1));
-    }
-
-    public static PatientInfoRes transformReferenceRes(PatientInfoDO patientInfoDo) {
-        if (patientInfoDo == null) {
-            return null;
-        }
-        PatientInfoRes patientInfoRes = new PatientInfoRes();
-        BeanUtils.copyProperties(patientInfoDo, patientInfoRes);
-        patientInfoRes.setPatientId(patientInfoDo.getId());
-        patientInfoRes.setAddress(
-            regionService.parseAddressName(patientInfoDo.getProvinceId(), patientInfoDo.getCityId(),
-                patientInfoDo.getDistrictId()));
-        return patientInfoRes;
-    }
-
-    private static PatientInfoDetailRes transformReferenceDetailRes(PatientInfoDO patientInfoDo,
-        Map<Long, UserInfoRes> userInfoResMap) {
-        if (patientInfoDo == null) {
-            return null;
-        }
-        PatientInfoDetailRes patientInfoDetailRes = new PatientInfoDetailRes();
-        BeanUtils.copyProperties(patientInfoDo, patientInfoDetailRes);
-        patientInfoDetailRes.setPatientId(patientInfoDo.getId());
-        patientInfoDetailRes.setUserInfoRes(userInfoResMap.get(patientInfoDo.getUserId()));
-        patientInfoDetailRes.setAddress(
-            regionService.parseAddressName(patientInfoDo.getProvinceId(), patientInfoDo.getCityId(),
-                patientInfoDo.getDistrictId()));
-        return patientInfoDetailRes;
     }
 }

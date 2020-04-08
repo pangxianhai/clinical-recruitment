@@ -114,8 +114,9 @@ public class RecruitmentAddReq implements Serializable {
     /**
      * 研究机构科室列表
      * organizationDepartmentList的每项为列表 第一个机构ID 第二个科室ID
+     * 格式如：[[机构id,科室id],[机构id,科室id],]
      */
     @NotNull
-    private List<List<Long>> organizationDepartmentList;
+    private List<List<Long>> hospitalDepartmentList;
 
 }

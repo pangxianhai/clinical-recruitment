@@ -46,7 +46,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDO getUserInfoByPhone(String phone) {
+    public UserInfoRes getUserInfoByPhone(String phone) {
+        UserInfoDO userInfoDo = this.userDAO.getUserInfoByPhone(phone);
+        return UserInfoUtil.transformUserInfoRes(userInfoDo);
+    }
+
+    @Override
+    public UserInfoDO getUserInfoDoByPhone(String phone) {
         return this.userDAO.getUserInfoByPhone(phone);
     }
 
@@ -56,7 +62,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDO getUserInfoByUserId(Long userId) {
+    public UserInfoRes getUserInfoByUserId(Long userId) {
+        UserInfoDO userInfoDo = this.userDAO.getUserInfoByUserId(userId);
+        return UserInfoUtil.transformUserInfoRes(userInfoDo);
+    }
+
+    @Override
+    public UserInfoDO getUserDoByUserId(Long userId) {
         return this.userDAO.getUserInfoByUserId(userId);
     }
 

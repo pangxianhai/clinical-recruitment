@@ -10,7 +10,7 @@
           jdbcType="VARCHAR"/>
         <result column="patient_user_id" property="patientUserId" jdbcType="BIGINT"/>
         <result column="reference_user_id" property="referenceUserId" jdbcType="BIGINT"/>
-        <result column="organization_id" property="organizationId" jdbcType="BIGINT"/>
+        <result column="hospital_id" property="hospitalId" jdbcType="BIGINT"/>
         <result column="department_id" property="departmentId" jdbcType="BIGINT"/>
         <result column="status" property="status"
           typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
@@ -29,7 +29,7 @@
         recruitment_register_code,
         patient_user_id,
         reference_user_id,
-        organization_id,
+        hospital_id,
         department_id,
         status,
         disease_desc,
@@ -45,7 +45,7 @@
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationQuery">
         select
         <include refid="baseColumnList"/>
-        from medical_clinical_recruitment_application
+        from recruitment_application_record
         <where>
             <if test="applicationId != null">
                 and id = #{applicationId, jdbcType=BIGINT}
@@ -59,8 +59,8 @@
             <if test="referenceUserId != null">
                 and reference_user_id = #{referenceUserId, jdbcType=BIGINT}
             </if>
-            <if test="organizationId != null">
-                and organization_id = #{organizationId, jdbcType=BIGINT}
+            <if test="hospitalId != null">
+                and hospital_id = #{hospitalId, jdbcType=BIGINT}
             </if>
             <if test="departmentId != null">
                 and department_id = #{departmentId, jdbcType=BIGINT}
@@ -77,14 +77,14 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO">
-        insert into medical_clinical_recruitment_application (<include refid="baseColumnList"/>)
+        insert into recruitment_application_record (<include refid="baseColumnList"/>)
         values(
         #{id,jdbcType=BIGINT},
         #{recruitmentId, jdbcType=BIGINT},
         #{recruitmentRegisterCode, jdbcType=VARCHAR},
         #{patientUserId, jdbcType=BIGINT},
         #{referenceUserId, jdbcType=BIGINT},
-        #{organizationId, jdbcType=BIGINT},
+        #{hospitalId, jdbcType=BIGINT},
         #{departmentId, jdbcType=BIGINT},
         #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{diseaseDesc, jdbcType=VARCHAR},
@@ -99,7 +99,7 @@
 
     <update id="update"
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentApplicationDO">
-        update medical_clinical_recruitment_application
+        update recruitment_application_record
         <set>
             <if test="status != null ">
                 status = #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},

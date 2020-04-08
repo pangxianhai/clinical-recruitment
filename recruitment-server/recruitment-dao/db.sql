@@ -25,7 +25,8 @@ create table user_info(
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息表';
 
 drop table  if exists organization_info;
-create table organization_info(
+drop table  if exists hospital_info;
+create table hospital_info(
  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
  name varchar(128)  NOT NULL COLLATE utf8_bin COMMENT '机构名称',
  province_id bigint(20) NOT NULL COMMENT '省ID',
@@ -36,49 +37,33 @@ create table organization_info(
  updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
  updated_time datetime COMMENT '更新时间',
  PRIMARY KEY (id)
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='机构信息';
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='医院信息';
 
 drop table  if exists organization_department_info;
-create table organization_department_info(
+drop table  if exists department_info;
+create table department_info(
  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
  name varchar(128)  NOT NULL COLLATE utf8_bin COMMENT '科室名称',
- organization_id bigint(20) NOT NULL COMMENT '所属机构id',
+ hospital_id bigint(20) NOT NULL COMMENT '所属医院id',
  created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
  created_time datetime NOT NULL COMMENT '创建时间',
  updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
  updated_time datetime COMMENT '更新时间',
  PRIMARY KEY (id)
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='机构的科室信息';
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='科室信息';
 
 drop table if exists researcher_info;
-create table researcher_info(
- id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
- user_id bigint(20) NOT NULL COMMENT '用户ID',
- organization_id bigint(20) NOT NULL COMMENT '所属机构id',
- department_id bigint(20) NOT NULL COMMENT '所属科室id',
- medical_institution varchar(1024) COMMENT '执业机构',
- medical_category varchar(1024) COMMENT '执业类别',
- remark varchar(1024) COMMENT '备注',
- status TINYINT  NOT NULL COMMENT '研究员状态 1-正常,2-待审核,3-冻结',
- created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
- created_time datetime NOT NULL COMMENT '创建时间',
- updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
- updated_time datetime COMMENT '更新时间',
- PRIMARY KEY (id),
- UNIQUE(user_id)
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='研究员信息';
-
 drop table  if exists doctor_info;
 drop table  if exists reference_info;
 create table reference_info(
  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
  user_id bigint(20) NOT NULL COMMENT '用户ID',
- province_id bigint(20) NOT NULL COMMENT '省ID',
- city_id bigint(20) NOT NULL COMMENT '市ID',
- district_id bigint(20) COMMENT '区ID',
+ hospital_id bigint(20) NOT NULL COMMENT '医院ID',
+ department_id bigint(20) NOT NULL COMMENT '科室ID',
  medical_institution varchar(1024) COMMENT '执业机构',
  medical_category varchar(1024) COMMENT '执业类别',
  remark varchar(1024) COMMENT '备注',
+ role TINYINT  NOT NULL COMMENT '角色 1-科室主任,2-医生',
  status TINYINT  NOT NULL COMMENT '推荐人状态 1-正常,2-冻结',
  created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
  created_time datetime NOT NULL COMMENT '创建时间',
@@ -106,7 +91,8 @@ create table patient_info(
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='患者信息表';
 
 drop table if exists medical_clinical_recruitment_info;
-create table medical_clinical_recruitment_info(
+drop table if exists recruitment_info;
+create table recruitment_info(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   register_code varchar(32) NOT NULL COLLATE utf8_bin COMMENT '登记编号',
   title varchar(32) NOT NULL COLLATE utf8_bin COMMENT '标题',
@@ -134,10 +120,11 @@ create table medical_clinical_recruitment_info(
 
 drop table if exists research_organization_info;
 drop table if exists recruitment_organization_info;
-create table recruitment_organization_info(
+drop table if exists recruitment_department;
+create table recruitment_department(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   recruitment_id bigint(20) NOT NULL COMMENT '招募ID',
-  organization_id bigint(20) NOT NULL COMMENT '机构ID',
+  hospital_id bigint(20) NOT NULL COMMENT '医院ID',
   department_id bigint(20) NOT NULL COMMENT '所属科室id',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',
@@ -145,15 +132,16 @@ create table recruitment_organization_info(
   updated_time datetime COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE(recruitment_id,department_id)
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='招募项目研究机构科室';
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='项目研究科室';
 
 drop table if exists medical_clinical_recruitment_application;
-create table medical_clinical_recruitment_application(
+drop table if exists recruitment_application_record;
+create table recruitment_application_record(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   recruitment_id bigint(20) COMMENT '招募ID',
   recruitment_register_code varchar(32) COLLATE utf8_bin COMMENT '登记编号',
-  organization_id bigint(20) NOT NULL COMMENT '患者选择的机构ID',
-  department_id bigint(20) NOT NULL COMMENT '患者选择的机构科室ID',
+  hospital_id bigint(20) NOT NULL COMMENT '患者选择的医院ID',
+  department_id bigint(20) NOT NULL COMMENT '患者选择的科室ID',
   patient_user_id bigint(20) NOT NULL COMMENT '患者用户ID',
   reference_user_id bigint(20) COMMENT '推荐人用户ID',
   disease_desc varchar(2048) COLLATE utf8_bin COMMENT '病症描述',

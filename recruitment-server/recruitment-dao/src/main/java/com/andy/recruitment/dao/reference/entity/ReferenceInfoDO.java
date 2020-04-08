@@ -1,5 +1,6 @@
 package com.andy.recruitment.dao.reference.entity;
 
+import com.andy.recruitment.common.reference.constant.ReferenceRole;
 import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.spring.base.BaseDO;
 import lombok.Data;
@@ -22,17 +23,13 @@ public class ReferenceInfoDO extends BaseDO {
      */
     private Long userId;
     /**
-     * 省ID
+     * 医院ID
      */
-    private Long provinceId;
+    private Long hospitalId;
     /**
-     * 城市ID
+     * 科室ID
      */
-    private Long cityId;
-    /**
-     * 区ID
-     */
-    private Long districtId;
+    private Long departmentId;
     /**
      * 执业机构
      */
@@ -49,4 +46,8 @@ public class ReferenceInfoDO extends BaseDO {
      * 推荐人状态
      */
     private ReferenceStatus status;
+    /**
+     * 推荐人角色
+     */
+    private ReferenceRole referenceRole;
 }
