@@ -5,16 +5,24 @@
             <el-breadcrumb-item>管理员列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form ref="queryInfo" :model="queryInfo" :inline="true">
-            <el-form-item label="姓名:" prop="realName">
-                <el-input v-model="queryInfo.realName" size="mini" clearable></el-input>
+            <el-form-item label="姓名:" prop="name">
+                <el-input v-model="queryInfo.name" size="mini" clearable></el-input>
             </el-form-item>
             <el-form-item label="手机号:" prop="phoneLike">
                 <el-input v-model="queryInfo.phoneLike" size="mini" clearable></el-input>
             </el-form-item>
+            <el-form-item label="类型:" prop="type">
+                <el-select v-model="queryInfo.type" size="mini" clearable placeholder="类型">
+                    <el-option label="全部" value=""></el-option>
+                    <el-option label="系统管理员" :value="1"></el-option>
+                    <el-option label="业务管理员" :value="2"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="状态:" prop="status">
                 <el-select v-model="queryInfo.status" size="mini" clearable placeholder="状态">
-                    <el-option label="正常" value="1"></el-option>
-                    <el-option label="冻结" value="2"></el-option>
+                    <el-option label="全部" value=""></el-option>
+                    <el-option label="正常" :value="1"></el-option>
+                    <el-option label="冻结" :value="2"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -28,24 +36,28 @@
             border
             style="width: 100%">
             <el-table-column
-                prop="realName"
+                prop="userInfoRes.realName"
                 label="姓名">
             </el-table-column>
             <el-table-column
-                prop="phone"
+                prop="userInfoRes.phone"
                 label="手机号">
             </el-table-column>
             <el-table-column
-                prop="gender.desc"
+                prop="userInfoRes.gender.desc"
                 label="性别">
+            </el-table-column>
+            <el-table-column
+                prop="type.desc"
+                label="类型">
             </el-table-column>
             <el-table-column
                 label="状态">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.status.code===UserStatus.NORMAL">
+                    <el-tag v-if="scope.row.status.code===AdminStatus.NORMAL">
                         {{scope.row.status.desc}}
                     </el-tag>
-                    <el-tag v-if="scope.row.status.code===UserStatus.FREEZE" type="info">
+                    <el-tag v-if="scope.row.status.code===AdminStatus.FREEZE" type="info">
                         {{scope.row.status.desc}}
                     </el-tag>
                 </template>
@@ -56,39 +68,42 @@
                 label="操作">
                 <template slot-scope="scope">
                     <el-row type="flex">
-                        <el-col>
-                            <el-button
-                                v-if="scope.row.status.code===UserStatus.NORMAL"
-                                type="danger"
-                                icon="el-icon-goods"
-                                @click="freezeUser(scope.row)"
-                                size="mini">
-                                冻结
-                            </el-button>
-                        </el-col>
+                        <el-tooltip effect="dark" content="冻结" placement="top" hide-after="1000">
+                            <el-col>
+                                <el-button
+                                    v-if="scope.row.status.code===AdminStatus.NORMAL"
+                                    type="danger"
+                                    icon="iconfont icon-cf-c09"
+                                    @click="freezeAdministrator(scope.row)"
+                                    size="mini">
+                                </el-button>
+                            </el-col>
+                        </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-col>
-                            <el-button
-                                v-if="scope.row.status.code===UserStatus.FREEZE"
-                                type="primary"
-                                icon="el-icon-sold-out"
-                                @click="unfreezeUser(scope.row)"
-                                size="mini">
-                                解冻
-                            </el-button>
-                        </el-col>
+                        <el-tooltip effect="dark" content="解冻" placement="top" hide-after="1000">
+                            <el-col>
+                                <el-button
+                                    v-if="scope.row.status.code===AdminStatus.FREEZE"
+                                    type="primary"
+                                    icon="iconfont icon-tubiaozhizuomoban--"
+                                    @click="unfreezeAdministrator(scope.row)"
+                                    size="mini">
+                                </el-button>
+                            </el-col>
+                        </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-col>
-                            <el-button
-                                type="success"
-                                icon="el-icon-edit"
-                                @click="onUpdateAction(scope.row)"
-                                size="mini">
-                                编辑
-                            </el-button>
-                        </el-col>
+                        <el-tooltip effect="dark" content="编辑" placement="bottom" hide-after="1000">
+                            <el-col>
+                                <el-button
+                                    type="success"
+                                    icon="iconfont icon-bianji"
+                                    @click="onUpdateAdministratorAction(scope.row)"
+                                    size="mini">
+                                </el-button>
+                            </el-col>
+                        </el-tooltip>
                     </el-row>
                 </template>
             </el-table-column>
@@ -130,48 +145,13 @@
 </style>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Table,
-    TableColumn,
-    Pagination,
-    Button,
-    Tag,
-    Message,
-    Row,
-    Col,
-    Form,
-    FormItem,
-    Input,
-    InputNumber,
-    Select,
-    Option,
-  } from 'element-ui';
-  import {UserStatus} from '@/constants/Global';
-  // import AdminApi from '@/api/AdminApi';
+  import {AdminStatus} from '@/constants/Global';
+  import AdminApi from '@/api/AdminApi';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-      [Pagination.name]: Pagination,
-      [Button.name]: Button,
-      [Tag.name]: Tag,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [InputNumber.name]: InputNumber,
-      [Select.name]: Select,
-      [Option.name]: Option,
-    },
     data: function () {
       return {
-        UserStatus: UserStatus,
+        AdminStatus: AdminStatus,
         managerList: [],
         currentPage: 1,
         totalRecord: 0,
@@ -191,25 +171,18 @@
             pageSize: this.pageSize
           })
         });
-        // UserApi.getManager(Object.assign(this.queryInfo, {
-        //   currentPage: this.currentPage,
-        //   pageSize: this.pageSize
-        // })).then(data => {
-        //   this.managerList = data.data;
-        //   this.totalRecord = data.paginator.totalRecord;
-        // });
+        AdminApi.getManager(Object.assign(this.queryInfo), {
+          currentPage: this.currentPage,
+          pageSize: this.pageSize
+        }).then(data => {
+          this.managerList = data.data;
+          this.totalRecord = data.paginator.totalRecord;
+        });
       },
-      freezeUser: function (userInfo) {
-        Message.success('操作成功!');
-        // UserApi.freezeUser(userInfo.userId).then(success => {
-        //   if (success) {
-        //     Message.success('操作成功!');
-        //     this.loadManagerInfo();
-        //   }
-        // });
-        window.console.log(userInfo);
+      freezeAdministrator: function (adminInfo) {
+        window.console.log(adminInfo);
       },
-      unfreezeUser: function (userInfo) {
+      unfreezeAdministrator: function (userInfo) {
         window.console.log(userInfo);
         // UserApi.unfreezeUser(userInfo.userId).then(success => {
         //   if (success) {
@@ -218,7 +191,7 @@
         //   }
         // });
       },
-      onUpdateAction: function (userInfo) {
+      onUpdateAdministratorAction: function (userInfo) {
         this.$router.push({
           path: `/manager/update/${userInfo.userId}`
         });

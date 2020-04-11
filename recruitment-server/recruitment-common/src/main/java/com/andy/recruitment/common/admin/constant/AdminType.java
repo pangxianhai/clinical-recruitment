@@ -1,6 +1,7 @@
 package com.andy.recruitment.common.admin.constant;
 
 import com.andy.spring.type.BaseType;
+import java.util.List;
 
 /**
  * 管理员类型
@@ -18,4 +19,13 @@ public class AdminType extends BaseType {
     public AdminType(int code, String desc) {
         super(code, desc);
     }
+
+    public static List<AdminType> getValues() {
+        return BaseType.getValues(AdminType.class);
+    }
+
+    public static AdminType parse(Integer code) {
+        return BaseType.parse(AdminType.getValues(), code);
+    }
+
 }

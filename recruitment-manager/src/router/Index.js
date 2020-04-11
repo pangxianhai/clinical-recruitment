@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import UserApi from '@/api/AdminApi'
+import AdminApi from '@/api/AdminApi'
 
 Vue.use(Router);
 
@@ -275,7 +275,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let needLogin = to.meta.needLogin;
-  let isLogin = UserApi.isLogin();
+  let isLogin = AdminApi.isLogin();
   let isLoginPage = '/login' === to.path;
   if (!needLogin) {
     if (isLogin && isLoginPage) {

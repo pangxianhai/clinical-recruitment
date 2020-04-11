@@ -42,7 +42,7 @@ let AdminApi = {
     return await ApiUtil.post('/administrator/login', params);
   },
   getManager: async (params) => {
-    return await ApiUtil.get('/user/administrator', params);
+    return await ApiUtil.get('/administrator', params);
   },
   addManager: async (params) => {
     return await ApiUtil.post('/user/administrator', params);

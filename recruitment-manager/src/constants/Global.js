@@ -1,23 +1,27 @@
+/**
+ * 患者状态
+ */
 export const PatientStatus = {
   NORMAL: 1,
   FREEZE: 2
 };
 
+/**
+ * 项目状态
+ */
 export const RecruitmentStatus = {
   NOT_BEGIN: 0,
   IN_PROCESS: 1,
   FINISHED: 2
 };
 
+/**
+ * 申请记录状态
+ */
 export const ApplicationStatus = {
   NOT_ACCEDE: 1,
   ACCEDED: 2,
   REFUSED: 3
-};
-
-export const RecruitmentCategory = {
-  TUMOUR: 1,
-  NON_TUMOR: 2
 };
 
 /**
@@ -42,6 +46,14 @@ export const ReferenceStatus = {
   REFUSE: 2,
   //审核通过
   ADOPT: 3
+};
+
+/**
+ * 管理员状态
+ */
+export const AdminStatus = {
+  NORMAL: 1,
+  FREEZE: 2
 };
 
 

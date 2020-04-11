@@ -129,11 +129,11 @@
                 label="操作">
                 <template slot-scope="scope">
                     <el-row type="flex">
-                        <el-tooltip effect="dark" content="更新" placement="bottom"
-                                    :hide-after="500">
+                        <el-tooltip effect="dark" content="更新" placement="top"
+                                    :hide-after="1000">
                             <el-col>
                                 <el-button
-                                    icon="el-icon-edit"
+                                    icon="iconfont icon-bianji"
                                     type="success"
                                     @click="onReferenceUpdate(scope.row)"
                                     size="mini" circle>
@@ -143,10 +143,10 @@
                     </el-row>
                     <el-row type="flex">
                         <el-tooltip effect="dark" content="审核" placement="bottom"
-                                    :hide-after="500">
+                                    :hide-after="1000">
                             <el-col>
                                 <el-button
-                                    icon="el-icon-star-off"
+                                    icon="iconfont icon-shenhex"
                                     type="danger"
                                     @click="onOpenAuditedDialog(scope.row)"
                                     size="mini" circle>

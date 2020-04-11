@@ -180,6 +180,10 @@ public enum RecruitmentErrorCode {
      * 管理员账户异常
      */
     ADMINISTRATOR_ACCOUNT_ERROR(101706),
+    /**
+     * 管理员状态码不存在
+     */
+    ADMINISTRATOR_STATUS_CODE_EXIST(101707),
 
     ;
 

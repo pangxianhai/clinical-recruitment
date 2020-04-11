@@ -19,19 +19,9 @@ public class AdministratorInfoDO extends BaseDO {
 
     private static final long serialVersionUID = - 3541741649351158774L;
     /**
-     * 用户名
+     * 用户ID
      */
-    private String userName;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 姓名
-     */
-    private String name;
+    private Long userId;
 
     /**
      * 管理员类型

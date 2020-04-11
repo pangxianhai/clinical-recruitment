@@ -49,6 +49,19 @@ public class ReferenceController {
         this.userService = userService;
     }
 
+    @PostMapping("register")
+    public LoginInfo registerReference(@RequestBody ReferenceRegisterReq referenceRegisterReq) {
+        ReferenceInfoDO referenceInfoDo = ReferenceUtil.transformReferenceInfoDo(referenceRegisterReq);
+        if (ReferenceRole.HEADS_OF_DEPARTMENT.equals(referenceInfoDo.getReferenceRole())) {
+            referenceInfoDo.setStatus(ReferenceStatus.UNAUDITED);
+        } else {
+            referenceInfoDo.setStatus(ReferenceStatus.ADOPT);
+        }
+        UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceRegisterReq);
+        this.referenceService.registerReference(referenceInfoDo, userInfoDo, referenceRegisterReq.getName());
+        return this.userService.userInfoLogin(userInfoDo);
+    }
+
     @RequiresUser
     @RequiresRoles(RoleType.MANAGER_CODE + "")
     @PostMapping
@@ -58,6 +71,17 @@ public class ReferenceController {
         referenceInfoDo.setStatus(ReferenceStatus.ADOPT);
         UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceAddReq);
         this.referenceService.registerReference(referenceInfoDo, userInfoDo, loginInfo.getRealName());
+        return true;
+    }
+
+    @RequiresUser
+    @PutMapping("/{referenceId:\\d+}")
+    public boolean updateReference(@PathVariable Long referenceId, @RequestBody ReferenceAddReq referenceAddReq) {
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        ReferenceInfoDO referenceInfoDo = ReferenceUtil.transformReferenceInfoDo(referenceAddReq);
+        referenceInfoDo.setId(referenceId);
+        UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceAddReq);
+        this.referenceService.updateReference(referenceInfoDo, userInfoDo, loginInfo.getRealName());
         return true;
     }
 
@@ -74,19 +98,6 @@ public class ReferenceController {
         return true;
     }
 
-    @PostMapping("register")
-    public LoginInfo registerReference(@RequestBody ReferenceRegisterReq referenceRegisterReq) {
-        ReferenceInfoDO referenceInfoDo = ReferenceUtil.transformReferenceInfoDo(referenceRegisterReq);
-        if (ReferenceRole.HEADS_OF_DEPARTMENT.equals(referenceInfoDo.getReferenceRole())) {
-            referenceInfoDo.setStatus(ReferenceStatus.UNAUDITED);
-        } else {
-            referenceInfoDo.setStatus(ReferenceStatus.ADOPT);
-        }
-        UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceRegisterReq);
-        this.referenceService.registerReference(referenceInfoDo, userInfoDo, referenceRegisterReq.getName());
-        return this.userService.userInfoLogin(userInfoDo);
-    }
-
     @GetMapping
     public PageResult<ReferenceDetailInfoRes> getReference(@MyParameter ReferenceQueryReq queryReq) {
         ReferenceInfoQuery query = ReferenceUtil.transformReferenceQuery(queryReq);
@@ -97,16 +108,4 @@ public class ReferenceController {
     public ReferenceDetailInfoRes getReference(@PathVariable Long referenceId) {
         return this.referenceService.getReference(referenceId);
     }
-
-    @RequiresUser
-    @PutMapping("/{referenceId:\\d+}")
-    public boolean updateReference(@PathVariable Long referenceId, @RequestBody ReferenceAddReq referenceAddReq) {
-        LoginInfo loginInfo = ServletContext.getLoginInfo();
-        ReferenceInfoDO referenceInfoDo = ReferenceUtil.transformReferenceInfoDo(referenceAddReq);
-        referenceInfoDo.setId(referenceId);
-        UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceAddReq);
-        this.referenceService.updateReference(referenceInfoDo, userInfoDo, loginInfo.getRealName());
-        return true;
-    }
-
 }

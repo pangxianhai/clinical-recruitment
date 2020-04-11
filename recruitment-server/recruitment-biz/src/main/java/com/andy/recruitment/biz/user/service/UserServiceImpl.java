@@ -17,6 +17,7 @@ import com.andy.spring.util.JsonUtil;
 import com.andy.spring.util.asserts.AssertUtil;
 import com.andy.spring.util.encrypt.Rc4Util;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -26,6 +27,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 用户服务接口实现
@@ -75,6 +77,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<Long, UserInfoRes> getUserInfoRes(List<Long> userIdList) {
         List<UserInfoDO> userInfoDoList = this.userDAO.getUserInfo(userIdList);
+        if (CollectionUtils.isEmpty(userInfoDoList)) {
+            return Collections.emptyMap();
+        }
         List<UserInfoRes> userInfoResList = UserInfoUtil.transformUserInfoRes(userInfoDoList);
         return userInfoResList.stream().collect(
             Collectors.toMap(UserInfoRes::getUserId, Function.identity(), (u1, u2) -> u1));

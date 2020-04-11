@@ -24,6 +24,8 @@ create table user_info(
   UNIQUE(phone)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息表';
 
+INSERT INTO `user_info`(id,real_name,phone,gender,password,status,created_by,created_time) VALUES (1,'pxh','17780583960',1,'E117B87A9926EE6AB196F0E28F7FCB626633C4EAD180686BEFF1A58142F836B3',1,'系统','2019-02-15 21:56:34');
+
 drop table  if exists organization_info;
 drop table  if exists hospital_info;
 create table hospital_info(
@@ -159,20 +161,18 @@ create table recruitment_application_record(
 drop table if exists administrator_info;
 create table administrator_info(
   id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  user_name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '用户名',
-  password varchar(10240)  NOT NULL COLLATE utf8_bin COMMENT '密码',
-  name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '姓名',
+  user_id bigint(20) NOT NULL COMMENT '用户ID',
   type TINYINT  NOT NULL COMMENT '管理员类型 1-系统管理员 2-业务管理员',
   status TINYINT  NOT NULL COMMENT '管理员状态 1-正常 2-冻结',
   created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
   created_time datetime NOT NULL COMMENT '创建时间',
   updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
   updated_time datetime COMMENT '更新时间',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE(user_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='管理员信息';
 
-INSERT INTO `administrator_info`(user_name,password,name,type,status,created_by,created_time) VALUES ('pxh','D49320AA983DBCB0696E023FF16103BD67D9864BCA6EFF8AFCBBF2B2B65B7D7E','庞先海',1,1,'系统','2019-02-15 21:56:34');
-
+INSERT INTO `administrator_info`(user_id,type,status,created_by,created_time) VALUES (10,1,1,'系统','2019-02-15 21:56:34');
 
 drop table if exists business_administrator_auth;
 create table business_administrator_auth(
@@ -186,3 +186,4 @@ create table business_administrator_auth(
   updated_time datetime COMMENT '更新时间',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='业务管理员权限';
+

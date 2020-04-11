@@ -29,12 +29,20 @@ public interface AdministratorDAO {
     void updateAdministrator(AdministratorInfoDO administratorInfoDo, String operator);
 
     /**
-     * 通过用户名查询管理员信息
+     * 通过userId查询管理员信息
      *
-     * @param userName 用户名
+     * @param userId 用户ID
      * @return 管理员信息
      */
-    AdministratorInfoDO getAdministratorInfo(String userName);
+    AdministratorInfoDO getAdministratorByUserId(Long userId);
+
+    /**
+     * 通过管理员ID查询管理员信息
+     *
+     * @param adminId 用户ID
+     * @return 管理员信息
+     */
+    AdministratorInfoDO getAdministratorById(Long adminId);
 
     /**
      * 分页查询管理员

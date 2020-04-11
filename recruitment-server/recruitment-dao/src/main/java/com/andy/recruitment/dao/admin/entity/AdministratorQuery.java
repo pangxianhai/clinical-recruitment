@@ -3,6 +3,7 @@ package com.andy.recruitment.dao.admin.entity;
 import com.andy.recruitment.common.admin.constant.AdminType;
 import com.andy.recruitment.common.admin.constant.AdministratorStatus;
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -16,14 +17,34 @@ public class AdministratorQuery implements Serializable {
     private static final long serialVersionUID = 9136925072225303942L;
 
     /**
-     * 管理员id
+     * 管理员ID
      */
-    private Long id;
+    private Long adminId;
 
     /**
-     * 用户名
+     * 管理员用户ID
      */
-    private String userName;
+    private Long userId;
+
+    /**
+     * 姓名
+     */
+    private String name;
+
+    /**
+     * 手机号
+     */
+    private String phone;
+
+    /**
+     * 手机号模糊查询
+     */
+    private String phoneLike;
+
+    /**
+     * 用户ID列表
+     */
+    private List<Long> userIdList;
 
     /**
      * 管理员类型

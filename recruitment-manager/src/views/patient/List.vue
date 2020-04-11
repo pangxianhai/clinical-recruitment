@@ -80,12 +80,12 @@
                 label="操作">
                 <template slot-scope="scope">
                     <el-row type="flex">
-                        <el-tooltip effect="dark" content="冻结" placement="bottom">
+                        <el-tooltip effect="dark" content="冻结" placement="top" hide-after="1000">
                             <el-col>
                                 <el-button
                                     v-if="scope.row.status.code===PatientStatus.NORMAL"
                                     type="danger"
-                                    icon="el-icon-goods"
+                                    icon="iconfont icon-cf-c09"
                                     @click="freezePatient(scope.row)"
                                     size="mini">
                                 </el-button>
@@ -93,12 +93,12 @@
                         </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-tooltip effect="dark" content="解冻" placement="bottom">
+                        <el-tooltip effect="dark" content="解冻" placement="top" hide-after="1000">
                             <el-col>
                                 <el-button
                                     v-if="scope.row.status.code===PatientStatus.FREEZE"
                                     type="primary"
-                                    icon="el-icon-sold-out"
+                                    icon="iconfont icon-tubiaozhizuomoban--"
                                     @click="unfreezePatient(scope.row)"
                                     size="mini">
                                 </el-button>
@@ -106,10 +106,10 @@
                         </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-tooltip effect="dark" content="更新" placement="bottom">
+                        <el-tooltip effect="dark" content="更新" placement="bottom" hide-after="1000">
                             <el-col>
                                 <el-button
-                                    icon="el-icon-edit"
+                                    icon="iconfont icon-bianji"
                                     type="success"
                                     @click="onUpdateAction(scope.row)"
                                     size="mini">

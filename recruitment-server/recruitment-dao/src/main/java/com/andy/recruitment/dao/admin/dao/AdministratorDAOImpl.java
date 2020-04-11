@@ -13,9 +13,9 @@ import com.andy.spring.util.CollectionUtil;
 import com.andy.spring.util.asserts.AssertUtil;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 /**
  * 管理员dao实现
@@ -56,14 +56,25 @@ public class AdministratorDAOImpl implements AdministratorDAO {
     }
 
     @Override
-    public AdministratorInfoDO getAdministratorInfo(String userName) {
-        if (StringUtils.isEmpty(userName)) {
+    public AdministratorInfoDO getAdministratorByUserId(Long userId) {
+        if (userId == null) {
             return null;
         }
         AdministratorQuery query = new AdministratorQuery();
-        query.setUserName(userName);
+        query.setUserId(userId);
         List<AdministratorInfoDO> administratorInfoDoList = this.administratorInfoMapper.select(query);
-        return CollectionUtil.parseOne(administratorInfoDoList, t -> t);
+        return CollectionUtil.parseOne(administratorInfoDoList, Function.identity());
+    }
+
+    @Override
+    public AdministratorInfoDO getAdministratorById(Long adminId) {
+        if (adminId == null) {
+            return null;
+        }
+        AdministratorQuery query = new AdministratorQuery();
+        query.setAdminId(adminId);
+        List<AdministratorInfoDO> administratorInfoDoList = this.administratorInfoMapper.select(query);
+        return CollectionUtil.parseOne(administratorInfoDoList, Function.identity());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.andy.recruitment.common.admin.constant;
 
 import com.andy.spring.type.BaseType;
+import java.util.List;
 
 /**
  * 管理员类型
@@ -18,4 +19,13 @@ public class AdministratorStatus extends BaseType {
     public AdministratorStatus(int code, String desc) {
         super(code, desc);
     }
+
+    public static List<AdministratorStatus> getValues() {
+        return BaseType.getValues(AdministratorStatus.class);
+    }
+
+    public static AdministratorStatus parse(Integer code) {
+        return BaseType.parse(AdministratorStatus.getValues(), code);
+    }
+
 }

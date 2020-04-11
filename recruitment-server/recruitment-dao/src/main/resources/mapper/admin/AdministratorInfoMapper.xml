@@ -7,9 +7,7 @@
     <resultMap id="BaseResultMap"
       type="com.andy.recruitment.dao.admin.entity.AdministratorInfoDO">
         <result column="id" property="id" jdbcType="BIGINT"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
         <result column="type" property="type"
           typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="status" property="status"
@@ -22,26 +20,45 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_name, password, `name`, `type`, status, created_by, created_time, updated_by, updated_time
+        id, user_id, `type`, status, created_by, created_time, updated_by, updated_time
     </sql>
 
     <select id="select" resultMap="BaseResultMap"
       parameterType="com.andy.recruitment.dao.admin.entity.AdministratorQuery">
         select
-        <include refid="Base_Column_List"/>
-        from administrator_info
+        a.id, a.user_id, a.type, a.status,
+        a.created_by, a.created_time, a.updated_by, a.updated_time
+        from administrator_info a inner join user_info u on (a.user_id = u.id)
         <where>
-            <if test="id != null">
-                and id = #{id}
+            <if test="userId != null">
+                and a.user_id = #{userId, jdbcType=BIGINT}
             </if>
-            <if test="userName != null and userName != ''">
-                and user_name = #{userName}
+            <if test="adminId != null">
+                and a.id = #{adminId, jdbcType=BIGINT}
+            </if>
+            <if test="name != null and name != ''">
+                and u.real_name like CONCAT('%', #{name,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="phoneLike != null and phoneLike != ''">
+                and u.phone like CONCAT('%', #{phoneLike,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and u.phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="userIdList != null">
+                and u.user_id in
+                <foreach collection="userIdList" item="userId" index="index"
+                  open="(" close=")"
+                  separator=",">
+                    #{userId,jdbcType=BIGINT}
+                </foreach>
             </if>
             <if test="type != null">
-                and `type` = #{type,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
+                and a.type =
+                #{type,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
             <if test="status != null">
-                and `status` =
+                and a.status =
                 #{status,typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler}
             </if>
         </where>
@@ -54,9 +71,7 @@
         )
         values(
         #{id, jdbcType=BIGINT},
-        #{userName, jdbcType=VARCHAR},
-        #{password, jdbcType=VARCHAR},
-        #{name, jdbcType=VARCHAR},
+        #{userId, jdbcType=BIGINT},
         #{type, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{status, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
         #{createdBy, jdbcType=VARCHAR},
@@ -70,15 +85,6 @@
       parameterType="com.andy.recruitment.dao.admin.entity.AdministratorInfoDO">
         update administrator_info
         <set>
-            <if test="userName != null and userName != ''">
-                user_name=#{userName, jdbcType=VARCHAR},
-            </if>
-            <if test="password != null and password != ''">
-                password=#{password, jdbcType=VARCHAR},
-            </if>
-            <if test="name != null and name != ''">
-                `name`=#{name, jdbcType=VARCHAR},
-            </if>
             <if test="type != null and type != ''">
                 `type`=#{type, typeHandler=com.andy.spring.mybatis.handler.MyBaseTypeHandler},
             </if>
