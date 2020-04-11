@@ -1,5 +1,6 @@
 package com.andy.recruitment.api.reference.response;
 
+import com.andy.recruitment.common.reference.constant.ReferenceRole;
 import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import java.io.Serializable;
 import lombok.Data;
@@ -25,6 +26,10 @@ public class ReferenceInfoRes implements Serializable {
      * 科室ID
      */
     private Long departmentId;
+    /**
+     * 角色
+     */
+    private ReferenceRole referenceRole;
     /**
      * 用户ID
      */

@@ -25,7 +25,7 @@
             </el-form-item>
         </el-form>
         <el-table
-            :data="organizationList"
+            :data="hospitalList"
             border
             style="width: 100%">
             <el-table-column
@@ -53,7 +53,7 @@
             @current-change="loadOrganizationInfo"
             :current-page.sync="currentPage"
             :page-size="pageSize"
-            layout="total, prev, pager, next"
+            layout="prev, pager, next"
             :total="totalRecord">
         </el-pagination>
     </div>
@@ -87,16 +87,16 @@
 
 <script>
   import AreaData from '@/util/AreaData';
-  import OrganizationApi from '@/api/OrganizationApi';
+  import HospitalApi from '@/api/HospitalApi';
 
   export default {
     data: function () {
       return {
         areaData: AreaData,
-        organizationList: [],
+        hospitalList: [],
         currentPage: 1,
-        totalRecord: 0,
         pageSize: 10,
+        totalRecord: 0,
         queryInfo: {
           nameLike: '',
           addressIds: []
@@ -130,8 +130,8 @@
           districtId: this.queryInfo.addressIds[2],
         }, this.queryInfo);
         delete queryParam.addressIds;
-        OrganizationApi.getOrganization(queryParam).then(data => {
-          this.organizationList = data.data;
+        HospitalApi.getHospital(queryParam).then(data => {
+          this.hospitalList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
       }

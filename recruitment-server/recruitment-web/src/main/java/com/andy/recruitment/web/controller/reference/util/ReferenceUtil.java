@@ -3,6 +3,7 @@ package com.andy.recruitment.web.controller.reference.util;
 import com.andy.recruitment.api.reference.request.ReferenceAddReq;
 import com.andy.recruitment.api.reference.request.ReferenceQueryReq;
 import com.andy.recruitment.api.reference.request.ReferenceRegisterReq;
+import com.andy.recruitment.common.reference.constant.ReferenceRole;
 import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.recruitment.common.user.constant.Gender;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
@@ -23,6 +24,7 @@ public class ReferenceUtil {
         }
         ReferenceInfoDO referenceInfoDo = new ReferenceInfoDO();
         BeanUtils.copyProperties(referenceAddReq, referenceInfoDo);
+        referenceInfoDo.setReferenceRole(ReferenceRole.parse(referenceAddReq.getRole()));
         return referenceInfoDo;
     }
 
@@ -43,6 +45,7 @@ public class ReferenceUtil {
         }
         ReferenceInfoDO referenceInfoDo = new ReferenceInfoDO();
         BeanUtils.copyProperties(referenceRegisterReq, referenceInfoDo);
+        referenceInfoDo.setReferenceRole(ReferenceRole.parse(referenceRegisterReq.getRole()));
         return referenceInfoDo;
     }
 

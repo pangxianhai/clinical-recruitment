@@ -12,7 +12,7 @@ public class ReferenceRole extends BaseType {
 
     private static final long serialVersionUID = 5964545699751411662L;
 
-    public static final ReferenceRole HEADS_OF_DEPARTMENT = new ReferenceRole(1, "科室主任");
+    public static final ReferenceRole HEADS_OF_DEPARTMENT = new ReferenceRole(1, "研究员");
 
     public static final ReferenceRole DOCTOR = new ReferenceRole(2, "医生");
 

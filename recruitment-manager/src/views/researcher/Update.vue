@@ -73,8 +73,7 @@
         organizationList: [],
         departmentProps: {
           lazy: true,
-          lazyLoad:
-          this.loadDepartment
+          lazyLoad: this.loadDepartment
         }
         ,
         sourceOrganizationId: '',

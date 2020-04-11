@@ -2,6 +2,7 @@ package com.andy.recruitment.biz.reference.service;
 
 import com.andy.recruitment.api.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.api.reference.response.ReferenceInfoRes;
+import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
 import com.andy.recruitment.dao.user.entity.UserInfoDO;
@@ -34,6 +35,16 @@ public interface ReferenceService {
      * @param operator        操作人
      */
     void updateReference(ReferenceInfoDO referenceInfoDo, UserInfoDO userInfoDo, String operator);
+
+    /**
+     * 更新推荐人信息
+     *
+     * @param referenceId     推荐人id
+     * @param referenceStatus 更新后的状态
+     * @param operator        操作人
+     */
+    void updateReferenceStatus(Long referenceId, ReferenceStatus referenceStatus, String operator);
+
 
     /**
      * 分页查询推荐人信息

@@ -10,29 +10,27 @@
                 <el-input v-model="queryInfo.nameLike" size="mini" clearable></el-input>
             </el-form-item>
             <el-form-item label="机构:" prop="organizationId">
-                <el-select v-model="queryInfo.organizationId" clearable filterable
+                <el-select v-model="queryInfo.hospitalId" clearable filterable
                            style="width: 100%"
                            placeholder="请选择研究机构">
                     <el-option
-                        v-for="organization in organizationList"
-                        :key="organization.organizationId"
-                        :label="organization.name"
-                        :value="organization.organizationId">
-                            <span
-                                style="float: left;margin-right:10px">{{ organization.name }}</span>
-                        <span
-                            style="float: right; color: #8492a6; font-size: 13px">{{ organization.address }}</span>
+                        v-for="hospitalInfo in hospitalList"
+                        :key="hospitalInfo.hospitalId"
+                        :label="hospitalInfo.name"
+                        :value="hospitalInfo.hospitalId">
+                        <span style="float: left;margin-right:10px">{{ hospitalInfo.name }}</span>
+                        <span style="float: right; color: #8492a6; font-size: 13px">{{ hospitalInfo.address }}</span>
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button size="mini" type="primary" @click="loadOrganizationDepartmentInfo()"
+                <el-button size="mini" type="primary" @click="loadDepartmentInfo()"
                            icon="el-icon-search">查询
                 </el-button>
             </el-form-item>
         </el-form>
         <el-table
-            :data="organizationDepartmentList"
+            :data="departmentList"
             border
             style="width: 100%">
             <el-table-column
@@ -42,7 +40,7 @@
             </el-table-column>
             <el-table-column
                 fixed
-                prop="organizationRes.name"
+                prop="hospitalRes.name"
                 label="机构名称">
             </el-table-column>
         </el-table>
@@ -78,40 +76,41 @@
 
 <script>
   import AreaData from '@/util/AreaData';
-  import OrganizationApi from '@/api/OrganizationApi';
+  import DepartmentApi from '@/api/DepartmentApi';
+  import HospitalApi from '@/api/HospitalApi';
 
   export default {
     data: function () {
       return {
         areaData: AreaData,
-        organizationDepartmentList: [],
-        organizationList: [],
+        departmentList: [],
+        hospitalList: [],
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
         queryInfo: {
-          organizationId: ''
+          hospitalId: ''
         }
       }
     },
     created: function () {
       Object.assign(this.queryInfo, this.$route.query);
       this.loadOrganization();
-      this.loadOrganizationDepartmentInfo();
+      this.loadDepartmentInfo();
     },
     methods: {
       loadOrganization: function () {
-        OrganizationApi.getOrganization({
+        HospitalApi.getHospital({
           currentPage: 1,
           pageSize: 1000
         }).then(data => {
-          data.data.forEach((organization) => {
-            organization.organizationId = String(organization.organizationId);
+          data.data.forEach((hospitalInfo) => {
+            hospitalInfo.hospitalId = String(hospitalInfo.hospitalId);
           });
-          this.organizationList = data.data;
+          this.hospitalList = data.data;
         });
       },
-      loadOrganizationDepartmentInfo: function () {
+      loadDepartmentInfo: function () {
         this.$router.replace({
           query: Object.assign(this.queryInfo, {
             currentPage: this.currentPage,
@@ -120,8 +119,8 @@
         }, function () {
 
         });
-        OrganizationApi.getOrganizationDepartment(this.queryInfo).then(data => {
-          this.organizationDepartmentList = data.data;
+        DepartmentApi.getDepartment(this.queryInfo).then(data => {
+          this.departmentList = data.data;
           this.totalRecord = data.paginator.totalRecord;
         });
       },

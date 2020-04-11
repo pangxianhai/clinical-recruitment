@@ -8,32 +8,31 @@
             <el-breadcrumb-item>添加科室</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form status-icon style="margin-top: 25px;width: 30%"
-                 :rules="organizationDepartmentRules"
-                 ref="organizationDepartmentInfo"
-                 :model="organizationDepartmentInfo"
+                 :rules="departmentRules"
+                 ref="departmentInfo"
+                 :model="departmentInfo"
                  label-width="80px">
             <el-form-item label="科室名称" prop="name">
-                <el-input v-model="organizationDepartmentInfo.name"></el-input>
+                <el-input v-model="departmentInfo.name"></el-input>
             </el-form-item>
             <el-form-item label="机构" prop="organizationId">
-                <el-select v-model="organizationDepartmentInfo.organizationId" filterable
+                <el-select v-model="departmentInfo.hospitalId" filterable
                            style="width: 50%"
                            placeholder="请选择研究机构">
                     <el-option
-                        v-for="organization in organizationList"
-                        :key="organization.organizationId"
-                        :label="organization.name"
-                        :value="organization.organizationId">
-                            <span
-                                style="float: left;margin-right:10px">{{ organization.name }}</span>
+                        v-for="hospitalInfo in hospitalList"
+                        :key="hospitalInfo.hospitalId"
+                        :label="hospitalInfo.name"
+                        :value="hospitalInfo.hospitalId">
+                        <span style="float: left;margin-right:10px">{{ hospitalInfo.name }}</span>
                         <span
-                            style="float: right; color: #8492a6; font-size: 13px">{{ organization.address }}</span>
+                            style="float: right; color: #8492a6; font-size: 13px">{{ hospitalInfo.address }}</span>
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-circle-plus-outline"
-                           @click="onAddOrganizationDepartmentAction('organizationDepartmentInfo')">
+                           @click="onAddDepartmentAction('departmentInfo')">
                     添加
                 </el-button>
             </el-form-item>
@@ -57,7 +56,8 @@
   } from 'element-ui';
 
   import {RouterUtil} from '@/util/Util';
-  import OrganizationApi from '@/api/OrganizationApi';
+  import HospitalApi from '@/api/HospitalApi';
+  import DepartmentApi from '@/api/DepartmentApi';
 
   export default {
     components: {
@@ -76,39 +76,39 @@
     },
     data: function () {
       return {
-        organizationDepartmentInfo: {},
-        organizationList: [],
-        organizationDepartmentRules: {
+        departmentInfo: {},
+        hospitalList: [],
+        departmentRules: {
           name: [
             {required: true, message: '请输入科室名称', trigger: 'blur'},
             {min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur'}
           ],
-          organizationId: [
+          hospitalId: [
             {required: true, message: '请选择机构', trigger: 'blur'},
           ]
         }
       }
     },
     created: function () {
-      this.loadOrganization();
+      this.loadHospital();
     },
     methods: {
-      loadOrganization: function () {
-        OrganizationApi.getOrganization({
+      loadHospital: function () {
+        HospitalApi.getHospital({
           currentPage: 1,
           pageSize: 1000
         }).then(data => {
-          this.organizationList = data.data;
+          this.hospitalList = data.data;
         });
       },
-      onAddOrganizationDepartmentAction: function (formName) {
+      onAddDepartmentAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            OrganizationApi.addOrganizationDepartment(this.organizationDepartmentInfo).then(
+            DepartmentApi.addDepartment(this.departmentInfo).then(
                 success => {
                   if (success) {
                     Message.success('添加成功即将跳转!');
-                    RouterUtil.goToBack(this.$route, this.$router, '/organization/department/list');
+                    RouterUtil.goToBack(this.$route, this.$router, '/hospital/department/list');
                   }
                 });
           } else {

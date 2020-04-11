@@ -9,6 +9,7 @@ import com.andy.recruitment.biz.reference.util.ReferenceUtil;
 import com.andy.recruitment.biz.user.service.UserService;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
+import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.recruitment.dao.reference.dao.ReferenceDAO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
@@ -83,6 +84,18 @@ public class ReferenceServiceImpl implements ReferenceService {
             this.userService.updateUserInfo(userInfoDo, operator);
             return null;
         });
+    }
+
+    @Override
+    public void updateReferenceStatus(Long referenceId, ReferenceStatus referenceStatus, String operator) {
+        ReferenceInfoDO sourceReferenceInfoDo = this.referenceDAO.getReferenceInfoById(referenceId);
+        AssertUtil.assertNull(sourceReferenceInfoDo, () -> {
+            throw new RecruitmentException(RecruitmentErrorCode.REFERENCE_NOT_EXIST);
+        });
+        ReferenceInfoDO referenceInfoDo = new ReferenceInfoDO();
+        referenceInfoDo.setId(referenceId);
+        referenceInfoDo.setStatus(referenceStatus);
+        this.referenceDAO.updateReferenceInfo(referenceInfoDo, operator);
     }
 
     @Override

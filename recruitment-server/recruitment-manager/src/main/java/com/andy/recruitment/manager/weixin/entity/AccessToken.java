@@ -1,6 +1,6 @@
 package com.andy.recruitment.manager.weixin.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -14,13 +14,12 @@ public class AccessToken implements Serializable {
 
     private static final long serialVersionUID = 1690570674133696123L;
 
-    @JSONField(name = "access_token")
+    @SerializedName(value = "accessToken", alternate = "access_token")
     private String accessToken;
 
-    @JSONField(name = "ticket")
     private String ticket;
 
-    @JSONField(name = "expires_in")
+    @SerializedName(value = "expiresIn", alternate = "expires_in")
     private Long expiresIn;
 
     private Long addTime;

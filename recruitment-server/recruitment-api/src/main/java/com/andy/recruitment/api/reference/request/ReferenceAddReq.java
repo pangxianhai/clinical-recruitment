@@ -33,6 +33,11 @@ public class ReferenceAddReq implements Serializable {
     @NotNull
     private Long departmentId;
     /**
+     * 角色
+     */
+    @NotNull
+    private Integer role;
+    /**
      * 执业机构
      */
     @NotBlank

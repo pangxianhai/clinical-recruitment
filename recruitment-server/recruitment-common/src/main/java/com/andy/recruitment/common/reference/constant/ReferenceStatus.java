@@ -12,9 +12,14 @@ public class ReferenceStatus extends BaseType {
 
     private static final long serialVersionUID = 822724782920861453L;
 
-    public static final ReferenceStatus NORMAL = new ReferenceStatus(1, "正常");
+    public static final ReferenceStatus FREEZE = new ReferenceStatus(0, "冻结");
 
-    public static final ReferenceStatus FREEZE = new ReferenceStatus(2, "冻结");
+    public static final ReferenceStatus UNAUDITED = new ReferenceStatus(1, "待审核");
+
+    public static final ReferenceStatus REFUSE = new ReferenceStatus(2, "审核拒绝");
+
+    public static final ReferenceStatus ADOPT = new ReferenceStatus(3, "审核通过");
+
 
     public ReferenceStatus(int code, String desc) {
         super(code, desc);

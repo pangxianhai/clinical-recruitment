@@ -1,6 +1,6 @@
 package com.andy.recruitment.manager.weixin.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
@@ -20,10 +20,10 @@ public class WxUserInfo implements Serializable {
     /**
      * 错误码
      */
-    @JSONField(name = "errcode")
+    @SerializedName(value = "errCode", alternate = "errcode")
     private String errCode;
 
-    @JSONField(name = "openid")
+    @SerializedName(value = "openId", alternate = "openid")
     private String openId;
 
     private String nickname;
@@ -36,7 +36,7 @@ public class WxUserInfo implements Serializable {
 
     private String city;
 
-    @JSONField(name = "headimgurl")
+    @SerializedName(value = "headImgUrl", alternate = "headimgurl")
     private String headImgUrl;
 
     private List<String> privilege;

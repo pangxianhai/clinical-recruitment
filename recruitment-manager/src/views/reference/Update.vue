@@ -25,12 +25,24 @@
                     </el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="地址" prop="addressIds">
-                <el-cascader
-                    :options="areaData"
-                    v-model="referenceInfo.addressIds"
-                    placeholder="请选择地址">
+            <el-form-item label="研究科室" prop="departmentList"
+                          style="text-align: left">
+                <el-cascader style="width:100%"
+                             v-model="referenceInfo.departmentList"
+                             :options="hospitalList"
+                             :props="departmentProps"
+                             clearable filterable>
                 </el-cascader>
+            </el-form-item>
+            <el-form-item label="角色" prop="role">
+                <el-radio-group v-model="referenceInfo.role">
+                    <el-radio :label="1">
+                        <i class="el-icon-s-custom"></i>研究员
+                    </el-radio>
+                    <el-radio :label="2">
+                        <i class="el-icon-user"></i>医生
+                    </el-radio>
+                </el-radio-group>
             </el-form-item>
             <el-form-item label="执业机构" prop="medicalInstitution">
                 <el-input v-model="referenceInfo.medicalInstitution"></el-input>
@@ -54,21 +66,29 @@
   import UserApi from '@/api/UserApi';
   import AreaData from '@/util/AreaData';
   import ReferenceApi from '@/api/ReferenceApi';
-  import {RouterUtil} from '@/util/Util';
+  import {RouterUtil, CollectionUtil} from '@/util/Util';
+  import HospitalApi from '@/api/HospitalApi';
+  import DepartmentApi from '@/api/DepartmentApi';
 
   export default {
     data: function () {
       return {
         areaData: AreaData,
+        hospitalList: [],
+        departmentProps: {
+          lazy: true,
+          lazyLoad: this.loadDepartment
+        },
         referenceInfo: {
           name: '',
           phone: '',
           gender: 0,
-          addressIds: [],
+          departmentList: [],
           medicalInstitution: '',
           medicalCategory: '',
           remark: '',
-          userId: ''
+          userId: '',
+          role: 0
         },
         referenceRules: {
           name: [
@@ -83,8 +103,9 @@
           gender: [
             {required: true, message: '请选择性别', trigger: 'blur'},
           ],
-          addressIds: [
-            {required: true, message: '请选择地址', trigger: 'blur'},
+          departmentList: [
+            {required: true, message: '请选择机构科室', trigger: 'blur'},
+            {validator: this.validateDepartmentList, trigger: 'blur'}
           ],
           medicalInstitution: [
             {required: true, message: '请输入执业机构', trigger: 'blur'},
@@ -111,20 +132,24 @@
           this.referenceInfo.name = referenceInfo.userInfoRes.realName;
           this.referenceInfo.phone = referenceInfo.userInfoRes.phone;
           this.referenceInfo.gender = referenceInfo.userInfoRes.gender.code;
-          this.referenceInfo.addressIds = [referenceInfo.provinceId, referenceInfo.cityId,
-            referenceInfo.districtId];
+          this.referenceInfo.role = referenceInfo.referenceRole.code;
+          this.referenceInfo.departmentList = [referenceInfo.hospitalId,
+            referenceInfo.departmentId];
+          this.loadHospital(referenceInfo.hospitalId);
         });
       },
       onUpdateReferenceAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (typeof this.referenceInfo.addressIds !== 'undefined'
-                && this.referenceInfo.addressIds.length >= 3) {
-              this.referenceInfo.provinceId = this.referenceInfo.addressIds[0];
-              this.referenceInfo.cityId = this.referenceInfo.addressIds[1];
-              this.referenceInfo.districtId = this.referenceInfo.addressIds[2];
+            let referenceUpdateInfo = {};
+            Object.assign(referenceUpdateInfo, this.referenceInfo);
+            if (CollectionUtil.isNotEmpty(this.referenceInfo.departmentList)
+                && this.referenceInfo.departmentList.length === 2) {
+              referenceUpdateInfo.hospitalId = this.referenceInfo.departmentList[0];
+              referenceUpdateInfo.departmentId = this.referenceInfo.departmentList[1];
             }
-            ReferenceApi.updateReference(this.referenceInfo.referenceId, this.referenceInfo).then(
+            delete referenceUpdateInfo.departmentList;
+            ReferenceApi.updateReference(this.referenceInfo.referenceId, referenceUpdateInfo).then(
                 success => {
                   if (success) {
                     this.$message.success('更新成功即将跳转!');
@@ -134,6 +159,77 @@
           } else {
             return false;
           }
+        });
+      },
+      loadHospital: function (hospitalId) {
+        HospitalApi.getHospital({
+          currentPage: 1,
+          pageSize: 1000
+        }).then(data => {
+          let hospitalListTmp = [];
+          data.data.forEach(o => {
+            hospitalListTmp.push({
+              label: o.name,
+              value: o.hospitalId,
+              children: []
+            });
+          });
+          for (let i = 0; i < hospitalListTmp.length; ++i) {
+            let node = hospitalListTmp[i];
+            if (hospitalId === node.value) {
+              this.loadDepartmentByHospitalId(node);
+            }
+          }
+          this.hospitalList = hospitalListTmp;
+        });
+      },
+      async loadDepartmentByHospitalId(node) {
+        await DepartmentApi.getDepartment({
+          currentPage: 1,
+          pageSize: 10000,
+          hospitalId: node.value
+        }).then(data => {
+          let nodes = [];
+          data.data.forEach(d => {
+            let di = {
+              label: d.name,
+              value: d.departmentId,
+              leaf: true
+            };
+            nodes.push(di);
+          });
+          node.children = nodes;
+        });
+      },
+      loadDepartment: (node, resolve) => {
+        const {data} = node;
+        if (typeof data === 'undefined') {
+          return;
+        }
+        if (typeof data.children !== 'undefined' && data.children.length > 0) {
+          resolve();
+          return;
+        }
+        window.console.log(node);
+        DepartmentApi.getDepartment({
+          currentPage: 1,
+          pageSize: 10000,
+          hospitalId: data.value
+        }).then(data => {
+          let nodes = [];
+          data.data.forEach(d => {
+            let di = {
+              label: d.name,
+              value: d.departmentId,
+              leaf: true
+            };
+            nodes.push(di);
+          });
+          if (nodes.length === 0) {
+            data.disabled = 'disabled';
+            node.disabled = true;
+          }
+          resolve(nodes);
         });
       },
       validatePhone: function (rule, value, callback) {
@@ -149,6 +245,15 @@
           });
         }
       },
+      validateDepartmentList: function (rule, value, callback) {
+        if (CollectionUtil.isEmpty(value)) {
+          callback(new Error('请选择机构科室'));
+        } else if (value.length !== 2) {
+          callback(new Error('必须选择具体科室，不能只选择到医院'));
+        } else {
+          callback();
+        }
+      }
     }
   }
 </script>

@@ -43,7 +43,7 @@ public class ReferenceInfoQuery implements Serializable {
      */
     private String phoneLike;
     /**
-     * 用户状态
+     * 推荐人状态
      */
     private ReferenceStatus status;
 }

@@ -12,6 +12,10 @@ let ReferenceApi = {
   },
   updateReference: async (referenceId, params) => {
     return await ApiUtil.put('/reference/' + referenceId, params);
+  },
+  updateReferenceStatus: async (referenceId, status) => {
+    return await ApiUtil.put('/reference/' + referenceId + '/status/' + status,
+        {});
   }
 };
 

@@ -1,6 +1,6 @@
 package com.andy.recruitment.manager.weixin.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -19,19 +19,19 @@ public class OauthToken implements Serializable {
     /**
      * 错误码
      */
-    @JSONField(name = "errcode")
+    @SerializedName(value = "errCode", alternate = "errcode")
     private String errCode;
 
-    @JSONField(name = "access_token")
+    @SerializedName(value = "accessToken", alternate = "access_token")
     private String accessToken;
 
-    @JSONField(name = "refresh_token")
+    @SerializedName(value = "refreshToken", alternate = "refresh_token")
     private String refreshToken;
 
-    @JSONField(name = "expires_in")
+    @SerializedName(value = "expiresIn", alternate = "expires_in")
     private Long expiresIn;
 
-    @JSONField(name = "openid")
+    @SerializedName(value = "openId", alternate = "openid")
     private String openId;
 
     private String scope;

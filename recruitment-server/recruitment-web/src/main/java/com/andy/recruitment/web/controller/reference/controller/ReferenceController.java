@@ -6,6 +6,9 @@ import com.andy.recruitment.api.reference.request.ReferenceRegisterReq;
 import com.andy.recruitment.api.reference.response.ReferenceDetailInfoRes;
 import com.andy.recruitment.biz.reference.service.ReferenceService;
 import com.andy.recruitment.biz.user.service.UserService;
+import com.andy.recruitment.common.exception.RecruitmentErrorCode;
+import com.andy.recruitment.common.exception.RecruitmentException;
+import com.andy.recruitment.common.reference.constant.ReferenceRole;
 import com.andy.recruitment.common.reference.constant.ReferenceStatus;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoDO;
 import com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery;
@@ -52,16 +55,33 @@ public class ReferenceController {
     public boolean addReference(@RequestBody ReferenceAddReq referenceAddReq) {
         LoginInfo loginInfo = ServletContext.getLoginInfo();
         ReferenceInfoDO referenceInfoDo = ReferenceUtil.transformReferenceInfoDo(referenceAddReq);
-        referenceInfoDo.setStatus(ReferenceStatus.NORMAL);
+        referenceInfoDo.setStatus(ReferenceStatus.ADOPT);
         UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceAddReq);
         this.referenceService.registerReference(referenceInfoDo, userInfoDo, loginInfo.getRealName());
+        return true;
+    }
+
+    @RequiresUser
+    @RequiresRoles(RoleType.MANAGER_CODE + "")
+    @PutMapping("/{referenceId:\\d+}/status/{status:\\d+}")
+    public boolean updateReferenceStatus(@PathVariable Long referenceId, @PathVariable Integer status) {
+        ReferenceStatus referenceStatus = ReferenceStatus.parse(status);
+        if (referenceStatus == null) {
+            throw new RecruitmentException(RecruitmentErrorCode.REFERENCE_STATUS_CODE_EXIST);
+        }
+        LoginInfo loginInfo = ServletContext.getLoginInfo();
+        this.referenceService.updateReferenceStatus(referenceId, referenceStatus, loginInfo.getRealName());
         return true;
     }
 
     @PostMapping("register")
     public LoginInfo registerReference(@RequestBody ReferenceRegisterReq referenceRegisterReq) {
         ReferenceInfoDO referenceInfoDo = ReferenceUtil.transformReferenceInfoDo(referenceRegisterReq);
-        referenceInfoDo.setStatus(ReferenceStatus.NORMAL);
+        if (ReferenceRole.HEADS_OF_DEPARTMENT.equals(referenceInfoDo.getReferenceRole())) {
+            referenceInfoDo.setStatus(ReferenceStatus.UNAUDITED);
+        } else {
+            referenceInfoDo.setStatus(ReferenceStatus.ADOPT);
+        }
         UserInfoDO userInfoDo = ReferenceUtil.transformUserInfo(referenceRegisterReq);
         this.referenceService.registerReference(referenceInfoDo, userInfoDo, referenceRegisterReq.getName());
         return this.userService.userInfoLogin(userInfoDo);

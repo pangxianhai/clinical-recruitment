@@ -126,7 +126,7 @@
           callback(new Error('请输入手机号码'));
         } else {
           UserApi.getUserByPhone(value).then(userInfo => {
-            if (userInfo.userId && this.referenceInfo.userId !== userInfo.userId) {
+            if (userInfo.userId && this.patientInfo.userId !== userInfo.userId) {
               callback(new Error('手机号码已经被注册了'));
             } else {
               callback();

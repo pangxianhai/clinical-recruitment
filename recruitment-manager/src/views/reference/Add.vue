@@ -5,10 +5,10 @@
             <el-breadcrumb-item :to="{ path: '/reference/list' }">推荐人管理</el-breadcrumb-item>
             <el-breadcrumb-item>添加推荐人</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form status-icon style="margin-top: 25px;width: 30%" :rules="referenceRules"
+        <el-form status-icon style="margin-top: 25px;width: 35%" :rules="referenceRules"
                  ref="referenceInfo"
                  :model="referenceInfo"
-                 label-width="80px">
+                 label-width="100px">
             <el-form-item label="姓名" prop="name">
                 <el-input v-model="referenceInfo.name"></el-input>
             </el-form-item>
@@ -25,12 +25,24 @@
                     </el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="地址" prop="addressIds">
-                <el-cascader
-                    :options="areaData"
-                    v-model="referenceInfo.addressIds"
-                    placeholder="请选择地址">
+            <el-form-item label="研究科室" prop="departmentList"
+                          style="text-align: left">
+                <el-cascader style="width:100%"
+                             v-model="referenceInfo.departmentList"
+                             :options="hospitalList"
+                             :props="departmentProps"
+                             clearable filterable>
                 </el-cascader>
+            </el-form-item>
+            <el-form-item label="角色" prop="role">
+                <el-radio-group v-model="referenceInfo.role">
+                    <el-radio label="1">
+                        <i class="el-icon-s-custom"></i>研究员
+                    </el-radio>
+                    <el-radio label="2">
+                        <i class="el-icon-user"></i>医生
+                    </el-radio>
+                </el-radio-group>
             </el-form-item>
             <el-form-item label="执业机构" prop="medicalInstitution">
                 <el-input v-model="referenceInfo.medicalInstitution"></el-input>
@@ -51,16 +63,23 @@
 </template>
 
 <script>
-  import {RouterUtil} from '@/util/Util';
+  import {RouterUtil, CollectionUtil} from '@/util/Util';
   import AreaData from '@/util/AreaData';
   import UserApi from '@/api/UserApi';
   import ReferenceApi from '@/api/ReferenceApi';
+  import HospitalApi from '@/api/HospitalApi';
+  import DepartmentApi from '@/api/DepartmentApi';
 
   export default {
     data: function () {
       return {
         areaData: AreaData,
         referenceInfo: {},
+        hospitalList: [],
+        departmentProps: {
+          lazy: true,
+          lazyLoad: this.loadDepartment
+        },
         referenceRules: {
           name: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
@@ -74,8 +93,8 @@
           gender: [
             {required: true, message: '请选择性别', trigger: 'blur'},
           ],
-          addressIds: [
-            {required: true, message: '请选择地址', trigger: 'blur'},
+          role: [
+            {required: true, message: '请选择角色', trigger: 'blur'},
           ],
           medicalInstitution: [
             {required: true, message: '请输入执业机构', trigger: 'blur'},
@@ -88,20 +107,28 @@
           remark: [
             {min: 0, max: 64, message: '长度不能超过64个字符', trigger: 'blur'}
           ],
+          departmentList: [
+            {required: true, message: '请选择机构科室', trigger: 'blur'}
+          ],
         }
       }
+    },
+    created: function () {
+      this.loadHospital();
     },
     methods: {
       onAddReferenceAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (typeof this.referenceInfo.addressIds !== 'undefined'
-                && this.referenceInfo.addressIds.length >= 3) {
-              this.referenceInfo.provinceId = this.referenceInfo.addressIds[0];
-              this.referenceInfo.cityId = this.referenceInfo.addressIds[1];
-              this.referenceInfo.districtId = this.referenceInfo.addressIds[2];
+            let referenceAddInfo = {};
+            Object.assign(referenceAddInfo, this.referenceInfo);
+            if (CollectionUtil.isNotEmpty(this.referenceInfo.departmentList)
+                && this.referenceInfo.departmentList.length === 2) {
+              referenceAddInfo.hospitalId = this.referenceInfo.departmentList[0];
+              referenceAddInfo.departmentId = this.referenceInfo.departmentList[1];
             }
-            ReferenceApi.addReference(this.referenceInfo).then(success => {
+            delete referenceAddInfo.departmentList;
+            ReferenceApi.addReference(referenceAddInfo).then(success => {
               if (success) {
                 this.$message.success('添加成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/reference/list');
@@ -124,7 +151,44 @@
             }
           });
         }
-      }
+      },
+      loadHospital: function () {
+        HospitalApi.getHospital({
+          currentPage: 1,
+          pageSize: 1000
+        }).then(data => {
+          let hospitalListTmp = [];
+          data.data.forEach(o => {
+            hospitalListTmp.push({
+              label: o.name,
+              value: o.hospitalId
+            });
+          });
+          this.hospitalList = hospitalListTmp;
+        });
+      },
+      loadDepartment: (node, resolve) => {
+        const {data} = node;
+        if (typeof data === 'undefined') {
+          return;
+        }
+        DepartmentApi.getDepartment({
+          currentPage: 1,
+          pageSize: 10000,
+          hospitalId: data.value
+        }).then(data => {
+          let nodes = [];
+          data.data.forEach(d => {
+            let di = {
+              label: d.name,
+              value: d.departmentId,
+              leaf: true
+            };
+            nodes.push(di);
+          });
+          resolve(nodes);
+        });
+      },
     }
   }
 </script>

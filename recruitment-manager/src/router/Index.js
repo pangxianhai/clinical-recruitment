@@ -91,7 +91,7 @@ const router = new Router({
       ]
     },
     {
-      path: '/organization',
+      path: '/hospital',
       component: () => import("@/views/Layout"),
       icon: 'iconfont icon-yiyuan',
       menu: true,
@@ -106,7 +106,7 @@ const router = new Router({
           },
           menu: true,
           index: "6-1",
-          component: () => import("@/views/organization/List"),
+          component: () => import("@/views/hospital/List"),
         },
         {
           path: 'add',
@@ -116,7 +116,7 @@ const router = new Router({
           },
           menu: true,
           index: "6-2",
-          component: () => import("@/views/organization/Add"),
+          component: () => import("@/views/hospital/Add"),
         },
         {
           path: 'department/list',
@@ -126,7 +126,7 @@ const router = new Router({
           },
           menu: true,
           index: "6-3",
-          component: () => import("@/views/organization/department/List"),
+          component: () => import("@/views/department/List"),
         },
         {
           path: 'department/add',
@@ -136,54 +136,14 @@ const router = new Router({
           },
           menu: true,
           index: "6-4",
-          component: () => import("@/views/organization/department/Add"),
-        },
-      ]
-    },
-    {
-      path: '/researcher',
-      component: () => import("@/views/Layout"),
-      icon: 'iconfont icon-yisheng',
-      menu: true,
-      name: '研究员管理',
-      index: "3",
-      children: [
-        {
-          path: 'list',
-          name: '研究员列表',
-          meta: {
-            needLogin: true
-          },
-          menu: true,
-          index: "3-1",
-          component: () => import("@/views/researcher/List"),
-        },
-        {
-          path: 'add',
-          name: '添加研究员',
-          meta: {
-            needLogin: true
-          },
-          menu: true,
-          index: "3-2",
-          component: () => import("@/views/researcher/Add"),
-        },
-        {
-          path: 'update/:researcherId',
-          name: '更新研究员',
-          meta: {
-            needLogin: true
-          },
-          menu: false,
-          index: "3-1",
-          component: () => import("@/views/researcher/Update"),
+          component: () => import("@/views/department/Add"),
         },
       ]
     },
     {
       path: '/reference',
       component: () => import("@/views/Layout"),
-      icon: 'iconfont icon-iconfonttuijianren',
+      icon: 'iconfont icon-yisheng',
       menu: true,
       name: '推荐人管理',
       index: "7",

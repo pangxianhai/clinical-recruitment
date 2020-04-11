@@ -26,6 +26,10 @@ public enum RecruitmentErrorCode {
      * 地区信息错误
      */
     REFERENCE_REGISTER_REGION_ERROR(101104),
+    /**
+     * 推荐人状态码不存在
+     */
+    REFERENCE_STATUS_CODE_EXIST(101105),
 
     /**
      * 注册患者失败

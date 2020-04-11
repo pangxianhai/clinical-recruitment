@@ -12,7 +12,7 @@
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="status" property="status"
           typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
-        <result column="referenceRole" property="role"
+        <result column="role" property="referenceRole"
           typeHandler="com.andy.spring.mybatis.handler.MyBaseTypeHandler"/>
         <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
@@ -37,8 +37,8 @@
     <select id="select" resultMap="baseResultMap"
       parameterType="com.andy.recruitment.dao.reference.entity.ReferenceInfoQuery">
         select
-        d.id,d.user_id,d.province_id,d.city_id,d.district_id,d.medical_institution,d.medical_category,
-        d.remark,d.status,d.created_by,d.created_time,d.updated_by,d.updated_time
+        d.id,d.user_id,d.hospital_id,d.department_id,d.medical_institution,d.medical_category,
+        d.remark,d.role,d.status,d.created_by,d.created_time,d.updated_by,d.updated_time
         from reference_info d inner join user_info u on (d.user_id = u.id)
         <where>
             <if test="referenceId != null">

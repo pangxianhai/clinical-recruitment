@@ -6,7 +6,7 @@ import {Message} from 'element-ui';
 export const CookieUtil = {
   getCookie: function (name) {
     const reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    let arr = document.cookie.match(reg)
+    let arr = document.cookie.match(reg);
     if (arr) {
       return (arr[2]);
     } else {
@@ -49,7 +49,7 @@ ajax.interceptors.request.use((config) => {
 });
 
 ajax.interceptors.response.use(({data}) => {
-  if (data.code === 0) {
+  if (data.code === 200) {
     return data.data;
   } else if (typeof data.msg === 'string' && data.msg.length > 0) {
     Message.error(data.msg);
@@ -61,12 +61,11 @@ ajax.interceptors.response.use(({data}) => {
 export const ApiUtil = {
   get: async (url, params) => {
     try {
-      const response = await ajax.request({
+      return await ajax.request({
         method: 'get',
         url: url,
         params: params
       });
-      return response;
     } catch (e) {
       Message.error('操作失败');
       window.console.error(e);
@@ -75,12 +74,11 @@ export const ApiUtil = {
 
   post: async (url, params) => {
     try {
-      const response = await ajax.request({
+      return await ajax.request({
         method: 'post',
         url: url,
         data: params
       });
-      return response;
     } catch (e) {
       Message.error('操作失败');
       window.console.error(e);
@@ -133,7 +131,7 @@ export const StringUtil = {
   isNotEmpty: (text) => {
     return !this.isEmpty(text);
   }
-}
+};
 
 export const RouterUtil = {
   goToBack: (route, router, defaultPath) => {
@@ -148,5 +146,18 @@ export const RouterUtil = {
       router.push({path: redirectURL}, function () {
       });
     }, 2000);
+  }
+};
+
+export const CollectionUtil = {
+  isEmpty: function (list) {
+    if (typeof list === 'undefined' || null == list || list.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  isNotEmpty: function (list) {
+    return !this.isEmpty(list);
   }
 };
