@@ -185,6 +185,27 @@ public enum RecruitmentErrorCode {
      */
     ADMINISTRATOR_STATUS_CODE_EXIST(101707),
 
+    /**
+     * 类目添加失败
+     */
+    CATEGORY_ADD_FAILED(101801),
+    /**
+     * 父类目不存在
+     */
+    CATEGORY_PARENT_NOT_EXIST(101802),
+    /**
+     * 类目不存在
+     */
+    CATEGORY_NOT_EXIST(101803),
+    /**
+     * 类目更新失败
+     */
+    CATEGORY_UPDATE_FAILED(101804),
+    /**
+     * 类目已经存在
+     */
+    CATEGORY_HAS_EXIST(101805),
+
     ;
 
     private int code;

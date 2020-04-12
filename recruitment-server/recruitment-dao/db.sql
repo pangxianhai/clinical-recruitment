@@ -92,6 +92,23 @@ create table patient_info(
   UNIQUE(user_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='患者信息表';
 
+drop table if exists recruitment_category;
+create table recruitment_category(
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  category_id bigint(20) NOT NULL COMMENT '类目ID 对外',
+  category_name varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '类目名称',
+  level TINYINT  NOT NULL COMMENT '类目级别 1-一级类目 2-二级类目等',
+  parent_id bigint(20) NOT NULL COMMENT '父级ID',
+  path varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '类目路径,从一级类目到本级所有父类目列表',
+  created_by varchar(64)  NOT NULL COLLATE utf8_bin COMMENT '创建者',
+  created_time datetime NOT NULL COMMENT '创建时间',
+  updated_by varchar(64)   COLLATE utf8_bin COMMENT '更新者',
+  updated_time datetime COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE(category_id),
+  UNIQUE(category_name)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='招募项目项目类目';
+
 drop table if exists medical_clinical_recruitment_info;
 drop table if exists recruitment_info;
 create table recruitment_info(
@@ -172,7 +189,7 @@ create table administrator_info(
   UNIQUE(user_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='管理员信息';
 
-INSERT INTO `administrator_info`(user_id,type,status,created_by,created_time) VALUES (10,1,1,'系统','2019-02-15 21:56:34');
+INSERT INTO `administrator_info`(user_id,type,status,created_by,created_time) VALUES (1,1,1,'系统','2019-02-15 21:56:34');
 
 drop table if exists business_administrator_auth;
 create table business_administrator_auth(

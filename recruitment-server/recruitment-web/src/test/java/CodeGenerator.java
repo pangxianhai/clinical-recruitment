@@ -113,7 +113,7 @@ public class CodeGenerator {
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id", "createdBy", "createdTime", "updatedBy", "updatedTime");
         //        strategy.setInclude("tb_recall_strategy","tb_ab_place","tb_sub_strategy");
-        strategy.setInclude("organization_info");
+        strategy.setInclude("recruitment_category");
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
 
