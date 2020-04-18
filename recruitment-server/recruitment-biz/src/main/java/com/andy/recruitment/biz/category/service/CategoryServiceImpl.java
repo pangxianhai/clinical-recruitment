@@ -1,5 +1,7 @@
 package com.andy.recruitment.biz.category.service;
 
+import com.andy.recruitment.api.category.response.CategoryDetailRes;
+import com.andy.recruitment.biz.category.util.CategoryUtil;
 import com.andy.recruitment.common.exception.RecruitmentErrorCode;
 import com.andy.recruitment.common.exception.RecruitmentException;
 import com.andy.recruitment.dao.category.dao.CategoryDAO;
@@ -8,7 +10,9 @@ import com.andy.recruitment.dao.category.entity.CategoryQuery;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import com.andy.spring.util.asserts.AssertUtil;
+import java.util.Collections;
 import java.util.List;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,15 +58,29 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDO> getCategoryByParentId(Long parentId) {
+    public List<CategoryDetailRes> getCategoryByParentId(Long parentId) {
         if (parentId == null) {
             parentId = CategoryDAO.ROOT_CATEGORY_ID;
         }
-        return this.categoryDAO.getCategoryByParentId(parentId);
+        List<CategoryDO> categoryDoList = this.categoryDAO.getCategoryByParentId(parentId);
+        List<CategoryDetailRes> categoryDetailResList = CategoryUtil.transformCategoryDetailRes(categoryDoList);
+        if (CollectionUtils.isEmpty(categoryDetailResList)) {
+            return Collections.emptyList();
+        }
+        for (CategoryDetailRes categoryDetailRes : categoryDetailResList) {
+            List<CategoryDO> children = this.categoryDAO.getCategoryByParentId(categoryDetailRes.getCategoryId());
+            categoryDetailRes.setHasNexLevel(CollectionUtils.isNotEmpty(children));
+        }
+        return categoryDetailResList;
     }
 
     @Override
     public PageResult<CategoryDO> getCategory(CategoryQuery query, Paginator paginator) {
         return this.categoryDAO.getCategory(query, paginator);
+    }
+
+    @Override
+    public CategoryDO getCategoryByName(String categoryName) {
+        return this.categoryDAO.getCategoryByName(categoryName);
     }
 }

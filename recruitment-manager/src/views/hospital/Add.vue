@@ -1,8 +1,8 @@
 <template>
-    <div class="organization-add">
+    <div class="hospital-add">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/organization/list' }">机构管理</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/hospital/list' }">机构管理</el-breadcrumb-item>
             <el-breadcrumb-item>添加机构</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form status-icon style="margin-top: 25px;width: 30%" :rules="hospitalRules"

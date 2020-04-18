@@ -1,5 +1,5 @@
 <template>
-    <div class="organization-list">
+    <div class="hospital-list">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>机构管理</el-breadcrumb-item>
@@ -19,7 +19,7 @@
                 </el-cascader>
             </el-form-item>
             <el-form-item>
-                <el-button size="mini" type="primary" @click="loadOrganizationInfo()"
+                <el-button size="mini" type="primary" @click="loadHospitalInfo()"
                            icon="el-icon-search">查询
                 </el-button>
             </el-form-item>
@@ -50,7 +50,7 @@
             </el-table-column>
         </el-table>
         <el-pagination
-            @current-change="loadOrganizationInfo"
+            @current-change="loadHospitalInfo"
             :current-page.sync="currentPage"
             :page-size="pageSize"
             layout="prev, pager, next"
@@ -60,26 +60,26 @@
 </template>
 
 <style>
-    .organization-list .el-form {
+    .hospital-list .el-form {
         margin-top: 10px;
         padding: 10px 8px 10px 8px;
         background: #dddef5;
         border-radius: 4px;
     }
 
-    .organization-list .el-table {
+    .hospital-list .el-table {
         margin-top: 20px;
     }
 
-    .organization-list .el-table .cell {
+    .hospital-list .el-table .cell {
         text-align: center;
     }
 
-    .organization-list .el-pagination {
+    .hospital-list .el-pagination {
         float: right;
     }
 
-    .organization-list .el-row {
+    .hospital-list .el-row {
         margin-top: 5px;
     }
 
@@ -113,10 +113,10 @@
         }
         this.queryInfo.addressIds = addIds;
       }
-      this.loadOrganizationInfo();
+      this.loadHospitalInfo();
     },
     methods: {
-      loadOrganizationInfo: function () {
+      loadHospitalInfo: function () {
         this.$router.replace({
           query: Object.assign(this.queryInfo, {
             currentPage: this.currentPage,

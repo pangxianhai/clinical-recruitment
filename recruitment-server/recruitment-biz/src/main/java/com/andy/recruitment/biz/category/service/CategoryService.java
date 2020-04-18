@@ -1,5 +1,6 @@
 package com.andy.recruitment.biz.category.service;
 
+import com.andy.recruitment.api.category.response.CategoryDetailRes;
 import com.andy.recruitment.dao.category.entity.CategoryDO;
 import com.andy.recruitment.dao.category.entity.CategoryQuery;
 import com.andy.spring.page.PageResult;
@@ -43,7 +44,7 @@ public interface CategoryService {
      * @param parentId 父类目id
      * @return 类目信息
      */
-    List<CategoryDO> getCategoryByParentId(Long parentId);
+    List<CategoryDetailRes> getCategoryByParentId(Long parentId);
 
     /**
      * 分页查询类目
@@ -53,4 +54,12 @@ public interface CategoryService {
      * @return 类目信息
      */
     PageResult<CategoryDO> getCategory(CategoryQuery query, Paginator paginator);
+
+    /**
+     * 通过类目名称查询类目
+     *
+     * @param categoryName 类目名称
+     * @return 类目信息
+     */
+    CategoryDO getCategoryByName(String categoryName);
 }

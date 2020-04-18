@@ -34,7 +34,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background: url("../../assets/login-background.jpg") no-repeat center 0;
+        background: url("~@/assets/login-background.png") no-repeat center 0;
         max-width: 1920px;
         z-index: -10;
         zoom: 1;

@@ -129,7 +129,7 @@ export const StringUtil = {
     }
   },
   isNotEmpty: (text) => {
-    return !this.isEmpty(text);
+    return !StringUtil.isEmpty(text);
   }
 };
 

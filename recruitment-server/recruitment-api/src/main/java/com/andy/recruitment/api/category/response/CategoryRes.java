@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 类目信心
+ * 类目信息
  *
  * @author 庞先海 2020-04-12
  */
@@ -32,4 +32,9 @@ public class CategoryRes implements Serializable {
      * 父级ID
      */
     private Long parentId;
+
+    /**
+     * 类目路径,从一级类目到本级所有父类目列表 不包含本级类目id
+     */
+    private String path;
 }

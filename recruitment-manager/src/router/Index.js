@@ -91,6 +91,46 @@ const router = new Router({
       ]
     },
     {
+      path: '/category',
+      component: () => import("@/views/Layout"),
+      icon: 'iconfont icon-category',
+      menu: true,
+      name: '类目管理',
+      index: "8",
+      children: [
+        {
+          path: 'list',
+          name: '类目列表',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "8-1",
+          component: () => import("@/views/category/List"),
+        },
+        {
+          path: 'add',
+          name: '添加类目',
+          meta: {
+            needLogin: true
+          },
+          menu: true,
+          index: "8-2",
+          component: () => import("@/views/category/Add"),
+        },
+        {
+          path: 'update/:categoryId',
+          name: '更新类目',
+          meta: {
+            needLogin: true
+          },
+          menu: false,
+          index: "8-1",
+          component: () => import("@/views/category/Update"),
+        },
+      ]
+    },
+    {
       path: '/hospital',
       component: () => import("@/views/Layout"),
       icon: 'iconfont icon-yiyuan',

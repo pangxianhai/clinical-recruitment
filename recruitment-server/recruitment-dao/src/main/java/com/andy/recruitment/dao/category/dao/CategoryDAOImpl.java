@@ -58,9 +58,10 @@ public class CategoryDAOImpl implements CategoryDAO {
         categoryDo.setCreatedBy(operator);
         categoryDo.setCreatedTime(LocalDateTime.now());
         Exception exception = null;
+        int count = 0;
         for (int i = 0; i < 5; ++ i) {
             try {
-                int count = this.categoryMapper.insert(categoryDo);
+                count = this.categoryMapper.insert(categoryDo);
                 if (count > 0) {
                     exception = null;
                     break;
@@ -72,7 +73,10 @@ public class CategoryDAOImpl implements CategoryDAO {
             }
         }
         if (exception != null) {
-            throw new RecruitmentException(RecruitmentErrorCode.CATEGORY_ADD_FAILED, exception);
+            throw new RuntimeException(exception);
+        }
+        if (count <= 0) {
+            throw new RecruitmentException(RecruitmentErrorCode.CATEGORY_ADD_FAILED);
         }
     }
 
@@ -91,6 +95,7 @@ public class CategoryDAOImpl implements CategoryDAO {
             categoryDo.setLevel(level);
             categoryDo.setPath(this.generatePath(categoryDo.getParentId()));
         } else {
+            categoryDo.setParentId(null);
             //级别不能随意修改
             categoryDo.setLevel(null);
             //路劲不能随意修改
@@ -99,7 +104,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         categoryDo.setId(sourceCategoryDo.getId());
         categoryDo.setUpdatedBy(operator);
         categoryDo.setUpdatedTime(LocalDateTime.now());
-        int count = this.categoryMapper.insert(categoryDo);
+        int count = this.categoryMapper.update(categoryDo);
         AssertUtil.assertTrue(count > 0, () -> {
             throw new RecruitmentException(RecruitmentErrorCode.CATEGORY_UPDATE_FAILED);
         });

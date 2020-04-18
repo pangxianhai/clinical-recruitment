@@ -2,8 +2,10 @@ package com.andy.recruitment.web.controller.category.controller;
 
 import com.andy.recruitment.api.category.request.CategoryAddReq;
 import com.andy.recruitment.api.category.request.CategoryQueryReq;
+import com.andy.recruitment.api.category.response.CategoryDetailRes;
 import com.andy.recruitment.api.category.response.CategoryRes;
 import com.andy.recruitment.biz.category.service.CategoryService;
+import com.andy.recruitment.dao.category.dao.CategoryDAO;
 import com.andy.recruitment.dao.category.entity.CategoryDO;
 import com.andy.recruitment.dao.category.entity.CategoryQuery;
 import com.andy.recruitment.web.controller.category.util.CategoryUtil;
@@ -48,6 +50,28 @@ public class CategoryController {
         PageResult<CategoryDO> pageResult = this.categoryService.getCategory(query, queryReq.getPaginator());
         List<CategoryRes> categoryResList = CategoryUtil.transformCategoryRes(pageResult.getData());
         return new PageResult<>(categoryResList, pageResult.getPaginator());
+    }
+
+    @GetMapping("/{parentId:\\d+}/children")
+    public List<CategoryDetailRes> listCategoryResByParent(@PathVariable Long parentId) {
+        if (parentId == null || parentId <= 0) {
+            parentId = CategoryDAO.ROOT_CATEGORY_ID;
+        }
+        return this.categoryService.getCategoryByParentId(parentId);
+    }
+
+    @RequiresUser
+    @GetMapping("/getByName")
+    public CategoryRes getCategoryByName(String name) {
+        CategoryDO categoryDo = this.categoryService.getCategoryByName(name);
+        return CategoryUtil.transformCategoryRes(categoryDo);
+    }
+
+    @RequiresUser
+    @GetMapping("/{categoryId:\\d+}")
+    public CategoryRes getCategoryById(@PathVariable Long categoryId) {
+        CategoryDO categoryDo = this.categoryService.getCategoryById(categoryId);
+        return CategoryUtil.transformCategoryRes(categoryDo);
     }
 
     @RequiresUser
