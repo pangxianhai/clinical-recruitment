@@ -12,6 +12,10 @@ import com.andy.spring.page.Paginator;
 import com.andy.spring.util.asserts.AssertUtil;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +59,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDO getCategoryById(Long categoryId) {
         return this.categoryDAO.getCategoryById(categoryId);
+    }
+
+    @Override
+    public Map<Long, CategoryDO> getCategoryByIds(List<Long> categoryIdList) {
+        List<CategoryDO> categoryDoList = this.categoryDAO.getCategoryByIds(categoryIdList);
+        if (CollectionUtils.isEmpty(categoryDoList)) {
+            return Collections.emptyMap();
+        }
+        return categoryDoList.stream().filter(Objects::nonNull).collect(
+            Collectors.toMap(CategoryDO::getCategoryId, Function.identity(), (c1, c2) -> c1));
     }
 
     @Override

@@ -15,7 +15,7 @@
                 label="标题">
             </el-table-column>
             <el-table-column
-                prop="category.desc"
+                prop="categoryRes.categoryName"
                 label="类目">
             </el-table-column>
             <el-table-column
@@ -81,18 +81,18 @@
             <el-tab-pane label="入排标准" v-html="recruitmentInfo.entryCriteria"></el-tab-pane>
             <el-tab-pane label="患者权益" v-html="recruitmentInfo.patientRights"></el-tab-pane>
             <el-tab-pane label="研究科室">
-                <el-row v-for="(department, index) in recruitmentInfo.departmentInfoBoList"
+                <el-row v-for="(department, index) in departmentList"
                         :key="index"
                         style="width: 400px"
                         type="flex" justify="space-between">
                     <el-col :span="10">
-                        {{department.organizationAddress}}
+                        {{department.hospitalRes.address}}
                     </el-col>
                     <el-col :span="14">
-                        {{department.organizationName}}
+                        {{department.hospitalRes.name}}
                     </el-col>
                     <el-col :span="12">
-                        {{department.departmentName}}
+                        {{department.name}}
                     </el-col>
                 </el-row>
             </el-tab-pane>
@@ -158,50 +158,23 @@
 </style>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Table,
-    TableColumn,
-    Tooltip,
-    Tag,
-    Row,
-    Col,
-    Button,
-    Tabs,
-    TabPane,
-    MessageBox,
-    Message
-  } from 'element-ui';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RecruitmentStatus} from '@/constants/Global';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-      [Tooltip.name]: Tooltip,
-      [Tag.name]: Tag,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Button.name]: Button,
-      [Tabs.name]: Tabs,
-      [TabPane.name]: TabPane,
-
-    },
     data: function () {
       return {
         recruitmentInfo: {
           status: {}
         },
+        departmentList: [],
         RecruitmentStatus: RecruitmentStatus
       }
     },
     created: function () {
       let recruitmentId = this.$route.params.recruitmentId;
       this.loadRecruitmentInfo(recruitmentId);
+      this.loadRecruitmentDepartment(recruitmentId);
     },
     methods: {
       loadRecruitmentInfo: function (recruitmentId) {
@@ -209,9 +182,14 @@
           this.recruitmentInfo = recruitmentInfo;
         });
       },
+      loadRecruitmentDepartment: function (recruitmentId) {
+        RecruitmentApi.getRecruitmentDepartmentById(recruitmentId).then((departmentList) => {
+          this.departmentList = departmentList;
+        });
+      },
       onBeginRecruitment: function () {
         if (this.recruitmentInfo.status.code === RecruitmentStatus.FINISHED) {
-          MessageBox.confirm('请注意结束时间，系统会根据结束时间自动结束项目！', '提示', {
+          this.$confirm('请注意结束时间，系统会根据结束时间自动结束项目！', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -227,20 +205,20 @@
       beginRecruitment: function (recruitmentInfo) {
         RecruitmentApi.recruitmentBegin(recruitmentInfo.recruitmentId).then((success) => {
           if (success) {
-            Message.success('操作成功!');
+            this.$message.success('操作成功!');
             this.loadRecruitmentInfo(recruitmentInfo.recruitmentId);
           }
         });
       },
       onEndRecruitment: function () {
-        MessageBox.confirm('您确定要执行该操作吗？', '提示', {
+        this.$confirm('您确定要执行该操作吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           RecruitmentApi.recruitmentEnd(this.recruitmentInfo.recruitmentId).then((success) => {
             if (success) {
-              Message.success('操作成功!');
+              this.$message.success('操作成功!');
               this.loadRecruitmentInfo(this.recruitmentInfo.recruitmentId);
             }
           });

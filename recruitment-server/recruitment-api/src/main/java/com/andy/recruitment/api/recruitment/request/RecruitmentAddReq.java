@@ -30,10 +30,10 @@ public class RecruitmentAddReq implements Serializable {
     @Length(max = 32)
     private String title;
     /**
-     * 类目
+     * 类目Id
      */
     @NotNull
-    private Integer category;
+    private Long categoryId;
     /**
      * 试验分期
      */

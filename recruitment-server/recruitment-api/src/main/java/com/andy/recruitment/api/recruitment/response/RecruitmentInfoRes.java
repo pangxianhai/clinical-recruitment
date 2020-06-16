@@ -1,6 +1,6 @@
 package com.andy.recruitment.api.recruitment.response;
 
-import com.andy.recruitment.common.recruitment.constant.RecruitmentCategory;
+import com.andy.recruitment.api.category.response.CategoryRes;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import java.io.Serializable;
 import lombok.Data;
@@ -28,9 +28,13 @@ public class RecruitmentInfoRes implements Serializable {
      */
     private String title;
     /**
-     * 类目
+     * 类目ID
      */
-    private RecruitmentCategory category;
+    private Long categoryId;
+    /**
+     * 类目名称
+     */
+    private CategoryRes categoryRes;
     /**
      * 试验分期
      */

@@ -25,7 +25,7 @@ public interface RecruitmentService {
      * @param paginator  分页参数
      * @return 招募信息
      */
-    PageResult<RecruitmentInfoDO> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator);
+    PageResult<RecruitmentInfoRes> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator);
 
     /**
      * 批量查询招募信息

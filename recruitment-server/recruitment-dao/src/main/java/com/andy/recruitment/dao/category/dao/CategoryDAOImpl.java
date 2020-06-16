@@ -88,12 +88,14 @@ public class CategoryDAOImpl implements CategoryDAO {
         });
         if (! sourceCategoryDo.getParentId().equals(categoryDo.getParentId())) {
             CategoryDO parentCategoryDo = this.getCategoryById(categoryDo.getParentId());
-            AssertUtil.assertNull(parentCategoryDo, () -> {
-                throw new RecruitmentException(RecruitmentErrorCode.CATEGORY_PARENT_NOT_EXIST);
-            });
-            Integer level = parentCategoryDo.getLevel() + 1;
-            categoryDo.setLevel(level);
-            categoryDo.setPath(this.generatePath(categoryDo.getParentId()));
+            if (parentCategoryDo == null) {
+                categoryDo.setLevel(LEVEL_ONE_CODE);
+                categoryDo.setPath(StringUtils.EMPTY);
+            } else {
+                Integer level = parentCategoryDo.getLevel() + 1;
+                categoryDo.setLevel(level);
+                categoryDo.setPath(this.generatePath(categoryDo.getParentId()));
+            }
         } else {
             categoryDo.setParentId(null);
             //级别不能随意修改
@@ -130,6 +132,16 @@ public class CategoryDAOImpl implements CategoryDAO {
         query.setCategoryName(categoryName);
         List<CategoryDO> categoryDoList = this.categoryMapper.select(query);
         return CollectionUtil.parseOne(categoryDoList, Function.identity());
+    }
+
+    @Override
+    public List<CategoryDO> getCategoryByIds(List<Long> categoryIdList) {
+        if (CollectionUtils.isEmpty(categoryIdList)) {
+            return null;
+        }
+        CategoryQuery query = new CategoryQuery();
+        query.setCategoryIdList(categoryIdList);
+        return this.categoryMapper.select(query);
     }
 
     @Override

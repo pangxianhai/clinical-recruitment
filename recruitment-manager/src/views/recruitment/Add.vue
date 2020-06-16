@@ -13,11 +13,9 @@
                     <el-input v-model="recruitmentInfo.title" placeholder="标题"></el-input>
                 </el-form-item>
                 <el-form-item label="类目：" prop="category">
-                    <el-select v-model="recruitmentInfo.category" placeholder="请选择"
-                               style="width: 50%;float: left">
-                        <el-option label="肿瘤" value="1"></el-option>
-                        <el-option label="非肿瘤" value="2"></el-option>
-                    </el-select>
+                    <CategorySelect v-model="recruitmentInfo.category" placeholder="请选择"
+                                    style="width: 50%;float: left">
+                    </CategorySelect>
                 </el-form-item>
                 <el-form-item label="登记编号：" prop="registerCode">
                     <el-input v-model="recruitmentInfo.registerCode" placeholder="登记编号"></el-input>
@@ -77,14 +75,11 @@
                         :options="editorOption">
                     </quill-editor>
                 </el-form-item>
-                <el-form-item label="研究科室：" prop="organizationDepartmentList"
+                <el-form-item label="研究科室：" prop="hospitalDepartmentList"
                               style="text-align: left">
-                    <el-cascader style="width:50%"
-                                 v-model="recruitmentInfo.organizationDepartmentList"
-                                 :options="organizationList"
-                                 :props="departmentProps"
-                                 clearable filterable>
-                    </el-cascader>
+                    <DepartmentSelect style="width:50%"
+                                      v-model="recruitmentInfo.hospitalDepartmentList">
+                    </DepartmentSelect>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary"
@@ -97,43 +92,17 @@
 </template>
 
 <script>
-  import {
-    Form,
-    FormItem,
-    Input,
-    InputNumber,
-    DatePicker,
-    Button,
-    Icon,
-    Cascader,
-    Message,
-    Breadcrumb,
-    BreadcrumbItem,
-    Select,
-    Option,
-  } from 'element-ui';
-
   import AreaData from '@/util/AreaData';
   import RecruitmentApi from '@/api/RecruitmentApi';
-  import {RouterUtil} from '@/util/Util';
-  import OrganizationApi from '@/api/OrganizationApi';
+  import {RouterUtil, CollectionUtil} from '@/util/Util';
+  import DepartmentSelect from '@/components/DepartmentSelect'
+  import CategorySelect from '@/components/CategorySelect'
 
   export default {
     components: {
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [InputNumber.name]: InputNumber,
-      [DatePicker.name]: DatePicker,
-      [Button.name]: Button,
-      [Icon.name]: Icon,
-      [Cascader.name]: Cascader,
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Select.name]: Select,
-      [Option.name]: Option
+      DepartmentSelect: DepartmentSelect,
+      CategorySelect: CategorySelect
     },
-
     data: function () {
       return {
         editorOption: {
@@ -158,9 +127,9 @@
           treatmentPlan: '项目治疗方案',
           entryCriteria: '入排标准',
           patientRights: '患者权益',
-          organizationDepartmentList: []
+          hospitalDepartmentList: [],
+          category: []
         },
-        organizationList: [],
         recruitmentInfoRules: {
           title: [
             {required: true, message: '请输入项目标题', trigger: 'blur'},
@@ -216,72 +185,31 @@
           startEndTime: [
             {required: true, message: '请选择启止日期', trigger: 'blur'},
           ],
-          organizationDepartmentList: [
+          hospitalDepartmentList: [
             {required: true, message: '请选择研究机构', trigger: 'blur'},
           ]
         },
-        areaData: AreaData,
-        departmentProps: {
-          multiple: true,
-          checkStrictly: true,
-          lazy: true,
-          lazyLoad: this.loadDepartment
-        }
+        areaData: AreaData
       }
     },
     created: function () {
-      this.loadOrganization();
     },
     methods: {
-      loadOrganization: function () {
-        OrganizationApi.getOrganization({
-          currentPage: 1,
-          pageSize: 1000
-        }).then(data => {
-          this.organizationList = [];
-          data.data.forEach(o => {
-            this.organizationList.push({
-              label: o.name,
-              value: o.organizationId,
-              disabled: true
-            });
-          });
-        });
-      },
-      loadDepartment: function (node, resolve) {
-        const {data} = node;
-        if (typeof data === 'undefined') {
-          return;
-        }
-        OrganizationApi.getOrganizationDepartment({
-          currentPage: 1,
-          pageSize: 10000,
-          organizationId: data.value
-        }).then(data => {
-          let nodes = [];
-          data.data.forEach(d => {
-            let di = {
-              label: d.name,
-              value: d.departmentId,
-              leaf: true
-            };
-            nodes.push(di);
-          });
-          resolve(nodes);
-        });
-      },
       onAddRecruitmentAction: function (recruitmentInfoForm) {
         if (typeof this.recruitmentInfo.startEndTime !== 'undefined'
             && this.recruitmentInfo.startEndTime.length >= 2) {
           this.recruitmentInfo.startTime = this.recruitmentInfo.startEndTime[0];
           this.recruitmentInfo.stopTime = this.recruitmentInfo.startEndTime[1];
         }
-        window.console.log(JSON.stringify(this.recruitmentInfo));
+        if (CollectionUtil.isNotEmpty(this.recruitmentInfo.category)) {
+          let category = this.recruitmentInfo.category;
+          this.recruitmentInfo.categoryId = category[category.length - 1];
+        }
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
             RecruitmentApi.addRecruitment(this.recruitmentInfo).then(success => {
               if (success) {
-                Message.success('添加成功，即将跳转');
+                this.$message.success('添加成功，即将跳转');
                 RouterUtil.goToBack(this.$route, this.$router);
               }
             })

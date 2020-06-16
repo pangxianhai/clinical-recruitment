@@ -38,6 +38,7 @@
   import CategorySelect from '@/components/CategorySelect'
   import CategoryApi from '@/api/CategoryApi';
   import {StringUtil} from '@/util/Util';
+  import {CollectionUtil} from "../../util/Util";
 
   export default {
     components: {
@@ -67,15 +68,7 @@
         CategoryApi.getCategoryById(categoryId).then(categoryInfo => {
           this.categoryInfo.categoryId = categoryInfo.categoryId;
           this.categoryInfo.categoryName = categoryInfo.categoryName;
-          let parentIdListTmp = [];
-          let pidSourceList = categoryInfo.path.split('/');
-          for (let i = 0; i < pidSourceList.length; ++i) {
-            let pid = pidSourceList[i];
-            if (StringUtil.isNotEmpty(pid)) {
-              parentIdListTmp.push(parseInt(pid));
-            }
-          }
-          this.categoryInfo.parentIdList = parentIdListTmp;
+          this.categoryInfo.parentIdList = categoryInfo.path;
         });
       },
       onUpdateCategoryAction(formName) {
@@ -86,7 +79,9 @@
           let categoryUpdateInfo = {};
           Object.assign(categoryUpdateInfo, this.categoryInfo);
           let parentIdList = this.categoryInfo.parentIdList;
-          categoryUpdateInfo.parentId = parentIdList[parentIdList.length - 1];
+          if (CollectionUtil.isNotEmpty(parentIdList)) {
+            categoryUpdateInfo.parentId = parentIdList[parentIdList.length - 1];
+          }
           CategoryApi.updateCategory(this.categoryInfo.categoryId, categoryUpdateInfo).then(
               result => {
                 if (result) {

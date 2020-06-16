@@ -1,6 +1,5 @@
 package com.andy.recruitment.dao.recruitment.entity;
 
-import com.andy.recruitment.common.recruitment.constant.RecruitmentCategory;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ public class RecruitmentQuery implements Serializable {
     /**
      * 类目
      */
-    private RecruitmentCategory category;
+    private Long categoryId;
     /**
      * 标题
      */

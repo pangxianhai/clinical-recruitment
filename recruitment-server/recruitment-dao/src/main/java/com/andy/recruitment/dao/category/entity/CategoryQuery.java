@@ -1,6 +1,7 @@
 package com.andy.recruitment.dao.category.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -17,6 +18,11 @@ public class CategoryQuery implements Serializable {
      * 类目ID
      */
     private Long categoryId;
+
+    /**
+     * 类目ID列表
+     */
+    private List<Long> categoryIdList;
 
     /**
      * 类目名称

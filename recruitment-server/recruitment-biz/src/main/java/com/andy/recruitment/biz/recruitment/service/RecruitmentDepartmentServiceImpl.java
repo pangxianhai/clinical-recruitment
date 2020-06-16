@@ -70,7 +70,7 @@ public class RecruitmentDepartmentServiceImpl implements RecruitmentDepartmentSe
             Map<Long, Long> didMap = departmentDoList.stream().collect(
                 Collectors.toMap(DepartmentDO::getId, DepartmentDO::getHospitalId));
 
-            for (Long addDepartmentId : needDeleteDepartmentIdList) {
+            for (Long addDepartmentId : needAddDepartmentIdList) {
                 this.recruitmentDepartmentDAO.addRecruitmentDepartment(recruitmentId, didMap.get(addDepartmentId),
                     addDepartmentId, operator);
             }

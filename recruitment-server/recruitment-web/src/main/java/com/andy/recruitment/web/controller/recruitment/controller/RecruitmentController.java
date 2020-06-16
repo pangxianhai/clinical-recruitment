@@ -54,11 +54,7 @@ public class RecruitmentController {
     @GetMapping
     public PageResult<RecruitmentInfoRes> listRecruitment(@MyParameter RecruitmentQueryReq queryReq) {
         RecruitmentQuery recruitmentQuery = RecruitmentUtil.transformQueryParam(queryReq);
-        PageResult<RecruitmentInfoDO> pageResult = this.recruitmentService.getRecruitmentInfo(recruitmentQuery,
-            queryReq.getPaginator());
-        List<RecruitmentInfoRes> recruitmentInfoResList = RecruitmentUtil.transformRecruitmentInfoRes(
-            pageResult.getData());
-        return new PageResult<>(recruitmentInfoResList, pageResult.getPaginator());
+        return this.recruitmentService.getRecruitmentInfo(recruitmentQuery, queryReq.getPaginator());
     }
 
     @GetMapping("/{recruitmentId:\\d+}")

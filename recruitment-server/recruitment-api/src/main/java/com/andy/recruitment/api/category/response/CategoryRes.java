@@ -1,6 +1,7 @@
 package com.andy.recruitment.api.category.response;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -36,5 +37,5 @@ public class CategoryRes implements Serializable {
     /**
      * 类目路径,从一级类目到本级所有父类目列表 不包含本级类目id
      */
-    private String path;
+    private List<Long> path;
 }

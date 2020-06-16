@@ -23,7 +23,6 @@
     data: function () {
       return {
         categoryInfoList: [],
-        categoryChild: {},
         currentPlaceholder: this.placeholder,
         currentValue: this.value,
         categoryProps: {
@@ -41,7 +40,7 @@
         let categoryInfoList = [];
 
         categoryInfoList = await this.getCategoryChildren(0);
-       
+
         if (CollectionUtil.isEmpty(parentIds)) {
           this.categoryInfoList = categoryInfoList;
           return;
@@ -63,7 +62,6 @@
           categoryList = categoryItem.children;
         }
         this.categoryInfoList = categoryInfoList;
-        window.console.log(this.categoryInfoList);
       },
       loadCategoryLazy(node, resolve) {
         const {data} = node;
@@ -116,7 +114,6 @@
       value(newValue) {
         this.initCategoryInfoList(newValue);
         this.currentValue = newValue;
-        window.console.log(newValue);
       }
     }
   }

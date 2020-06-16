@@ -83,6 +83,6 @@
 
     <delete id="delete"
       parameterType="com.andy.recruitment.dao.recruitment.entity.RecruitmentDepartmentQuery">
-        delete from recruitment_organization_info where recruitment_id = #{recruitmentId,jdbcType=BIGINT} and department_id = #{departmentId,jdbcType=BIGINT}
+        delete from recruitment_department where recruitment_id = #{recruitmentId,jdbcType=BIGINT} and department_id = #{departmentId,jdbcType=BIGINT}
     </delete>
 </mapper>

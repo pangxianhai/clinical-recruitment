@@ -1,11 +1,15 @@
 package com.andy.recruitment.biz.recruitment.service;
 
+import com.andy.recruitment.api.category.response.CategoryRes;
 import com.andy.recruitment.api.hospital.response.DepartmentDetailRes;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoDetailRes;
 import com.andy.recruitment.api.recruitment.response.RecruitmentInfoRes;
+import com.andy.recruitment.biz.category.service.CategoryService;
+import com.andy.recruitment.biz.category.util.CategoryUtil;
 import com.andy.recruitment.biz.hospital.service.DepartmentService;
 import com.andy.recruitment.biz.recruitment.util.RecruitmentUtil;
 import com.andy.recruitment.common.recruitment.constant.RecruitmentStatus;
+import com.andy.recruitment.dao.category.entity.CategoryDO;
 import com.andy.recruitment.dao.hospital.entity.DepartmentDO;
 import com.andy.recruitment.dao.recruitment.dao.RecruitmentDAO;
 import com.andy.recruitment.dao.recruitment.entity.RecruitmentDepartmentDO;
@@ -16,9 +20,11 @@ import com.andy.spring.page.Paginator;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,21 +44,31 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     private final DepartmentService departmentService;
 
+    private final CategoryService categoryService;
+
     private final TransactionTemplate transactionTemplate;
 
     @Autowired
     public RecruitmentServiceImpl(RecruitmentDAO recruitmentDAO,
         RecruitmentDepartmentService recruitmentDepartmentService, DepartmentService departmentService,
-        TransactionTemplate transactionTemplate) {
+        CategoryService categoryService, TransactionTemplate transactionTemplate) {
         this.recruitmentDAO = recruitmentDAO;
         this.recruitmentDepartmentService = recruitmentDepartmentService;
         this.departmentService = departmentService;
+        this.categoryService = categoryService;
         this.transactionTemplate = transactionTemplate;
     }
 
     @Override
-    public PageResult<RecruitmentInfoDO> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator) {
-        return this.recruitmentDAO.getRecruitmentInfo(queryParam, paginator);
+    public PageResult<RecruitmentInfoRes> getRecruitmentInfo(RecruitmentQuery queryParam, Paginator paginator) {
+        if (StringUtils.isEmpty(paginator.getOrderSegment())) {
+            paginator.setOrderSegment("created_time.desc");
+        }
+        PageResult<RecruitmentInfoDO> pageResult = this.recruitmentDAO.getRecruitmentInfo(queryParam, paginator);
+        List<RecruitmentInfoRes> recruitmentInfoResList = RecruitmentUtil.transformRecruitmentInfoRes(
+            pageResult.getData());
+        this.setCategoryRes(recruitmentInfoResList);
+        return new PageResult<>(recruitmentInfoResList, pageResult.getPaginator());
     }
 
     @Override
@@ -73,7 +89,6 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         }
         return recruitmentInfoResList.stream().collect(
             Collectors.toMap(RecruitmentInfoRes::getRecruitmentId, Function.identity(), (d1, d2) -> d1));
-
     }
 
     @Override
@@ -109,6 +124,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                 departmentIdList);
             recruitmentInfoDetailRes.setDepartmentDetailResList(departmentDetailResList);
         }
+        this.setCategoryRes(Collections.singletonList(recruitmentInfoDetailRes));
         return recruitmentInfoDetailRes;
     }
 
@@ -129,5 +145,26 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         recruitmentInfoDo.setId(recruitmentId);
         recruitmentInfoDo.setStatus(status);
         this.recruitmentDAO.updateRecruitmentInfo(recruitmentInfoDo, operator);
+    }
+
+    private void setCategoryRes(List<RecruitmentInfoRes> recruitmentInfoResList) {
+        if (CollectionUtils.isEmpty(recruitmentInfoResList)) {
+            return;
+        }
+        recruitmentInfoResList = recruitmentInfoResList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        List<Long> categoryIdList = recruitmentInfoResList.stream().map(RecruitmentInfoRes::getCategoryId).filter(
+            Objects::nonNull).collect(Collectors.toList());
+        Map<Long, CategoryDO> categoryDoMap = categoryService.getCategoryByIds(categoryIdList);
+        for (RecruitmentInfoRes recruitmentInfoRes : recruitmentInfoResList) {
+            if (recruitmentInfoRes == null) {
+                continue;
+            }
+            CategoryDO categoryDo = categoryDoMap.get(recruitmentInfoRes.getCategoryId());
+            if (categoryDo == null) {
+                continue;
+            }
+            CategoryRes categoryRes = CategoryUtil.transformCategoryRes(categoryDo);
+            recruitmentInfoRes.setCategoryRes(categoryRes);
+        }
     }
 }

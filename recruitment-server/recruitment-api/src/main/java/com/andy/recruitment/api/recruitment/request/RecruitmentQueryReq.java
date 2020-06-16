@@ -40,7 +40,7 @@ public class RecruitmentQueryReq extends BaseQueryReq implements Serializable {
     /**
      * 类目
      */
-    private Integer category;
+    private Long categoryId;
     /**
      * 适应症状
      */

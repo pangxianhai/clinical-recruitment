@@ -14,11 +14,9 @@
                     <el-input v-model="recruitmentInfo.title" placeholder="标题"></el-input>
                 </el-form-item>
                 <el-form-item label="类目：" prop="category">
-                    <el-select v-model="recruitmentInfo.category" placeholder="请选择"
-                               style="width: 50%;float: left">
-                        <el-option label="肿瘤" value="1"></el-option>
-                        <el-option label="非肿瘤" value="2"></el-option>
-                    </el-select>
+                    <CategorySelect v-model="categoryIds" placeholder="请选择"
+                                    style="width: 50%;float: left">
+                    </CategorySelect>
                 </el-form-item>
                 <el-form-item label="登记编号：" prop="registerCode">
                     <el-input v-model="recruitmentInfo.registerCode" placeholder="登记编号"></el-input>
@@ -78,14 +76,11 @@
                         :options="editorOption">
                     </quill-editor>
                 </el-form-item>
-                <el-form-item label="研究科室：" prop="organizationDepartmentList"
+                <el-form-item label="研究科室：" prop="hospitalDepartmentList"
                               style="text-align: left">
-                    <el-cascader style="width:50%"
-                                 v-model="recruitmentInfo.organizationDepartmentList"
-                                 :options="organizationList"
-                                 :props="departmentProps"
-                                 clearable filterable>
-                    </el-cascader>
+                    <DepartmentSelect style="width:50%"
+                                      v-model="hospitalDepartmentList">
+                    </DepartmentSelect>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-edit"
@@ -101,9 +96,14 @@
   import AreaData from '@/util/AreaData';
   import RecruitmentApi from '@/api/RecruitmentApi';
   import {RouterUtil} from '@/util/Util';
-  import OrganizationApi from '@/api/OrganizationApi';
+  import DepartmentSelect from '@/components/DepartmentSelect'
+  import CategorySelect from '@/components/CategorySelect'
 
   export default {
+    components: {
+      DepartmentSelect: DepartmentSelect,
+      CategorySelect: CategorySelect
+    },
     data: function () {
       return {
         editorOption: {
@@ -126,37 +126,33 @@
         recruitmentInfo: {
           title: '',
           registerCode: '',
-          createdTime: "",
-          drugName: "",
-          drugType: "",
-          entryCriteria: "",
-          indication: "",
-          introduction: "",
-          patientRights: "",
-          practiceStages: "",
+          createdTime: '',
+          drugName: '',
+          drugType: '',
+          entryCriteria: '',
+          bidParty: '',
+          indication: '',
+          introduction: '',
+          patientRights: '',
+          practiceStages: '',
           recruitmentNumber: 0,
-          startTime: "",
+          startTime: '',
           status: {},
-          stopTime: "",
-          treatmentPlan: "",
+          stopTime: '',
+          treatmentPlan: '',
           startEndTime: [],
-          organizationDepartmentList: []
+          hospitalDepartmentList: [],
+          categoryId: 0,
         },
-        organizationList: [],
-        sourceOrganizationIdList: [],
+        hospitalDepartmentList: [],
+        categoryIds: [],
         areaData: AreaData,
-        departmentProps: {
-          multiple: true,
-          checkStrictly: true,
-          lazy: true,
-          lazyLoad: this.loadDepartment
-        },
         recruitmentInfoRules: {
           title: [
             {required: true, message: '请输入项目标题', trigger: 'blur'},
             {min: 1, max: 32, message: '最大只能输入32个字符', trigger: 'blur'}
           ],
-          category: [
+          categoryId: [
             {required: true, message: '请选择类目', trigger: 'blur'},
           ],
           registerCode: [
@@ -206,7 +202,7 @@
           startEndTime: [
             {required: true, message: '请选择启止日期', trigger: 'blur'},
           ],
-          organizationList: [
+          hospitalDepartmentList: [
             {required: true, message: '请选择研究机构', trigger: 'blur'},
           ]
         }
@@ -215,65 +211,26 @@
     created: async function () {
       let recruitmentId = this.$route.params.recruitmentId;
       this.loadRecruitmentInfo(recruitmentId);
-      await this.loadOrganization();
+      this.loadRecruitmentDepartment(recruitmentId);
     },
     methods: {
       loadRecruitmentInfo: function (recruitmentId) {
         RecruitmentApi.getRecruitmentById(recruitmentId).then((recruitmentInfo) => {
           Object.assign(this.recruitmentInfo, recruitmentInfo);
           this.recruitmentInfo.startEndTime = [recruitmentInfo.startTime, recruitmentInfo.stopTime];
-          let organizationDepartmentList = [];
-          recruitmentInfo.departmentInfoBoList.forEach(department => {
-            let organizationDepartment = [department.organizationId, department.departmentId];
-            organizationDepartmentList.push(organizationDepartment);
-            this.sourceOrganizationIdList.push(department.organizationId);
-          });
-          this.recruitmentInfo.organizationDepartmentList = organizationDepartmentList;
-          this.recruitmentInfo.category = String(this.recruitmentInfo.category.code);
-          delete this.recruitmentInfo.departmentInfoBoList;
-        });
-      },
-      async loadOrganization() {
-        let organizationListTmp = [];
-        await OrganizationApi.getOrganization({
-          currentPage: 1,
-          pageSize: 1000
-        }).then((response) => {
-          for (let i = 0; i < response.data.length; ++i) {
-            let o = response.data[i];
-            let node = {
-              label: o.name,
-              value: o.organizationId,
-              disabled: true
-            };
-            organizationListTmp.push(node);
+          if (typeof recruitmentInfo.categoryRes !== 'undefined') {
+            this.categoryIds = recruitmentInfo.categoryRes.path;
+            this.categoryIds.push(recruitmentInfo.categoryRes.categoryId);
           }
         });
-
-        for (let i = 0; i < organizationListTmp.length; ++i) {
-          let node = organizationListTmp[i];
-          if (this.sourceOrganizationIdList.indexOf(node.value) !== -1) {
-            await this.loadOrganizationDepartment(node);
-          }
-        }
-        this.organizationList = organizationListTmp;
       },
-      async loadOrganizationDepartment(node) {
-        await OrganizationApi.getOrganizationDepartment({
-          currentPage: 1,
-          pageSize: 10000,
-          organizationId: node.value
-        }).then((response) => {
-          let children = [];
-          response.data.forEach(d => {
-            let di = {
-              label: d.name,
-              value: d.departmentId,
-              leaf: true
-            };
-            children.push(di);
+      loadRecruitmentDepartment: function (recruitmentId) {
+        RecruitmentApi.getRecruitmentDepartmentById(recruitmentId).then((departmentList) => {
+          let hospitalDepartmentList = [];
+          departmentList.forEach(department => {
+            hospitalDepartmentList.push([department.hospitalId, department.departmentId]);
           });
-          node.children = children;
+          this.hospitalDepartmentList = hospitalDepartmentList;
         });
       },
       onUpdateRecruitmentAction: function (recruitmentInfoForm) {
@@ -282,7 +239,8 @@
           this.recruitmentInfo.startTime = this.recruitmentInfo.startEndTime[0];
           this.recruitmentInfo.stopTime = this.recruitmentInfo.startEndTime[1];
         }
-
+        this.recruitmentInfo.hospitalDepartmentList = this.hospitalDepartmentList;
+        this.recruitmentInfo.categoryId = this.categoryIds[this.categoryIds.length - 1];
         this.$refs[recruitmentInfoForm].validate((valid) => {
           if (valid) {
             RecruitmentApi.updateRecruitment(this.recruitmentInfo.recruitmentId,
@@ -297,30 +255,7 @@
             return false;
           }
         });
-      },
-
-      loadDepartment: function (node, resolve) {
-        const {data} = node;
-        if (typeof data === 'undefined') {
-          return;
-        }
-        OrganizationApi.getOrganizationDepartment({
-          currentPage: 1,
-          pageSize: 10000,
-          organizationId: data.value
-        }).then(data => {
-          let nodes = [];
-          data.data.forEach(d => {
-            let di = {
-              label: d.name,
-              value: d.departmentId,
-              leaf: true
-            };
-            nodes.push(di);
-          });
-          resolve(nodes);
-        });
-      },
+      }
     }
   }
 </script>

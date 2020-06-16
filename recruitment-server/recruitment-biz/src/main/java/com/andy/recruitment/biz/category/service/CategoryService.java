@@ -6,6 +6,7 @@ import com.andy.recruitment.dao.category.entity.CategoryQuery;
 import com.andy.spring.page.PageResult;
 import com.andy.spring.page.Paginator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 招募项目项目类目服务接口
@@ -37,6 +38,14 @@ public interface CategoryService {
      * @return 类目信息
      */
     CategoryDO getCategoryById(Long categoryId);
+
+    /**
+     * 批量查询类目
+     *
+     * @param categoryIdList 类目id列表
+     * @return 类目信息
+     */
+    Map<Long, CategoryDO> getCategoryByIds(List<Long> categoryIdList);
 
     /**
      * 通过父类目id 查询类目 当 parentId 为空时返回所有一级类目

@@ -60,7 +60,7 @@
                 label="标题">
             </el-table-column>
             <el-table-column
-                prop="category.desc"
+                prop="categoryRes.categoryName"
                 label="类目">
             </el-table-column>
             <el-table-column

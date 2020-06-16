@@ -56,6 +56,14 @@ public interface CategoryDAO {
     CategoryDO getCategoryByName(String categoryName);
 
     /**
+     * 批量查询类目
+     *
+     * @param categoryIdList 类目id列表
+     * @return 类目信息
+     */
+    List<CategoryDO> getCategoryByIds(List<Long> categoryIdList);
+
+    /**
      * 通过父类目id 查询类目
      *
      * @param parentId 父类目id
