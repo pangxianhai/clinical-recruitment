@@ -20,14 +20,15 @@ let AdminApi = {
     return AdminApi.data.loginInfo;
   },
   isLogin: function () {
-    let userName = CookieUtil.getCookie('userName');
-    let token = CookieUtil.getCookie('token');
-
-    let userNameNotEmpty = typeof userName !== 'undefined' && null != userName
-        && userName.length > 0;
-    let tokenNotEmpty = typeof token !== 'undefined' && null != token
-        && token.length > 0;
-    return userNameNotEmpty && tokenNotEmpty;
+    // let userName = CookieUtil.getCookie('userName');
+    // let token = CookieUtil.getCookie('token');
+    //
+    // let userNameNotEmpty = typeof userName !== 'undefined' && null != userName
+    //     && userName.length > 0;
+    // let tokenNotEmpty = typeof token !== 'undefined' && null != token
+    //     && token.length > 0;
+    // return userNameNotEmpty && tokenNotEmpty;
+    return true
   },
   saveLoginInfo: function (userName, token) {
     CookieUtil.setCookie('userName', userName);
@@ -41,9 +42,16 @@ let AdminApi = {
   manageLogin: async (params) => {
     return await ApiUtil.post('/administrator/login', params);
   },
-  getManager: async (params) => {
-    return await ApiUtil.get('/administrator', params);
+  getAdmin: async (params) => {
+    return await ApiUtil.get('/administrator/', params);
   },
+  freezeAdmin: async (adminId) => {
+    return await ApiUtil.put('/administrator/' + adminId + "/freeze");
+  },
+  unfreezeAdmin: async (adminId) => {
+    return await ApiUtil.put('/administrator/' + adminId + "/unfreeze");
+  },
+
   addManager: async (params) => {
     return await ApiUtil.post('/user/administrator', params);
   },
@@ -55,12 +63,6 @@ let AdminApi = {
   },
   updateManagerPassword: async (userInfo) => {
     return await ApiUtil.put('/user/password', userInfo);
-  },
-  freezeUser: async (userId) => {
-    return await ApiUtil.put('/user/status/' + userId + "/freeze");
-  },
-  unfreezeUser: async (userId) => {
-    return await ApiUtil.put('/user/status/' + userId + "/unfreeze");
   },
   getUserByPhone: async (phone) => {
     return await ApiUtil.get('/user/phone/', {

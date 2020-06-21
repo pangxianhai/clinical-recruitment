@@ -5,28 +5,28 @@
             <el-breadcrumb-item>管理员列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form ref="queryInfo" :model="queryInfo" :inline="true">
-            <el-form-item label="姓名:" prop="name">
-                <el-input v-model="queryInfo.name" size="mini" clearable></el-input>
+            <el-form-item label="姓名:" prop="realNameLike">
+                <el-input v-model="queryInfo.realNameLike" size="mini" clearable></el-input>
             </el-form-item>
             <el-form-item label="手机号:" prop="phoneLike">
                 <el-input v-model="queryInfo.phoneLike" size="mini" clearable></el-input>
             </el-form-item>
             <el-form-item label="类型:" prop="type">
-                <el-select v-model="queryInfo.type" size="mini" clearable placeholder="类型">
-                    <el-option label="全部" value=""></el-option>
+                <el-select v-model="queryInfo.type" size="mini" placeholder="类型">
+                    <el-option label="全部" :value="0"></el-option>
                     <el-option label="系统管理员" :value="1"></el-option>
                     <el-option label="业务管理员" :value="2"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="状态:" prop="status">
-                <el-select v-model="queryInfo.status" size="mini" clearable placeholder="状态">
-                    <el-option label="全部" value=""></el-option>
+                <el-select v-model="queryInfo.status" size="mini" placeholder="状态">
+                    <el-option label="全部" :value="0"></el-option>
                     <el-option label="正常" :value="1"></el-option>
                     <el-option label="冻结" :value="2"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button size="mini" type="primary" @click="loadManagerInfo()"
+                <el-button size="mini" type="primary" @click="loadAdminInfo()"
                            icon="el-icon-search">查询
                 </el-button>
             </el-form-item>
@@ -36,19 +36,19 @@
             border
             style="width: 100%">
             <el-table-column
-                prop="userInfoRes.realName"
+                prop="realName"
                 label="姓名">
             </el-table-column>
             <el-table-column
-                prop="userInfoRes.phone"
+                prop="phone"
                 label="手机号">
             </el-table-column>
             <el-table-column
-                prop="userInfoRes.gender.desc"
+                prop="gender.desc"
                 label="性别">
             </el-table-column>
             <el-table-column
-                prop="type.desc"
+                prop="adminType.desc"
                 label="类型">
             </el-table-column>
             <el-table-column
@@ -109,7 +109,7 @@
             </el-table-column>
         </el-table>
         <el-pagination
-            @current-change="loadManagerInfo"
+            @current-change="loadAdminInfo"
             :current-page.sync="currentPage"
             :page-size="pageSize"
             layout="total, prev, pager, next"
@@ -147,6 +147,7 @@
 <script>
   import {AdminStatus} from '@/constants/Global';
   import AdminApi from '@/api/AdminApi';
+  import {StringUtil} from "../../util/Util";
 
   export default {
     data: function () {
@@ -156,22 +157,31 @@
         currentPage: 1,
         totalRecord: 0,
         pageSize: 10,
-        queryInfo: {}
+        queryInfo: {
+          type: 0,
+          status: 0
+        }
       }
     },
     created: function () {
       Object.assign(this.queryInfo, this.$route.query);
-      this.loadManagerInfo();
+      if (StringUtil.isNotEmpty(this.queryInfo.type)) {
+        this.queryInfo.type = parseInt(this.queryInfo.type)
+      }
+      if (StringUtil.isNotEmpty(this.queryInfo.status)) {
+        this.queryInfo.status = parseInt(this.queryInfo.status)
+      }
+      this.loadAdminInfo();
     },
     methods: {
-      loadManagerInfo: function () {
+      loadAdminInfo: function () {
         this.$router.replace({
           query: Object.assign(this.queryInfo, {
             currentPage: this.currentPage,
             pageSize: this.pageSize
           })
         });
-        AdminApi.getManager(Object.assign(this.queryInfo), {
+        AdminApi.getAdmin(Object.assign(this.queryInfo), {
           currentPage: this.currentPage,
           pageSize: this.pageSize
         }).then(data => {
@@ -181,15 +191,21 @@
       },
       freezeAdministrator: function (adminInfo) {
         window.console.log(adminInfo);
+        AdminApi.freezeAdmin(adminInfo.id).then(success => {
+          if (success) {
+            this.$message.success('操作成功!');
+            this.loadAdminInfo();
+          }
+        })
       },
-      unfreezeAdministrator: function (userInfo) {
-        window.console.log(userInfo);
-        // UserApi.unfreezeUser(userInfo.userId).then(success => {
-        //   if (success) {
-        //     Message.success('操作成功!');
-        //     this.loadManagerInfo();
-        //   }
-        // });
+      unfreezeAdministrator: function (adminInfo) {
+        window.console.log(adminInfo);
+        AdminApi.unfreezeAdmin(adminInfo.id).then(success => {
+          if (success) {
+            this.$message.success('操作成功!');
+            this.loadAdminInfo();
+          }
+        })
       },
       onUpdateAdministratorAction: function (userInfo) {
         this.$router.push({

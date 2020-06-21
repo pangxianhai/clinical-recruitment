@@ -13,3 +13,4 @@ logs/
 tmp/*
 .DS_Store
 *.tar.gz
+recruitment-go/recruitment
