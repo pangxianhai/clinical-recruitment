@@ -77,9 +77,9 @@ func (this *UserDAO) UpdateUser(do *UserInfoDO, operator string) (uint, error) {
 	do.UpdatedBy = operator
 	do.UpdatedTime = time.Now()
 	db := this.conn.GetDb()
-	db = db.Model(do).Omit("created_by", "created_time").Updates(do)
+	db = db.Model(&do).Omit("id", "created_by", "created_time").Updates(do)
 	if db.Error != nil {
 		return common.USER_UPDATE_FAILED, db.Error
 	}
-	return 0, nil
+	return common.SUCCESS, nil
 }

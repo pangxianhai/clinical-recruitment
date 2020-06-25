@@ -49,10 +49,11 @@ ajax.interceptors.request.use((config) => {
 });
 
 ajax.interceptors.response.use(({data}) => {
+  window.console.log(data)
   if (data.code === 200) {
     return data.data;
-  } else if (typeof data.msg === 'string' && data.msg.length > 0) {
-    Message.error(data.msg);
+  } else if (typeof data.message === 'string' && data.message.length > 0) {
+    Message.error(data.message);
   } else {
     Message.error("操作失败!");
   }
@@ -87,15 +88,11 @@ export const ApiUtil = {
 
   put: async (url, params) => {
     try {
-      const response = await ajax.request({
+      return await ajax.request({
         method: 'put',
         url: url,
         data: params
       });
-      const data = await response.data;
-      return {
-        data
-      }
     } catch (e) {
       Message.error('操作失败');
       window.console.error(e);
@@ -104,15 +101,11 @@ export const ApiUtil = {
 
   patch: async (url, params) => {
     try {
-      const response = await ajax.request({
+      return await ajax.request({
         method: 'patch',
         url: url,
         data: params
       });
-      const data = await response.data;
-      return {
-        data
-      }
     } catch (e) {
       Message.error('操作失败');
       window.console.error(e);

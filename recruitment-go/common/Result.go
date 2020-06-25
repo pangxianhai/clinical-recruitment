@@ -21,7 +21,9 @@ const (
 	//管理员更新失败
 	ADMIN_UPDATE_FAILED uint = 101002
 	//管理员被冻结
-	ADMIN_FREEZE uint = 101002
+	ADMIN_FREEZE uint = 101003
+	//管理员不存在
+	ADMIN_NOT_EXIST uint = 101004
 
 	// 添加用户失败
 	USER_ADD_FAILED uint = 101300
@@ -37,15 +39,25 @@ const (
 	USER_NOT_EXIST uint = 101305
 	//密码错误
 	USER_PASSWORD_ERROR uint = 101306
+	//原密码错误
+	USER_SOURCE_PASSWORD_ERROR uint = 101307
 )
 
 func Result(data interface{}) *result {
+	if data == nil {
+		data = true
+	}
 	r := result{Code: SUCCESS, Message: "success", Data: data}
 	return &r
 }
 
 func ResultError(code uint) *result {
 	message := GetMessage(code)
-	r := result{Code: code, Message: message}
+	r := result{Code: code, Message: message, Data: false}
+	return &r
+}
+
+func ResultErrorMsg(code uint, message string) *result {
+	r := result{Code: code, Message: message, Data: false}
 	return &r
 }

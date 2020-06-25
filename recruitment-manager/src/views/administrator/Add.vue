@@ -83,6 +83,9 @@
           checkPass: [
             {validator: this.validatePassAgain, trigger: 'blur'}
           ],
+          type: [
+            {required: true, message: '请选择管理员类型', trigger: 'blur'},
+          ],
         }
       }
     },
@@ -93,7 +96,7 @@
       onAddManagerAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            AdminApi.addManager(this.managerInfo).then(success => {
+            AdminApi.addAdmin(this.managerInfo).then(success => {
               if (success) {
                 this.$message.success('注册成功即将跳转!');
                 RouterUtil.goToBack(this.$route, this.$router, '/administrator/list');

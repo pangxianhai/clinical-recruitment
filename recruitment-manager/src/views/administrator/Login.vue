@@ -87,6 +87,7 @@
 
 <script>
   import {Button, Form, FormItem, Input, Message} from 'element-ui';
+  import UserApi from '@/api/UserApi';
   import AdminApi from '@/api/AdminApi';
 
   export default {
@@ -118,11 +119,11 @@
       onLoginAction: function (loginForm) {
         this.$refs[loginForm].validate((valid) => {
           if (valid) {
-            AdminApi.manageLogin(this.loginForm).then(loginInfo => {
+            AdminApi.adminLogin(this.loginForm).then(loginInfo => {
               if (!loginInfo) {
                 return;
               }
-              AdminApi.saveLoginInfo(loginInfo.userName, loginInfo.token);
+              UserApi.saveLoginInfo(loginInfo.userName, loginInfo.token);
               Message({
                 message: '登录成功，即将跳转',
                 type: 'success'

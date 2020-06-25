@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AdminApi from '@/api/AdminApi'
+import UserApi from "@/api/UserApi";
 
 Vue.use(Router);
 
@@ -289,7 +289,7 @@ const router = new Router({
           component: () => import("@/views/administrator/Add"),
         },
         {
-          path: 'update/:userId',
+          path: 'update/:adminId',
           name: '更新管理员',
           meta: {
             needLogin: true
@@ -315,7 +315,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let needLogin = to.meta.needLogin;
-  let isLogin = AdminApi.isLogin();
+  let isLogin = UserApi.isLogin();
   let isLoginPage = '/login' === to.path;
   if (!needLogin) {
     if (isLogin && isLoginPage) {

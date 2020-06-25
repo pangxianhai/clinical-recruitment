@@ -4,9 +4,27 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"log"
 )
 
 type DbConnection struct {
+}
+
+type MyLogger struct {
+}
+
+func (logger *MyLogger) Print(values ...interface{}) {
+	var (
+		level  = values[0]
+		source = values[1]
+	)
+
+	if level == "sql" {
+		sql := values[3].(string)
+		log.Println(sql, level, source)
+	} else {
+		log.Println(values)
+	}
 }
 
 func (conn *DbConnection) GetDb() *gorm.DB {
@@ -16,5 +34,10 @@ func (conn *DbConnection) GetDb() *gorm.DB {
 	}
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
+	logger := &MyLogger{}
+
+	db.LogMode(true)
+
+	db.SetLogger(logger)
 	return db
 }

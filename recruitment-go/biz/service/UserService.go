@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"recruitment/biz/dao"
 	"recruitment/common"
 	"recruitment/constant"
@@ -36,6 +37,12 @@ type UserInfoRes struct {
 	Status   common.BaseType `json:"status"`
 }
 
+type UpdatePasswordReq struct {
+	Phone          string `json:"phone"`
+	SourcePassword string `json:"password" binding:"required"`
+	NewPassword    string `json:"newPassword" binding:"required"`
+}
+
 func (this *UserService) GetCurrentUser(token string, userName string) (*LoginInfo, error) {
 	decodeToken, err := util.Rc4DecodeByte(token, userName)
 	if err != nil {
@@ -65,4 +72,25 @@ func (this *UserService) GetUserInfoByPhone(phone string) *UserInfoRes {
 	}
 
 	return &userInfoRes
+}
+
+func (this *UserService) UpdateUserPassword(req *UpdatePasswordReq, operator string) (uint, error) {
+	userInfoDO := this.userDAO.GetUserInfoByPhone(req.Phone)
+	if userInfoDO.ID == 0 {
+		return common.USER_NOT_EXIST, nil
+	}
+	fmt.Println("req c参数", req)
+	fmt.Println("userDO ", userInfoDO)
+	encodePass := util.HmacSha256Hash(req.SourcePassword, req.Phone)
+	if encodePass != userInfoDO.Password {
+		return common.USER_SOURCE_PASSWORD_ERROR, nil
+	}
+	encodeNewPass := util.HmacSha256Hash(req.NewPassword, req.Phone)
+	updateDO := dao.UserInfoDO{
+		BaseDO: common.BaseDO{
+			ID: userInfoDO.ID,
+		},
+		Password: encodeNewPass,
+	}
+	return this.userDAO.UpdateUser(&updateDO, operator)
 }

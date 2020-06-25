@@ -17,6 +17,12 @@ type AdminAddReq struct {
 	AdminType byte   `json:"type" binding:"required"`
 }
 
+type AdminUpdateReq struct {
+	RealName  string `json:"realName" `
+	Gender    byte   `json:"gender" `
+	AdminType byte   `json:"type" `
+}
+
 type AdminService struct {
 	adminDAO dao.AdminDAO
 	userDAO  dao.UserDAO
@@ -26,16 +32,50 @@ func (this *AdminService) ListAdminInfoPage(query *dao.AdminInfoQuery) ([]dao.Ad
 	return this.adminDAO.ListAdminInfoPage(query)
 }
 
-func (this *AdminService) UpdateAdminStatus(id uint, status byte, operator string) (bool, uint) {
+func (this *AdminService) GetAdminInfoById(id uint) *dao.AdminInfoBO {
+	query := dao.AdminInfoQuery{
+		BaseQuery: common.BaseQuery{
+			ID: id,
+		},
+	}
+	return this.adminDAO.GetAdminInfoOne(&query)
+}
+
+func (this *AdminService) UpdateAdminStatus(id uint, status byte, operator string) uint {
 	do := dao.AdminInfoDO{}
 	do.ID = id
 	do.Status = status
-
 	code, err := this.adminDAO.UpdateAdmin(&do, operator)
 	if err != nil {
-		return false, code
+		return code
 	}
-	return true, 0
+	return common.SUCCESS
+}
+
+func (this *AdminService) UpdateAdminInfo(adminId uint, update *AdminUpdateReq, operator string) (uint, error) {
+	adminInfoDO := this.GetAdminInfoById(adminId)
+	if adminInfoDO == nil {
+		return common.ADMIN_NOT_EXIST, nil
+	}
+	userUpdateDO := dao.UserInfoDO{
+		BaseDO: common.BaseDO{
+			ID: adminInfoDO.UserId,
+		},
+		RealName: update.RealName,
+		Gender:   update.Gender,
+	}
+	code, err := this.userDAO.UpdateUser(&userUpdateDO, operator)
+	if common.SUCCESS != code {
+		return code, err
+	}
+	adminUpdateDO := dao.AdminInfoDO{
+		BaseDO: common.BaseDO{
+			ID: adminId,
+		},
+		AdminType: update.AdminType,
+	}
+	fmt.Println("更新的管理员信息", adminUpdateDO)
+	return this.adminDAO.UpdateAdmin(&adminUpdateDO, operator)
 }
 
 func (this *AdminService) Login(phone string, password string) (string, string, uint) {

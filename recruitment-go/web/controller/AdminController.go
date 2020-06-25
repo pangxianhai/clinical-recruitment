@@ -14,12 +14,12 @@ import (
 type AdminRes struct {
 	Id uint `json:"id"`
 	service.UserInfoRes
-	AdminType common.BaseType `json:"adminType"`
+	AdminType common.BaseType `json:"type"`
 }
 
 type AdminLoginReq struct {
-	UserName string `json:"userName"`
-	Password string `json:"password"`
+	UserName string `json:"userName" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 type AdminController struct {
@@ -29,7 +29,11 @@ type AdminController struct {
 
 func (this *AdminController) AdminLogin(context *gin.Context) {
 	var loginReq AdminLoginReq
-	context.ShouldBind(&loginReq)
+	err := context.ShouldBind(&loginReq)
+	if err != nil {
+		context.JSON(http.StatusOK, common.ResultErrorMsg(common.PARAM_ERROR, err.Error()))
+		return
+	}
 	token, userName, code := this.adminService.Login(loginReq.UserName, loginReq.Password)
 	if code != common.SUCCESS {
 		context.JSON(http.StatusOK, common.ResultError(code))
@@ -38,16 +42,6 @@ func (this *AdminController) AdminLogin(context *gin.Context) {
 
 	loginRes := LoginRes{UserName: userName, Token: token}
 	context.JSON(http.StatusOK, common.Result(loginRes))
-}
-
-func (this *AdminController) GetAdminLoginInfo(context *gin.Context) {
-	loginInfo, exists := context.Get("loginInfo")
-	if !exists {
-		context.JSON(http.StatusOK, common.ResultError(common.UNAUTHORIZED))
-	} else {
-		result := common.Result(loginInfo)
-		context.JSON(http.StatusOK, result)
-	}
 }
 
 /**
@@ -63,6 +57,44 @@ func (this *AdminController) ListAdminInfoPage(context *gin.Context) {
 	context.JSON(http.StatusOK, result)
 }
 
+func (this *AdminController) GetAdminInfoById(context *gin.Context) {
+	idStr := context.Param("adminId")
+	id, err := strconv.ParseUint(idStr, 10, 32)
+	if err != nil {
+		context.JSON(http.StatusOK, common.ResultErrorMsg(common.PARAM_ERROR, err.Error()))
+		return
+	}
+	adminBO := this.adminService.GetAdminInfoById(uint(id))
+	adminRes := transformAdminRes(adminBO)
+	context.JSON(http.StatusOK, common.Result(adminRes))
+}
+
+func (this *AdminController) UpdateAdminInfo(context *gin.Context) {
+	var updateReq service.AdminUpdateReq
+	err := context.ShouldBind(&updateReq)
+	if err != nil {
+		fmt.Println("绑定参数错误", err)
+		context.JSON(http.StatusOK, common.ResultErrorMsg(common.PARAM_ERROR, err.Error()))
+		return
+	}
+	idStr := context.Param("adminId")
+	id, err := strconv.ParseUint(idStr, 10, 32)
+	if err != nil {
+		context.JSON(http.StatusOK, common.ResultErrorMsg(common.PARAM_ERROR, err.Error()))
+		return
+	}
+	code, err := this.adminService.UpdateAdminInfo(uint(id), &updateReq, GetOperator(context))
+	if common.SUCCESS != code {
+		if err != nil {
+			context.JSON(http.StatusOK, common.ResultErrorMsg(code, err.Error()))
+		} else {
+			context.JSON(http.StatusOK, common.ResultError(code))
+		}
+	} else {
+		context.JSON(http.StatusOK, common.Result(nil))
+	}
+}
+
 /**
 冻结用户
 */
@@ -73,8 +105,12 @@ func (this *AdminController) FreezeAdmin(context *gin.Context) {
 		context.JSON(http.StatusOK, common.ResultError(common.PARAM_ERROR))
 		return
 	}
-	this.adminService.UpdateAdminStatus(uint(id), constant.STATUS_FREEZE, GetOperator(context))
-	context.JSON(http.StatusOK, common.Result(common.SUCCESS))
+	code := this.adminService.UpdateAdminStatus(uint(id), constant.STATUS_FREEZE, GetOperator(context))
+	if common.SUCCESS == code {
+		context.JSON(http.StatusOK, common.Result(nil))
+	} else {
+		context.JSON(http.StatusOK, common.ResultError(code))
+	}
 }
 
 /*
@@ -87,17 +123,20 @@ func (this *AdminController) UnfreezeAdmin(context *gin.Context) {
 		context.JSON(http.StatusOK, common.ResultError(common.PARAM_ERROR))
 		return
 	}
-	this.adminService.UpdateAdminStatus(uint(id), constant.STATUS_NORMAL, GetOperator(context))
-	context.JSON(http.StatusOK, common.Result(common.SUCCESS))
+	code := this.adminService.UpdateAdminStatus(uint(id), constant.STATUS_NORMAL, GetOperator(context))
+	if common.SUCCESS == code {
+		context.JSON(http.StatusOK, common.Result(nil))
+	} else {
+		context.JSON(http.StatusOK, common.ResultError(code))
+	}
 }
 
 func (this *AdminController) AddAdmin(context *gin.Context) {
 	var addReq service.AdminAddReq
 	err := context.ShouldBind(&addReq)
-	fmt.Println("添加管理员参数", addReq)
 	if err != nil {
 		fmt.Println("绑定参数错误", err)
-		context.JSON(http.StatusOK, common.ResultError(common.PARAM_ERROR))
+		context.JSON(http.StatusOK, common.ResultErrorMsg(common.PARAM_ERROR, err.Error()))
 		return
 	}
 	code, err := this.adminService.AddAdmin(&addReq, GetOperator(context))

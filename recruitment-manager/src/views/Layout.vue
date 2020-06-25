@@ -109,7 +109,7 @@
 
 <script>
   import Router from '@/router/Index';
-  import AdminApi from '@/api/AdminApi';
+  import UserApi from '@/api/UserApi';
 
   export default {
 
@@ -173,7 +173,7 @@
         });
       },
       initCurrentUserInfo: function () {
-        AdminApi.getLogInfo().then(loginInfo => {
+        UserApi.getLogInfo().then(loginInfo => {
           if (!loginInfo) {
             return;
           }
@@ -187,7 +187,7 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-        AdminApi.logOut();
+        UserApi.logOut();
         loading.close();
         this.$router.push({
           path: '/login',

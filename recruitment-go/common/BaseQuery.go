@@ -1,6 +1,7 @@
 package common
 
 type BaseQuery struct {
+	ID       uint `json:"id"`
 	Page     uint `json:"page" form:"currentPage"`
 	PageSize byte `json:"pageSize" form:"pageSize"`
 }

@@ -17,8 +17,9 @@ func (Router) RouterPath(engine *gin.Engine) {
 	{
 		adminController := &controller.AdminController{}
 		adminGroup.POST("/login", adminController.AdminLogin)
-		adminGroup.GET("/loginInfo", adminController.GetAdminLoginInfo)
 		adminGroup.GET("/", ManagerAuthMiddleWare(), adminController.ListAdminInfoPage)
+		adminGroup.GET("/:adminId", ManagerAuthMiddleWare(), adminController.GetAdminInfoById)
+		adminGroup.PUT("/:adminId", ManagerAuthMiddleWare(), adminController.UpdateAdminInfo)
 		adminGroup.POST("/", ManagerAuthMiddleWare(), adminController.AddAdmin)
 		adminGroup.PUT("/:adminId/freeze", ManagerAuthMiddleWare(), adminController.FreezeAdmin)
 		adminGroup.PUT("/:adminId/unfreeze", ManagerAuthMiddleWare(), adminController.UnfreezeAdmin)
@@ -28,6 +29,8 @@ func (Router) RouterPath(engine *gin.Engine) {
 	{
 		userController := &controller.UserController{}
 		userGroup.GET("/phone/:phone", userController.GetUserInfoByPhone)
+		userGroup.GET("/current/info", userController.GetCurrentUserInfo)
+		userGroup.PUT("/current/updatePassword", userController.UpdatePassword)
 	}
 }
 

@@ -48,7 +48,7 @@
                 label="性别">
             </el-table-column>
             <el-table-column
-                prop="adminType.desc"
+                prop="type.desc"
                 label="类型">
             </el-table-column>
             <el-table-column
@@ -68,7 +68,7 @@
                 label="操作">
                 <template slot-scope="scope">
                     <el-row type="flex">
-                        <el-tooltip effect="dark" content="冻结" placement="top" hide-after="1000">
+                        <el-tooltip effect="dark" content="冻结" placement="top" :hide-after="1000">
                             <el-col>
                                 <el-button
                                     v-if="scope.row.status.code===AdminStatus.NORMAL"
@@ -81,7 +81,7 @@
                         </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-tooltip effect="dark" content="解冻" placement="top" hide-after="1000">
+                        <el-tooltip effect="dark" content="解冻" placement="top" :hide-after="1000">
                             <el-col>
                                 <el-button
                                     v-if="scope.row.status.code===AdminStatus.FREEZE"
@@ -94,7 +94,8 @@
                         </el-tooltip>
                     </el-row>
                     <el-row type="flex">
-                        <el-tooltip effect="dark" content="编辑" placement="bottom" hide-after="1000">
+                        <el-tooltip effect="dark" content="编辑" placement="bottom"
+                                    :hide-after="1000">
                             <el-col>
                                 <el-button
                                     type="success"
@@ -147,7 +148,7 @@
 <script>
   import {AdminStatus} from '@/constants/Global';
   import AdminApi from '@/api/AdminApi';
-  import {StringUtil} from "../../util/Util";
+  import {StringUtil} from "@/util/Util";
 
   export default {
     data: function () {
@@ -180,6 +181,7 @@
             currentPage: this.currentPage,
             pageSize: this.pageSize
           })
+        }, () => {
         });
         AdminApi.getAdmin(Object.assign(this.queryInfo), {
           currentPage: this.currentPage,
@@ -207,9 +209,9 @@
           }
         })
       },
-      onUpdateAdministratorAction: function (userInfo) {
+      onUpdateAdministratorAction: function (adminInfo) {
         this.$router.push({
-          path: `/manager/update/${userInfo.userId}`
+          path: `/administrator/update/${adminInfo.id}`
         });
       }
     }
