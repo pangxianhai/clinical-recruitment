@@ -6,7 +6,9 @@ import (
 )
 
 func main() {
-	engine := gin.Default()
+	engine := gin.New()
+	engine.Use(gin.Recovery())
+	engine.Use(web.UserMiddleWare())
 	router := web.Router{}
 	router.RouterPath(engine)
 	_ = engine.Run(":7099")

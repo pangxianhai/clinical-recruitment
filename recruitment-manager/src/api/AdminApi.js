@@ -20,15 +20,15 @@ let AdminApi = {
     return AdminApi.data.loginInfo;
   },
   isLogin: function () {
-    // let userName = CookieUtil.getCookie('userName');
-    // let token = CookieUtil.getCookie('token');
-    //
-    // let userNameNotEmpty = typeof userName !== 'undefined' && null != userName
-    //     && userName.length > 0;
-    // let tokenNotEmpty = typeof token !== 'undefined' && null != token
-    //     && token.length > 0;
-    // return userNameNotEmpty && tokenNotEmpty;
-    return true
+    let userName = CookieUtil.getCookie('userName');
+    let token = CookieUtil.getCookie('token');
+
+    let userNameNotEmpty = typeof userName !== 'undefined' && null != userName
+        && userName.length > 0;
+    let tokenNotEmpty = typeof token !== 'undefined' && null != token
+        && token.length > 0;
+    return userNameNotEmpty && tokenNotEmpty;
+
   },
   saveLoginInfo: function (userName, token) {
     CookieUtil.setCookie('userName', userName);
@@ -53,7 +53,7 @@ let AdminApi = {
   },
 
   addManager: async (params) => {
-    return await ApiUtil.post('/user/administrator', params);
+    return await ApiUtil.post('/administrator/', params);
   },
   getManagerByUserId: async (userId) => {
     return await ApiUtil.get('/user/administrator/' + userId);

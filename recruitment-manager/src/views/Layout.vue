@@ -122,7 +122,7 @@
     },
     created: function () {
       this.initMenuList();
-      // this.initDefaultActive();
+      this.initDefaultActive();
       this.initCurrentUserInfo();
     },
     methods: {

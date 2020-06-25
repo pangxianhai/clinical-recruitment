@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
+	"net/http"
 	"recruitment/biz/service"
 	"recruitment/common"
 )
@@ -14,12 +16,8 @@ type LoginRes struct {
 	Token    string `json:"token"`
 }
 
-type UserInfoRes struct {
-	UserId   uint            `json:"userId"`
-	Nickname string          `json:"nickname"`
-	Phone    string          `json:"phone"`
-	RealName string          `json:"realName"`
-	Gender   common.BaseType `json:"gender"`
-	Status   common.BaseType `json:"status"`
+func (this *UserController) GetUserInfoByPhone(context *gin.Context) {
+	phone := context.Param("phone")
+	userInfoRes := this.userService.GetUserInfoByPhone(phone)
+	context.JSON(http.StatusOK, common.Result(userInfoRes))
 }
-

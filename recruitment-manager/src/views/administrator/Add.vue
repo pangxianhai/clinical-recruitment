@@ -5,32 +5,45 @@
             <el-breadcrumb-item :to="{ path: '/administrator/list'}">管理员管理</el-breadcrumb-item>
             <el-breadcrumb-item>添加管理员</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form status-icon style="margin-top: 25px;width: 30%" :rules="managerRules"
+        <el-form status-icon style="margin-top: 25px;width: 40%" :rules="managerRules"
                  ref="managerInfo"
                  :model="managerInfo"
-                 label-width="80px">
+                 label-width="100px">
             <el-form-item label="姓名" prop="realName">
-                <el-input v-model="managerInfo.realName"  autocomplete="off"></el-input>
+                <el-input v-model="managerInfo.realName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="手机号码" prop="phone">
-                <el-input v-model.number="managerInfo.phone"  autocomplete="off"></el-input>
+                <el-input v-model="managerInfo.phone" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input v-model="managerInfo.password" show-password  autocomplete="off"></el-input>
+                <el-input v-model="managerInfo.password" show-password
+                          autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="checkPass">
-                <el-input v-model="managerInfo.checkPass" show-password  autocomplete="off"></el-input>
+                <el-input v-model="managerInfo.checkPass" show-password
+                          autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="性别" prop="gender">
-                <el-radio-group v-model="managerInfo.gender">
-                    <el-radio label="1">
+                <el-radio-group v-model.number="managerInfo.gender">
+                    <el-radio :label="1">
                         <i class="el-icon-male"></i>男
                     </el-radio>
-                    <el-radio label="2">
+                    <el-radio :label="2">
                         <i class="el-icon-female"></i>女
                     </el-radio>
                 </el-radio-group>
             </el-form-item>
+            <el-form-item label="管理员类型" prop="type">
+                <el-radio-group v-model.number="managerInfo.type">
+                    <el-radio :label="1">
+                        <i class="el-icon-user-solid"></i>系统管理员
+                    </el-radio>
+                    <el-radio :label="2">
+                        <i class="el-icon-user"></i>业务管理员
+                    </el-radio>
+                </el-radio-group>
+            </el-form-item>
+
             <el-form-item>
                 <el-button type="primary" icon="el-icon-circle-plus-outline"
                            @click="onAddManagerAction('managerInfo')">添加
@@ -42,33 +55,11 @@
 </template>
 
 <script>
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Form,
-    FormItem,
-    Input,
-    RadioGroup,
-    Radio,
-    Button,
-    Icon,
-    // Message
-  } from 'element-ui';
-  // import AdminApi from '@/api/AdminApi';
-  // import {RouterUtil} from '@/util/Util';
+  import AdminApi from '@/api/AdminApi';
+  import UserApi from '@/api/UserApi';
+  import {RouterUtil} from '@/util/Util';
 
   export default {
-    components: {
-      [Breadcrumb.name]: Breadcrumb,
-      [BreadcrumbItem.name]: BreadcrumbItem,
-      [Form.name]: Form,
-      [FormItem.name]: FormItem,
-      [Input.name]: Input,
-      [RadioGroup.name]: RadioGroup,
-      [Radio.name]: Radio,
-      [Button.name]: Button,
-      [Icon.name]: Icon,
-    },
     data: function () {
       return {
         managerInfo: {},
@@ -102,12 +93,12 @@
       onAddManagerAction: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            // UserApi.addManager(this.managerInfo).then(success => {
-            //   if (success) {
-            //     Message.success('注册成功即将跳转!');
-            //     RouterUtil.goToBack(this.$route, this.$router, '/administrator/list');
-            //   }
-            // });
+            AdminApi.addManager(this.managerInfo).then(success => {
+              if (success) {
+                this.$message.success('注册成功即将跳转!');
+                RouterUtil.goToBack(this.$route, this.$router, '/administrator/list');
+              }
+            });
           } else {
             return false;
           }
@@ -126,13 +117,13 @@
         if (value === '') {
           callback(new Error('请输入手机号码'));
         } else {
-          // UserApi.getUserByPhone(value).then(userInfo => {
-          //   if (userInfo.userId) {
-          //     callback(new Error('手机号码已经被注册了'));
-          //   } else {
-          //     callback();
-          //   }
-          // });
+          UserApi.getUserByPhone(value).then(userInfo => {
+            if (userInfo.userId) {
+              callback(new Error('手机号码已经被注册了'));
+            } else {
+              callback();
+            }
+          });
         }
       }
     }

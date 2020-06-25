@@ -4,11 +4,18 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"recruitment/common"
+	"recruitment/constant"
 	"recruitment/util"
 	"time"
 )
 
 type AdminInfoDO struct {
+	common.BaseDO
+	UserId    uint
+	AdminType byte `gorm:"column:type"`
+}
+
+type AdminInfoBO struct {
 	UserInfoDO
 	UserId    uint
 	AdminType byte `gorm:"column:type"`
@@ -30,15 +37,21 @@ type AdminDAO struct {
 	conn util.DbConnection
 }
 
+const (
+	adminColumns = "id,user_id,type,status," +
+		"created_by,created_time,updated_by,updated_time"
+)
+
 func (this *AdminDAO) InsertAdmin(do *AdminInfoDO, operator string) (uint, error) {
 	do.CreatedTime = time.Now()
 	do.CreatedBy = operator
+	do.Status = constant.STATUS_NORMAL
 	db := this.conn.GetDb()
 	db = db.Create(do)
 	if db.Error != nil {
 		return common.ADMIN_ADD_FAILED, db.Error
 	}
-	return 0, nil
+	return common.SUCCESS, nil
 }
 
 func (this *AdminDAO) UpdateAdmin(do *AdminInfoDO, operator string) (uint, error) {
@@ -55,9 +68,16 @@ func (this *AdminDAO) UpdateAdmin(do *AdminInfoDO, operator string) (uint, error
 	return 0, nil
 }
 
-func (this *AdminDAO) ListAdminInfoPage(query *AdminInfoQuery) ([]AdminInfoDO, common.Paginator) {
+func (this *AdminDAO) GetAdminByUserId(userId uint) *AdminInfoDO {
+	var adminInfoDO AdminInfoDO
+	this.conn.GetDb().Select(adminColumns).Where("user_id = ?", userId).First(&adminInfoDO)
+	return &adminInfoDO
+
+}
+
+func (this *AdminDAO) ListAdminInfoPage(query *AdminInfoQuery) ([]AdminInfoBO, common.Paginator) {
 	db := this.conn.GetDb()
-	var adminInfos = make([]AdminInfoDO, query.PageSize)
+	var adminInfos = make([]AdminInfoBO, query.PageSize)
 	var totalRecord uint
 	db = db.Table("administrator_info a").Select("a.id,a.user_id,a.type,a.status," +
 		"a.created_by,a.created_time,a.updated_by,a.updated_time," +
