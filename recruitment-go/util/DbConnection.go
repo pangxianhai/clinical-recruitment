@@ -2,9 +2,10 @@ package util
 
 import (
 	"fmt"
+	"log"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"log"
 )
 
 type DbConnection struct {
@@ -21,7 +22,7 @@ func (logger *MyLogger) Print(values ...interface{}) {
 
 	if level == "sql" {
 		sql := values[3].(string)
-		log.Println(sql, level, source)
+		log.Println(source, level, sql)
 	} else {
 		log.Println(values)
 	}

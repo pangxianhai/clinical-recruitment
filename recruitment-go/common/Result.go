@@ -7,12 +7,18 @@ type result struct {
 }
 
 const (
-	SUCCESS      uint = 200
+	//成功
+	SUCCESS uint = 200
+	//无权限
 	UNAUTHORIZED uint = 401
-	FORBIDDEN    uint = 403
-	SYS_ERROR    uint = 500
-	PARAM_ERROR  uint = 600
-	NOT_LOGIN    uint = 601
+	//访问被禁止
+	FORBIDDEN uint = 403
+	//系统错误
+	SYS_ERROR uint = 500
+	//参数错误
+	PARAM_ERROR uint = 600
+	//未登录
+	NOT_LOGIN uint = 601
 
 	//管理员添加失败
 	ADMIN_ADD_FAILED uint = 101000
@@ -31,8 +37,6 @@ const (
 	USER_ID_EMPTY uint = 101301
 	// 更新用户失败
 	USER_UPDATE_FAILED uint = 101302
-	//未登录
-	USER_NOT_LOGIN uint = 101303
 	//用户注册失败
 	USER_REGISTER_FAILED uint = 101304
 	//用户不存在

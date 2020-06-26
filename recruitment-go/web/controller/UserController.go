@@ -6,10 +6,29 @@ import (
 	"net/http"
 	"recruitment/biz/service"
 	"recruitment/common"
+	"sync"
 )
 
 type UserController struct {
-	userService service.UserService
+	userService *service.UserService
+}
+
+
+var userController *UserController
+var userControllerLock sync.Mutex
+
+func GetUserController() *UserController {
+	if userController != nil {
+		return userController
+	}
+	userControllerLock.Lock()
+	defer userControllerLock.Unlock()
+	if userController != nil {
+		return userController
+	}
+	userController = &UserController{}
+	userController.userService = service.GetUserService()
+	return userController
 }
 
 type LoginRes struct {

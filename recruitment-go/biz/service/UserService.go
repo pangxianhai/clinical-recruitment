@@ -8,10 +8,28 @@ import (
 	"recruitment/common"
 	"recruitment/constant"
 	"recruitment/util"
+	"sync"
 )
 
 type UserService struct {
-	userDAO dao.UserDAO
+	userDAO *dao.UserDAO
+}
+
+var userService *UserService
+var userServiceLock sync.Mutex
+
+func GetUserService() *UserService {
+	if userService != nil {
+		return userService
+	}
+	userServiceLock.Lock()
+	defer userServiceLock.Unlock()
+	if userService != nil {
+		return userService
+	}
+	userService = &UserService{}
+	userService.userDAO = dao.GetUserDAO()
+	return userService
 }
 
 /*
@@ -26,6 +44,7 @@ type LoginInfo struct {
 	RoleType byte `json:"roleType"`
 	//附加信息
 	Attach string `json:"attach"`
+	Status byte   `json:"status"`
 }
 
 type UserInfoRes struct {

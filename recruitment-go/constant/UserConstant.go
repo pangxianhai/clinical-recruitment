@@ -1,15 +1,15 @@
 package constant
 
 const (
-	USER_MALE    = 1
-	USER_FEMALE  = 2
-	USER_UNKNOWN = 3
+	USER_MALE    byte = 1
+	USER_FEMALE  byte = 2
+	USER_UNKNOWN byte = 3
 
-	ROLE_MANAGER  = 1
-	ROLE_CUSTOMER = 2
+	ROLE_MANAGER  byte = 1
+	ROLE_CUSTOMER byte = 2
 
-	STATUS_NORMAL = 1
-	STATUS_FREEZE = 2
+	STATUS_NORMAL byte = 1
+	STATUS_FREEZE byte = 2
 )
 
 var GenderDict = map[byte]string{

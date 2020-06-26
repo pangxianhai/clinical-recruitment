@@ -7,6 +7,7 @@ import (
 	"recruitment/constant"
 	"recruitment/util"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -36,6 +37,22 @@ type AdminInfoQuery struct {
 
 type AdminDAO struct {
 	conn util.DbConnection
+}
+
+var adminDAO *AdminDAO
+var adminDAOLock sync.Mutex
+
+func GetAdminDAO() *AdminDAO {
+	if adminDAO != nil {
+		return adminDAO
+	}
+	adminDAOLock.Lock()
+	defer adminDAOLock.Unlock()
+	if adminDAO != nil {
+		return adminDAO
+	}
+	adminDAO = &AdminDAO{}
+	return adminDAO
 }
 
 const (

@@ -5,6 +5,7 @@ import (
 	"recruitment/common"
 	"recruitment/constant"
 	"recruitment/util"
+	"sync"
 	"time"
 )
 
@@ -37,6 +38,22 @@ type UserInfoQuery struct {
 
 type UserDAO struct {
 	conn util.DbConnection
+}
+
+var userDAO *UserDAO
+var userDAOLock sync.Mutex
+
+func GetUserDAO() *UserDAO {
+	if userDAO != nil {
+		return userDAO
+	}
+	userDAOLock.Lock()
+	defer userDAOLock.Unlock()
+	if userDAO != nil {
+		return userDAO
+	}
+	userDAO = &UserDAO{}
+	return userDAO
 }
 
 const (
@@ -82,4 +99,10 @@ func (this *UserDAO) UpdateUser(do *UserInfoDO, operator string) (uint, error) {
 		return common.USER_UPDATE_FAILED, db.Error
 	}
 	return common.SUCCESS, nil
+}
+
+func (this *UserDAO) GetUserInfoById(userId uint) *UserInfoDO {
+	var userInfoDO UserInfoDO
+	this.conn.GetDb().Select(userColumns).Where("id = ?", userId).First(&userInfoDO)
+	return &userInfoDO
 }

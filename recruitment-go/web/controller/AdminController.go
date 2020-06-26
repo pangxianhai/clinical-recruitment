@@ -9,6 +9,7 @@ import (
 	"recruitment/common"
 	"recruitment/constant"
 	"strconv"
+	"sync"
 )
 
 type AdminRes struct {
@@ -23,8 +24,26 @@ type AdminLoginReq struct {
 }
 
 type AdminController struct {
-	adminService service.AdminService
-	userService  service.UserService
+	adminService *service.AdminService
+	userService  *service.UserService
+}
+
+var adminController *AdminController
+var adminControllerLock sync.Mutex
+
+func GetAdminController() *AdminController {
+	if adminController != nil {
+		return adminController
+	}
+	adminControllerLock.Lock()
+	defer adminControllerLock.Unlock()
+	if adminController != nil {
+		return adminController
+	}
+	adminController = &AdminController{}
+	adminController.adminService = service.GetAdminService()
+	adminController.userService = service.GetUserService()
+	return adminController
 }
 
 func (this *AdminController) AdminLogin(context *gin.Context) {

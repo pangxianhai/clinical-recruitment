@@ -7,6 +7,7 @@ import (
 	"recruitment/common"
 	"recruitment/constant"
 	"recruitment/util"
+	"sync"
 )
 
 type AdminAddReq struct {
@@ -24,8 +25,28 @@ type AdminUpdateReq struct {
 }
 
 type AdminService struct {
-	adminDAO dao.AdminDAO
-	userDAO  dao.UserDAO
+	adminDAO      *dao.AdminDAO
+	userDAO       *dao.UserDAO
+	loginInfoDict map[uint]LoginInfo
+}
+
+var adminService *AdminService
+var adminServiceLock sync.Mutex
+
+func GetAdminService() *AdminService {
+	if adminService != nil {
+		return adminService
+	}
+	adminServiceLock.Lock()
+	defer adminServiceLock.Unlock()
+	if adminService != nil {
+		return adminService
+	}
+	adminService = &AdminService{}
+	adminService.loginInfoDict = map[uint]LoginInfo{}
+	adminService.adminDAO = dao.GetAdminDAO()
+	adminService.userDAO = dao.GetUserDAO()
+	return adminService
 }
 
 func (this *AdminService) ListAdminInfoPage(query *dao.AdminInfoQuery) ([]dao.AdminInfoBO, common.Paginator) {
@@ -49,6 +70,8 @@ func (this *AdminService) UpdateAdminStatus(id uint, status byte, operator strin
 	if err != nil {
 		return code
 	}
+	bo := this.GetAdminInfoById(id)
+	this.updateLoginInfo(bo.UserId)
 	return common.SUCCESS
 }
 
@@ -74,8 +97,9 @@ func (this *AdminService) UpdateAdminInfo(adminId uint, update *AdminUpdateReq, 
 		},
 		AdminType: update.AdminType,
 	}
-	fmt.Println("更新的管理员信息", adminUpdateDO)
-	return this.adminDAO.UpdateAdmin(&adminUpdateDO, operator)
+	code, err = this.adminDAO.UpdateAdmin(&adminUpdateDO, operator)
+	this.updateLoginInfo(adminInfoDO.UserId)
+	return code, err
 }
 
 func (this *AdminService) Login(phone string, password string) (string, string, uint) {
@@ -94,7 +118,10 @@ func (this *AdminService) Login(phone string, password string) (string, string, 
 	if encodePass != userInfoDO.Password {
 		return "", "", common.USER_PASSWORD_ERROR
 	}
-
+	status := constant.STATUS_FREEZE
+	if userInfoDO.Status == constant.STATUS_NORMAL && adminDO.Status == constant.STATUS_NORMAL {
+		status = constant.STATUS_NORMAL
+	}
 	loginInfo := LoginInfo{
 		UserId:   adminDO.UserId,
 		UserName: userInfoDO.Phone,
@@ -102,7 +129,9 @@ func (this *AdminService) Login(phone string, password string) (string, string, 
 		Phone:    userInfoDO.Phone,
 		RoleType: constant.ROLE_MANAGER,
 		Attach:   string(adminDO.AdminType),
+		Status:   status,
 	}
+	this.loginInfoDict[loginInfo.UserId] = loginInfo
 	data, err := json.Marshal(loginInfo)
 	if err != nil {
 		fmt.Println("管理员登录错误", err)
@@ -135,5 +164,47 @@ func (this *AdminService) AddAdmin(adminAddReq *AdminAddReq, operator string) (u
 	if err != nil {
 		return errCode, err
 	}
+	this.updateLoginInfo(userInfoDO.ID)
 	return common.SUCCESS, nil
+}
+
+func (this *AdminService) GetAdminLoginInfo(userId uint) *LoginInfo {
+	loginInfo, exist := this.loginInfoDict[userId]
+	fmt.Print("缓存中获取信息", loginInfo, exist)
+	if exist {
+		return &loginInfo
+	} else {
+		return nil
+	}
+}
+
+func (this *AdminService) updateLoginInfo(userId uint) {
+	_, exist := this.loginInfoDict[userId]
+	userInfoDO := this.userDAO.GetUserInfoById(userId)
+	if userInfoDO == nil && exist {
+		delete(this.loginInfoDict, userId)
+		return
+	}
+	adminDO := this.adminDAO.GetAdminByUserId(userId)
+	if adminDO == nil && exist {
+		delete(this.loginInfoDict, userId)
+		return
+	}
+	if userInfoDO == nil || adminDO == nil {
+		return
+	}
+	status := constant.STATUS_FREEZE
+	if userInfoDO.Status == constant.STATUS_NORMAL && adminDO.Status == constant.STATUS_NORMAL {
+		status = constant.STATUS_NORMAL
+	}
+	loginInfo := LoginInfo{
+		UserId:   adminDO.UserId,
+		UserName: userInfoDO.Phone,
+		RealName: userInfoDO.RealName,
+		Phone:    userInfoDO.Phone,
+		RoleType: constant.ROLE_MANAGER,
+		Attach:   string(adminDO.AdminType),
+		Status:   status,
+	}
+	this.loginInfoDict[userId] = loginInfo
 }
