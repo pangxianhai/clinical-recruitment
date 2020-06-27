@@ -171,6 +171,10 @@ func (this *AdminService) AddAdmin(adminAddReq *AdminAddReq, operator string) (u
 func (this *AdminService) GetAdminLoginInfo(userId uint) *LoginInfo {
 	loginInfo, exist := this.loginInfoDict[userId]
 	fmt.Print("缓存中获取信息", loginInfo, exist)
+	if !exist {
+		this.updateLoginInfo(userId)
+		loginInfo, exist = this.loginInfoDict[userId]
+	}
 	if exist {
 		return &loginInfo
 	} else {

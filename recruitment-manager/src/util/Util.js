@@ -49,11 +49,14 @@ ajax.interceptors.request.use((config) => {
 });
 
 ajax.interceptors.response.use(({data}) => {
-  window.console.log(data)
   if (data.code === 200) {
     return data.data;
   } else if (typeof data.message === 'string' && data.message.length > 0) {
     Message.error(data.message);
+    if (data.code === 101003) {
+      CookieUtil.deleteCookie('userName');
+      CookieUtil.deleteCookie('token');
+    }
   } else {
     Message.error("操作失败!");
   }

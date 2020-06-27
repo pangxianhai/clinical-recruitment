@@ -32,6 +32,12 @@ func (Router) RouterPath(engine *gin.Engine) {
 		userGroup.GET("/current/info", userController.GetCurrentUserInfo)
 		userGroup.PUT("/current/updatePassword", userController.UpdatePassword)
 	}
+
+	patientGroup := engine.Group("/patient")
+	{
+		patientController := controller.GetPatientController()
+		patientGroup.GET("/", patientController.ListPatientPage)
+	}
 }
 
 func UserMiddleWare() gin.HandlerFunc {
@@ -66,6 +72,11 @@ func ManagerAuthMiddleWare() gin.HandlerFunc {
 		} else {
 			adminService := service.GetAdminService()
 			loginInfo := adminService.GetAdminLoginInfo(loginInfo.UserId)
+			if loginInfo == nil {
+				context.JSON(http.StatusOK, common.ResultError(common.ADMIN_NOT_EXIST))
+				context.Abort()
+				return
+			}
 			if loginInfo.Status == constant.STATUS_FREEZE {
 				context.JSON(http.StatusOK, common.ResultError(common.ADMIN_FREEZE))
 				context.Abort()
