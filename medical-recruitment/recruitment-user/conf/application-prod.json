@@ -1,5 +1,10 @@
 {
     "consul": {
         "address": "127.0.0.10:8500"
+    },
+    "jdbcConf": {
+        "userName": "medical_recruitment-user",
+        "password": "mmmm8888",
+        "url": "tcp(127.0.0.1:3306)/medical_recruitment?charset=utf8&parseTime=True&loc=Local"
     }
 }

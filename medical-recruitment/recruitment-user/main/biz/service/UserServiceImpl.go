@@ -2,9 +2,9 @@ package service
 
 import (
 	"fmt"
-	"log"
 	"net/rpc"
 	"recruitment-user/main/biz/api"
+	"recruitment-user/main/logger"
 	"sync"
 )
 
@@ -28,7 +28,7 @@ func RegisterUserService() {
 	userService := GetUserService()
 	err := rpc.Register(userService)
 	if err != nil {
-		log.Fatal("UserService register failed。", err)
+		logger.Fatal("UserService register failed。", err)
 	}
 }
 

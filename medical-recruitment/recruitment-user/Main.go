@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"recruitment-user/main/appRpc"
+	"recruitment-user/main/biz/common"
 	"recruitment-user/main/biz/service"
 	"recruitment-user/main/config"
 	"recruitment-user/main/logger"
@@ -18,7 +19,9 @@ func main() {
 	go startRpcServer()
 	//3.注册 Rpc 服务
 	go registerRpcServer()
-	//4.监听系统退出信号
+	//4.加载国际化信息
+	loadI18n()
+	//5.监听系统退出信号
 	shutdownHook()
 }
 
@@ -50,6 +53,10 @@ func registerRpcServer() {
 	}
 	//注册用户服务
 	service.RegisterUserService()
+}
+
+func loadI18n() {
+	common.LoadErrorCode()
 }
 
 func shutdownHook() {

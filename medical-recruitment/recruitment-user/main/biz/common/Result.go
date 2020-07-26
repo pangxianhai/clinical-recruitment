@@ -1,57 +1,83 @@
 package common
 
+import (
+	"encoding/json"
+	"io/ioutil"
+	"recruitment-user/main/logger"
+)
+
 type result struct {
 	Code    uint        `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
 
-var (
-	SUCCESS = BaseType{
-		Code: 200,
-		Desc: "成功",
-	}
+type errorCode struct {
+	Success  uint
+	SysError uint
 
-	SYS_ERROR = BaseType{
-		Code: 500,
-		Desc: "未知错误",
-	}
+	AdminAddFailed    uint
+	AdminIdEmpty      uint
+	AdminUpdateFailed uint
+	AdminFreeze       uint
+	AdminNotExist     uint
 
-	ADMIN_ADD_FAILED = BaseType{
-		Code: 101000,
-		Desc: "管理员添加失败",
-	}
-	ADMIN_ID_EMPTY = BaseType{
-		Code: 101001,
-		Desc: "管理员 ID 为空",
-	}
+	UserAddFailed           uint
+	UserIdEmpty             uint
+	UserUpdateFailed        uint
+	UserRegisterFailed      uint
+	UserNotExist            uint
+	UserPasswordError       uint
+	UserSourcePasswordError uint
+}
 
-	//
-	////管理员更新失败
-	//ADMIN_UPDATE_FAILED uint = 101002
-	////管理员被冻结
-	//ADMIN_FREEZE uint = 101003
-	////管理员不存在
-	//ADMIN_NOT_EXIST uint = 101004
-	//
-	//// 添加用户失败
-	//USER_ADD_FAILED uint = 101300
-	////用户ID为空
-	//USER_ID_EMPTY uint = 101301
-	//// 更新用户失败
-	//USER_UPDATE_FAILED uint = 101302
-	////用户注册失败
-	//USER_REGISTER_FAILED uint = 101304
-	////用户不存在
-	//USER_NOT_EXIST uint = 101305
-	////密码错误
-	//USER_PASSWORD_ERROR uint = 101306
-	////原密码错误
-	//USER_SOURCE_PASSWORD_ERROR uint = 101307
-)
+var ErrorCode = errorCode{
+	Success:  200, // 成功
+	SysError: 500, // 系统错误
+
+	AdminAddFailed:    101000, // 添加管理失败
+	AdminIdEmpty:      101001, // 管理员 ID 为空
+	AdminUpdateFailed: 101002, // 更新管理员信息失败
+	AdminFreeze:       101003, // 管理员被冻结
+	AdminNotExist:     101004, // 管理员不存在
+
+	UserAddFailed:           101101, // 用户添加失败
+	UserIdEmpty:             101102, // 用户 ID 为空
+	UserUpdateFailed:        101103, // 更新用户信息失败
+	UserRegisterFailed:      101104, // 用户注册失败
+	UserNotExist:            101105, // 用户不存在
+	UserPasswordError:       101106, // 用户密码错误
+	UserSourcePasswordError: 101107, // 用户原密码错误
+}
+
+var errorCnCodeDesc map[uint]string
+
+func LoadErrorCode() {
+	var (
+		content []byte
+		err     error
+	)
+	if content, err = ioutil.ReadFile("./conf/i18n/error_code_cn.json"); err != nil {
+		logger.Error("错误码加载失败", err)
+		return
+	}
+	if err = json.Unmarshal(content, &errorCnCodeDesc); err != nil {
+		logger.Error("错误码绑定", err)
+		return
+	}
+}
+
+func GetErrorDesc(code uint) string {
+	desc, ok := errorCnCodeDesc[code]
+	if ok {
+		return desc
+	} else {
+		return "Unknown error"
+	}
+}
 
 func NewResult(data interface{}) *result {
-	r := result{Code: SUCCESS.Code, Message: SUCCESS.Desc, Data: data}
+	r := result{Code: ErrorCode.Success, Message: errorCnCodeDesc[ErrorCode.Success], Data: data}
 	return &r
 }
 
