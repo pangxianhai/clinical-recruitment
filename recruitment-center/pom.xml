@@ -18,7 +18,7 @@
     <properties>
         <xgimi-common.version>0.0.41-RELEASE</xgimi-common.version>
         <xgimi-spring.version>0.2.26-RELEASE</xgimi-spring.version>
-        <mysql-connector.version>8.0.13</mysql-connector.version>
+        <mysql-connector.version>8.0.16</mysql-connector.version>
     </properties>
 
     <modules>
