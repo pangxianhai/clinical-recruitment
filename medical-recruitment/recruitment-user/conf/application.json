@@ -1,0 +1,6 @@
+{
+    "service": {
+        "name": "recruitment-user-server",
+        "port": "2000"
+    }
+}

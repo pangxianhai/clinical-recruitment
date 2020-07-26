@@ -2,42 +2,62 @@ package main
 
 import (
 	"flag"
-	"log"
+	"os"
+	"os/signal"
 	"recruitment-user/main/appRpc"
 	"recruitment-user/main/biz/service"
 	"recruitment-user/main/config"
-	"sync"
+	"recruitment-user/main/logger"
+	"syscall"
 )
 
 func main() {
+	//1.加载配置
+	loadConfig()
+	//2.启动 Rpc 服务
+	go startRpcServer()
+	//3.注册 Rpc 服务
+	go registerRpcServer()
+	//4.监听系统退出信号
+	shutdownHook()
+}
+
+func loadConfig() {
 	var profiles string
 	flag.StringVar(&profiles, "profiles", "dev", "默认环境为dev")
 	flag.Parse()
-	config.LoadConfig(profiles)
+	configErr := config.LoadConfig(profiles)
+	if configErr != nil {
+		logger.Info("加载配置错误")
+	}
+}
 
-	var wg sync.WaitGroup
-	wg.Add(2)
-	go func() {
-		rpcErr := appRpc.StartRpcServer()
-		if rpcErr != nil {
-			log.Fatal("启动 Rpc 服务失败，程序退出", rpcErr)
-		} else {
-			log.Println("启动 Rpc 服务完成")
-		}
-		wg.Done()
-	}()
+func startRpcServer() {
+	rpcErr := appRpc.StartRpcServer()
+	if rpcErr != nil {
+		logger.Fatal("启动 Rpc 服务失败，程序退出", rpcErr)
+	} else {
+		logger.Info("启动 Rpc 服务完成")
+	}
+}
 
-	go func() {
-		regErr := appRpc.RegisterRpcServer()
-		if regErr != nil {
-			log.Fatal("注册 Rpc 服务失败，程序退出 ", regErr)
-		} else {
-			log.Println("注册 Rpc 服务完成")
-		}
-		wg.Done()
-	}()
-
+func registerRpcServer() {
+	regErr := appRpc.RegisterRpcServer()
+	if regErr != nil {
+		logger.Fatal("注册 Rpc 服务失败，程序退出 ", regErr)
+	} else {
+		logger.Info("注册 Rpc 服务完成")
+	}
+	//注册用户服务
 	service.RegisterUserService()
+}
 
-	wg.Wait()
+func shutdownHook() {
+	osChan := make(chan os.Signal)
+	signal.Notify(osChan, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGUSR1, syscall.SIGUSR2)
+	_ = <-osChan
+	logger.Info("系统开始退出")
+	appRpc.DeregisterRpcServer()
+	logger.Info("结束退出")
+	os.Exit(0)
 }

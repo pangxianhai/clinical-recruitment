@@ -14,5 +14,5 @@ type UserInfoRes struct {
 }
 
 type UserService interface {
-	GetUserInfoByPhone(phone string, userInfoRes *UserInfoRes)
+	GetUserInfoByPhone(phone string, userInfoRes *UserInfoRes) error
 }
