@@ -57,6 +57,7 @@ func registerRpcServer() {
 
 func loadI18n() {
 	common.LoadErrorCode()
+	common.LoadUserCode()
 }
 
 func shutdownHook() {
