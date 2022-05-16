@@ -12,7 +12,7 @@
     "dependencies": {
         "ali-oss": "^6.1.1",
         "async-validator": "^1.11.0",
-        "axios": "^0.18.0",
+        "axios": "^0.21.2",
         "js-cookie": "^2.2.0",
         "js-md5": "^0.7.3",
         "vant": "^2.5.0",
